@@ -17,8 +17,12 @@ jobs:
         with:
           args: --offline --verbose .
         continue-on-error: true
-      - name: Validate HTML (tidy, optional)
-        uses: cicirello/html5validator-action@v1
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          root: .
+          python-version: '3.x'
+      - name: Install html5validator
+        run: pip install --upgrade pip html5validator
+      - name: Validate HTML
+        run: html5validator --root .
         continue-on-error: true
