@@ -13,16 +13,8 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v4
+    - uses: googleapis/release-please-action@v4
         with:
-          release-type: simple
-          package-name: aievolutio-site
-          bump-minor-pre-major: true
-          target-branch: main
-          changelog-types: |
-            [
-              {"type":"feat","section":"Features","hidden":false},
-              {"type":"fix","section":"Bug Fixes","hidden":false},
-              {"type":"docs","section":"Documentation","hidden":false},
-              {"type":"chore","section":"Chores","hidden":true}
-            ]
+      target-branch: main
+      config-file: .release-please-config.json
+      manifest-file: .release-please-manifest.json
