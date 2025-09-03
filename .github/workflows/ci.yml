@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ pre, main ]
+  push:
+    branches: [ pre ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate HTML links (optional)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --verbose .
+        continue-on-error: true
+      - name: Validate HTML (tidy, optional)
+        uses: cicirello/html5validator-action@v1
+        with:
+          root: .
+        continue-on-error: true
