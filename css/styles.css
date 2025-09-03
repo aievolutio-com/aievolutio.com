@@ -3,3 +3,8 @@
 main{max-width:720px;margin:6rem auto;padding:0 1.25rem}
 h1{font-size:2.25rem;margin:.25rem 0 1rem}p{color:var(--muted);margin:0 0 1rem}
 .card{background:var(--card);border:1px solid #1f2430;border-radius:12px;padding:1rem 1.25rem}
+
+.hero{display:flex;flex-direction:column;align-items:flex-start;gap:.75rem;margin-bottom:2rem}
+.hero .logo{width:min(240px,50%);height:auto;image-rendering:auto}
+.gallery img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid #1f2430}
+.gallery figcaption{color:var(--muted);font-size:.9rem;margin-top:.5rem}
