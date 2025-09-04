@@ -24,12 +24,29 @@ jobs:
           BRANCH: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
         run: |
-          set -e
+          set +e
           PR_NUMBER=$(gh pr list --repo "$REPO" --base pre --head "$BRANCH" --json number --jq '.[0].number')
+          LIST_STATUS=$?
+          if [ $LIST_STATUS -ne 0 ]; then
+            echo "Aviso: gh pr list falló (posibles permisos insuficientes)." >&2
+            echo "Acción sugerida: Settings > Actions > Workflow permissions: 'Read and write' + 'Allow GitHub Actions to create and approve pull requests'." >&2
+            echo "Alternativa: usar un PAT como secret y exportarlo en GH_TOKEN." >&2
+            exit 0
+          fi
           if [ -z "$PR_NUMBER" ]; then
             gh pr create --repo "$REPO" --base pre --head "$BRANCH" \
               --title "Auto PR: $BRANCH → pre" \
               --body "Pull request automático desde $BRANCH hacia pre. Se activará auto-merge al pasar los checks."
+            CREATE_STATUS=$?
+            if [ $CREATE_STATUS -ne 0 ]; then
+              echo "Aviso: No se pudo crear el PR (permisos). Verifica configuración indicada arriba." >&2
+              exit 0
+            fi
             PR_NUMBER=$(gh pr list --repo "$REPO" --base pre --head "$BRANCH" --json number --jq '.[0].number')
           fi
           gh pr merge --repo "$REPO" --auto --squash "$PR_NUMBER"
+          MERGE_STATUS=$?
+          if [ $MERGE_STATUS -ne 0 ]; then
+            echo "Aviso: No se pudo activar auto-merge (permisos). Continúo sin error." >&2
+            exit 0
+          fi
