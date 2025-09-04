@@ -1,17 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Sitio estático de aievolutio.com" />
-    <title>aievolutio.com</title>
-  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <main>
-      <h1>Hola, mundo 👋</h1>
-      <p>Despliegue inicial en GitHub Pages con CI/CD.</p>
-    </main>
-  </body>
-  </html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIEvolutio — Comunidad sociotécnica</title>
+  <meta name="description" content="Comunidad sociotécnica para aprender, crear y evolucionar con IA.">
+  <meta property="og:title" content="AIEvolutio">
+  <meta property="og:description" content="Evoluciona con inteligencia colectiva + IA.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="/assets/logo.svg">
+  <link rel="preload" href="/styles/tokens.css" as="style">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/main.css">
+  <!-- Política CSP fuerte: configurar en cabeceras del servidor (ver sección Calidad) -->
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <header class="header" aria-label="Cabecera">
+    <nav class="container nav" aria-label="Primaria">
+      <a href="#home" class="logo" aria-label="AIEvolutio – Inicio">
+        <img src="/assets/logo.svg" alt="" width="28" height="28">
+        <span>AIEvolutio</span>
+      </a>
+      <div id="nav"></div>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar tema">🌓</button>
+    </nav>
+  </header>
+
+  <main id="main" class="container" tabindex="-1">
+    <section id="home" class="hero">
+      <h1>Evoluciona con inteligencia colectiva + IA</h1>
+      <p>Comunidad sociotécnica para aprender, crear y evolucionar con IA. Sin vender consultoría; compartimos prácticas, prototipos y marcos que funcionan en el mundo real.</p>
+      <p><a class="btn" href="#manifiesto">Leer manifiesto</a></p>
+    </section>
+
+    <div id="sections"></div>
+  </main>
+
+  <footer class="container">
+    <p>© 2025 AIEvolutio — Comunidad. Contenido con licencia CC BY-SA 4.0.</p>
+  </footer>
+
+  <script src="/scripts/app.js" defer></script>
+</body>
+</html>

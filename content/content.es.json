@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "siteName": "AIEvolutio",
+    "tagline": "Evoluciona con inteligencia colectiva + IA",
+    "language": "es",
+    "copyright": "© 2025 AIEvolutio — Comunidad",
+    "license": "CC BY-SA 4.0"
+  },
+  "navigation": [
+    {"id": "home", "label": "Inicio", "href": "#home"},
+    {"id": "manifiesto", "label": "Manifiesto", "href": "#manifiesto"},
+    {"id": "iniciativas", "label": "Iniciativas", "href": "#iniciativas"},
+    {"id": "eventos", "label": "Eventos", "href": "#eventos"},
+    {"id": "blog", "label": "Blog", "href": "#blog"},
+    {"id": "personas", "label": "Personas", "href": "#personas"},
+    {"id": "unete", "label": "Únete", "href": "#unete"}
+  ],
+  "sections": [
+    {
+      "id": "home",
+      "title": "AIEvolutio",
+      "kind": "hero",
+      "blocks": [
+        {"type": "p", "body": "Comunidad sociotécnica para aprender, crear y evolucionar con IA. Sin vender consultoría; compartimos prácticas, prototipos y marcos que funcionan en el mundo real."},
+        {"type": "link", "title": "Leer manifiesto", "href": "#manifiesto"}
+      ]
+    },
+    {
+      "id": "manifiesto",
+      "title": "Manifiesto",
+      "kind": "text",
+      "blocks": [
+        {"type": "p", "body": "Creemos en la evolución positiva: crecer, prosperar y escalar sin miedo. La tecnología sirve a las personas y a la sociedad; la IA multiplica, no sustituye el criterio humano."},
+        {"type": "quote", "body": "Evoluciona tu empresa con inteligencia (colectiva + IA)."}
+      ]
+    },
+    {
+      "id": "iniciativas",
+      "title": "Iniciativas",
+      "kind": "grid",
+      "blocks": [
+        {"type": "card", "title": "Workers & iTeams", "body": "Experimentos de 'trabajadores digitales' y 'equipos inteligentes' para tareas reales de negocio sin conflicto de interés."},
+        {"type": "card", "title": "Aprendizaje Abierto", "body": "Guías, plantillas y microcursos IA‑nativos (BMC, OKRs, marketing, prototipado)."},
+        {"type": "card", "title": "Prototipos Públicos", "body": "Repositorios y demos verificables, con foco en valor, seguridad y sostenibilidad."}
+      ]
+    },
+    {
+      "id": "eventos",
+      "title": "Eventos",
+      "kind": "events",
+      "blocks": [
+        {"type": "event", "title": "Sesión 0: Manifiesto y mapa de ruta", "date": "2025-09-15", "body": "Presentación abierta. Reglas de juego y primeras contribuciones."}
+      ]
+    },
+    {
+      "id": "blog",
+      "title": "Blog",
+      "kind": "posts",
+      "blocks": [
+        {"type": "post", "title": "Por qué comunidad antes que empresa", "date": "2025-09-01", "body": "Validamos con aprendizaje compartido y prototipos; empresa cuando el valor sea inequívoco."}
+      ]
+    },
+    {
+      "id": "personas",
+      "title": "Personas",
+      "kind": "people",
+      "blocks": [
+        {"type": "card", "title": "Contribuye", "body": "Comparte un prototipo, una guía o un caso de uso. Mantén la privacidad y la ética como primera norma."}
+      ]
+    },
+    {
+      "id": "unete",
+      "title": "Únete",
+      "kind": "cta",
+      "blocks": [
+        {"type": "p", "body": "¿Te interesa? Súmate a la conversación y a los experimentos."},
+        {"type": "link", "title": "Abrir un Issue en GitHub", "href": "https://github.com/aievolutio/site/issues"}
+      ]
+    }
+  ]
+}

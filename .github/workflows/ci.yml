@@ -12,17 +12,45 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Validate HTML links (optional)
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install tools
+        run: npm ci || npm i --no-fund --no-audit
+
+      - name: Filename policy
+        run: bash scripts/validate-filenames.sh
+
+      - name: Lint JS
+        run: npm run lint:js
+
+      - name: Lint CSS
+        run: npm run lint:css
+
+      - name: Lint HTML
+        run: npm run lint:html
+
+      - name: Validate HTML links
         uses: lycheeverse/lychee-action@v2
         with:
           args: --offline --verbose .
-        continue-on-error: true
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+
       - name: Install html5validator
         run: pip install --upgrade pip html5validator
+
       - name: Validate HTML
         run: html5validator --root .
-        continue-on-error: true
+
+      - name: Accessibility (pa11y-ci)
+        run: npm run a11y
+
+      - name: Lighthouse CI (thresholds)
+        run: npm run lhci:ci

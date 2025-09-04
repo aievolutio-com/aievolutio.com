@@ -12,3 +12,4 @@ Resumen del cambio y contexto.
 - [ ] Seguí Conventional Commits en el título
 - [ ] Actualicé docs si aplica
 - [ ] Probé el sitio localmente
+- [ ] Actualicé `CHANGELOG.md` si no lo hará release-please
