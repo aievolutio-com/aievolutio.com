@@ -30,6 +30,16 @@ Objetivo: Mantener contexto y consistencia al comenzar una nueva sesión.
 - `main`: producción (despliegue a Pages).
 - `pre`: integración previa (staging/preview).
 
+Protecciones recomendadas (GitHub > Settings > Branches > Rules):
+- En `main` exigir:
+	- Pull request obligatorio (sin pushes directos).
+	- Checks requeridos: CI, link check y preview (si aplica) deben estar en verde.
+	- 1 review como mínimo (opcional).
+	- Habilitar auto-merge (squash) para cuando todo esté verde.
+- En `pre`, opcional: permitir pushes pero ejecutar CI siempre.
+
+Automatización: cada push a `pre` abre/actualiza un PR `pre` → `main` y activa auto-merge (sólo se completa si los checks y reglas lo permiten).
+
 ## Seguridad
 - No incluir secretos en el repo.
 - Evitar dependencias innecesarias; sitio estático sin build por defecto.
