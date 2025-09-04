@@ -30,7 +30,7 @@ jobs:
           destination_dir: previews/pr-${{ github.event.number }}
           keep_files: true
           exclude_assets: |
-            .github,docs,*.md,*.yml,*.yaml,*.json
+            .github,docs,*.md,*.yml,*.yaml
       - name: Comment preview URL
         uses: peter-evans/create-or-update-comment@v4
         with:

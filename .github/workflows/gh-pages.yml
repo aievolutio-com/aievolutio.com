@@ -23,4 +23,4 @@ jobs:
           publish_dir: .
           cname: aievolutio.com
           exclude_assets: |
-            .github,docs,*.md,*.yml,*.yaml,*.json
+            .github,docs,*.md,*.yml,*.yaml

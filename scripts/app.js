@@ -5,7 +5,8 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
   async function loadContent(lang = 'es') {
-    const res = await fetch(`/content/content.${lang}.json`);
+    // Use relative path so it works on localhost, previews (with <base>), and production
+    const res = await fetch(`content/content.${lang}.json`);
     if (!res.ok) throw new Error('No se pudo cargar el contenido');
     state.content = await res.json();
   }
