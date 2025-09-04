@@ -6,6 +6,8 @@ on:
       - pre
       - main
       - gh-pages
+  - dependabot/**
+  - release-please**
 
 permissions:
   contents: write
