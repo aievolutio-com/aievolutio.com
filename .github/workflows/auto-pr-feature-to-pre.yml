@@ -18,23 +18,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Authenticate gh
-        run: |
-          echo "$GITHUB_TOKEN" | gh auth login --with-token
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create/ensure PR to pre and enable auto-merge
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
         run: |
           set -e
-          PR_NUMBER=$(gh pr list --base pre --head "$BRANCH" --json number --jq '.[0].number')
+          PR_NUMBER=$(gh pr list --repo "$REPO" --base pre --head "$BRANCH" --json number --jq '.[0].number')
           if [ -z "$PR_NUMBER" ]; then
-            gh pr create --base pre --head "$BRANCH" \
+            gh pr create --repo "$REPO" --base pre --head "$BRANCH" \
               --title "Auto PR: $BRANCH → pre" \
               --body "Pull request automático desde $BRANCH hacia pre. Se activará auto-merge al pasar los checks."
-            PR_NUMBER=$(gh pr list --base pre --head "$BRANCH" --json number --jq '.[0].number')
+            PR_NUMBER=$(gh pr list --repo "$REPO" --base pre --head "$BRANCH" --json number --jq '.[0].number')
           fi
-          gh pr merge --auto --squash "$PR_NUMBER"
+          gh pr merge --repo "$REPO" --auto --squash "$PR_NUMBER"
