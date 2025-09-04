@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AIEvolutio Site Content",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "siteName": {"type": "string"},
+        "tagline": {"type": "string"},
+        "language": {"type": "string"},
+        "copyright": {"type": "string"},
+        "license": {"type": "string"}
+      },
+      "required": ["siteName", "tagline", "language"]
+    },
+    "navigation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "label": {"type": "string"},
+          "href": {"type": "string"}
+        },
+        "required": ["id", "label", "href"]
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "title": {"type": "string"},
+          "kind": {"type": "string", "enum": ["hero", "text", "grid", "cta", "timeline", "people", "posts", "events", "faq"]},
+          "blocks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {"type": "string", "enum": ["p", "card", "stat", "quote", "link", "event", "post", "faq"]},
+                "title": {"type": "string"},
+                "body": {"type": "string"},
+                "href": {"type": "string"},
+                "date": {"type": "string"},
+                "meta": {"type": "object"}
+              },
+              "required": ["type"]
+            }
+          }
+        },
+        "required": ["id", "title", "kind"]
+      }
+    }
+  },
+  "required": ["meta", "navigation", "sections"]
+}

@@ -12,6 +12,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install tools
+        run: npm ci || npm i --no-fund --no-audit
+      - name: Lint JS
+        run: npm run lint:js
+      - name: Lint CSS
+        run: npm run lint:css
+      - name: Lint HTML
+        run: npm run lint:html
       - name: Validate HTML links (optional)
         uses: lycheeverse/lychee-action@v2
         with:
@@ -26,3 +38,7 @@ jobs:
       - name: Validate HTML
         run: html5validator --root .
   continue-on-error: false
+      - name: Accessibility (pa11y-ci)
+        run: npm run a11y
+      - name: Lighthouse CI (thresholds)
+        run: npm run lhci:ci

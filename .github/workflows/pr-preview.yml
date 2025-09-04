@@ -17,11 +17,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Add .nojekyll
         run: echo > .nojekyll
+      - name: Prepare preview with base href
+        run: |
+          mkdir -p preview
+          rsync -a --exclude '.git' ./ preview/
+          find preview -name '*.html' -print0 | xargs -0 sed -i 's|<head>|<head>\n    <base href="/previews/pr-${{ github.event.number }}/" />|'
       - name: Deploy preview to gh-pages/pr-<num>
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: ./preview
           destination_dir: previews/pr-${{ github.event.number }}
           keep_files: true
           exclude_assets: |
