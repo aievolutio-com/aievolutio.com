@@ -6,12 +6,14 @@ Objetivo: Mantener contexto y consistencia al comenzar una nueva sesión.
 - Prioriza seguridad, simplicidad y mantenibilidad.
 - Usa versionado semántico (SemVer): MAJOR.MINOR.PATCH.
 - Sigue Conventional Commits para mensajes de commit y generación de changelog.
+ - Documenta cada cambio relevante (README/docs) y procura que el título del PR sea semántico.
 
 ## Flujo de trabajo
 1. Trabaja en la rama `pre` para cambios y revisiones.
 2. Crea Pull Requests desde `pre` hacia `main`.
 3. Los PRs ejecutan CI (validaciones) y, al mergearse a `main`, se despliega a GitHub Pages.
-4. Actualiza `CHANGELOG.md` con cambios relevantes si aún no hay automatización.
+4. `release-please` generará PRs de versión y actualizará `CHANGELOG.md`. Si no aplica, actualiza `CHANGELOG.md` manualmente.
+5. Cada PR publica un preview en `https://aievolutio.com/previews/pr-<numero>/`.
 
 ## Convenciones
 - Estructura del sitio: HTML en la raíz, estilos en `css/`, imágenes en `images/`.
@@ -36,4 +38,12 @@ Objetivo: Mantener contexto y consistencia al comenzar una nueva sesión.
 - Revisar issues y PRs abiertos.
 - Verificar que la estructura se mantiene limpia.
 - Ejecutar una vista local del sitio si hay cambios en HTML/CSS.
+- Verificar que el PR cumpla el formato SemVer/Conventional Commits y que la documentación se haya actualizado.
+ - Revisar el preview automático del PR.
+
+## GitHub Pages y permisos (si falla el deploy)
+- En el repositorio: Settings > Pages > Build and deployment > Source: selecciona "GitHub Actions".
+- En el repositorio: Settings > Actions > General > Workflow permissions: "Read and write permissions".
+- En organizaciones: Organization settings > Pages: habilitar GitHub Pages y permitir despliegue desde Actions.
+- Re-ejecutar el workflow "Deploy Pages" (Actions > Deploy Pages > Run workflow).
 
