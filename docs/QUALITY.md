@@ -1,4 +1,4 @@
-# Normativa de Calidad — AIEvolutio (v0.1)
+# Normativa de calidad — AIEvolutio (v0.1)
 
 ## Seguridad
 - **CSP** estricta: `default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'`.
