@@ -16,7 +16,7 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           args: --offline --verbose .
-        continue-on-error: true
+  continue-on-error: false
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -25,4 +25,4 @@ jobs:
         run: pip install --upgrade pip html5validator
       - name: Validate HTML
         run: html5validator --root .
-        continue-on-error: true
+  continue-on-error: false
