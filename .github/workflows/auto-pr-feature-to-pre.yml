@@ -37,7 +37,7 @@ jobs:
           fi
           if [ -z "$PR_NUMBER" ]; then
             gh pr create --repo "$REPO" --base pre --head "$BRANCH" \
-              --title "Auto PR: $BRANCH → pre" \
+              --title "ci: auto-PR $BRANCH -> pre" \
               --body "Pull request automático desde $BRANCH hacia pre. Se activará auto-merge al pasar los checks."
             CREATE_STATUS=$?
             if [ $CREATE_STATUS -ne 0 ]; then
@@ -46,6 +46,8 @@ jobs:
             fi
             PR_NUMBER=$(gh pr list --repo "$REPO" --base pre --head "$BRANCH" --json number --jq '.[0].number')
           fi
+          # Asegurar título compatible con Conventional Commits para pasar el check semántico
+          gh pr edit --repo "$REPO" "$PR_NUMBER" --title "ci: auto-PR $BRANCH -> pre" || true
           gh pr merge --repo "$REPO" --auto --squash "$PR_NUMBER"
           MERGE_STATUS=$?
           if [ $MERGE_STATUS -ne 0 ]; then
