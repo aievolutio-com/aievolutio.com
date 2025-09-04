@@ -32,7 +32,7 @@ jobs:
             core.setOutput('number', pr.data.number);
             core.setOutput('created', 'true');
 
-  - name: Ensure semantic title and enable auto-merge (squash)
+      - name: Enable auto-merge (squash)
         if: ${{ steps.ensure_pr.outputs.number }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
