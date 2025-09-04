@@ -10,13 +10,13 @@
     "lint:html": "html-validate \"**/*.html\"",
     "format": "prettier -w .",
     "a11y": "pa11y-ci",
-    "lhci:ci": "lighthouse-ci autorun --config=lighthouserc.json"
+  "lhci:ci": "lhci autorun --config=lighthouserc.json"
   },
   "devDependencies": {
-    "@html-validate/stylish": "^8.7.0",
+  "@html-validate/stylish": "^4.3.0",
     "eslint": "^9.9.0",
     "html-validate": "^8.7.0",
-    "lighthouse-ci": "^0.13.0",
+  "@lhci/cli": "^0.13.0",
     "pa11y-ci": "^3.1.0",
     "prettier": "^3.3.0",
     "stylelint": "^16.6.0",
