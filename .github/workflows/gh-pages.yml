@@ -4,6 +4,11 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch, tag or SHA to deploy (defaults to main)"
+        required: false
+        default: main
 
 permissions:
   contents: write
@@ -14,6 +19,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # On manual runs, use the requested ref; on push, use the triggering commit
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref }}
       - name: Add .nojekyll
         run: echo > .nojekyll
       - name: Deploy to gh-pages
@@ -23,3 +31,4 @@ jobs:
           publish_dir: .
           exclude_assets: |
             .github,docs,*.md,*.yml,*.yaml,CNAME
+          force_orphan: true
