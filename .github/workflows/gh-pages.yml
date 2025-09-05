@@ -1,4 +1,4 @@
-name: Deploy to gh-pages
+name: Deploy site
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       ref:
         description: "Branch, tag or SHA to deploy (defaults to main)"
         required: false
-        default: main
+  default: pre
 
 permissions:
   contents: write

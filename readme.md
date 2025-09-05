@@ -4,7 +4,7 @@ Repositorio del sitio web estático con CI/CD para GitHub Pages, dos ramas (`pre
 
 ## Descripción
 
-Este proyecto es un sitio estático (HTML/CSS/imagenes) sin dependencias ni build. Incluye workflows para validar y desplegar a GitHub Pages.
+ Este proyecto es un sitio estático (HTML/CSS/imagenes) sin dependencias ni build. Incluye workflows para validar y desplegar a GitHub Pages (Actions → "Deploy site").
 
 ## Estructura
 

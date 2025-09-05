@@ -2,7 +2,7 @@
   const state = { content: null };
 
   const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s)); // eslint-disable-line no-unused-vars
 
   async function loadContent(lang = 'es') {
     // Use relative path so it works on localhost, previews (with <base>), and production
