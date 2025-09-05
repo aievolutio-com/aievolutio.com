@@ -2,13 +2,13 @@ name: Deploy site
 
 on:
   push:
-  branches: [ main, pre ]
+    branches: [ main, pre ]
   workflow_dispatch:
     inputs:
       ref:
-        description: "Branch, tag or SHA to deploy (defaults to main)"
+        description: "Branch, tag or SHA to deploy (defaults to pre)"
         required: false
-  default: pre
+        default: pre
 
 permissions:
   contents: write
