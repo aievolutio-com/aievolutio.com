@@ -1,4 +1,11 @@
 {
   "extends": ["stylelint-config-standard"],
-  "rules": { "color-no-invalid-hex": true }
+  "rules": {
+    "color-no-invalid-hex": true,
+    "declaration-block-single-line-max-declarations": null,
+    "alpha-value-notation": "number",
+    "color-function-notation": "legacy",
+    "value-keyword-case": null,
+    "color-hex-length": "short"
+  }
 }
