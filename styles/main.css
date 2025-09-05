@@ -38,3 +38,11 @@ footer { border-top: 1px solid rgba(255,255,255,.08); padding: var(--space-6) 0;
   .nav #nav a { padding: .5rem .75rem; }
   .theme-toggle { margin-left: 0; }
 }
+
+/* Figures (quotes and images) */
+figure { margin: 0 0 var(--space-6); }
+figure img { max-width: 100%; height: auto; border-radius: 12px; box-shadow: var(--shadow); }
+figure.quote { display: grid; grid-template-columns: 96px 1fr; gap: var(--space-4); align-items: start; }
+figure.quote img { width: 96px; height: 96px; object-fit: cover; border-radius: 50%; box-shadow: none; }
+figure.quote blockquote { margin: 0; font-size: 1.1rem; font-style: italic; }
+figure.quote figcaption { margin-top: .25rem; color: var(--muted); }

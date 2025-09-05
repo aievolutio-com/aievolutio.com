@@ -5,5 +5,6 @@
   {"id": "eventos", "label": "Eventos", "href": "#eventos"},
   {"id": "blog", "label": "Blog", "href": "#blog"},
   {"id": "personas", "label": "Personas", "href": "#personas"},
+  {"id": "oficina", "label": "Oficina", "href": "#oficina"},
   {"id": "unete", "label": "Únete", "href": "#unete"}
 ]

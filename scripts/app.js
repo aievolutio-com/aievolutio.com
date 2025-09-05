@@ -43,7 +43,20 @@
 
     (sec.blocks || []).forEach(b => {
       if (b.type === 'p') container.append(el('p', {}, [b.body]));
-      if (b.type === 'quote') container.append(el('blockquote', {}, [b.body]));
+      if (b.type === 'quote') {
+        // Support optional image and author
+        const fig = el('figure', { class: 'quote' });
+        if (b.img) fig.append(el('img', { src: b.img, alt: b.alt || b.author || '' }));
+        fig.append(el('blockquote', {}, [b.body]));
+        if (b.author) fig.append(el('figcaption', {}, [b.author]));
+        container.append(fig);
+      }
+      if (b.type === 'image') {
+        const fig = el('figure', { class: 'image' });
+        fig.append(el('img', { src: b.src, alt: b.alt || '' }));
+        if (b.caption) fig.append(el('figcaption', {}, [b.caption]));
+        container.append(fig);
+      }
       if (b.type === 'link') container.append(el('p', {}, [el('a', { href: b.href, class: 'btn' }, [b.title || b.href]) ]));
       if (b.type === 'card') container.append(el('div', { class: 'card' }, [el('h3', {}, [b.title || '']), el('p', {}, [b.body || ''])]));
       if (b.type === 'event') container.append(el('div', { class: 'card', role: 'article' }, [el('h3', {}, [b.title || 'Evento']), el('p', {}, [b.date || '']), el('p', {}, [b.body || ''])]));
