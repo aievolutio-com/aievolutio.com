@@ -10,7 +10,7 @@ while IFS= read -r path; do
   [[ -z "$path" ]] && continue
   # allowlist for conventional uppercase files
   case "$path" in
-    CHANGELOG.md|VERSION|CNAME|_headers) continue;;
+    CHANGELOG.md|VERSION|CNAME|_headers|.github/CODEOWNERS|.github/ISSUE_TEMPLATE/*|.github/pull_request_template.md) continue;;
   esac
   # check for uppercase
   if grep -q '[A-Z]' <<<"$path"; then
