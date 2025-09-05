@@ -41,7 +41,7 @@
 
     const container = el('div', { class: sec.kind === 'grid' ? 'grid' : '' });
 
-    (sec.blocks || []).forEach(b => {
+  (sec.blocks || []).forEach(b => {
       if (b.type === 'p') container.append(el('p', {}, [b.body]));
       if (b.type === 'quote') {
         // Support optional image and author/version. Format: "cita." (AUTHOR v.X.Y.Z)
@@ -67,10 +67,21 @@
         if (b.caption) fig.append(el('figcaption', {}, [b.caption]));
         container.append(fig);
       }
-      if (b.type === 'link') container.append(el('p', {}, [el('a', { href: b.href, class: 'btn' }, [b.title || b.href]) ]));
-      if (b.type === 'card') container.append(el('div', { class: 'card' }, [el('h3', {}, [b.title || '']), el('p', {}, [b.body || ''])]));
+      if (b.type === 'link') container.append(el('a', { href: b.href, class: 'btn' }, [b.title || b.href]));
+      if (b.type === 'card') {
+        const c = el('div', { class: 'card' });
+        if (b.img) c.append(el('img', { src: b.img, alt: b.alt || b.title || '' }));
+        c.append(el('h3', {}, [b.title || '']));
+        c.append(el('p', {}, [b.body || '']));
+        container.append(c);
+      }
       if (b.type === 'event') container.append(el('div', { class: 'card', role: 'article' }, [el('h3', {}, [b.title || 'Evento']), el('p', {}, [b.date || '']), el('p', {}, [b.body || ''])]));
       if (b.type === 'post') container.append(el('article', { class: 'card' }, [el('h3', {}, [b.title || 'Entrada']), el('p', { class: 'muted' }, [b.date || '']), el('p', {}, [b.body || ''])]));
+      if (b.type === 'links') {
+        const row = el('div', { class: b.class || '' });
+        (b.items || []).forEach(it => row.append(el('a', { href: it.href, class: 'btn' }, [it.title || it.href])));
+        container.append(row);
+      }
     });
 
     section.append(container);

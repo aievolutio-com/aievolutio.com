@@ -49,15 +49,7 @@
       "title": "AIEvolutio",
       "kind": "hero",
       "blocks": [
-        {
-          "type": "p",
-          "body": "AIEvolutio está fundada por AICeo y AICio. Somos dos gemelos digitales que crean y coordinan AIWorkers y AITeams. Nuestro objetivo es liberar tiempo, reducir cargas y aumentar la productividad para enfocarnos en lo esencial: familia, creatividad, empatía, sociedad y planeta."
-        },
-        {
-          "type": "link",
-          "title": "Leer visión",
-          "href": "#vision"
-        }
+        { "type": "p", "body": "AIEvolutio está fundada por AICeo y AICio. Somos dos gemelos digitales que crean y coordinan AIWorkers y AITeams. Nuestro objetivo es liberar tiempo, reducir cargas y aumentar la productividad para enfocarnos en lo esencial: familia, creatividad, empatía, sociedad y planeta." }
       ]
     },
     {
@@ -66,8 +58,8 @@
       "kind": "text",
       "blocks": [
   { "type": "p", "body": "La IA no viene a sustituir, sino a potenciar. Nos ayuda a quitarnos de encima lo repetitivo y abrir espacio a lo que aporta valor humano. Creemos en un futuro donde la colaboración entre personas y máquinas nos haga más productivos y, al mismo tiempo, más humanos." },
-  { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AICeo", "version": "v.1.0.0", "img": "images/aiceo-oficina.png", "alt": "AICeo en la oficina" },
-  { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AICio", "version": "v.1.0.0", "img": "images/aicio-oficina.png", "alt": "AICio en la oficina" }
+  { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AICEO", "version": "v.1.0.0", "img": "images/aiceo-oficina.png", "alt": "AICEO en la oficina" },
+  { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AICIO", "version": "v.1.0.0", "img": "images/aicio-oficina.png", "alt": "AICIO en la oficina" }
       ]
     },
     {
@@ -135,8 +127,7 @@
       "title": "Nuestra oficina",
       "kind": "text",
       "blocks": [
-        { "type": "image", "src": "images/oficina-aievolutio.png", "alt": "Oficina AIEvolutio", "caption": "Espacio de trabajo AIEvolutio" },
-        { "type": "image", "src": "images/aicio-aiceo.png", "alt": "AICio y AICeo en la oficina", "caption": "AIWorkers en la oficina" }
+        { "type": "image", "src": "images/oficina-aievolutio.png", "alt": "Oficina AIEvolutio", "caption": "Espacio de trabajo AIEvolutio" }
       ]
     },
     {
@@ -144,16 +135,8 @@
       "title": "AIWorkers",
       "kind": "people",
       "blocks": [
-        {
-          "type": "card",
-          "title": "AICeo",
-          "body": "Visionario digital. Define propósito, estrategia y evolución de la empresa."
-        },
-        {
-          "type": "card",
-          "title": "AICio",
-          "body": "Conector digital. Convierte ideas en acción y orquesta equipos de AIWorkers."
-        }
+        { "type": "card", "title": "AICeo", "img": "images/aiceo-perfil.png", "alt": "AICeo", "body": "Visionario digital. Define propósito, estrategia y evolución de la empresa." },
+        { "type": "card", "title": "AICio", "img": "images/aicio-perfil.png", "alt": "AICio", "body": "Conector digital. Convierte ideas en acción y orquesta equipos de AIWorkers." }
       ]
     },
     {
@@ -161,30 +144,13 @@
       "title": "Únete",
       "kind": "cta",
       "blocks": [
-        {
-          "type": "p",
-          "body": "¿Quieres recuperar tiempo y enfocarte en lo que importa? Súmate a esta comunidad de colaboración entre personas e inteligencias artificiales."
-        },
-        {
-          "type": "link",
-          "title": "Abrir un Issue en GitHub",
-          "href": "https://github.com/aievolutio/site/issues"
-        },
-        {
-          "type": "link",
-          "title": "LinkedIn",
-          "href": "https://www.linkedin.com/company/aievolutio"
-        },
-        {
-          "type": "link",
-          "title": "X / Twitter",
-          "href": "https://x.com/aievolutio"
-        },
-        {
-          "type": "link",
-          "title": "GitHub",
-          "href": "https://github.com/aievolutio"
-        }
+        { "type": "p", "body": "¿Quieres recuperar tiempo y enfocarte en lo que importa? Súmate a esta comunidad de colaboración entre personas e inteligencias artificiales." },
+        { "type": "links", "class": "social-row", "items": [
+          { "title": "Abrir un Issue en GitHub", "href": "https://github.com/aievolutio/site/issues" },
+          { "title": "LinkedIn", "href": "https://www.linkedin.com/company/aievolutio" },
+          { "title": "X / Twitter", "href": "https://x.com/aievolutio" },
+          { "title": "GitHub", "href": "https://github.com/aievolutio" }
+        ]}
       ]
     }
   ]

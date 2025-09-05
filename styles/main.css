@@ -42,12 +42,19 @@ footer { border-top: 1px solid rgba(255,255,255,.08); padding: var(--space-6) 0;
 /* Figures (quotes and images) */
 figure { margin: 0 0 var(--space-6); }
 figure img { max-width: 100%; height: auto; border-radius: 12px; box-shadow: var(--shadow); }
-figure.quote { display: grid; grid-template-columns: 144px auto; gap: var(--space-4); align-items: center; }
-figure.quote img { width: 144px; height: 144px; object-fit: cover; border-radius: 50%; box-shadow: none; grid-row: 1; }
+figure.quote { display: grid; grid-template-columns: 144px auto; gap: var(--space-6); align-items: center; }
+figure.quote img { width: 144px; height: 144px; object-fit: cover; border-radius: 50%; box-shadow: none; grid-row: 1; border: 4px solid var(--brand-accent); }
 figure.quote .quote-text { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: .25rem; min-width: 0; }
 figure.quote blockquote { margin: 0; font-size: 1.1rem; font-style: italic; display: inline; }
 figure.quote figcaption { margin: 0; color: var(--muted); font-size: .9rem; display: inline; }
 @media (max-width: 480px) {
-  figure.quote { grid-template-columns: 96px auto; }
+  figure.quote { grid-template-columns: 96px auto; gap: var(--space-4); }
   figure.quote img { width: 96px; height: 96px; }
 }
+
+/* Card images */
+.card > img { width: 100%; height: auto; border-radius: 12px; margin-bottom: var(--space-4); }
+
+/* Social buttons row */
+.social-row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.social-row .btn { background: var(--brand-primary); color: var(--brand-primary-contrast); }
