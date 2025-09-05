@@ -20,3 +20,21 @@ footer { border-top: 1px solid rgba(255,255,255,.08); padding: var(--space-6) 0;
 .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 .skip-link:focus { position: static; width: auto; height: auto; background: var(--brand-primary); color: var(--brand-primary-contrast); padding: var(--space-2) var(--space-4); }
 .theme-toggle { margin-left: auto; }
+
+/* === AIEvolutio: nav fixes & responsive === */
+.nav #nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+.nav #nav a {
+  padding: .25rem .5rem;
+  border-radius: 8px;
+}
+@media (max-width: 640px) {
+  .nav { flex-wrap: wrap; align-items: center; }
+  .nav #nav { width: 100%; margin-left: 0; gap: var(--space-2); }
+  .nav #nav a { padding: .5rem .75rem; }
+  .theme-toggle { margin-left: 0; }
+}
