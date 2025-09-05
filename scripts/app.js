@@ -50,12 +50,15 @@
         const text = String(b.body || '').trim();
         const hasDot = /[.!?]$/.test(text);
         const quoted = '"' + (text.replace(/^"|"$/g, '')) + (hasDot ? '' : '.') + '"';
-        fig.append(el('blockquote', {}, [quoted]));
+        const wrap = el('div', { class: 'quote-text' });
+        wrap.append(el('blockquote', {}, [quoted]));
         if (b.author) {
+          wrap.append(' ');
           const author = (b.author || '').toString().toUpperCase();
           const cap = `(${author}${b.version ? ' ' + b.version : ''})`;
-          fig.append(el('figcaption', {}, [cap]));
+          wrap.append(el('figcaption', {}, [cap]));
         }
+        fig.append(wrap);
         container.append(fig);
       }
       if (b.type === 'image') {

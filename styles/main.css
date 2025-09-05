@@ -42,7 +42,12 @@ footer { border-top: 1px solid rgba(255,255,255,.08); padding: var(--space-6) 0;
 /* Figures (quotes and images) */
 figure { margin: 0 0 var(--space-6); }
 figure img { max-width: 100%; height: auto; border-radius: 12px; box-shadow: var(--shadow); }
-figure.quote { display: grid; grid-template-columns: 96px 1fr; gap: var(--space-4); align-items: start; }
-figure.quote img { width: 96px; height: 96px; object-fit: cover; border-radius: 50%; box-shadow: none; }
-figure.quote blockquote { margin: 0; font-size: 1.1rem; font-style: italic; }
-figure.quote figcaption { margin-top: .25rem; color: var(--muted); font-size: .9rem; }
+figure.quote { display: grid; grid-template-columns: 96px auto; gap: var(--space-4); align-items: center; }
+figure.quote img { width: 96px; height: 96px; object-fit: cover; border-radius: 50%; box-shadow: none; grid-row: 1; }
+figure.quote .quote-text { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: .25rem; min-width: 0; }
+figure.quote blockquote { margin: 0; font-size: 1.1rem; font-style: italic; display: inline; }
+figure.quote figcaption { margin: 0; color: var(--muted); font-size: .9rem; display: inline; }
+@media (max-width: 480px) {
+  figure.quote { grid-template-columns: 64px auto; }
+  figure.quote img { width: 64px; height: 64px; }
+}
