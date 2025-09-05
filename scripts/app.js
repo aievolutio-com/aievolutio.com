@@ -6,9 +6,18 @@
 
   async function loadContent(lang = 'es') {
     // Use relative path so it works on localhost, previews (with <base>), and production
-    const res = await fetch(`content/content.${lang}.json`);
+    const res = await fetch(`content/content.${lang}.json`, { cache: 'no-store' });
     if (!res.ok) throw new Error('No se pudo cargar el contenido');
     state.content = await res.json();
+  }
+
+  // Optional: separate navigation file overrides the one inside content.es.json
+  async function loadNavigationOverride() {
+    try {
+      const res = await fetch('content/navigation.json', { cache: 'no-store' });
+      if (res.ok) return await res.json();
+    } catch (_) { /* ignore */ }
+    return null;
   }
 
   function renderNav(items) {
@@ -69,7 +78,8 @@
   async function main() {
     try {
       await loadContent('es');
-      renderNav(state.content.navigation);
+  const navOverride = await loadNavigationOverride();
+  renderNav(navOverride || state.content.navigation);
       renderSections(state.content.sections);
       setupTheme();
     } catch (e) {
