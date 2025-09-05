@@ -10,7 +10,7 @@ a { color: var(--link); text-underline-offset: 2px; }
 .logo { display: inline-flex; align-items: center; gap: var(--space-2); font-weight: 700; }
 .logo svg { width: 28px; height: 28px; }
 /* New: header logo image size */
-.logo img { height: 40px; width: auto; display: block; }
+.logo img { height: 84px; width: auto; display: block; }
 .hero { padding: var(--space-12) 0 var(--space-8); }
 .hero h1 { font-size: clamp(1.8rem, 3vw, 3rem); margin: 0 0 var(--space-4); }
 .section { padding: var(--space-8) 0; }
@@ -45,6 +45,11 @@ footer { border-top: 1px solid rgba(255,255,255,.08); padding: var(--space-6) 0;
   .nav #nav { width: 100%; margin-left: 0; gap: var(--space-2); }
   .nav #nav a { padding: .5rem .75rem; }
   .theme-toggle { margin-left: 0; }
+}
+
+/* Header logo: smaller on mobile for ergonomics */
+@media (max-width: 640px) {
+  .logo img { height: 48px; }
 }
 
 /* Figures (quotes and images) */
