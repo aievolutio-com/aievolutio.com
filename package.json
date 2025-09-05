@@ -9,11 +9,12 @@
     "lint:css": "stylelint \"styles/**/*.css\"",
     "lint:html": "html-validate \"**/*.html\"",
     "format": "prettier -w .",
-    "a11y": "pa11y-ci",
+  "a11y": "pa11y-ci",
   "lhci:ci": "lhci autorun --config=lighthouserc.json"
   },
   "devDependencies": {
   "@html-validate/stylish": "^4.3.0",
+  "@eslint/js": "^9.9.0",
     "eslint": "^9.9.0",
     "html-validate": "^8.7.0",
   "@lhci/cli": "^0.13.0",
