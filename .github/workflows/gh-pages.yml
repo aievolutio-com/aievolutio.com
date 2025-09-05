@@ -2,7 +2,7 @@ name: Deploy to gh-pages
 
 on:
   push:
-    branches: [ main ]
+  branches: [ main, pre ]
   workflow_dispatch:
     inputs:
       ref:
