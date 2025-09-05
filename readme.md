@@ -1,71 +1,79 @@
 # aievolutio.com
 
-Repositorio del sitio web estático con CI/CD para GitHub Pages, dos ramas (`pre` y `main`), versionado semántico y plantillas de colaboración.
+Repositorio del sitio estático con CI/CD en GitHub Actions, flujo de ramas `pre` → `main` y publicación en GitHub Pages (rama `gh-pages`).
 
-## Descripción
+Estado actual (fuente de verdad)
+- `pre`: OK (rutas relativas, sin CNAME).
+- `main`: alineado cuando merges el PR "ci: sync pre -> main".
+- `gh-pages`: artefacto de despliegue (se sobreescribe desde `pre`/`main`).
 
- Este proyecto es un sitio estático (HTML/CSS/imagenes) sin dependencias ni build. Incluye workflows para validar y desplegar a GitHub Pages (Actions → "Deploy site").
+URL de la web (sin DNS):
+https://aievolutio-com.github.io/aievolutio.com/
 
 ## Estructura
 
-- `/` – Raíz del sitio (`index.html`, config)
-- `assets/` – Logos e íconos (por ej. `assets/logo.svg`)
-- `styles/` – CSS del sitio (`tokens.css`, `main.css`)
-- `scripts/` – JS del sitio (`app.js`)
-- `images/` – Recursos gráficos (fotos)
-- `.github/workflows/` – CI/CD, previews y automatizaciones
-- `docs/` – Guías y documentación
+- `index.html` – Home del sitio (usa rutas relativas: `assets/...`, `styles/...`, `scripts/...`).
+- `assets/`, `images/` – Recursos estáticos.
+- `styles/` – CSS (`tokens.css`, `main.css`).
+- `scripts/` – JS (`app.js`).
+- `content/` – Contenido JSON (`content.es.json`).
+- `.github/workflows/` – CI/CD (lint, checks, auto‑PRs, deploy).
+- `docs/` – Guías operativas (véase Operaciones más abajo).
 
-Si aún no existe `index.html`, crea uno en la raíz para comenzar.
+## Ejecutar en local
 
-## Uso local
+- Abrir directamente `index.html` o usar servidor simple:
 
-- Abrir directamente: haz doble clic en `index.html` (si ya existe) para verlo en el navegador.
-- Servir con un servidor local (opcional):
-	- Python 3:
+```powershell
+npm run dev
+# ó
+python -m http.server 8080
+```
 
-		```powershell
-		python -m http.server 8080
-		```
+## Flujo de ramas
 
-	- Node (http-server):
+- `feature/*` → PR automático a `pre` (título semántico). Auto‑merge cuando CI está verde.
+- `pre` → PR automático a `main` ("ci: sync pre -> main"). Auto‑merge cuando CI está verde.
+- `gh-pages` → rama de publicación (no editar a mano).
 
-		```powershell
-		npm run dev
-		```
+Protecciones: sólo mediante PRs a `main`.
 
-## Estándares y convenciones
+## Despliegue (Deploy)
 
-- Mantén los estilos en `css/` y las imágenes optimizadas en `images/`.
-- Usa nombres de archivos en minúsculas y con guiones (`mi-archivo.css`, `logo.svg`).
-- Optimiza imágenes (SVG preferido cuando sea posible; comprime PNG/JPG).
+Workflow: `.github/workflows/gh-pages.yml` (nombre: "Deploy site"/"Deploy to gh‑pages").
 
-## Flujo de ramas y despliegue
+- Manual: Actions → Deploy → Run workflow →
+	- Use workflow from: `pre` (o `main`)
+	- ref: la misma rama
+- Automático: en cada push a `pre`/`main`.
 
-Ramas:
+El deploy reescribe `gh-pages` con `force_orphan` y excluye `CNAME`.
 
-- `pre`: integración previa. Cada push y PR ejecuta CI.
-- `main`: producción. Cada push despliega a GitHub Pages.
+## Operaciones (playbook)
 
-Este sitio puede publicarse en cualquier hosting estático. Actualmente: gh-pages branch con `peaceiris/actions-gh-pages`.
+1) Rutas absolutas rompen en GitHub Pages. Usa rutas relativas en HTML/JS.
+2) Si `gh-pages` publica mal o aparece CNAME:
+	 - Settings → Pages → Custom domain vacío.
+	 - Actions → Deploy → Use workflow from `pre`, ref `pre`.
+3) Conflictos en PR `pre` → `main` demasiado grandes para la web:
+	 - Estrategia segura:
+		 - En local: `git checkout pre && git fetch`.
+		 - `git merge -s ours origin/main -m "ci: sync pre -> main (resolve via pre)"`.
+		 - `git push origin pre`.
+	 - Esto deja el PR listo para "Squash and merge" (manteniendo el contenido de `pre`).
+4) Títulos de PR (Conventional Commits): usa prefijos como `feat:`, `fix:`, `docs:`, `chore:`, `ci:`.
 
-- GitHub Pages:
-	- Settings → Pages → Source: `gh-pages` / root.
-	- URL sin DNS: `https://<org>.github.io/<repo>/` → `https://aievolutio-com.github.io/aievolutio.com/`
-	- Cuando apuntes DNS y quieras usar dominio propio, añade `cname: aievolutio.com` en el workflow y elimina `CNAME` de `exclude_assets`.
-- Netlify: conecta el repositorio y elige despliegue sin build.
-- Vercel: importa el repositorio como “Static Site”.
+## Estilo y validaciones
 
-## Próximos pasos sugeridos
+- ESLint, Stylelint, html-validate, lychee, html5validator, Pa11y, Lighthouse.
+- Política de nombres: minúsculas y sin espacios (excepciones: `.github/CODEOWNERS`, `.github/ISSUE_TEMPLATE/*`, `.github/pull_request_template.md`, `CHANGELOG.md`, `VERSION`, `_headers`).
 
-- Añadir `index.html` y, si aplica, páginas adicionales (`about.html`, etc.).
-- Crear una hoja de estilos base en `css/` (por ejemplo, `styles.css`).
-- Agregar un favicon y metaetiquetas (SEO, Open Graph, viewport).
-- Configurar despliegue automático desde el repositorio.
- - Adoptar Conventional Commits (feat, fix, docs, chore, etc.) para historial limpio.
- - Generar releases con SemVer y mantener `CHANGELOG.md`.
+## Documentación adicional
+
+- Guía rápida de operaciones: `docs/operaciones.md`
+- Cómo contribuir (breve): `docs/contributing.md`
 
 ## Licencia
 
-Si no se especifica lo contrario, todos los derechos reservados. Agrega un archivo `LICENSE` si deseas usar una licencia abierta.
+MIT (si no indicas lo contrario).
 
