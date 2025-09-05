@@ -52,12 +52,7 @@ jobs:
           fi
           # Asegurar título compatible con Conventional Commits para pasar el check semántico
           gh pr edit --repo "$REPO" "$PR_NUMBER" --title "ci: auto-PR $BRANCH -> pre" || true
-          gh pr merge --repo "$REPO" --auto --squash "$PR_NUMBER"
-          MERGE_STATUS=$?
-          if [ $MERGE_STATUS -ne 0 ]; then
-            echo "Aviso: No se pudo activar auto-merge (permisos). Continúo sin error." >&2
-            exit 0
-          fi
+          gh pr merge --repo "$REPO" --auto --squash "$PR_NUMBER" || true
 
   retitle-existing-pr:
     if: ${{ github.event_name == 'pull_request_target' }}
