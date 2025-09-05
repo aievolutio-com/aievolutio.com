@@ -1,6 +1,6 @@
 [
   {"id": "home", "label": "Inicio", "href": "#home"},
-  {"id": "manifiesto", "label": "Manifiesto", "href": "#manifiesto"},
+  {"id": "vision", "label": "Visión", "href": "#vision"},
   {"id": "iniciativas", "label": "Iniciativas", "href": "#iniciativas"},
   {"id": "eventos", "label": "Eventos", "href": "#eventos"},
   {"id": "blog", "label": "Blog", "href": "#blog"},

@@ -13,9 +13,9 @@
       "href": "#home"
     },
     {
-      "id": "manifiesto",
-      "label": "Manifiesto",
-      "href": "#manifiesto"
+      "id": "vision",
+      "label": "Visión",
+      "href": "#vision"
     },
     {
       "id": "iniciativas",
@@ -55,14 +55,14 @@
         },
         {
           "type": "link",
-          "title": "Leer manifiesto",
-          "href": "#manifiesto"
+          "title": "Leer visión",
+          "href": "#vision"
         }
       ]
     },
     {
-      "id": "manifiesto",
-      "title": "Manifiesto",
+      "id": "vision",
+      "title": "Visión",
       "kind": "text",
       "blocks": [
         {
