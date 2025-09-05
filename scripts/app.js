@@ -70,7 +70,7 @@
       if (b.type === 'link') container.append(el('a', { href: b.href, class: 'btn' }, [b.title || b.href]));
       if (b.type === 'card') {
         const c = el('div', { class: 'card' });
-        if (b.img) c.append(el('img', { src: b.img, alt: b.alt || b.title || '' }));
+        if (b.img) c.append(el('img', { src: b.img, alt: b.alt || b.title || '', class: 'avatar' }));
         c.append(el('h3', {}, [b.title || '']));
         c.append(el('p', {}, [b.body || '']));
         container.append(c);
