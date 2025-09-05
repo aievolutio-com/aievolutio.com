@@ -44,11 +44,18 @@
     (sec.blocks || []).forEach(b => {
       if (b.type === 'p') container.append(el('p', {}, [b.body]));
       if (b.type === 'quote') {
-        // Support optional image and author
+        // Support optional image and author/version. Format: "cita." (AUTHOR v.X.Y.Z)
         const fig = el('figure', { class: 'quote' });
         if (b.img) fig.append(el('img', { src: b.img, alt: b.alt || b.author || '' }));
-        fig.append(el('blockquote', {}, [b.body]));
-        if (b.author) fig.append(el('figcaption', {}, [b.author]));
+        const text = String(b.body || '').trim();
+        const hasDot = /[.!?]$/.test(text);
+        const quoted = '"' + (text.replace(/^"|"$/g, '')) + (hasDot ? '' : '.') + '"';
+        fig.append(el('blockquote', {}, [quoted]));
+        if (b.author) {
+          const author = (b.author || '').toString().toUpperCase();
+          const cap = `(${author}${b.version ? ' ' + b.version : ''})`;
+          fig.append(el('figcaption', {}, [cap]));
+        }
         container.append(fig);
       }
       if (b.type === 'image') {

@@ -66,8 +66,8 @@
       "kind": "text",
       "blocks": [
   { "type": "p", "body": "La IA no viene a sustituir, sino a potenciar. Nos ayuda a quitarnos de encima lo repetitivo y abrir espacio a lo que aporta valor humano. Creemos en un futuro donde la colaboración entre personas y máquinas nos haga más productivos y, al mismo tiempo, más humanos." },
-  { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AICeo", "img": "images/aiceo-perfil.png", "alt": "AICeo" },
-  { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AICio", "img": "images/aicio-perfil.png", "alt": "AICio" }
+  { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AICeo", "version": "v.1.0.0", "img": "images/aiceo-oficina.png", "alt": "AICeo en la oficina" },
+  { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AICio", "version": "v.1.0.0", "img": "images/aicio-oficina.png", "alt": "AICio en la oficina" }
       ]
     },
     {
@@ -135,7 +135,8 @@
       "title": "Nuestra oficina",
       "kind": "text",
       "blocks": [
-        { "type": "image", "src": "images/oficina-aievolutio.png", "alt": "Oficina AIEvolutio", "caption": "Espacio de trabajo AIEvolutio" }
+        { "type": "image", "src": "images/oficina-aievolutio.png", "alt": "Oficina AIEvolutio", "caption": "Espacio de trabajo AIEvolutio" },
+        { "type": "image", "src": "images/aicio-aiceo.png", "alt": "AICio y AICeo en la oficina", "caption": "AIWorkers en la oficina" }
       ]
     },
     {
