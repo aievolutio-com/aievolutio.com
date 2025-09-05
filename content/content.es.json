@@ -1,7 +1,7 @@
 {
   "meta": {
     "siteName": "AIEvolutio",
-    "tagline": "Evoluciona con inteligencia colectiva + IA",
+    "tagline": "IA para ganar tiempo y vida",
     "language": "es",
     "copyright": "© 2025 AIEvolutio — Comunidad",
     "license": "CC BY-SA 4.0"
@@ -21,7 +21,10 @@
       "title": "AIEvolutio",
       "kind": "hero",
       "blocks": [
-        {"type": "p", "body": "Comunidad sociotécnica para aprender, crear y evolucionar con IA. Sin vender consultoría; compartimos prácticas, prototipos y marcos que funcionan en el mundo real."},
+        {
+          "type": "p",
+          "body": "Una comunidad creada con inteligencias artificiales que trabajan para las personas. Nuestro objetivo es liberar tiempo, reducir cargas y aumentar la productividad, para que podamos enfocarnos en lo esencial: familia, creatividad, empatía, sociedad y planeta."
+        },
         {"type": "link", "title": "Leer manifiesto", "href": "#manifiesto"}
       ]
     },
@@ -30,8 +33,11 @@
       "title": "Manifiesto",
       "kind": "text",
       "blocks": [
-        {"type": "p", "body": "Creemos en la evolución positiva: crecer, prosperar y escalar sin miedo. La tecnología sirve a las personas y a la sociedad; la IA multiplica, no sustituye el criterio humano."},
-        {"type": "quote", "body": "Evoluciona tu empresa con inteligencia (colectiva + IA)."}
+        {
+          "type": "p",
+          "body": "La IA no viene a sustituir, sino a potenciar. Nos ayuda a quitarnos de encima lo repetitivo y abrir espacio a lo que aporta valor humano. Creemos en un futuro donde la colaboración entre personas y máquinas nos haga más productivos y, al mismo tiempo, más humanos."
+        },
+        {"type": "quote", "body": "Ganar tiempo para la vida. De eso se trata."}
       ]
     },
     {
@@ -39,9 +45,21 @@
       "title": "Iniciativas",
       "kind": "grid",
       "blocks": [
-        {"type": "card", "title": "Workers & iTeams", "body": "Experimentos de 'trabajadores digitales' y 'equipos inteligentes' para tareas reales de negocio sin conflicto de interés."},
-        {"type": "card", "title": "Aprendizaje Abierto", "body": "Guías, plantillas y microcursos IA‑nativos (BMC, OKRs, marketing, prototipado)."},
-        {"type": "card", "title": "Prototipos Públicos", "body": "Repositorios y demos verificables, con foco en valor, seguridad y sostenibilidad."}
+        {
+          "type": "card",
+          "title": "Workers & iTeams",
+          "body": "Inteligencias artificiales que actúan como compañeros digitales, liberando a las personas de tareas repetitivas y trabajando en equipo para multiplicar resultados."
+        },
+        {
+          "type": "card",
+          "title": "Aprendizaje Abierto",
+          "body": "Guías y microcursos para usar la IA como aliada en la vida diaria y profesional, con foco en creatividad, impacto y ética."
+        },
+        {
+          "type": "card",
+          "title": "Prototipos Públicos",
+          "body": "Ejemplos abiertos de cómo la IA ayuda a ganar productividad, liberar tiempo y generar valor real en la práctica."
+        }
       ]
     },
     {
@@ -49,7 +67,12 @@
       "title": "Eventos",
       "kind": "events",
       "blocks": [
-        {"type": "event", "title": "Sesión 0: Manifiesto y mapa de ruta", "date": "2025-09-15", "body": "Presentación abierta. Reglas de juego y primeras contribuciones."}
+        {
+          "type": "event",
+          "title": "Sesión 0: Manifiesto y mapa de ruta",
+          "date": "2025-09-15",
+          "body": "Presentación abierta de la comunidad. Cómo la IA puede ayudarnos a ganar tiempo y calidad de vida."
+        }
       ]
     },
     {
@@ -57,7 +80,12 @@
       "title": "Blog",
       "kind": "posts",
       "blocks": [
-        {"type": "post", "title": "Por qué comunidad antes que empresa", "date": "2025-09-01", "body": "Validamos con aprendizaje compartido y prototipos; empresa cuando el valor sea inequívoco."}
+        {
+          "type": "post",
+          "title": "IA y personas: productividad con propósito",
+          "date": "2025-09-01",
+          "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más, con menos esfuerzo, y dedicar energía a lo que realmente importa."
+        }
       ]
     },
     {
@@ -65,7 +93,11 @@
       "title": "Personas",
       "kind": "people",
       "blocks": [
-        {"type": "card", "title": "Contribuye", "body": "Comparte un prototipo, una guía o un caso de uso. Mantén la privacidad y la ética como primera norma."}
+        {
+          "type": "card",
+          "title": "Contribuye",
+          "body": "Comparte experiencias, prototipos o ideas que muestren cómo la IA puede ayudarnos a vivir y trabajar mejor. Ética, privacidad y propósito guían nuestro camino."
+        }
       ]
     },
     {
@@ -73,8 +105,15 @@
       "title": "Únete",
       "kind": "cta",
       "blocks": [
-        {"type": "p", "body": "¿Te interesa? Súmate a la conversación y a los experimentos."},
-        {"type": "link", "title": "Abrir un Issue en GitHub", "href": "https://github.com/aievolutio/site/issues"}
+        {
+          "type": "p",
+          "body": "¿Quieres recuperar tiempo y enfocarte en lo que importa? Súmate a esta comunidad de colaboración entre personas e inteligencias artificiales."
+        },
+        {
+          "type": "link",
+          "title": "Abrir un Issue en GitHub",
+          "href": "https://github.com/aievolutio/site/issues"
+        }
       ]
     }
   ]

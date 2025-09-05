@@ -38,6 +38,12 @@ jobs:
         with:
           args: --offline --verbose .
 
+      - name: Start static server for pa11y (8081)
+        run: |
+          nohup npx http-server -c-1 . -p 8081 > /dev/null 2>&1 &
+          echo $! > server.pid
+          sleep 2
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -54,3 +60,11 @@ jobs:
 
       - name: Lighthouse CI (thresholds)
         run: npm run lhci:ci
+
+      - name: Stop static server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill "$(cat server.pid)" || true
+            rm -f server.pid
+          fi

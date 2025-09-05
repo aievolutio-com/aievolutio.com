@@ -26,13 +26,13 @@ jobs:
               core.setOutput('created', 'false');
               return;
             }
-            const title = 'chore: sync pre -> main';
+            const title = 'ci: sync pre -> main';
             const body = 'PR automático para integrar cambios de pre en main. Se auto-mergeará cuando los checks pasen (según reglas de protección).';
             const pr = await github.rest.pulls.create({owner, repo, base: 'main', head: 'pre', title, body, maintainer_can_modify: true});
             core.setOutput('number', pr.data.number);
             core.setOutput('created', 'true');
 
-      - name: Enable PR auto-merge (squash)
+      - name: Enable auto-merge (squash)
         if: ${{ steps.ensure_pr.outputs.number }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:

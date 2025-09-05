@@ -1,7 +1,7 @@
 :root {
   /* Colores (inspiración evolución positiva: teal + naranja) */
   --brand-primary: #2c7a7b; /* teal */
-  --brand-primary-contrast: #ffffff;
+  --brand-primary-contrast: #fff;
   --brand-accent: #f6ad55; /* orange */
   --brand-accent-contrast: #1a1a1a;
   --bg: #0f172a; /* slate-900 */
@@ -23,5 +23,5 @@
 }
 
 @media (prefers-color-scheme: light) {
-  :root { --bg: #ffffff; --surface: #f9fafb; --text: #111827; --muted: #6b7280; }
+  :root { --bg: #fff; --surface: #f9fafb; --text: #111827; --muted: #6b7280; }
 }
