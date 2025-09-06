@@ -52,11 +52,16 @@
         container.append(ul);
       }
       if (b.type === 'worker') {
-        // Collapsible worker profile: summary shows name + role; details show photo + capabilities
+        // Collapsible worker profile: summary shows name + role + hint; details show photo + capabilities
         const details = el('details', { class: 'worker' });
         const name = b.name || b.title || '';
         const role = b.role || '';
-        const summary = el('summary', {}, [el('strong', {}, [name]), role ? ` — ${role}` : '']);
+        const summary = el('summary', {}, [
+          el('strong', {}, [name]),
+          role ? ` — ${role}` : '',
+          el('span', { class: 'hint', 'aria-hidden': 'true' }, ['Ver capacidades']),
+          el('span', { class: 'hint-open', 'aria-hidden': 'true' }, ['Ocultar'])
+        ]);
         details.append(summary);
         const bodyWrap = el('div', { class: 'worker-body' });
         if (b.img) bodyWrap.append(el('img', { src: b.img, alt: b.alt || name, class: 'avatar' }));

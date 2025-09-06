@@ -103,9 +103,13 @@ details.worker { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; p
 details.worker > summary { cursor: pointer; list-style: none; }
 details.worker > summary::-webkit-details-marker { display: none; }
 details.worker > summary { display: flex; gap: .5rem; align-items: baseline; }
+details.worker > summary .hint, details.worker > summary .hint-open { margin-left: auto; font-size: .9rem; color: var(--muted); }
+details.worker > summary .hint-open { display: none; }
+details.worker[open] > summary .hint { display: none; }
+details.worker[open] > summary .hint-open { display: inline; color: var(--brand-primary); }
 details.worker > summary:focus-visible { outline: 3px solid color-mix(in oklab, var(--brand-primary) 70%, white); outline-offset: 4px; border-radius: 8px; }
 /* Chevron indicator */
-details.worker > summary::after { content: '▾'; margin-left: auto; color: var(--muted); transition: transform var(--motion-fast) ease, color var(--motion-fast) ease; }
+details.worker > summary::after { content: '▾'; margin-left: .5rem; color: var(--muted); transition: transform var(--motion-fast) ease, color var(--motion-fast) ease; }
 details.worker > summary:hover::after, details.worker > summary:focus-visible::after { color: var(--brand-primary); }
 details.worker[open] > summary::after { transform: rotate(-180deg); color: var(--brand-primary); }
 details.worker[open] > summary { color: var(--brand-primary); }
