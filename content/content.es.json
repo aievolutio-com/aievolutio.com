@@ -1,0 +1,210 @@
+{
+  "meta": {
+    "siteName": "AIEvolutio",
+    "tagline": "IA para ganar tiempo y vida",
+    "language": "es",
+    "copyright": "© 2025 AIEvolutio — Comunidad",
+    "license": "CC BY-SA 4.0"
+  },
+  "navigation": [
+    {
+      "id": "home",
+      "label": "Inicio",
+      "href": "#home"
+    },
+    {
+      "id": "vision",
+      "label": "Visión",
+      "href": "#vision"
+    },
+    {
+      "id": "iniciativas",
+      "label": "Iniciativas",
+      "href": "#iniciativas"
+    },
+    {
+      "id": "eventos",
+      "label": "Eventos",
+      "href": "#eventos"
+    },
+    {
+      "id": "blog",
+      "label": "Blog",
+      "href": "#blog"
+    },
+    {
+      "id": "personas",
+      "label": "Personas",
+      "href": "#personas"
+    },
+    {
+      "id": "unete",
+      "label": "Únete",
+      "href": "#unete"
+    }
+  ],
+  "sections": [
+    {
+      "id": "home",
+      "title": "AIEvolutio",
+      "kind": "hero",
+      "blocks": [
+  { "type": "p", "body": "AIEvolutio nace de AIPraepositus y AIDux. Construimos AIWorkers y AITeams que automatizan lo repetitivo para que tú dediques tiempo a lo importante." }
+      ]
+    },
+    {
+      "id": "vision",
+      "title": "Visión",
+      "kind": "text",
+      "blocks": [
+  { "type": "p", "body": "La IA potencia, no sustituye. Quitamos fricción y dejamos espacio a la creatividad y al impacto humano." },
+  { "type": "list", "style": "primary", "items": [
+    "Automatiza lo repetitivo",
+    "Aumenta la calidad con menos esfuerzo",
+    "Deja más tiempo para lo importante"
+  ] },
+  { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AIPRAEPOSITUS", "version": "v.1.0.0", "img": "images/aipraepositus-oficina.png", "alt": "AIPRAEPOSITUS en la oficina" },
+  { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AIDUX", "version": "v.1.0.0", "img": "images/aidux-oficina.png", "alt": "AIDUX en la oficina" }
+      ]
+    },
+    {
+      "id": "casos",
+      "title": "Casos prácticos",
+      "kind": "grid",
+      "blocks": [
+  { "type": "card", "title": "Automatización de procesos", "body": "Bots que ejecutan tareas repetitivas (APIs, hojas, email) para reducir tiempos y errores. Resultado típico: −40% tiempo de ciclo." },
+  { "type": "card", "title": "Análisis predictivo", "body": "Modelos que anticipan demanda, churn o riesgos para decidir mejor. Resultado típico: +10–20% de precisión frente a reglas." },
+  { "type": "card", "title": "Atención al cliente", "body": "Asistentes que responden 24/7 y derivan lo complejo a personas. Resultado típico: respuestas <1 min y mayor satisfacción." }
+      ]
+    },
+    {
+      "id": "iniciativas",
+      "title": "Iniciativas",
+      "kind": "grid",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "Workers & iTeams",
+          "body": "Compañeros digitales que ejecutan tareas, coordinan procesos y escalan resultados en equipo. Casos: atención al cliente, reporting, investigación, contenidos."
+        },
+        {
+          "type": "card",
+          "title": "Aprendizaje Abierto",
+          "body": "Guías y microcursos para usar la IA como aliada en la vida diaria y profesional, con foco en creatividad, impacto y ética."
+        },
+        {
+          "type": "card",
+          "title": "Prototipos Públicos",
+          "body": "Ejemplos abiertos de cómo la IA ayuda a ganar productividad, liberar tiempo y generar valor real en la práctica."
+        }
+      ]
+    },
+    {
+      "id": "eventos",
+      "title": "Eventos",
+      "kind": "events",
+      "blocks": [
+        {
+          "type": "event",
+          "title": "Sesión 0: Manifiesto y mapa de ruta",
+          "date": "2025-09-15",
+          "body": "Presentación abierta de la comunidad. Cómo la IA puede ayudarnos a ganar tiempo y calidad de vida."
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "title": "Blog",
+      "kind": "posts",
+      "blocks": [
+        {
+          "type": "post",
+          "title": "IA y personas: productividad con propósito",
+          "date": "2025-09-01",
+          "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más, con menos esfuerzo, y dedicar energía a lo que realmente importa."
+        }
+      ]
+    },
+    {
+      "id": "aiworkers",
+      "title": "AIWorkers",
+      "kind": "text",
+      "blocks": [
+        {
+          "type": "worker",
+          "name": "AIPraepositus",
+          "role": "Visión & Propósito",
+          "img": "images/aipraepositus-perfil.png",
+          "alt": "AIPraepositus",
+          "capabilities": [
+            "Define propósito y roadmap",
+            "Prioriza producto y experimentos",
+            "Métricas de impacto y aprendizaje"
+          ]
+        },
+        {
+          "type": "worker",
+          "name": "AIDux",
+          "role": "Ejecución & POCs",
+          "img": "images/aidux-perfil.png",
+          "alt": "AIDux",
+          "capabilities": [
+            "Orquesta AIWorkers y flujos",
+            "Automatiza procesos y operaciones",
+            "POCs rápidas e integración de herramientas"
+          ]
+        },
+        {
+          "type": "worker",
+          "name": "AIJuris",
+          "role": "Asesoría jurídica",
+          "img": "images/aijuris-perfil.png",
+          "alt": "AIJuris",
+          "capabilities": [
+            "Mercantil: constitución, órganos y acuerdos",
+            "Laboral: contratos, nóminas y despidos",
+            "Propiedad intelectual: licencias y cesiones",
+            "Privacidad: RGPD/LOPDGDD, DPA y evaluaciones",
+            "Contratos y compliance: cláusulas y revisiones"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "oficina",
+      "title": "Nuestra oficina",
+      "kind": "text",
+      "blocks": [
+        { "type": "image", "src": "images/oficina-aievolutio.png", "alt": "Oficina AIEvolutio", "caption": "Espacio de trabajo AIEvolutio" }
+      ]
+    },
+    
+    {
+      "id": "confianza",
+      "title": "Confianza",
+      "kind": "text",
+      "blocks": [
+        { "type": "p", "body": "Compartimos prototipos abiertos y aprendizajes para que puedas evaluar con hechos." },
+        { "type": "p", "body": "Colaboramos con profesionales y socios alineados con propósito y privacidad." },
+        { "type": "links", "class": "social-row", "items": [
+          { "title": "GitHub: proyectos abiertos", "href": "https://github.com/aievolutio" },
+          { "title": "LinkedIn: actividad y actualizaciones", "href": "https://www.linkedin.com/company/aievolutio" }
+        ]}
+      ]
+    },
+    {
+      "id": "unete",
+      "title": "Únete",
+      "kind": "cta",
+      "blocks": [
+        { "type": "p", "body": "¿Quieres recuperar tiempo y enfocarte en lo que importa? Súmate a esta comunidad de colaboración entre personas e inteligencias artificiales." },
+        { "type": "links", "class": "social-row", "items": [
+          { "title": "Abrir un Issue en GitHub", "href": "https://github.com/aievolutio/site/issues" },
+          { "title": "LinkedIn", "href": "https://www.linkedin.com/company/aievolutio" },
+          { "title": "X / Twitter", "href": "https://x.com/aievolutio" },
+          { "title": "GitHub", "href": "https://github.com/aievolutio" }
+        ]}
+      ]
+    }
+  ]
+}

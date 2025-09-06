@@ -1,0 +1,9 @@
+{
+  "env": { "browser": true, "es2023": true },
+  "extends": ["eslint:recommended"],
+  "rules": {
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-console": ["warn", {"allow": ["error"]}]
+  }
+}

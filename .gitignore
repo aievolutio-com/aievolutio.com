@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.code-workspace
+
+# Logs
+*.log
+npm-debug.log*
+
+# Node (if used locally)
+node_modules/
+.pnpm-store/
+
+# Build artifacts (not used yet)
+dist/
+build/
