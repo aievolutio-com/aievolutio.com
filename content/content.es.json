@@ -165,6 +165,8 @@
           "type": "worker",
           "name": "AIJurídico",
           "role": "Asesoría legal (Mercantil, Laboral, PI y Privacidad)",
+          "img": "images/aijuridico-perfil.png",
+          "alt": "AIJurídico",
           "capabilities": [
             "Mercantil: constitución, órganos y acuerdos",
             "Laboral: contratos, nóminas y despidos",
