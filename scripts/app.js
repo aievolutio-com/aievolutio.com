@@ -107,7 +107,24 @@
         const c = el('div', { class: 'card' });
         if (b.img) c.append(el('img', { src: b.img, alt: b.alt || b.title || '', class: 'avatar' }));
         c.append(el('h3', {}, [b.title || '']));
-        if (b.body) c.append(el('p', {}, [b.body]));
+        if (b.body) {
+          // Detect inline "Resultado típico:" to present it as a highlighted label on a new line
+          const bodyStr = String(b.body);
+          const lower = bodyStr.toLowerCase();
+          const marker = 'resultado típico:';
+          const idx = lower.indexOf(marker);
+          if (idx !== -1) {
+            const before = bodyStr.slice(0, idx).trim();
+            const after = bodyStr.slice(idx + marker.length).trim();
+            if (before) c.append(el('p', {}, [before]));
+            const resWrap = el('div', { class: 'result' });
+            resWrap.append(el('div', { class: 'result-label' }, ['Resultado típico']));
+            if (after) resWrap.append(el('p', { class: 'result-value' }, [after]));
+            c.append(resWrap);
+          } else {
+            c.append(el('p', {}, [b.body]));
+          }
+        }
         if (Array.isArray(b.items) && b.items.length) {
           const ul = el('ul', { class: `list ${b.listStyle ? 'list-' + b.listStyle : ''}` });
           b.items.forEach(it => ul.append(el('li', {}, [it])));
