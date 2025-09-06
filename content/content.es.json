@@ -60,8 +60,8 @@
         { "type": "card", "title": "Automatización de procesos", "body": "Bots que ejecutan tareas repetitivas (APIs, hojas, email) para reducir tiempos y errores. Resultado típico: −40% tiempo de ciclo." },
         { "type": "card", "title": "Análisis predictivo", "body": "Modelos que anticipan demanda, churn o riesgos para decidir mejor. Resultado típico: +10–20% de precisión frente a reglas." },
         { "type": "card", "title": "Atención al cliente", "body": "Asistentes que responden 24/7 y derivan lo complejo a personas. Resultado típico: respuestas <1 min y mayor satisfacción." },
-        { "type": "p", "body": "Resultados típicos:" },
-        { "type": "list", "style": "accent", "items": [
+  { "type": "p", "class": "span-all subtitle", "body": "Resultados típicos:" },
+  { "type": "list", "class": "span-all", "style": "accent", "items": [
           "−40% tiempo de ciclo",
           "−30% errores operativos",
           "+10–20% precisión en predicciones",

@@ -19,6 +19,8 @@ a:hover, a:focus-visible { color: var(--brand-primary); text-decoration: none; }
 .section { padding: var(--space-6) 0; }
 .section h2, h1, h2, h3 { color: var(--brand-primary); }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); }
+.grid .span-all { grid-column: 1 / -1; }
+.grid .subtitle { font-weight: 600; color: var(--brand-primary); margin-top: var(--space-2); }
 .card { background: var(--surface); border-radius: var(--radius); padding: var(--space-6); box-shadow: var(--shadow); }
 /* AIWorkers avatars same size as quotes */
 .card .avatar { width: 144px; height: 144px; object-fit: cover; border-radius: 50%; border: 4px solid var(--brand-secondary); display: block; margin-bottom: var(--space-4); }

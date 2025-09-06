@@ -42,9 +42,13 @@
     const container = el('div', { class: sec.kind === 'grid' ? 'grid' : '' });
 
   (sec.blocks || []).forEach(b => {
-      if (b.type === 'p') container.append(el('p', {}, [b.body]));
+      if (b.type === 'p') {
+        const attrs = {};
+        if (b.class) attrs.class = b.class;
+        container.append(el('p', attrs, [b.body]));
+      }
       if (b.type === 'list') {
-        const ul = el('ul', { class: `list ${b.style ? 'list-' + b.style : ''}` });
+        const ul = el('ul', { class: `list ${b.style ? 'list-' + b.style : ''}${b.class ? ' ' + b.class : ''}` });
         (b.items || []).forEach(it => {
           const text = (typeof it === 'string') ? it : (it.text || '');
           ul.append(el('li', {}, [text]));
