@@ -160,6 +160,18 @@
             "Automatiza procesos y operaciones",
             "Integra herramientas y datos"
           ]
+        },
+        {
+          "type": "worker",
+          "name": "AIJurídico",
+          "role": "Asesoría legal (Mercantil, Laboral, PI y Privacidad)",
+          "capabilities": [
+            "Mercantil: constitución, órganos y acuerdos",
+            "Laboral: contratos, nóminas y despidos",
+            "Propiedad intelectual: licencias y cesiones",
+            "Privacidad: RGPD/LOPDGDD, DPA y evaluaciones",
+            "Contratos y compliance: cláusulas y revisiones"
+          ]
         }
       ]
     },
