@@ -16,7 +16,7 @@ a:hover, a:focus-visible { color: var(--brand-primary); text-decoration: none; }
 .logo img { height: 120px; width: auto; display: block; }
 .hero { padding: var(--space-12) 0 var(--space-8); }
 .hero h1 { font-size: clamp(1.8rem, 3vw, 3rem); margin: 0 0 var(--space-4); }
-.section { padding: var(--space-8) 0; }
+.section { padding: var(--space-6) 0; }
 .section h2, h1, h2, h3 { color: var(--brand-primary); }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); }
 .card { background: var(--surface); border-radius: var(--radius); padding: var(--space-6); box-shadow: var(--shadow); }
@@ -72,8 +72,9 @@ figure.quote figcaption { margin: 0; color: var(--muted); font-size: .9rem; disp
 /* Card images */
 .card > img { width: 100%; height: auto; border-radius: 12px; margin-bottom: var(--space-4); }
 
-/* Reading measure and spacing for paragraphs */
-p { max-width: 75ch; }
+/* Paragraph spacing only (full container width) */
+.hero > p,
+.section > div > p { max-width: none; margin: 0 0 var(--space-4); }
 
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
