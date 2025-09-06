@@ -103,6 +103,11 @@ details.worker { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; p
 details.worker > summary { cursor: pointer; list-style: none; }
 details.worker > summary::-webkit-details-marker { display: none; }
 details.worker > summary { display: flex; gap: .5rem; align-items: baseline; }
+details.worker > summary:focus-visible { outline: 3px solid color-mix(in oklab, var(--brand-primary) 70%, white); outline-offset: 4px; border-radius: 8px; }
+/* Chevron indicator */
+details.worker > summary::after { content: '▾'; margin-left: auto; color: var(--muted); transition: transform var(--motion-fast) ease, color var(--motion-fast) ease; }
+details.worker > summary:hover::after, details.worker > summary:focus-visible::after { color: var(--brand-primary); }
+details.worker[open] > summary::after { transform: rotate(-180deg); color: var(--brand-primary); }
 details.worker[open] > summary { color: var(--brand-primary); }
 details.worker .worker-body { display: grid; grid-template-columns: 144px auto; gap: var(--space-4); align-items: start; margin-top: var(--space-3); }
 details.worker .worker-body .avatar { width: 144px; height: 144px; object-fit: cover; border-radius: 50%; border: 4px solid var(--brand-secondary); }
