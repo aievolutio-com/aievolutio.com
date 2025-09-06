@@ -107,7 +107,12 @@
         const c = el('div', { class: 'card' });
         if (b.img) c.append(el('img', { src: b.img, alt: b.alt || b.title || '', class: 'avatar' }));
         c.append(el('h3', {}, [b.title || '']));
-        c.append(el('p', {}, [b.body || '']));
+        if (b.body) c.append(el('p', {}, [b.body]));
+        if (Array.isArray(b.items) && b.items.length) {
+          const ul = el('ul', { class: `list ${b.listStyle ? 'list-' + b.listStyle : ''}` });
+          b.items.forEach(it => ul.append(el('li', {}, [it])));
+          c.append(ul);
+        }
         container.append(c);
       }
       if (b.type === 'event') container.append(el('div', { class: 'card', role: 'article' }, [el('h3', {}, [b.title || 'Evento']), el('p', {}, [b.date || '']), el('p', {}, [b.body || ''])]));
