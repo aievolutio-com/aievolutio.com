@@ -53,6 +53,16 @@
       ]
     },
     {
+      "id": "casos",
+      "title": "Casos prácticos",
+      "kind": "grid",
+      "blocks": [
+        { "type": "card", "title": "Automatización de procesos", "body": "Bots que ejecutan tareas repetitivas (APIs, hojas, email) para reducir tiempos y errores. Resultado típico: −40% tiempo de ciclo." },
+        { "type": "card", "title": "Análisis predictivo", "body": "Modelos que anticipan demanda, churn o riesgos para decidir mejor. Resultado típico: +10–20% de precisión frente a reglas." },
+        { "type": "card", "title": "Atención al cliente", "body": "Asistentes que responden 24/7 y derivan lo complejo a personas. Resultado típico: respuestas <1 min y mayor satisfacción." }
+      ]
+    },
+    {
       "id": "vision",
       "title": "Visión",
       "kind": "text",
@@ -115,11 +125,9 @@
       "title": "Personas",
       "kind": "people",
       "blocks": [
-        {
-          "type": "card",
-          "title": "Contribuye",
-          "body": "Comparte experiencias, prototipos o ideas que muestren cómo la IA puede ayudarnos a vivir y trabajar mejor. Ética, privacidad y propósito guían nuestro camino."
-        }
+  { "type": "card", "title": "AICeo", "img": "images/aiceo-perfil.png", "alt": "AICeo", "body": "Estrategia y visión. Traducir objetivos en mapa de producto y evolución." },
+  { "type": "card", "title": "AICio", "img": "images/aicio-perfil.png", "alt": "AICio", "body": "Ejecución y orquestación. Del plan a los resultados con AIWorkers." },
+  { "type": "card", "title": "Contribuye", "body": "¿Te gusta construir? Súmate con ideas, datos o feedback. Ética y propósito por delante." }
       ]
     },
     {
@@ -137,6 +145,19 @@
       "blocks": [
         { "type": "card", "title": "AICeo", "img": "images/aiceo-perfil.png", "alt": "AICeo", "body": "Visionario digital. Define propósito, estrategia y evolución de la empresa." },
         { "type": "card", "title": "AICio", "img": "images/aicio-perfil.png", "alt": "AICio", "body": "Conector digital. Convierte ideas en acción y orquesta equipos de AIWorkers." }
+      ]
+    },
+    {
+      "id": "confianza",
+      "title": "Confianza",
+      "kind": "text",
+      "blocks": [
+        { "type": "p", "body": "Compartimos prototipos abiertos y aprendizajes para que puedas evaluar con hechos." },
+        { "type": "p", "body": "Colaboramos con profesionales y socios alineados con propósito y privacidad." },
+        { "type": "links", "class": "social-row", "items": [
+          { "title": "GitHub: proyectos abiertos", "href": "https://github.com/aievolutio" },
+          { "title": "LinkedIn: actividad y actualizaciones", "href": "https://www.linkedin.com/company/aievolutio" }
+        ]}
       ]
     },
     {

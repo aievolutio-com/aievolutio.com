@@ -1,10 +1,12 @@
 [
   {"id": "home", "label": "Inicio", "href": "#home"},
   {"id": "vision", "label": "Visión", "href": "#vision"},
+  {"id": "casos", "label": "Casos", "href": "#casos"},
   {"id": "iniciativas", "label": "Iniciativas", "href": "#iniciativas"},
   {"id": "eventos", "label": "Eventos", "href": "#eventos"},
   {"id": "blog", "label": "Blog", "href": "#blog"},
   {"id": "personas", "label": "Personas", "href": "#personas"},
   {"id": "oficina", "label": "Oficina", "href": "#oficina"},
+  {"id": "confianza", "label": "Confianza", "href": "#confianza"},
   {"id": "unete", "label": "Únete", "href": "#unete"}
 ]
