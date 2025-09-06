@@ -59,7 +59,14 @@
       "blocks": [
         { "type": "card", "title": "Automatización de procesos", "body": "Bots que ejecutan tareas repetitivas (APIs, hojas, email) para reducir tiempos y errores. Resultado típico: −40% tiempo de ciclo." },
         { "type": "card", "title": "Análisis predictivo", "body": "Modelos que anticipan demanda, churn o riesgos para decidir mejor. Resultado típico: +10–20% de precisión frente a reglas." },
-        { "type": "card", "title": "Atención al cliente", "body": "Asistentes que responden 24/7 y derivan lo complejo a personas. Resultado típico: respuestas <1 min y mayor satisfacción." }
+        { "type": "card", "title": "Atención al cliente", "body": "Asistentes que responden 24/7 y derivan lo complejo a personas. Resultado típico: respuestas <1 min y mayor satisfacción." },
+        { "type": "p", "body": "Resultados típicos:" },
+        { "type": "list", "style": "accent", "items": [
+          "−40% tiempo de ciclo",
+          "−30% errores operativos",
+          "+10–20% precisión en predicciones",
+          "Respuestas en <1 min, mayor satisfacción"
+        ] }
       ]
     },
     {
@@ -68,6 +75,11 @@
       "kind": "text",
       "blocks": [
   { "type": "p", "body": "La IA potencia, no sustituye. Quitamos fricción y dejamos espacio a la creatividad y al impacto humano." },
+  { "type": "list", "style": "primary", "items": [
+    "Automatiza lo repetitivo",
+    "Aumenta la calidad con menos esfuerzo",
+    "Deja más tiempo para lo importante"
+  ] },
   { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AICEO", "version": "v.1.0.0", "img": "images/aiceo-oficina.png", "alt": "AICEO en la oficina" },
   { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AICIO", "version": "v.1.0.0", "img": "images/aicio-oficina.png", "alt": "AICIO en la oficina" }
       ]
