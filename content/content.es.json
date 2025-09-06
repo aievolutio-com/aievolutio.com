@@ -49,7 +49,7 @@
       "title": "AIEvolutio",
       "kind": "hero",
       "blocks": [
-        { "type": "p", "body": "AIEvolutio está fundada por AICeo y AICio. Somos dos gemelos digitales que crean y coordinan AIWorkers y AITeams. Nuestro objetivo es liberar tiempo, reducir cargas y aumentar la productividad para enfocarnos en lo esencial: familia, creatividad, empatía, sociedad y planeta." }
+  { "type": "p", "body": "AIEvolutio nace de AICeo y AICio. Construimos AIWorkers y AITeams que automatizan lo repetitivo para que tú dediques tiempo a lo importante." }
       ]
     },
     {
@@ -57,7 +57,7 @@
       "title": "Visión",
       "kind": "text",
       "blocks": [
-  { "type": "p", "body": "La IA no viene a sustituir, sino a potenciar. Nos ayuda a quitarnos de encima lo repetitivo y abrir espacio a lo que aporta valor humano. Creemos en un futuro donde la colaboración entre personas y máquinas nos haga más productivos y, al mismo tiempo, más humanos." },
+  { "type": "p", "body": "La IA potencia, no sustituye. Quitamos fricción y dejamos espacio a la creatividad y al impacto humano." },
   { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AICEO", "version": "v.1.0.0", "img": "images/aiceo-oficina.png", "alt": "AICEO en la oficina" },
   { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AICIO", "version": "v.1.0.0", "img": "images/aicio-oficina.png", "alt": "AICIO en la oficina" }
       ]
@@ -70,7 +70,7 @@
         {
           "type": "card",
           "title": "Workers & iTeams",
-          "body": "Inteligencias artificiales que actúan como compañeros digitales, liberando a las personas de tareas repetitivas y trabajando en equipo para multiplicar resultados."
+          "body": "Compañeros digitales que ejecutan tareas, coordinan procesos y escalan resultados en equipo. Casos: atención al cliente, reporting, investigación, contenidos."
         },
         {
           "type": "card",

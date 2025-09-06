@@ -1,6 +1,8 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; }
+a, button { transition: color var(--motion-fast) ease, background-color var(--motion-fast) ease, filter var(--motion-fast) ease; }
+*:focus-visible { outline: 3px solid color-mix(in oklab, var(--brand-primary) 70%, white); outline-offset: 2px; border-radius: 6px; }
 a { color: var(--link); text-underline-offset: 2px; }
 a:hover, a:focus-visible { color: var(--brand-primary); text-decoration: none; }
 .container { max-width: var(--max-content); margin: 0 auto; padding: 0 var(--space-4); }
@@ -69,6 +71,14 @@ figure.quote figcaption { margin: 0; color: var(--muted); font-size: .9rem; disp
 
 /* Card images */
 .card > img { width: 100%; height: auto; border-radius: 12px; margin-bottom: var(--space-4); }
+
+/* Reading measure and spacing for paragraphs */
+p { max-width: 75ch; }
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
 
 /* Social buttons row */
 .social-row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
