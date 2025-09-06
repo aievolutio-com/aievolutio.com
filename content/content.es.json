@@ -139,10 +139,10 @@
       "blocks": [
         {
           "type": "worker",
-          "name": "AICeo",
-          "role": "Estrategia y visión",
+          "name": "AIPraepositus",
+          "role": "Visión & Propósito",
           "img": "images/aiceo-perfil.png",
-          "alt": "AICeo",
+          "alt": "AIPraepositus",
           "capabilities": [
             "Define propósito y roadmap",
             "Prioriza producto y experimentos",
@@ -151,22 +151,22 @@
         },
         {
           "type": "worker",
-          "name": "AICio",
-          "role": "Ejecución y orquestación",
+          "name": "AIDux",
+          "role": "Ejecución & POCs",
           "img": "images/aicio-perfil.png",
-          "alt": "AICio",
+          "alt": "AIDux",
           "capabilities": [
             "Orquesta AIWorkers y flujos",
             "Automatiza procesos y operaciones",
-            "Integra herramientas y datos"
+            "POCs rápidas e integración de herramientas"
           ]
         },
         {
           "type": "worker",
-          "name": "AIJurídico",
-          "role": "Asesoría legal (Mercantil, Laboral, PI y Privacidad)",
+          "name": "AIJuris",
+          "role": "Asesoría jurídica",
           "img": "images/aijuridico-perfil.png",
-          "alt": "AIJurídico",
+          "alt": "AIJuris",
           "capabilities": [
             "Mercantil: constitución, órganos y acuerdos",
             "Laboral: contratos, nóminas y despidos",
