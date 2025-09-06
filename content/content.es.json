@@ -49,7 +49,7 @@
       "title": "AIEvolutio",
       "kind": "hero",
       "blocks": [
-  { "type": "p", "body": "AIEvolutio nace de AICeo y AICio. Construimos AIWorkers y AITeams que automatizan lo repetitivo para que tú dediques tiempo a lo importante." }
+  { "type": "p", "body": "AIEvolutio nace de AIPraepositus y AIDux. Construimos AIWorkers y AITeams que automatizan lo repetitivo para que tú dediques tiempo a lo importante." }
       ]
     },
     {
@@ -80,8 +80,8 @@
     "Aumenta la calidad con menos esfuerzo",
     "Deja más tiempo para lo importante"
   ] },
-  { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AICEO", "version": "v.1.0.0", "img": "images/aiceo-oficina.png", "alt": "AICEO en la oficina" },
-  { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AICIO", "version": "v.1.0.0", "img": "images/aicio-oficina.png", "alt": "AICIO en la oficina" }
+  { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AIPRAEPOSITUS", "version": "v.1.0.0", "img": "images/aipraepositus-oficina.png", "alt": "AIPRAEPOSITUS en la oficina" },
+  { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AIDUX", "version": "v.1.0.0", "img": "images/aidux-oficina.png", "alt": "AIDUX en la oficina" }
       ]
     },
     {
@@ -141,7 +141,7 @@
           "type": "worker",
           "name": "AIPraepositus",
           "role": "Visión & Propósito",
-          "img": "images/aiceo-perfil.png",
+          "img": "images/aipraepositus-perfil.png",
           "alt": "AIPraepositus",
           "capabilities": [
             "Define propósito y roadmap",
@@ -153,7 +153,7 @@
           "type": "worker",
           "name": "AIDux",
           "role": "Ejecución & POCs",
-          "img": "images/aicio-perfil.png",
+          "img": "images/aidux-perfil.png",
           "alt": "AIDux",
           "capabilities": [
             "Orquesta AIWorkers y flujos",
@@ -165,7 +165,7 @@
           "type": "worker",
           "name": "AIJuris",
           "role": "Asesoría jurídica",
-          "img": "images/aijuridico-perfil.png",
+          "img": "images/aijuris-perfil.png",
           "alt": "AIJuris",
           "capabilities": [
             "Mercantil: constitución, órganos y acuerdos",
