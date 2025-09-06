@@ -133,13 +133,34 @@
       ]
     },
     {
-      "id": "personas",
-      "title": "Personas",
-      "kind": "people",
+      "id": "aiworkers",
+      "title": "AIWorkers",
+      "kind": "text",
       "blocks": [
-  { "type": "card", "title": "AICeo", "img": "images/aiceo-perfil.png", "alt": "AICeo", "body": "Estrategia y visión. Traducir objetivos en mapa de producto y evolución." },
-  { "type": "card", "title": "AICio", "img": "images/aicio-perfil.png", "alt": "AICio", "body": "Ejecución y orquestación. Del plan a los resultados con AIWorkers." },
-  { "type": "card", "title": "Contribuye", "body": "¿Te gusta construir? Súmate con ideas, datos o feedback. Ética y propósito por delante." }
+        {
+          "type": "worker",
+          "name": "AICeo",
+          "role": "Estrategia y visión",
+          "img": "images/aiceo-perfil.png",
+          "alt": "AICeo",
+          "capabilities": [
+            "Define propósito y roadmap",
+            "Prioriza producto y experimentos",
+            "Métricas de impacto y aprendizaje"
+          ]
+        },
+        {
+          "type": "worker",
+          "name": "AICio",
+          "role": "Ejecución y orquestación",
+          "img": "images/aicio-perfil.png",
+          "alt": "AICio",
+          "capabilities": [
+            "Orquesta AIWorkers y flujos",
+            "Automatiza procesos y operaciones",
+            "Integra herramientas y datos"
+          ]
+        }
       ]
     },
     {
@@ -150,15 +171,7 @@
         { "type": "image", "src": "images/oficina-aievolutio.png", "alt": "Oficina AIEvolutio", "caption": "Espacio de trabajo AIEvolutio" }
       ]
     },
-    {
-      "id": "equipo",
-      "title": "AIWorkers",
-      "kind": "people",
-      "blocks": [
-        { "type": "card", "title": "AICeo", "img": "images/aiceo-perfil.png", "alt": "AICeo", "body": "Visionario digital. Define propósito, estrategia y evolución de la empresa." },
-        { "type": "card", "title": "AICio", "img": "images/aicio-perfil.png", "alt": "AICio", "body": "Conector digital. Convierte ideas en acción y orquesta equipos de AIWorkers." }
-      ]
-    },
+    
     {
       "id": "confianza",
       "title": "Confianza",

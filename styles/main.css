@@ -84,3 +84,29 @@ figure.quote figcaption { margin: 0; color: var(--muted); font-size: .9rem; disp
 /* Social buttons row */
 .social-row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .social-row .btn { background: var(--brand-primary); color: var(--brand-primary-contrast); }
+
+/* Scannable lists */
+.list { padding-left: 1.25rem; margin: 0 0 var(--space-4); display: grid; gap: .5rem; }
+.list li { list-style: none; position: relative; padding-left: 1rem; }
+.list li::before { content: "•"; position: absolute; left: 0; color: var(--brand-secondary); font-weight: 700; }
+.list-primary li::before { color: var(--brand-primary); }
+.list-accent li::before { color: var(--brand-accent); }
+
+@media (max-width: 640px) {
+  /* mobile tweaks */
+  .grid { gap: var(--space-3); }
+  .hero { padding-top: var(--space-8); }
+}
+
+/* Workers: collapsible summaries */
+details.worker { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: var(--space-3) var(--space-4); background: var(--surface); box-shadow: var(--shadow); margin: 0 0 var(--space-4); }
+details.worker > summary { cursor: pointer; list-style: none; }
+details.worker > summary::-webkit-details-marker { display: none; }
+details.worker > summary { display: flex; gap: .5rem; align-items: baseline; }
+details.worker[open] > summary { color: var(--brand-primary); }
+details.worker .worker-body { display: grid; grid-template-columns: 144px auto; gap: var(--space-4); align-items: start; margin-top: var(--space-3); }
+details.worker .worker-body .avatar { width: 144px; height: 144px; object-fit: cover; border-radius: 50%; border: 4px solid var(--brand-secondary); }
+@media (max-width: 480px) {
+  details.worker .worker-body { grid-template-columns: 96px auto; }
+  details.worker .worker-body .avatar { width: 96px; height: 96px; }
+}

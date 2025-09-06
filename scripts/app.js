@@ -43,6 +43,32 @@
 
   (sec.blocks || []).forEach(b => {
       if (b.type === 'p') container.append(el('p', {}, [b.body]));
+      if (b.type === 'list') {
+        const ul = el('ul', { class: `list ${b.style ? 'list-' + b.style : ''}` });
+        (b.items || []).forEach(it => {
+          const text = (typeof it === 'string') ? it : (it.text || '');
+          ul.append(el('li', {}, [text]));
+        });
+        container.append(ul);
+      }
+      if (b.type === 'worker') {
+        // Collapsible worker profile: summary shows name + role; details show photo + capabilities
+        const details = el('details', { class: 'worker' });
+        const name = b.name || b.title || '';
+        const role = b.role || '';
+        const summary = el('summary', {}, [el('strong', {}, [name]), role ? ` — ${role}` : '']);
+        details.append(summary);
+        const bodyWrap = el('div', { class: 'worker-body' });
+        if (b.img) bodyWrap.append(el('img', { src: b.img, alt: b.alt || name, class: 'avatar' }));
+        if (Array.isArray(b.capabilities) && b.capabilities.length) {
+          const ul = el('ul', { class: 'list list-primary' });
+          b.capabilities.forEach(cap => ul.append(el('li', {}, [cap])));
+          bodyWrap.append(ul);
+        }
+        if (b.body) bodyWrap.append(el('p', {}, [b.body]));
+        details.append(bodyWrap);
+        container.append(details);
+      }
       if (b.type === 'quote') {
         // Support optional image and author/version. Format: "cita." (AUTHOR v.X.Y.Z)
         const fig = el('figure', { class: 'quote' });
