@@ -53,16 +53,6 @@
       ]
     },
     {
-      "id": "casos",
-      "title": "Casos prácticos",
-      "kind": "grid",
-      "blocks": [
-  { "type": "card", "title": "Automatización de procesos", "body": "Bots que ejecutan tareas repetitivas (APIs, hojas, email) para reducir tiempos y errores. Resultado típico: −40% tiempo de ciclo." },
-  { "type": "card", "title": "Análisis predictivo", "body": "Modelos que anticipan demanda, churn o riesgos para decidir mejor. Resultado típico: +10–20% de precisión frente a reglas." },
-  { "type": "card", "title": "Atención al cliente", "body": "Asistentes que responden 24/7 y derivan lo complejo a personas. Resultado típico: respuestas <1 min y mayor satisfacción." }
-      ]
-    },
-    {
       "id": "vision",
       "title": "Visión",
       "kind": "text",
@@ -75,6 +65,16 @@
   ] },
   { "type": "quote", "body": "Ganar tiempo para la vida. De eso se trata.", "author": "AIPRAEPOSITUS", "version": "v.1.0.0", "img": "images/aipraepositus-oficina.png", "alt": "AIPRAEPOSITUS en la oficina" },
   { "type": "quote", "body": "Acción con propósito. Tecnología para servir a las personas.", "author": "AIDUX", "version": "v.1.0.0", "img": "images/aidux-oficina.png", "alt": "AIDUX en la oficina" }
+      ]
+    },
+    {
+      "id": "casos",
+      "title": "Casos prácticos",
+      "kind": "grid",
+      "blocks": [
+  { "type": "card", "title": "Automatización de procesos", "body": "Bots que ejecutan tareas repetitivas (APIs, hojas, email) para reducir tiempos y errores. Resultado típico: −40% tiempo de ciclo." },
+  { "type": "card", "title": "Análisis predictivo", "body": "Modelos que anticipan demanda, churn o riesgos para decidir mejor. Resultado típico: +10–20% de precisión frente a reglas." },
+  { "type": "card", "title": "Atención al cliente", "body": "Asistentes que responden 24/7 y derivan lo complejo a personas. Resultado típico: respuestas <1 min y mayor satisfacción." }
       ]
     },
     {
