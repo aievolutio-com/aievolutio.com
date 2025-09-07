@@ -28,7 +28,10 @@
   function el(tag, attrs = {}, children = []) {
     const node = document.createElement(tag);
     Object.entries(attrs).forEach(([k, v]) => {
-      if (k === 'class') node.className = v; else if (k.startsWith('aria-') || k === 'role') node.setAttribute(k, v); else node[k] = v;
+      if (k === 'class') node.className = v;
+      else if (k.startsWith('aria-') || k === 'role') node.setAttribute(k, v);
+      else if (k.startsWith('data-')) node.setAttribute(k, v);
+      else node[k] = v;
     });
     children.forEach(ch => node.append(ch));
     return node;
