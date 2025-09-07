@@ -120,6 +120,7 @@ details.worker[open] > summary::after { transform: rotate(-180deg); color: var(-
 details.worker[open] > summary { color: var(--brand-primary); }
 details.worker .worker-body { display: grid; grid-template-columns: 144px auto; gap: var(--space-4); align-items: start; margin-top: var(--space-3); }
 details.worker .worker-body .avatar { width: 144px; height: 144px; object-fit: cover; border-radius: 50%; border: 4px solid var(--brand-secondary); }
+details.worker .worker-body .btn { margin-top: var(--space-2); }
 @media (max-width: 480px) {
   details.worker .worker-body { grid-template-columns: 96px auto; }
   details.worker .worker-body .avatar { width: 96px; height: 96px; }

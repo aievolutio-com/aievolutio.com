@@ -75,6 +75,12 @@
           bodyWrap.append(ul);
         }
         if (b.body) bodyWrap.append(el('p', {}, [b.body]));
+        // Optional external test link (e.g., to a GPT). Opens in new tab.
+        if (b.href) {
+          const label = b.cta || (name ? `Probar ${name}` : 'Probar');
+          const a = el('a', { href: b.href, class: 'btn', target: '_blank', rel: 'noopener noreferrer' }, [label]);
+          bodyWrap.append(a);
+        }
         details.append(bodyWrap);
         container.append(details);
       }

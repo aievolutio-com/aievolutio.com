@@ -134,6 +134,8 @@
           "role": "Asesoría jurídica",
           "img": "images/aijuris-perfil.png",
           "alt": "AIJuris",
+          "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
+          "cta": "Probar AIJuris",
           "capabilities": [
             "Mercantil: constitución, órganos y acuerdos",
             "Laboral: contratos, nóminas y despidos",
