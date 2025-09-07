@@ -30,6 +30,7 @@ a:hover, a:focus-visible { color: var(--brand-primary); text-decoration: none; }
 .btn { display: inline-block; background: var(--brand-accent); color: var(--brand-accent-contrast); padding: .7rem 1rem; border-radius: 999px; text-decoration: none; }
 .btn:hover { filter: brightness(1.05); }
 footer { border-top: 1px solid rgba(255,255,255,.08); padding: var(--space-6) 0; font-size: .9rem; color: var(--muted); }
+footer .disclaimer { margin-top: var(--space-2); font-size: 0.85rem; color: var(--muted); }
 .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 .skip-link:focus { position: static; width: auto; height: auto; background: var(--brand-primary); color: var(--brand-primary-contrast); padding: var(--space-2) var(--space-4); }
 /* Hide theme toggle (per request) */
