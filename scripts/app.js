@@ -107,7 +107,7 @@
       }
       if (b.type === 'image') {
         const fig = el('figure', { class: 'image' });
-  fig.append(el('img', { src: b.src, alt: b.alt || '', 'data-lightbox': 'true', tabIndex: 0, role: 'button', title: 'Ampliar imagen' }));
+        fig.append(el('img', { src: b.src, alt: b.alt || '' }));
         if (b.caption) fig.append(el('figcaption', {}, [b.caption]));
         container.append(fig);
       }
