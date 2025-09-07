@@ -126,3 +126,11 @@ details.worker .worker-body .btn { margin-top: var(--space-2); }
   details.worker .worker-body { grid-template-columns: 96px auto; }
   details.worker .worker-body .avatar { width: 96px; height: 96px; }
 }
+
+/* Lightbox */
+.lightbox[hidden] { display: none; }
+.lightbox { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; padding: var(--space-6); }
+.lightbox .lightbox-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.7); }
+.lightbox img { max-width: min(90vw, 1024px); max-height: 85vh; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,.4); position: relative; z-index: 1; }
+.lightbox .lightbox-close { position: absolute; top: 1rem; right: 1rem; z-index: 2; background: transparent; border: none; color: white; font-size: 2rem; line-height: 1; cursor: pointer; filter: drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
+.lightbox .lightbox-caption { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); color: white; background: rgba(0,0,0,.35); padding: .25rem .5rem; border-radius: 6px; font-size: .9rem; z-index: 2; max-width: 90vw; text-align: center; }

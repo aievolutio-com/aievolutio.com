@@ -68,7 +68,7 @@
         ]);
         details.append(summary);
         const bodyWrap = el('div', { class: 'worker-body' });
-        if (b.img) bodyWrap.append(el('img', { src: b.img, alt: b.alt || name, class: 'avatar' }));
+  if (b.img) bodyWrap.append(el('img', { src: b.img, alt: b.alt || name, class: 'avatar', 'data-lightbox': 'true', tabIndex: 0, role: 'button', title: 'Ampliar imagen' }));
         if (Array.isArray(b.capabilities) && b.capabilities.length) {
           const ul = el('ul', { class: 'list list-primary' });
           b.capabilities.forEach(cap => ul.append(el('li', {}, [cap])));
@@ -87,7 +87,7 @@
       if (b.type === 'quote') {
         // Support optional image and author/version. Format: "cita." (AUTHOR v.X.Y.Z)
         const fig = el('figure', { class: 'quote' });
-        if (b.img) fig.append(el('img', { src: b.img, alt: b.alt || b.author || '' }));
+  if (b.img) fig.append(el('img', { src: b.img, alt: b.alt || b.author || '', 'data-lightbox': 'true', tabIndex: 0, role: 'button', title: 'Ampliar imagen' }));
         const text = String(b.body || '').trim();
         const hasDot = /[.!?]$/.test(text);
         const quoted = '"' + (text.replace(/^"|"$/g, '')) + (hasDot ? '' : '.') + '"';
@@ -104,14 +104,14 @@
       }
       if (b.type === 'image') {
         const fig = el('figure', { class: 'image' });
-        fig.append(el('img', { src: b.src, alt: b.alt || '' }));
+  fig.append(el('img', { src: b.src, alt: b.alt || '', 'data-lightbox': 'true', tabIndex: 0, role: 'button', title: 'Ampliar imagen' }));
         if (b.caption) fig.append(el('figcaption', {}, [b.caption]));
         container.append(fig);
       }
       if (b.type === 'link') container.append(el('a', { href: b.href, class: 'btn' }, [b.title || b.href]));
       if (b.type === 'card') {
         const c = el('div', { class: 'card' });
-        if (b.img) c.append(el('img', { src: b.img, alt: b.alt || b.title || '', class: 'avatar' }));
+  if (b.img) c.append(el('img', { src: b.img, alt: b.alt || b.title || '', class: 'avatar', 'data-lightbox': 'true', tabIndex: 0, role: 'button', title: 'Ampliar imagen' }));
         c.append(el('h3', {}, [b.title || '']));
         if (b.body) {
           // Detect inline "Resultado típico:" to present it as a highlighted label on a new line
@@ -172,6 +172,51 @@
     });
   }
 
+  function setupLightbox() {
+    const root = document.getElementById('lightbox');
+    if (!root) return;
+    const img = root.querySelector('img');
+    const caption = root.querySelector('.lightbox-caption');
+    const closeBtn = root.querySelector('.lightbox-close');
+    const backdrop = root.querySelector('.lightbox-backdrop');
+
+    function open(src, alt) {
+      img.src = src;
+      img.alt = alt || '';
+      caption.textContent = alt || '';
+      root.hidden = false;
+      root.setAttribute('aria-hidden', 'false');
+      closeBtn.focus();
+      document.addEventListener('keydown', onKey);
+    }
+    function close() {
+      root.hidden = true;
+      root.setAttribute('aria-hidden', 'true');
+      img.src = '';
+      document.removeEventListener('keydown', onKey);
+    }
+    function onKey(e) { if (e.key === 'Escape') close(); }
+
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+
+    document.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t && t.matches && t.matches('img[data-lightbox]')) {
+        open(t.src, t.alt);
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      const t = e.target;
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (t && t.matches && t.matches('img[data-lightbox]')) {
+          e.preventDefault();
+          open(t.src, t.alt);
+        }
+      }
+    });
+  }
+
   async function main() {
     try {
       await loadContent('es');
@@ -179,6 +224,7 @@
   renderNav(navOverride || state.content.navigation);
       renderSections(state.content.sections);
       setupTheme();
+  setupLightbox();
     } catch (e) {
       console.error(e);
       $('#sections').innerHTML = '<p>Error cargando contenido.</p>';
