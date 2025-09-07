@@ -84,7 +84,7 @@
       "blocks": [
         {
           "type": "card",
-          "title": "Workers & iTeams",
+          "title": "AIWorkers & AITeams",
           "body": "Compañeros digitales que ejecutan tareas, coordinan procesos y escalan resultados en equipo. Casos: atención al cliente, reporting, investigación, contenidos."
         },
         {
@@ -96,32 +96,6 @@
           "type": "card",
           "title": "Prototipos Públicos",
           "body": "Ejemplos abiertos de cómo la IA ayuda a ganar productividad, liberar tiempo y generar valor real en la práctica."
-        }
-      ]
-    },
-    {
-      "id": "eventos",
-      "title": "Eventos",
-      "kind": "events",
-      "blocks": [
-        {
-          "type": "event",
-          "title": "Sesión 0: Manifiesto y mapa de ruta",
-          "date": "2025-09-15",
-          "body": "Presentación abierta de la comunidad. Cómo la IA puede ayudarnos a ganar tiempo y calidad de vida."
-        }
-      ]
-    },
-    {
-      "id": "blog",
-      "title": "Blog",
-      "kind": "posts",
-      "blocks": [
-        {
-          "type": "post",
-          "title": "IA y personas: productividad con propósito",
-          "date": "2025-09-01",
-          "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más, con menos esfuerzo, y dedicar energía a lo que realmente importa."
         }
       ]
     },
@@ -167,6 +141,32 @@
             "Privacidad: RGPD/LOPDGDD, DPA y evaluaciones",
             "Contratos y compliance: cláusulas y revisiones"
           ]
+        }
+      ]
+    },
+    {
+      "id": "eventos",
+      "title": "Eventos",
+      "kind": "events",
+      "blocks": [
+        {
+          "type": "event",
+          "title": "Sesión 0: Manifiesto y mapa de ruta",
+          "date": "2025-09-15",
+          "body": "Presentación abierta de la comunidad. Cómo la IA puede ayudarnos a ganar tiempo y calidad de vida."
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "title": "Blog",
+      "kind": "posts",
+      "blocks": [
+        {
+          "type": "post",
+          "title": "IA y personas: productividad con propósito",
+          "date": "2025-09-01",
+          "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más, con menos esfuerzo, y dedicar energía a lo que realmente importa."
         }
       ]
     },
