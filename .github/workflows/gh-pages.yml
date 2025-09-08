@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # On manual runs, use the requested ref; on push, use the triggering commit
           ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref }}
