@@ -12,8 +12,7 @@
     { "id": "iniciativas", "label": "Iniciativas", "href": "#iniciativas" },
     { "id": "eventos", "label": "Eventos", "href": "#eventos" },
     { "id": "blog", "label": "Blog", "href": "#blog" },
-    { "id": "personas", "label": "Personas", "href": "#personas" },
-    { "id": "unete", "label": "Únete", "href": "#unete" }
+    { "id": "personas", "label": "Personas", "href": "#personas" }
   ],
   "sections": [
     {
@@ -81,28 +80,6 @@
       "kind": "text",
       "blocks": [
         { "type": "image", "src": "images/oficina-aievolutio.png", "alt": "Oficina AIEvolutio", "caption": "Espacio de trabajo AIEvolutio" }
-      ]
-    },
-    {
-      "id": "siguenos",
-      "title": "Síguenos",
-      "kind": "text",
-      "blocks": [
-        { "type": "p", "body": "Pronto podrás seguirnos en nuestros canales sociales y de comunicación. ¡Permanece atento!" }
-      ]
-    },
-    {
-      "id": "unete",
-      "title": "Únete",
-      "kind": "cta",
-      "blocks": [
-        { "type": "p", "body": "¿Quieres recuperar tiempo y enfocarte en lo que importa? Súmate a esta comunidad de colaboración entre personas e inteligencias artificiales." },
-        { "type": "links", "class": "social-row", "items": [
-          { "title": "Abrir un Issue en GitHub", "href": "https://github.com/aievolutio/site/issues" },
-          { "title": "LinkedIn", "href": "https://www.linkedin.com/company/aievolutio" },
-          { "title": "X / Twitter", "href": "https://x.com/aievolutio" },
-          { "title": "GitHub", "href": "https://github.com/aievolutio" }
-        ] }
       ]
     }
   ]
