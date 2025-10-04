@@ -13,7 +13,8 @@
     { "id": "eventos", "label": "Eventos", "href": "#eventos" },
     { "id": "blog", "label": "Blog", "href": "#blog" },
     { "id": "aiworkers", "label": "AIWorkers", "href": "#aiworkers" },
-    { "id": "oficina", "label": "Oficina", "href": "#oficina" }
+    { "id": "oficina", "label": "Oficina", "href": "#oficina" },
+    { "id": "contacto", "label": "Contacto", "href": "#contacto" }
   ],
   "sections": [
     {
@@ -81,6 +82,19 @@
       "kind": "text",
       "blocks": [
         { "type": "image", "src": "images/oficina-aievolutio.png", "alt": "Oficina AIEvolutio", "caption": "Espacio de trabajo AIEvolutio" }
+      ]
+    },
+    {
+      "id": "contacto",
+      "title": "Contacto",
+      "kind": "text",
+      "blocks": [
+        { "type": "p", "body": "¿Quieres proponer algo o colaborar? Envíanos un mensaje." },
+        { "type": "contact", "endpoint": "/api/contact", "method": "POST", "fields": [
+          { "name": "nombre", "label": "Nombre", "type": "text", "required": true },
+          { "name": "email", "label": "Email", "type": "email", "required": true },
+          { "name": "mensaje", "label": "Mensaje", "type": "textarea", "required": true, "minlength": 10 }
+        ], "honeypot": "website", "minDelayMs": 2000, "success": "Mensaje enviado. ¡Gracias!", "error": "No se pudo enviar. Intenta de nuevo." }
       ]
     }
   ]

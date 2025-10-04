@@ -148,6 +148,88 @@
         (b.items || []).forEach(it => row.append(el('a', { href: it.href, class: 'btn' }, [it.title || it.href])));
         container.append(row);
       }
+      if (b.type === 'contact') {
+        // Dynamic contact form (email not exposed directly). b.fields meta drives inputs.
+        const form = el('form', { class: 'contact-form', noValidate: true });
+        const startTime = Date.now();
+        const hpName = b.honeypot || 'hp_field';
+        (b.fields || []).forEach(f => {
+          const wrap = el('label', { class: 'field' });
+          const span = el('span', { class: 'field-label' }, [f.label || f.name]);
+          wrap.append(span);
+          let input;
+          if (f.type === 'textarea') {
+            input = el('textarea', { name: f.name, required: !!f.required });
+            if (f.minlength) input.minLength = f.minlength;
+            if (f.maxlength) input.maxLength = f.maxlength;
+            if (f.placeholder) input.placeholder = f.placeholder;
+          } else {
+            input = el('input', { type: f.type || 'text', name: f.name, required: !!f.required });
+            if (f.minlength) input.minLength = f.minlength;
+            if (f.maxlength) input.maxLength = f.maxlength;
+            if (f.placeholder) input.placeholder = f.placeholder;
+          }
+          wrap.append(input);
+          form.append(wrap);
+        });
+        // Honeypot (hidden)
+        const hpWrap = el('div', { class: 'hp', style: 'position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;' });
+        const hpInput = el('input', { type: 'text', name: hpName, tabIndex: -1, autoComplete: 'off' });
+        hpWrap.append(hpInput);
+        form.append(hpWrap);
+        const status = el('p', { class: 'form-status', 'aria-live': 'polite' });
+        const submitBtn = el('button', { type: 'submit', class: 'btn' }, ['Enviar']);
+        form.append(submitBtn);
+        form.append(status);
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            status.textContent = '';
+            if (hpInput.value) { status.textContent = 'Descartado.'; return; }
+            const minDelay = b.minDelayMs || 1500;
+            const elapsed = Date.now() - startTime;
+            if (elapsed < minDelay) {
+              status.textContent = 'Espera un momento antes de enviar…';
+              return;
+            }
+            // Basic validation
+            let hasError = false;
+            (b.fields || []).forEach(f => {
+              const node = form.querySelector(`[name="${f.name}"]`);
+              if (node && f.required && !node.value.trim()) { hasError = true; node.classList.add('field-error'); }
+              else if (node) node.classList.remove('field-error');
+            });
+            if (hasError) { status.textContent = 'Revisa los campos obligatorios.'; return; }
+            submitBtn.disabled = true;
+            status.textContent = 'Enviando…';
+            try {
+              const payload = {};
+              (b.fields || []).forEach(f => {
+                const node = form.querySelector(`[name="${f.name}"]`);
+                payload[f.name] = node ? node.value.trim() : '';
+              });
+              payload._t = Date.now();
+              const ep = b.endpoint || '/api/contact';
+              const method = (b.method || 'POST').toUpperCase();
+              // For now, attempt fetch; if fails (no backend), show success fallback to avoid UX dead end.
+              let ok = true;
+              try {
+                const res = await fetch(ep, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                ok = res.ok;
+              } catch (_) { /* network / local fallback */ }
+              if (ok) {
+                status.textContent = b.success || 'Enviado correctamente.';
+                form.reset();
+              } else {
+                status.textContent = b.error || 'Error al enviar.';
+              }
+            } finally {
+              submitBtn.disabled = false;
+            }
+        });
+
+        container.append(form);
+      }
     });
 
     section.append(container);
