@@ -213,15 +213,38 @@
               const method = (b.method || 'POST').toUpperCase();
               // For now, attempt fetch; if fails (no backend), show success fallback to avoid UX dead end.
               let ok = true;
-              try {
-                const res = await fetch(ep, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                ok = res.ok;
-              } catch (_) { /* network / local fallback */ }
-              if (ok) {
-                status.textContent = b.success || 'Enviado correctamente.';
+              if (b.mode === 'local') {
+                // Local mode: build mailto link with obfuscated target; open user agent mail client.
+                // Safe base64 decode (browser only; non-browser lint will treat as no-op)
+                const decode = (v) => {
+                  try {
+                    if (typeof window !== 'undefined' && typeof window.atob === 'function') return window.atob(v);
+                  } catch { /* ignore */ }
+                  return '';
+                };
+                const user = b.userB64 ? decode(b.userB64) : 'contacto';
+                const domain = b.domainB64 ? decode(b.domainB64) : 'example.com';
+                const to = user + '@' + domain;
+                const subject = encodeURIComponent('Contacto desde sitio AIEvolutio');
+                const body = encodeURIComponent(`Nombre: ${payload.nombre || ''}\nEmail: ${payload.email || ''}\n\n${payload.mensaje || ''}`);
+                const mailto = `mailto:${to}?subject=${subject}&body=${body}`;
+                // Open in a new window (fallback to location if blocked)
+                const w = window.open(mailto, '_blank');
+                if (!w) window.location.href = mailto;
+                status.textContent = b.success || 'Mensaje preparado en tu gestor de correo.';
                 form.reset();
+                ok = true;
               } else {
-                status.textContent = b.error || 'Error al enviar.';
+                try {
+                  const res = await fetch(ep, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                  ok = res.ok;
+                } catch { /* network / local fallback */ ok = false; }
+                if (ok) {
+                  status.textContent = b.success || 'Enviado correctamente.';
+                  form.reset();
+                } else {
+                  status.textContent = b.error || 'Error al enviar.';
+                }
               }
             } finally {
               submitBtn.disabled = false;

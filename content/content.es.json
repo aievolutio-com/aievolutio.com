@@ -90,7 +90,7 @@
       "kind": "text",
       "blocks": [
         { "type": "p", "body": "¿Quieres proponer algo o colaborar? Envíanos un mensaje." },
-        { "type": "contact", "endpoint": "/api/contact", "method": "POST", "fields": [
+        { "type": "contact", "mode": "local", "userB64": "Y29udGFjdG8=", "domainB64": "YWlldm9sdXRpby5jb20=", "fields": [
           { "name": "nombre", "label": "Nombre", "type": "text", "required": true },
           { "name": "email", "label": "Email", "type": "email", "required": true },
           { "name": "mensaje", "label": "Mensaje", "type": "textarea", "required": true, "minlength": 10 }
