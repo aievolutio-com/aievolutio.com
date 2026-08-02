@@ -62,7 +62,7 @@ En GitHub:
 
 ## 4. Ejecutar la sincronización
 
-Puedes lanzarla manualmente desde Actions o con:
+La sincronización está configurada para ejecutarse automáticamente una vez a la semana. También puedes lanzarla manualmente desde Actions o con:
 
 ```powershell
 npm run sync:content
