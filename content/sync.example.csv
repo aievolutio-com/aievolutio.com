@@ -1,0 +1,8 @@
+section,blockType,title,body,date,author,version,img,alt,href,label,field,key,value,caption,src
+meta,meta,siteName,, , , , , , , ,siteName,siteName,AIEvolutio,,,,
+meta,meta,tagline,, , , , , , , ,tagline,tagline,IA para ganar tiempo y vida,,,,
+home,p,Hero,"Actualiza este texto desde Sheets para cambiar el mensaje de inicio",,,,,,,,,,,,
+vision,quote,Quote,"La IA potencia, no sustituye. Quitamos fricción y dejamos espacio a la creatividad y al impacto humano.",,,,images/aivisio-oficina.png,AIVISIO,,,,,
+vision,p,Vision,"La IA potencia, no sustituye. Quitamos fricción y dejamos espacio a la creatividad y al impacto humano.",,,,,,,,,,,,
+iniciativas,card,AIWorkers & AITeams,"Compañeros digitales que ejecutan tareas, coordinan procesos y escalan resultados en equipo.",,,,,,,,,,,,
+blog,post,IA y personas,"Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más con menos esfuerzo.",2026-07-30,,,,,,,,,,,

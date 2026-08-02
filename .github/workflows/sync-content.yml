@@ -1,0 +1,40 @@
+name: Sync content from Sheets
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * *'
+  push:
+    paths:
+      - 'content/sync.example.csv'
+      - 'scripts/sync-content.mjs'
+      - '.github/workflows/sync-content.yml'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      SHEET_CSV_URL: https://docs.google.com/spreadsheets/d/e/2PACX-1vTXUzpg8G45BF6TaUA-RGGVn1jl4mBlf2GFg1pq6wgJq-5WhOAZ9ZflFgsKc0RuNCCZlOYrVPAL6J5D/pub?output=csv
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Sync content
+        run: node scripts/sync-content.mjs
+
+      - name: Create pull request if content changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore: sync content from sheets'
+          title: 'chore: sync content from sheets'
+          body: 'Actualización automática de contenido desde la fuente de datos.'
+          branch: 'chore/sync-content-from-sheets'
+          delete-branch: true
