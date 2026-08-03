@@ -1,0 +1,185 @@
+{
+  "meta": {
+    "siteName": "AIEvolutio",
+    "tagline": "IA para ganar tiempo y vida",
+    "language": "es",
+    "copyright": "© 2025 AIEvolutio — Comunidad",
+    "license": "CC BY-SA 4.0"
+  },
+  "navigation": [
+    {
+      "id": "home",
+      "label": "Inicio",
+      "href": "#home"
+    },
+    {
+      "id": "vision",
+      "label": "Visión",
+      "href": "#vision"
+    },
+    {
+      "id": "iniciativas",
+      "label": "Iniciativas",
+      "href": "#iniciativas"
+    },
+    {
+      "id": "eventos",
+      "label": "Eventos",
+      "href": "#eventos"
+    },
+    {
+      "id": "blog",
+      "label": "Blog",
+      "href": "#blog"
+    },
+    {
+      "id": "aiworkers",
+      "label": "AIWorkers",
+      "href": "#aiworkers"
+    },
+    {
+      "id": "oficina",
+      "label": "Oficina",
+      "href": "#oficina"
+    }
+  ],
+  "sections": [
+    {
+      "id": "home",
+      "title": "AIEvolutio",
+      "kind": "hero",
+      "blocks": [
+        {
+          "type": "p",
+          "body": "AIEvolutio ayuda a personas y equipos a recuperar tiempo, mejorar decisiones y construir procesos más inteligentes con IA."
+        }
+      ]
+    },
+    {
+      "id": "vision",
+      "title": "Visión",
+      "kind": "text",
+      "blocks": [
+        {
+          "type": "p",
+          "body": "La IA no reemplaza el criterio humano; lo amplifica. Diseñamos herramientas y procesos que reducen fricción y liberan energía para la creatividad, el impacto y la vida."
+        },
+        {
+          "type": "quote",
+          "body": "Ganar tiempo para la vida. De eso se trata.",
+          "author": "images/aivisio-oficina.png",
+          "version": "",
+          "img": "images/aivisio-oficina.png",
+          "alt": "images/aivisio-oficina.png"
+        }
+      ]
+    },
+    {
+      "id": "iniciativas",
+      "title": "Iniciativas",
+      "kind": "grid",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "AIWorkers & AITeams",
+          "body": "Compañeros digitales que ejecutan tareas, coordinan procesos y escalan resultados en equipo con foco en productividad y calidad.",
+          "img": "",
+          "alt": "AIWorkers & AITeams"
+        },
+        {
+          "type": "card",
+          "title": "Aprendizaje abierto",
+          "body": "Guías y microcursos para usar la IA como aliada en el trabajo diario, con enfoque práctico, ético y humano.",
+          "img": "",
+          "alt": "Aprendizaje abierto"
+        },
+        {
+          "type": "card",
+          "title": "Prototipos públicos",
+          "body": "Ejemplos abiertos de cómo la IA ayuda a ahorrar tiempo, liberar capacidad y generar valor real en la práctica.",
+          "img": "",
+          "alt": "Prototipos públicos"
+        }
+      ]
+    },
+    {
+      "id": "aiworkers",
+      "title": "AIWorkers",
+      "kind": "text",
+      "blocks": [
+        {
+          "type": "worker",
+          "title": "AIVisio",
+          "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
+          "img": "images/aivisio-perfil.png",
+          "alt": "images/aivisio-perfil.png",
+          "href": "AIVisio",
+          "cta": "AIVisio"
+        },
+        {
+          "type": "worker",
+          "title": "AIDux",
+          "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
+          "img": "images/aidux-perfil.png",
+          "alt": "images/aidux-perfil.png",
+          "href": "AIDux",
+          "cta": "AIDux"
+        },
+        {
+          "type": "worker",
+          "title": "AIJuris",
+          "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
+          "img": "images/aijuris-perfil.png",
+          "alt": "images/aijuris-perfil.png",
+          "href": "AIJuris",
+          "cta": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris"
+        }
+      ]
+    },
+    {
+      "id": "eventos",
+      "title": "Eventos",
+      "kind": "events",
+      "blocks": [
+        {
+          "type": "event",
+          "title": "Evento 1",
+          "date": "2026-08-15",
+          "body": "Sesión abierta para explorar cómo la IA puede ayudarnos a ganar tiempo y mejorar la calidad de vida."
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "title": "Blog",
+      "kind": "posts",
+      "blocks": [
+        {
+          "type": "post",
+          "title": "IA y personas",
+          "date": "2026-08-02",
+          "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más con menos esfuerzo y dedicar energía a lo que realmente importa."
+        },
+        {
+          "type": "post",
+          "title": "Riesgos y ventajas de los AIWorkers en las organizaciones",
+          "date": "2026-08-03",
+          "body": "Los AIWorkers pueden acelerar tareas repetitivas, mejorar la consistencia operativa y liberar tiempo para decisiones más estratégicas. Entre sus ventajas destacan la escalabilidad, la rapidez y la reducción de carga manual. Sin embargo, también implican riesgos: sesgos en los resultados, dependencia excesiva de la automatización, problemas de privacidad y la necesidad de supervisión humana. La clave está en desplegarlos con gobernanza, control y procesos claros."
+        }
+      ]
+    },
+    {
+      "id": "oficina",
+      "title": "Nuestra oficina",
+      "kind": "text",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "images/oficina-aievolutio.png",
+          "alt": "images/oficina-aievolutio.png",
+          "caption": "Espacio de trabajo y prototipado para construir herramientas con propósito."
+        }
+      ]
+    }
+  ]
+}
