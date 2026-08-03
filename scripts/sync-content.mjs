@@ -14,6 +14,43 @@ function normalize(value = '') {
   return String(value).trim().toLowerCase();
 }
 
+function getFirstNonEmpty(row, ...keys) {
+  for (const key of keys) {
+    const value = String(row[key] ?? '').trim();
+    if (value) return value;
+  }
+  return '';
+}
+
+function getMetaValue(row, fieldName) {
+  const field = String(fieldName ?? '').trim();
+  const candidates = [
+    getFirstNonEmpty(row, 'value', 'caption', 'body', 'title', 'label'),
+    getFirstNonEmpty(row, 'caption', 'value', 'body', 'title', 'label'),
+  ];
+
+  for (const candidate of candidates) {
+    const text = String(candidate ?? '').trim();
+    if (!text) continue;
+    if (normalize(text) === normalize(field)) continue;
+    if (normalize(text) === normalize(row.key)) continue;
+    if (normalize(text) === normalize(row.title)) continue;
+    return text;
+  }
+
+  return '';
+}
+
+function isImagePath(value = '') {
+  const text = String(value ?? '').trim();
+  if (!text) return false;
+  return /\.(png|jpe?g|svg|webp|gif|avif)(\?.*)?$/i.test(text)
+    || text.startsWith('images/')
+    || text.startsWith('/images/')
+    || text.startsWith('assets/')
+    || text.startsWith('/assets/');
+}
+
 function parseCsv(text) {
   const rows = [];
   let currentRow = [];
@@ -85,26 +122,42 @@ function parseCsv(text) {
 
 function buildBlock(row) {
   const blockType = normalize(row.blockType || row.type || 'card');
+  const title = getFirstNonEmpty(row, 'title', 'label', 'body');
+  const imageCandidate = getFirstNonEmpty(row, 'img', 'src', 'alt');
+  const imagePath = isImagePath(imageCandidate) ? imageCandidate : '';
+  const altText = getFirstNonEmpty(row, 'alt', 'title', 'label');
   const payload = {
     type: blockType,
-    title: row.title || row.label || '',
+    title,
     body: row.body || '',
   };
 
   if (blockType === 'card') {
     return {
       type: 'card',
-      title: row.title || row.label || '',
+      title,
       body: row.body || '',
-      img: row.img || '',
-      alt: row.alt || row.title || '',
+      img: imagePath,
+      alt: altText || title || '',
+    };
+  }
+
+  if (blockType === 'worker') {
+    return {
+      type: 'worker',
+      title,
+      body: row.body || '',
+      img: imagePath,
+      alt: altText || title || '',
+      href: getFirstNonEmpty(row, 'href', 'src', 'link'),
+      cta: getFirstNonEmpty(row, 'label', 'field', 'title'),
     };
   }
 
   if (blockType === 'post') {
     return {
       type: 'post',
-      title: row.title || row.label || '',
+      title,
       date: row.date || '',
       body: row.body || '',
     };
@@ -113,7 +166,7 @@ function buildBlock(row) {
   if (blockType === 'event') {
     return {
       type: 'event',
-      title: row.title || row.label || '',
+      title,
       date: row.date || '',
       body: row.body || '',
     };
@@ -130,27 +183,27 @@ function buildBlock(row) {
     return {
       type: 'quote',
       body: row.body || '',
-      author: row.author || '',
+      author: getFirstNonEmpty(row, 'author', 'alt', 'href', 'label', 'title'),
       version: row.version || '',
-      img: row.img || '',
-      alt: row.alt || '',
+      img: imagePath,
+      alt: altText || '',
     };
   }
 
   if (blockType === 'link') {
     return {
       type: 'link',
-      title: row.title || row.label || '',
-      href: row.href || row.link || '',
+      title,
+      href: getFirstNonEmpty(row, 'href', 'src', 'link'),
     };
   }
 
   if (blockType === 'image') {
     return {
       type: 'image',
-      src: row.src || row.img || '',
-      alt: row.alt || '',
-      caption: row.caption || '',
+      src: getFirstNonEmpty(row, 'src', 'img', 'alt'),
+      alt: altText || '',
+      caption: getFirstNonEmpty(row, 'caption', 'body', 'title'),
     };
   }
 
@@ -162,10 +215,10 @@ export function transformContent(content, rows) {
 
   const metaRows = rows.filter((row) => normalize(row.section) === 'meta');
   metaRows.forEach((row) => {
-    const field = (row.field || row.key || row.metaField || '').trim();
-    const value = (row.value || row.body || row.title || '').trim();
+    const field = getFirstNonEmpty(row, 'field', 'key', 'metaField', 'title').trim();
+    const value = getMetaValue(row, field).trim();
     if (field && nextContent.meta && Object.prototype.hasOwnProperty.call(nextContent.meta, field)) {
-      nextContent.meta[field] = value;
+      nextContent.meta[field] = value || nextContent.meta[field];
     }
   });
 

@@ -1,7 +1,7 @@
 {
   "meta": {
-    "siteName": "siteName",
-    "tagline": "tagline",
+    "siteName": "AIEvolutio",
+    "tagline": "IA para ganar tiempo y vida",
     "language": "es",
     "copyright": "© 2025 AIEvolutio — Comunidad",
     "license": "CC BY-SA 4.0"
@@ -67,9 +67,9 @@
         {
           "type": "quote",
           "body": "Ganar tiempo para la vida. De eso se trata.",
-          "author": "",
+          "author": "images/aivisio-oficina.png",
           "version": "",
-          "img": "",
+          "img": "images/aivisio-oficina.png",
           "alt": "images/aivisio-oficina.png"
         }
       ]
@@ -110,17 +110,29 @@
         {
           "type": "worker",
           "title": "AIVisio",
-          "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real."
+          "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
+          "img": "images/aivisio-perfil.png",
+          "alt": "images/aivisio-perfil.png",
+          "href": "AIVisio",
+          "cta": "AIVisio"
         },
         {
           "type": "worker",
           "title": "AIDux",
-          "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados."
+          "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
+          "img": "images/aidux-perfil.png",
+          "alt": "images/aidux-perfil.png",
+          "href": "AIDux",
+          "cta": "AIDux"
         },
         {
           "type": "worker",
           "title": "AIJuris",
-          "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil."
+          "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
+          "img": "images/aijuris-perfil.png",
+          "alt": "images/aijuris-perfil.png",
+          "href": "AIJuris",
+          "cta": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris"
         }
       ]
     },
@@ -157,9 +169,9 @@
       "blocks": [
         {
           "type": "image",
-          "src": "",
+          "src": "images/oficina-aievolutio.png",
           "alt": "images/oficina-aievolutio.png",
-          "caption": ""
+          "caption": "Espacio de trabajo y prototipado para construir herramientas con propósito."
         }
       ]
     }
