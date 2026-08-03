@@ -159,6 +159,12 @@
           "title": "IA y personas",
           "date": "2026-08-02",
           "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más con menos esfuerzo y dedicar energía a lo que realmente importa."
+        },
+        {
+          "type": "post",
+          "title": "Riesgos y ventajas de los AIWorkers en las organizaciones",
+          "date": "2026-08-03",
+          "body": "Los AIWorkers pueden acelerar tareas repetitivas, mejorar la consistencia operativa y liberar tiempo para decisiones más estratégicas. Entre sus ventajas destacan la escalabilidad, la rapidez y la reducción de carga manual. Sin embargo, también implican riesgos: sesgos en los resultados, dependencia excesiva de la automatización, problemas de privacidad y la necesidad de supervisión humana. La clave está en desplegarlos con gobernanza, control y procesos claros."
         }
       ]
     },
