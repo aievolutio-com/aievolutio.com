@@ -72,18 +72,20 @@
         details.append(summary);
         const bodyWrap = el('div', { class: 'worker-body' });
   if (b.img) bodyWrap.append(el('img', { src: b.img, alt: b.alt || name, class: 'avatar', 'data-lightbox': 'true', tabIndex: 0, role: 'button', title: 'Ampliar imagen' }));
+        const contentWrap = el('div', { class: 'worker-content' });
         if (Array.isArray(b.capabilities) && b.capabilities.length) {
           const ul = el('ul', { class: 'list list-primary' });
           b.capabilities.forEach(cap => ul.append(el('li', {}, [cap])));
-          bodyWrap.append(ul);
+          contentWrap.append(ul);
         }
-        if (b.body) bodyWrap.append(el('p', {}, [b.body]));
+        if (b.body) contentWrap.append(el('p', {}, [b.body]));
         // Optional external test link (e.g., to a GPT). Opens in new tab.
         if (b.href) {
           const label = b.cta || (name ? `Probar ${name}` : 'Probar');
           const a = el('a', { href: b.href, class: 'btn', target: '_blank', rel: 'noopener noreferrer' }, [label]);
-          bodyWrap.append(a);
+          contentWrap.append(a);
         }
+        bodyWrap.append(contentWrap);
         details.append(bodyWrap);
         container.append(details);
       }
