@@ -69,8 +69,8 @@
           "body": "Ganar tiempo para la vida. De eso se trata.",
           "author": "AIVISIO",
           "version": "",
-          "img": "images/aivisio-oficina.jpg",
-          "alt": "images/aivisio-oficina.png"
+          "img": "images/aivisio-oficina.png",
+          "alt": "AIVISIO"
         }
       ]
     },
@@ -111,28 +111,28 @@
           "type": "worker",
           "title": "AIVisio",
           "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
-          "img": "images/aivisio-perfil.jpg",
-          "alt": "images/aivisio-perfil.png",
-          "href": "AIVisio",
+          "img": "images/aivisio-perfil.png",
+          "alt": "AIVisio",
+          "href": "",
           "cta": "AIVisio"
         },
         {
           "type": "worker",
           "title": "AIDux",
           "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
-          "img": "images/aidux-perfil.jpg",
-          "alt": "images/aidux-perfil.png",
-          "href": "AIDux",
+          "img": "images/aidux-perfil.png",
+          "alt": "AIDux",
+          "href": "",
           "cta": "AIDux"
         },
         {
           "type": "worker",
           "title": "AIJuris",
           "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
-          "img": "images/aijuris-perfil.jpg",
-          "alt": "images/aijuris-perfil.png",
+          "img": "images/aijuris-perfil.png",
+          "alt": "AIJuris",
           "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
-          "cta": "AIJuris"
+          "cta": "Probar AIJuris"
         }
       ]
     },
@@ -159,12 +159,6 @@
           "title": "IA y personas",
           "date": "2026-08-02",
           "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más con menos esfuerzo y dedicar energía a lo que realmente importa."
-        },
-        {
-          "type": "post",
-          "title": "Riesgos y ventajas de los AIWorkers en las organizaciones",
-          "date": "2026-08-03",
-          "body": "Los AIWorkers pueden acelerar tareas repetitivas, mejorar la consistencia operativa y liberar tiempo para decisiones más estratégicas. Entre sus ventajas destacan la escalabilidad, la rapidez y la reducción de carga manual. Sin embargo, también implican riesgos: sesgos en los resultados, dependencia excesiva de la automatización, problemas de privacidad y la necesidad de supervisión humana. La clave está en desplegarlos con gobernanza, control y procesos claros."
         }
       ]
     },
