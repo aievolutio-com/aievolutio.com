@@ -1,0 +1,48 @@
+name: Generate weekly blog post
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 8 * * 1"
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+          token_format: access_token
+
+      - name: Generate article with Gemini
+        env:
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          GOOGLE_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          VERTEX_AI_LOCATION: us-central1
+          VERTEX_AI_MODEL: gemini-2.5-flash
+        run: node scripts/generate-blog-post.mjs
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "content: generate weekly blog post"
+          title: "content: generate weekly blog post"
+          body: "Artículo generado semanalmente por Gemini. Revisar antes de publicar."
+          branch: "chore/weekly-ai-blog-post"
+          delete-branch: true
