@@ -5,6 +5,4 @@
     "viewport": { "width": 360, "height": 640 }
   },
   "urls": ["http://localhost:8081/index.html"]
-  ,
-  "urls": ["http://localhost:8081/index.html"]
 }

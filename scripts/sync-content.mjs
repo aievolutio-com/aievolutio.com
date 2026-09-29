@@ -223,7 +223,12 @@ export function transformContent(content, rows) {
   });
 
   const sectionRows = rows.filter((row) => normalize(row.section) !== 'meta');
-  const groupedBySection = Object.groupBy(sectionRows, (row) => normalize(row.section));
+  const groupedBySection = sectionRows.reduce((groups, row) => {
+    const sectionName = normalize(row.section);
+    groups[sectionName] ||= [];
+    groups[sectionName].push(row);
+    return groups;
+  }, {});
 
   Object.entries(groupedBySection).forEach(([sectionName, entries]) => {
     const section = nextContent.sections.find((item) => normalize(item.id) === sectionName || normalize(item.title) === sectionName);
@@ -297,7 +302,9 @@ async function main() {
   console.log(`Updated ${path.relative(repoRoot, outputFilePath)}`);
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exitCode = 1;
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}

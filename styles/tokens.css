@@ -1,17 +1,17 @@
 :root {
   /* AIEvolutio Branding (blue + coral + sky) */
   --brand-primary: #05518b;           /* deep blue */
-  --brand-primary-contrast: #ffffff;
-  --brand-accent: #ff6d4d;            /* coral */
-  --brand-accent-contrast: #ffffff;
+  --brand-primary-contrast: #fff;
+  --brand-accent: #d54323;            /* coral */
+  --brand-accent-contrast: #fff;
   --brand-secondary: #4fa3d1;         /* sky blue */
 
   /* UI base */
-  --bg: #ffffff;
+  --bg: #fff;
   --surface: #f7f9fc;
-  --text: #222222; /* stronger for better contrast */
+  --text: #222; /* stronger for better contrast */
   --muted: #6b7280;
-  --link: var(--brand-secondary); /* default: corporate light blue */
+  --link: #297dab; /* accessible corporate blue */
   --ok: #22c55e; --warn: #f59e0b; --err: #ef4444;
 
   /* Typography */

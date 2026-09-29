@@ -69,7 +69,7 @@
           "body": "Ganar tiempo para la vida. De eso se trata.",
           "author": "AIVISIO",
           "version": "",
-          "img": "images/aivisio-oficina.png",
+          "img": "images/aivisio-oficina.jpg",
           "alt": "images/aivisio-oficina.png"
         }
       ]
@@ -111,7 +111,7 @@
           "type": "worker",
           "title": "AIVisio",
           "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
-          "img": "images/aivisio-perfil.png",
+          "img": "images/aivisio-perfil.jpg",
           "alt": "images/aivisio-perfil.png",
           "href": "AIVisio",
           "cta": "AIVisio"
@@ -120,7 +120,7 @@
           "type": "worker",
           "title": "AIDux",
           "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
-          "img": "images/aidux-perfil.png",
+          "img": "images/aidux-perfil.jpg",
           "alt": "images/aidux-perfil.png",
           "href": "AIDux",
           "cta": "AIDux"
@@ -129,7 +129,7 @@
           "type": "worker",
           "title": "AIJuris",
           "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
-          "img": "images/aijuris-perfil.png",
+          "img": "images/aijuris-perfil.jpg",
           "alt": "images/aijuris-perfil.png",
           "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
           "cta": "AIJuris"
@@ -175,7 +175,7 @@
       "blocks": [
         {
           "type": "image",
-          "src": "images/oficina-aievolutio.png",
+          "src": "images/oficina-aievolutio.jpg",
           "alt": "images/oficina-aievolutio.png",
           "caption": "Espacio de trabajo y prototipado para construir herramientas con propósito."
         }

@@ -4,6 +4,21 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s)); // eslint-disable-line no-unused-vars
 
+  function isAllowedHref(value) {
+    const href = String(value ?? '').trim();
+    if (!href) return false;
+    if (href.startsWith('#')) return true;
+    try {
+      return ['http:', 'https:', 'mailto:'].includes(new URL(href, document.baseURI).protocol);
+    } catch {
+      return false;
+    }
+  }
+
+  function isExternalHref(value) {
+    return /^https?:\/\//i.test(String(value ?? '').trim());
+  }
+
   async function loadContent(lang = 'es') {
     // Use relative path so it works on localhost, previews (with <base>), and production
     const res = await fetch(`content/content.${lang}.json`, { cache: 'no-store' });
@@ -16,13 +31,15 @@
     try {
       const res = await fetch('content/navigation.json', { cache: 'no-store' });
       if (res.ok) return await res.json();
-    } catch (_) { /* ignore */ }
+    } catch { /* ignore */ }
     return null;
   }
 
   function renderNav(items) {
     const nav = $('#nav');
-    nav.innerHTML = items.map(i => `<a href="${i.href}">${i.label}</a>`).join('');
+    nav.replaceChildren(...items.map((item) => el('a', {
+      href: isAllowedHref(item.href) ? item.href : '#home',
+    }, [item.label || 'Inicio'])));
   }
 
   function el(tag, attrs = {}, children = []) {
@@ -71,7 +88,7 @@
         ]);
         details.append(summary);
         const bodyWrap = el('div', { class: 'worker-body' });
-  if (b.img) bodyWrap.append(el('img', { src: b.img, alt: b.alt || name, class: 'avatar', 'data-lightbox': 'true', tabIndex: 0, role: 'button', title: 'Ampliar imagen' }));
+  if (b.img) bodyWrap.append(el('img', { src: b.img, alt: b.alt || name, loading: 'lazy', class: 'avatar', 'data-lightbox': 'true', tabIndex: 0, role: 'button', 'aria-label': 'Ampliar imagen', title: 'Ampliar imagen' }));
         const contentWrap = el('div', { class: 'worker-content' });
         if (Array.isArray(b.capabilities) && b.capabilities.length) {
           const ul = el('ul', { class: 'list list-primary' });
@@ -80,7 +97,7 @@
         }
         if (b.body) contentWrap.append(el('p', {}, [b.body]));
         // Optional external test link (e.g., to a GPT). Opens in new tab.
-        if (b.href) {
+        if (isExternalHref(b.href)) {
           const label = b.cta || (name ? `Probar ${name}` : 'Probar');
           const a = el('a', { href: b.href, class: 'btn', target: '_blank', rel: 'noopener noreferrer' }, [label]);
           contentWrap.append(a);
@@ -92,7 +109,7 @@
       if (b.type === 'quote') {
         // Support optional image and author/version. Format: "cita." (AUTHOR v.X.Y.Z)
         const fig = el('figure', { class: 'quote' });
-  if (b.img) fig.append(el('img', { src: b.img, alt: b.alt || b.author || '', 'data-lightbox': 'true', tabIndex: 0, role: 'button', title: 'Ampliar imagen' }));
+  if (b.img) fig.append(el('img', { src: b.img, alt: b.alt || b.author || '', loading: 'lazy', 'data-lightbox': 'true', tabIndex: 0, role: 'button', 'aria-label': 'Ampliar imagen', title: 'Ampliar imagen' }));
         const text = String(b.body || '').trim();
         const hasDot = /[.!?]$/.test(text);
         const quoted = '"' + (text.replace(/^"|"$/g, '')) + (hasDot ? '' : '.') + '"';
@@ -109,14 +126,14 @@
       }
       if (b.type === 'image') {
         const fig = el('figure', { class: 'image' });
-        fig.append(el('img', { src: b.src, alt: b.alt || '' }));
+        fig.append(el('img', { src: b.src, alt: b.alt || '', loading: 'lazy' }));
         if (b.caption) fig.append(el('figcaption', {}, [b.caption]));
         container.append(fig);
       }
-      if (b.type === 'link') container.append(el('a', { href: b.href, class: 'btn' }, [b.title || b.href]));
+      if (b.type === 'link' && isAllowedHref(b.href)) container.append(el('a', { href: b.href, class: 'btn' }, [b.title || b.href]));
       if (b.type === 'card') {
         const c = el('div', { class: 'card' });
-  if (b.img) c.append(el('img', { src: b.img, alt: b.alt || b.title || '', class: 'avatar', 'data-lightbox': 'true', tabIndex: 0, role: 'button', title: 'Ampliar imagen' }));
+  if (b.img) c.append(el('img', { src: b.img, alt: b.alt || b.title || '', loading: 'lazy', class: 'avatar', 'data-lightbox': 'true', tabIndex: 0, role: 'button', 'aria-label': 'Ampliar imagen', title: 'Ampliar imagen' }));
         c.append(el('h3', {}, [b.title || '']));
         if (b.body) {
           // Detect inline "Resultado típico:" to present it as a highlighted label on a new line
@@ -147,7 +164,7 @@
       if (b.type === 'post') container.append(el('article', { class: 'card' }, [el('h3', {}, [b.title || 'Entrada']), el('p', { class: 'muted' }, [b.date || '']), el('p', {}, [b.body || ''])]));
       if (b.type === 'links') {
         const row = el('div', { class: b.class || '' });
-        (b.items || []).forEach(it => row.append(el('a', { href: it.href, class: 'btn' }, [it.title || it.href])));
+        (b.items || []).filter((item) => isAllowedHref(item.href)).forEach((item) => row.append(el('a', { href: item.href, class: 'btn' }, [item.title || item.href])));
         container.append(row);
       }
       if (b.type === 'contact') {
@@ -175,7 +192,7 @@
           form.append(wrap);
         });
         // Honeypot (hidden)
-        const hpWrap = el('div', { class: 'hp', style: 'position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;' });
+        const hpWrap = el('div', { class: 'hp' });
         const hpInput = el('input', { type: 'text', name: hpName, tabIndex: -1, autoComplete: 'off' });
         hpWrap.append(hpInput);
         form.append(hpWrap);
