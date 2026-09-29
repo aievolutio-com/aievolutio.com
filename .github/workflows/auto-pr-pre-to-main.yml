@@ -2,7 +2,7 @@ name: Auto PR pre -> main
 
 on:
   push:
-    branches: [ pre ]
+    branches: [pre]
 
 permissions:
   contents: write
@@ -34,6 +34,7 @@ jobs:
 
       - name: Enable auto-merge (squash)
         if: ${{ steps.ensure_pr.outputs.number }}
+        continue-on-error: true
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
