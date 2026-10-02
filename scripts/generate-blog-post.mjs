@@ -77,7 +77,6 @@ if (!generatedText) throw new Error("Vertex AI no devolvió contenido.");
 const generated = JSON.parse(generatedText);
 const title = String(generated.title || "").trim();
 const body = String(generated.body || "")
-  .replace(/\*\*(.*?)\*\*/g, "$1")
   .replace(/^#{1,6}\s+/gm, "")
   .trim();
 

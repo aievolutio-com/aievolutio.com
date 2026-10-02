@@ -42,6 +42,28 @@
     }, [item.label || 'Inicio'])));
   }
 
+  function renderPostBody(body) {
+    const content = el('div', { class: 'post-body' });
+    const paragraphs = String(body || '').trim().split(/\n\s*\n/).filter(Boolean);
+
+    paragraphs.forEach((paragraph) => {
+      const element = el('p');
+      paragraph.split('\n').forEach((line, index) => {
+        if (index) element.append(el('br'));
+        line.split(/(\*\*.+?\*\*)/g).forEach((part) => {
+          if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+            element.append(el('strong', {}, [part.slice(2, -2)]));
+          } else {
+            element.append(part);
+          }
+        });
+      });
+      content.append(element);
+    });
+
+    return content;
+  }
+
   function el(tag, attrs = {}, children = []) {
     const node = document.createElement(tag);
     Object.entries(attrs).forEach(([k, v]) => {
@@ -161,7 +183,13 @@
         container.append(c);
       }
       if (b.type === 'event') container.append(el('div', { class: 'card', role: 'article' }, [el('h3', {}, [b.title || 'Evento']), el('p', {}, [b.date || '']), el('p', {}, [b.body || ''])]));
-      if (b.type === 'post') container.append(el('article', { class: 'card' }, [el('h3', {}, [b.title || 'Entrada']), el('p', { class: 'muted' }, [b.date || '']), el('p', {}, [b.body || ''])]));
+      if (b.type === 'post') {
+        container.append(el('article', { class: 'card' }, [
+          el('h3', {}, [b.title || 'Entrada']),
+          el('p', { class: 'muted' }, [b.date || '']),
+          renderPostBody(b.body),
+        ]));
+      }
       if (b.type === 'links') {
         const row = el('div', { class: b.class || '' });
         (b.items || []).filter((item) => isAllowedHref(item.href)).forEach((item) => row.append(el('a', { href: item.href, class: 'btn' }, [item.title || item.href])));
