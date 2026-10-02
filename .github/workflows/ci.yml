@@ -53,7 +53,7 @@ jobs:
         run: pip install --upgrade pip html5validator
 
       - name: Validate HTML
-        run: html5validator --root .
+        run: html5validator --root . --blacklist node_modules
 
       - name: Accessibility (pa11y-ci)
         run: npm run a11y
