@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "siteName": "AIEvolutio",
+    "tagline": "IA para ganar tiempo y vida",
+    "language": "es",
+    "copyright": "© 2025 AIEvolutio — Comunidad",
+    "license": "CC BY-SA 4.0"
+  },
+  "navigation": [
+    {
+      "id": "home",
+      "label": "Inicio",
+      "href": "#home"
+    },
+    {
+      "id": "vision",
+      "label": "Visión",
+      "href": "#vision"
+    },
+    {
+      "id": "iniciativas",
+      "label": "Iniciativas",
+      "href": "#iniciativas"
+    },
+    {
+      "id": "eventos",
+      "label": "Eventos",
+      "href": "#eventos"
+    },
+    {
+      "id": "blog",
+      "label": "Blog",
+      "href": "#blog"
+    },
+    {
+      "id": "aiworkers",
+      "label": "AIWorkers",
+      "href": "#aiworkers"
+    },
+    {
+      "id": "oficina",
+      "label": "Oficina",
+      "href": "#oficina"
+    }
+  ],
+  "sections": [
+    {
+      "id": "home",
+      "title": "AIEvolutio",
+      "kind": "hero",
+      "blocks": [
+        {
+          "type": "p",
+          "body": "AIEvolutio ayuda a personas y equipos a recuperar tiempo, mejorar decisiones y construir procesos más inteligentes con IA."
+        }
+      ]
+    },
+    {
+      "id": "vision",
+      "title": "Visión",
+      "kind": "text",
+      "blocks": [
+        {
+          "type": "p",
+          "body": "La IA no reemplaza el criterio humano; lo amplifica. Diseñamos herramientas y procesos que reducen fricción y liberan energía para la creatividad, el impacto y la vida."
+        },
+        {
+          "type": "quote",
+          "body": "Ganar tiempo para la vida. De eso se trata.",
+          "author": "AIVISIO",
+          "version": "",
+          "img": "images/aivisio-oficina.jpg",
+          "alt": "images/aivisio-oficina.png"
+        }
+      ]
+    },
+    {
+      "id": "iniciativas",
+      "title": "Iniciativas",
+      "kind": "grid",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "AIWorkers & AITeams",
+          "body": "Compañeros digitales que ejecutan tareas, coordinan procesos y escalan resultados en equipo con foco en productividad y calidad.",
+          "img": "",
+          "alt": "AIWorkers & AITeams"
+        },
+        {
+          "type": "card",
+          "title": "Aprendizaje abierto",
+          "body": "Guías y microcursos para usar la IA como aliada en el trabajo diario, con enfoque práctico, ético y humano.",
+          "img": "",
+          "alt": "Aprendizaje abierto"
+        },
+        {
+          "type": "card",
+          "title": "Prototipos públicos",
+          "body": "Ejemplos abiertos de cómo la IA ayuda a ahorrar tiempo, liberar capacidad y generar valor real en la práctica.",
+          "img": "",
+          "alt": "Prototipos públicos"
+        }
+      ]
+    },
+    {
+      "id": "aiworkers",
+      "title": "AIWorkers",
+      "kind": "text",
+      "blocks": [
+        {
+          "type": "worker",
+          "title": "AIVisio",
+          "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
+          "img": "images/aivisio-perfil.jpg",
+          "alt": "images/aivisio-perfil.png",
+          "href": "AIVisio",
+          "cta": "AIVisio"
+        },
+        {
+          "type": "worker",
+          "title": "AIDux",
+          "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
+          "img": "images/aidux-perfil.jpg",
+          "alt": "images/aidux-perfil.png",
+          "href": "AIDux",
+          "cta": "AIDux"
+        },
+        {
+          "type": "worker",
+          "title": "AIJuris",
+          "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
+          "img": "images/aijuris-perfil.jpg",
+          "alt": "images/aijuris-perfil.png",
+          "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
+          "cta": "AIJuris"
+        }
+      ]
+    },
+    {
+      "id": "eventos",
+      "title": "Eventos",
+      "kind": "events",
+      "blocks": [
+        {
+          "type": "event",
+          "title": "Evento 1",
+          "date": "2026-08-15",
+          "body": "Sesión abierta para explorar cómo la IA puede ayudarnos a ganar tiempo y mejorar la calidad de vida."
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "title": "Blog",
+      "kind": "posts",
+      "blocks": [
+        {
+          "type": "post",
+          "title": "IA y personas",
+          "date": "2026-08-02",
+          "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más con menos esfuerzo y dedicar energía a lo que realmente importa."
+        },
+        {
+          "type": "post",
+          "title": "Riesgos y ventajas de los AIWorkers en las organizaciones",
+          "date": "2026-08-03",
+          "body": "Los AIWorkers pueden acelerar tareas repetitivas, mejorar la consistencia operativa y liberar tiempo para decisiones más estratégicas. Entre sus ventajas destacan la escalabilidad, la rapidez y la reducción de carga manual. Sin embargo, también implican riesgos: sesgos en los resultados, dependencia excesiva de la automatización, problemas de privacidad y la necesidad de supervisión humana. La clave está en desplegarlos con gobernanza, control y procesos claros."
+        },
+        {
+          "type": "post",
+          "title": "Desbloqueando Horas Valiosas: Una Guía Práctica para Medir el Impacto de tu Automatización",
+          "date": "2026-09-29",
+          "body": "En AIEvolutio, creemos firmemente en el poder de la automatización inteligente para transformar la forma en que trabajamos. Hablamos de liberar a los profesionales y a los equipos de tareas repetitivas, permitiéndoles enfocar su energía en aquello que realmente importa: la creatividad, la estrategia y la conexión humana. Pero, ¿cómo saber si realmente estamos ganando ese tiempo tan preciado? La intuición es un buen punto de partida, pero la medición es la que nos da la certeza.\n\nMedir el tiempo recuperado no es solo una métrica; es una estrategia. Nos permite validar nuestras inversiones en tecnología, identificar dónde podemos automatizar más y, lo más importante, demostrar el valor tangible de estas herramientas a nuestro equipo y a la dirección. No se trata de justificar la tecnología por sí misma, sino de entender cómo está potenciando a las personas y los objetivos del negocio.\n\nAquí te explicamos una forma sencilla y práctica de empezar a cuantificar esas horas liberadas:\n\n**1. Identifica la Tarea a Automatizar y Establece una Línea Base:**\nAntes de automatizar, elige una tarea específica y repetitiva. Podría ser la generación de informes mensuales, la clasificación de correos electrónicos, la entrada de datos en una hoja de cálculo o la publicación de contenido en redes sociales. Luego, mide cuánto tiempo le toma a tu equipo realizar esta tarea de forma manual. Sé honesto y realista. No midas solo una vez; toma un promedio de varias instancias para obtener una cifra representativa. Por ejemplo, \"generar el informe X toma 3 horas cada mes\".\n\n**2. Implementa la Automatización:**\nUna vez que tengas tu línea base, introduce la herramienta o el proceso de automatización. Puede ser una plantilla inteligente, un script simple, una integración entre plataformas o una solución de IA más avanzada. Asegúrate de que el equipo reciba la capacitación necesaria para usarla eficazmente.\n\n**3. Mide el Tiempo Post-Automatización:**\nAhora, observa cuánto tiempo se invierte en la tarea una vez que la automatización está en marcha. Si la tarea se automatiza por completo, el tiempo invertido por el equipo será cero o muy cercano a cero (quizás solo para supervisión). Si la automatización asiste en la tarea, mide el tiempo que ahora se requiere. Siguiendo el ejemplo anterior, si el informe X ahora se genera en 15 minutos gracias a la automatización, esa es tu nueva cifra.\n\n**4. Calcula el Tiempo Recuperado y Extrapola:**\nLa matemática es sencilla: resta el tiempo post-automatización del tiempo pre-automatización. En nuestro ejemplo, (3 horas - 0.25 horas = 2.75 horas recuperadas por informe). Ahora, multiplica este ahorro por la frecuencia con la que se realiza la tarea. Si es mensual, son 2.75 horas al mes. Si se hace a diario, ¡el ahorro se dispara! Suma estos ahorros de tiempo de todas las tareas automatizadas para obtener una visión global.\n\n**5. Considera el Contexto y el Impacto Cualitativo:**\nMás allá de los números puros, piensa en lo que significa ese tiempo recuperado. ¿Se están dedicando esas horas a proyectos estratégicos? ¿Se está reduciendo el estrés del equipo? ¿Ha mejorado la calidad del trabajo al eliminar errores manuales? Estos beneficios cualitativos, aunque difíciles de cuantificar en horas, son igualmente valiosos y refuerzan el impacto positivo de la automatización.\n\n**Herramientas para la medición:**\nNo necesitas software complejo. Para empezar, una simple hoja de cálculo puede ser tu mejor aliada. Puedes usar herramientas de seguimiento de tiempo (como Toggl, Clockify, etc.) para establecer las líneas base de forma más precisa. Algunas plataformas de automatización incluso ofrecen métricas de uso que pueden ayudarte a estimar el tiempo de ejecución.\n\nEl objetivo final de medir el tiempo recuperado no es solo acumular cifras, sino entender cómo estamos reasignando nuestra energía. Se trata de empoderar a tu equipo para que se enfoque en el pensamiento estratégico, la innovación y las interacciones de alto valor, en lugar de en la rutina. Al cuantificar el impacto, no solo demuestras el valor de la automatización, sino que también inspiras una cultura de mejora continua y eficiencia inteligente en tu organización. Es una inversión de tiempo que, sin duda, te devolverá con creces."
+        }
+      ]
+    },
+    {
+      "id": "oficina",
+      "title": "Nuestra oficina",
+      "kind": "text",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "images/oficina-aievolutio.jpg",
+          "alt": "images/oficina-aievolutio.png",
+          "caption": "Espacio de trabajo y prototipado para construir herramientas con propósito."
+        }
+      ]
+    }
+  ]
+}
