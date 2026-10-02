@@ -41,6 +41,7 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v6
         with:
+          add-paths: content/content.es.json
           commit-message: "content: generate weekly blog post"
           title: "content: generate weekly blog post"
           body: "Artículo generado semanalmente por Gemini. Revisar antes de publicar."
