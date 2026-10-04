@@ -35,6 +35,7 @@ python -m http.server 8080
 - `feature/*` → PR automático a `pre` (título semántico). Auto‑merge cuando CI está verde.
 - `pre` → PR automático a `main` ("ci: sync pre -> main"). Auto‑merge cuando CI está verde.
 - `gh-pages` → rama de publicación (no editar a mano).
+- Los flujos programados de blog y Sheets publican directamente en `pre`, ejecutan CI y despliegan a `gh-pages` sólo si todas las validaciones pasan; no requieren PR ni aprobación manual.
 
 Protecciones: sólo mediante PRs a `main`.
 
@@ -46,6 +47,8 @@ Workflow: `.github/workflows/gh-pages.yml` (nombre: "Deploy site"/"Deploy to gh�
 	- Use workflow from: `pre` (o `main`)
 	- ref: la misma rama
 - Automático: en cada push a `pre`/`main`.
+
+Los contenidos programados siguen un flujo independiente: escriben en `pre`, despachan CI explícitamente (porque los pushes con `GITHUB_TOKEN` no disparan otros workflows) y el job final de CI despliega el mismo commit validado.
 
 El deploy reescribe `gh-pages` con `force_orphan` y excluye `CNAME`.
 
@@ -76,4 +79,3 @@ El deploy reescribe `gh-pages` con `force_orphan` y excluye `CNAME`.
 ## Licencia
 
 MIT (si no indicas lo contrario).
-

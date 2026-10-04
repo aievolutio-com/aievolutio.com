@@ -16,6 +16,7 @@ python -m http.server 8080
 - Trabaja en una rama (feature/*) → se abre PR a `pre` automáticamente.
 - Al fusionar en `pre`, se abre PR a `main` (título: `ci: sync pre -> main`).
 - Al fusionar en `main`, se despliega a GitHub Pages.
+- Los flujos programados de blog y Sheets publican directamente en `pre`, despachan CI y llegan a producción sólo si todas las validaciones pasan. No crean PR y no necesitan aprobación manual.
 
 ## Desplegar manualmente (si lo necesitas ya)
 1) Actions → "Deploy to gh-pages" (o "Deploy site").

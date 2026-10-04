@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: [ pre, main ]
   push:
@@ -68,3 +69,27 @@ jobs:
             kill "$(cat server.pid)" || true
             rm -f server.pid
           fi
+
+  deploy-scheduled-content:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/pre' }}
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout validated commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Add .nojekyll
+        run: echo > .nojekyll
+
+      - name: Deploy validated content to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          exclude_assets: |
+            .github,docs,*.md,*.yml,*.yaml
+          force_orphan: true
