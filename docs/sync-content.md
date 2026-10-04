@@ -52,20 +52,40 @@ https://docs.google.com/spreadsheets/d/1tSkjYwLalmExHT0V19wP2CCQ8zoQ0K-gH2slPZQv
 
 Si esa URL devuelve un error de acceso, la hoja aún no está publicada o no está accesible públicamente.
 
-## 3. Conectar GitHub Actions
+## 3. Configurar la sincronización
 
-En GitHub:
-
-1. Abre tu repositorio.
-2. Ve a Settings → Secrets and variables → Actions.
-3. Crea una variable llamada `SHEET_CSV_URL` con la URL CSV publicada.
+El workflow `Sync content from Sheets` usa la URL CSV pública configurada en
+`.github/workflows/sync-content.yml`. Si cambia la hoja, actualiza
+`SHEET_CSV_URL` en ese workflow y publica el cambio en `pre`.
 
 ## 4. Ejecutar la sincronización
 
-La sincronización está configurada para ejecutarse automáticamente una vez a la semana. También puedes lanzarla manualmente desde Actions o con:
+La sincronización se ejecuta los lunes a las 08:00 UTC. También se puede lanzar
+manualmente desde Actions o con:
 
 ```powershell
-npm run sync:content
+gh workflow run sync-content.yml --ref pre
 ```
 
-Si no existe una variable `SHEET_CSV_URL`, el script usará el ejemplo local en `content/sync.example.csv`.
+El workflow publica los cambios directamente en `pre`, ejecuta CI y despliega
+a producción solo si pasan las validaciones. No necesita PR ni aprobación
+manual. Para una ejecución local, `npm run sync:content` usa el ejemplo
+`content/sync.example.csv`, salvo que se configure `SHEET_CSV_URL`.
+
+## 5. Generar y publicar un artículo con IA
+
+El workflow `Generate weekly blog post` genera un artículo con Gemini cada lunes
+a las 08:15 UTC. Necesita las variables de repositorio
+`GCP_WORKLOAD_IDENTITY_PROVIDER`, `GCP_SERVICE_ACCOUNT` y `GCP_PROJECT_ID`,
+además de la configuración de Workload Identity Federation en Google Cloud.
+
+Para ejecutarlo ahora, sin esperar al horario semanal:
+
+```powershell
+gh workflow run generate-weekly-blog.yml --ref pre
+```
+
+El workflow añade el artículo a `content/content.es.json`, lo publica en `pre`,
+lanza CI y despliega automáticamente a producción si todas las validaciones
+pasan. Consulta Actions → `Generate weekly blog post` y luego el run de CI para
+ver el resultado y cualquier error de autenticación o publicación.
