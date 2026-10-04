@@ -46,7 +46,7 @@ Workflow: `.github/workflows/gh-pages.yml` (nombre: "Deploy site"/"Deploy to gh�
 - Manual: Actions → Deploy → Run workflow →
 	- Use workflow from: `pre` (o `main`)
 	- ref: la misma rama
-- Automático: en cada push a `pre`/`main`.
+- Automático: en cada push a `main`; los contenidos programados desde `pre` se despliegan tras pasar CI.
 
 Los contenidos programados siguen un flujo independiente: escriben en `pre`, despachan CI explícitamente (porque los pushes con `GITHUB_TOKEN` no disparan otros workflows) y el job final de CI despliega el mismo commit validado.
 
