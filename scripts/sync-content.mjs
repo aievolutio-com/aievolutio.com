@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -233,10 +233,50 @@ export function transformContent(content, rows) {
   Object.entries(groupedBySection).forEach(([sectionName, entries]) => {
     const section = nextContent.sections.find((item) => normalize(item.id) === sectionName || normalize(item.title) === sectionName);
     if (!section) return;
-    section.blocks = (entries || []).map((entry) => buildBlock(entry));
+    const importedBlocks = (entries || []).map((entry) => buildBlock(entry));
+    if (normalize(section.id) === 'blog') {
+      const importedPostTitles = new Set(
+        importedBlocks
+          .filter((block) => block.type === 'post')
+          .map((block) => normalize(block.title)),
+      );
+      const existingPosts = (section.blocks || []).filter(
+        (block) =>
+          block.type === 'post' &&
+          !importedPostTitles.has(normalize(block.title)),
+      );
+      section.blocks = [...importedBlocks, ...existingPosts];
+    } else {
+      section.blocks = importedBlocks;
+    }
   });
 
   return nextContent;
+}
+
+export async function preferSmallerLocalJpegImages(content) {
+  for (const section of content.sections || []) {
+    for (const block of section.blocks || []) {
+      for (const field of ['img', 'src']) {
+        const imagePath = block[field];
+        if (typeof imagePath !== 'string') continue;
+        const match = imagePath.match(/^(images\/.+)\.png$/i);
+        if (!match) continue;
+
+        const jpegPath = `${match[1]}.jpg`;
+        try {
+          const [pngStats, jpegStats] = await Promise.all([
+            stat(path.join(repoRoot, ...imagePath.split('/'))),
+            stat(path.join(repoRoot, ...jpegPath.split('/'))),
+          ]);
+          if (jpegStats.size < pngStats.size) block[field] = jpegPath;
+        } catch (error) {
+          if (error.code !== 'ENOENT') throw error;
+        }
+      }
+    }
+  }
+  return content;
 }
 
 async function readInput(source) {
@@ -294,7 +334,9 @@ async function main() {
 
   const currentContent = JSON.parse(await readFile(contentFilePath, 'utf8'));
   const rows = parseCsv(contentText);
-  const nextContent = transformContent(currentContent, rows);
+  const nextContent = await preferSmallerLocalJpegImages(
+    transformContent(currentContent, rows),
+  );
 
   const output = JSON.stringify(nextContent, null, 2) + '\n';
   const outputFilePath = path.isAbsolute(outputPath) ? outputPath : path.join(repoRoot, outputPath);
