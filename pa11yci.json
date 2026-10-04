@@ -2,7 +2,8 @@
   "defaults": {
     "standard": "WCAG2AA",
     "timeout": 30000,
-    "viewport": { "width": 360, "height": 640 }
+    "viewport": { "width": 360, "height": 640 },
+    "chromeLaunchConfig": { "args": ["--no-sandbox", "--disable-setuid-sandbox"] }
   },
   "urls": ["http://localhost:8081/index.html"]
 }
