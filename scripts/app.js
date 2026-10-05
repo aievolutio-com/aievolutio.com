@@ -210,7 +210,7 @@
           bodyWrap.append(el('div', {
             class: 'worker-avatar',
             'aria-hidden': 'true',
-          }, [name.replace(/^AI/, '').slice(0, 2).toUpperCase()]));
+          }, [el('span', {}, [name.replace(/^AI/, '').slice(0, 2).toUpperCase()])]));
         }
         const contentWrap = el('div', { class: 'worker-content' });
         if (Array.isArray(b.capabilities) && b.capabilities.length) {
