@@ -2,13 +2,10 @@ name: Sync content from Sheets
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 8 * * 1'
   push:
     paths:
       - 'content/sync.example.csv'
       - 'scripts/sync-content.mjs'
-      - '.github/workflows/sync-content.yml'
 
 permissions:
   actions: write

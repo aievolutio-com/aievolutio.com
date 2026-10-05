@@ -184,11 +184,22 @@
       }
       if (b.type === 'event') container.append(el('div', { class: 'card', role: 'article' }, [el('h3', {}, [b.title || 'Evento']), el('p', {}, [b.date || '']), el('p', {}, [b.body || ''])]));
       if (b.type === 'post') {
-        container.append(el('article', { class: 'card' }, [
+        const article = el('article', { class: 'card' }, [
           el('h3', {}, [b.title || 'Entrada']),
-          el('p', { class: 'muted' }, [b.date || '']),
-          renderPostBody(b.body),
-        ]));
+          el('p', { class: 'muted' }, [
+            [b.date, b.author].filter(Boolean).join(' · '),
+          ]),
+        ]);
+        if (b.img) {
+          article.append(el('img', {
+            src: b.img,
+            alt: b.alt || `Imagen editorial para ${b.title || 'el artículo'}`,
+            class: 'post-cover',
+            loading: 'lazy',
+          }));
+        }
+        article.append(renderPostBody(b.body));
+        container.append(article);
       }
       if (b.type === 'links') {
         const row = el('div', { class: b.class || '' });

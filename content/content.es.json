@@ -133,6 +133,60 @@
           "alt": "AIJuris",
           "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
           "cta": "Probar AIJuris"
+        },
+        {
+          "type": "worker",
+          "title": "AIUX",
+          "body": "Diseño de experiencia, accesibilidad y arquitectura de información para que cada recorrido sea claro y fácil de usar.",
+          "img": "",
+          "alt": "Perfil AIUX",
+          "href": "",
+          "cta": "AIUX"
+        },
+        {
+          "type": "worker",
+          "title": "AICX",
+          "body": "Experiencia de cliente y mejora de servicios, desde la escucha de necesidades hasta la resolución de fricciones.",
+          "img": "",
+          "alt": "Perfil AICX",
+          "href": "",
+          "cta": "AICX"
+        },
+        {
+          "type": "worker",
+          "title": "AIMarketing",
+          "body": "Estrategia de marketing, contenidos y marca con foco en utilidad, claridad y confianza.",
+          "img": "",
+          "alt": "Perfil AIMarketing",
+          "href": "",
+          "cta": "AIMarketing"
+        },
+        {
+          "type": "worker",
+          "title": "AIArquitecto",
+          "body": "Arquitectura técnica, calidad y mantenibilidad. Propone cambios pequeños que se validan antes de publicar.",
+          "img": "",
+          "alt": "Perfil AIArquitecto",
+          "href": "",
+          "cta": "AIArquitecto"
+        },
+        {
+          "type": "worker",
+          "title": "AICambio",
+          "body": "Gestión del cambio y adopción responsable: acompaña la evolución de procesos, equipos y capacidades.",
+          "img": "",
+          "alt": "Perfil AICambio",
+          "href": "",
+          "cta": "AICambio"
+        },
+        {
+          "type": "worker",
+          "title": "AIWorker Editorial",
+          "body": "Investigación y contenidos prácticos en español, revisados para mantener coherencia, claridad y rigor.",
+          "img": "",
+          "alt": "Perfil AIWorker Editorial",
+          "href": "",
+          "cta": "AIWorker Editorial"
         }
       ]
     },

@@ -93,3 +93,34 @@ jobs:
           exclude_assets: |
             .github,docs,*.md,*.yml,*.yaml
           force_orphan: true
+
+  publish-ai-evolution:
+    if: ${{ github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/ai/daily-evolution/') }}
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: scheduled-content-publication
+      cancel-in-progress: false
+    steps:
+      - name: Checkout the validated candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Add .nojekyll
+        run: echo > .nojekyll
+
+      - name: Deploy validated candidate to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          exclude_assets: |
+            .github,docs,*.md,*.yml,*.yaml
+          force_orphan: true
+
+      - name: Promote deployed candidate to pre
+        run: git push origin "${GITHUB_SHA}:refs/heads/pre"
