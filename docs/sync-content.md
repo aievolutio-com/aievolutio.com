@@ -16,8 +16,11 @@ manualmente desde Actions o con:
 gh workflow run autonomous-ai-team.yml --ref pre
 ```
 
-El equipo reúne los perfiles CEO, CIO, UX, CX, Marketing, Arquitectura,
-Gestión del Cambio y Editorial. Genera como máximo un artículo al día, y
+El equipo reúne CEO (AIVisio), CIO (AIDux), UX (AIUsus), CX (AIExperientia),
+Marketing (AIMercatus), Arquitectura (AIArchitectus), Gestión del Cambio
+(AIMutatio) y Editorial (AILitterae). Los nombres siguen la convención `AI` +
+un término de raíz latina que representa su función; el pipeline valida que
+los perfiles canónicos sigan presentes. Genera como máximo un artículo al día, y
 solicita como máximo una imagen editorial; si Imagen no está disponible, el
 artículo puede publicarse sin imagen. El límite técnico es de 13 llamadas de
 texto y dos intentos de autocorrección. Estos límites reducen el consumo, pero
@@ -32,6 +35,16 @@ el enlace a los logs. No se requiere aprobación de PR.
 Se requieren las variables `GCP_PROJECT_ID`, `GCP_WORKLOAD_IDENTITY_PROVIDER`
 y `GCP_SERVICE_ACCOUNT` en el repositorio, así como Workload Identity
 Federation y permisos en Vertex AI para Gemini y, opcionalmente, Imagen.
+
+## Evolución de la experiencia del sitio
+
+El sitio se organiza en páginas estáticas accesibles directamente: `index.html`
+para la presentación, `equipo.html` para los perfiles y `blog.html` para el
+archivo completo. La portada muestra solo tres publicaciones recientes y enlaza
+cada una con su artículo en el archivo, para que las entradas anteriores sigan
+siendo fáciles de encontrar. Las imágenes de perfil existentes se muestran
+cuando están disponibles; los perfiles sin retrato usan una identidad gráfica
+provisional en lugar de simular una fotografía.
 
 ## Sincronización manual desde Google Sheets
 

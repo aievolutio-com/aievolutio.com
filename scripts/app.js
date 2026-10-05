@@ -37,9 +37,74 @@
 
   function renderNav(items) {
     const nav = $('#nav');
-    nav.replaceChildren(...items.map((item) => el('a', {
-      href: isAllowedHref(item.href) ? item.href : '#home',
-    }, [item.label || 'Inicio'])));
+    const page = document.body.dataset.page || 'home';
+    const activeId = page === 'blog' ? 'blog' : page === 'team' ? 'aiworkers' : 'home';
+    nav.replaceChildren(...items.map((item) => {
+      const attrs = {
+        href: isAllowedHref(item.href) ? item.href : 'index.html',
+      };
+      if (item.id === activeId) attrs['aria-current'] = 'page';
+      return el('a', attrs, [item.label || 'Inicio']);
+    }));
+  }
+
+  function articleId(post) {
+    const slug = `${post.date || ''}-${post.title || 'articulo'}`
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+    return `articulo-${slug}`;
+  }
+
+  function sortedPosts(blocks) {
+    return blocks
+      .filter((block) => block.type === 'post')
+      .sort((left, right) => String(right.date || '').localeCompare(String(left.date || '')));
+  }
+
+  function postSummary(body, maxLength = 280) {
+    const text = String(body || '').replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
+    if (text.length <= maxLength) return text;
+    return `${text.slice(0, maxLength).replace(/\s+\S*$/, '')}…`;
+  }
+
+  function formatPostDate(date) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date || ''))) return String(date || '');
+    return new Intl.DateTimeFormat('es-ES', {
+      dateStyle: 'long',
+      timeZone: 'UTC',
+    }).format(new Date(`${date}T12:00:00Z`));
+  }
+
+  function renderPost(post, preview) {
+    const id = articleId(post);
+    const articleAttrs = { class: 'card post-card' };
+    if (!preview) articleAttrs.id = id;
+    const article = el('article', articleAttrs, []);
+    const title = el('h3');
+    if (preview) {
+      title.append(el('a', { href: `blog.html#${id}` }, [post.title || 'Entrada']));
+    } else {
+      title.textContent = post.title || 'Entrada';
+    }
+    article.append(title);
+    const metadata = [formatPostDate(post.date), post.author].filter(Boolean).join(' · ');
+    article.append(el('p', { class: 'muted post-meta' }, [metadata]));
+    if (post.img) {
+      article.append(el('img', {
+        src: post.img,
+        alt: post.alt || `Imagen editorial para ${post.title || 'el artículo'}`,
+        class: 'post-cover',
+        loading: 'lazy',
+      }));
+    }
+    article.append(renderPostBody(preview ? postSummary(post.body) : post.body));
+    if (preview) {
+      article.append(el('a', { href: `blog.html#${id}`, class: 'text-link' }, ['Leer artículo']));
+    }
+    return article;
   }
 
   function renderPostBody(body) {
@@ -78,12 +143,31 @@
 
   function renderSection(sec) {
     const section = el('section', { id: sec.id, class: 'section' }, []);
-    const h = el('h2', {}, [sec.title]);
+    const page = document.body.dataset.page || 'home';
+    const sectionTitle = sec.id === 'blog' && page === 'home'
+      ? 'Ideas recientes'
+      : sec.id === 'blog' && page === 'blog'
+        ? 'Archivo de artículos'
+        : sec.title;
+    const h = el('h2', {}, [sectionTitle]);
     section.append(h);
 
-    const container = el('div', { class: sec.kind === 'grid' ? 'grid' : '' });
+    const containerClass = sec.kind === 'grid' || (sec.id === 'aiworkers' && page === 'team')
+      ? 'grid'
+      : sec.id === 'blog'
+        ? 'grid post-grid'
+        : '';
+    const container = el('div', { class: containerClass });
+    let blocks = sec.blocks || [];
+    if (sec.id === 'aiworkers' && page === 'home') {
+      blocks = blocks.filter((block) => block.type === 'worker').slice(0, 3);
+    }
+    if (sec.id === 'blog') {
+      const posts = sortedPosts(blocks);
+      blocks = page === 'blog' ? posts : posts.slice(0, 3);
+    }
 
-  (sec.blocks || []).forEach(b => {
+    blocks.forEach(b => {
       if (b.type === 'p') {
         const attrs = {};
         if (b.class) attrs.class = b.class;
@@ -99,7 +183,7 @@
       }
       if (b.type === 'worker') {
         // Collapsible worker profile: summary shows name + role + hint; details show photo + capabilities
-        const details = el('details', { class: 'worker' });
+        const details = el('details', { class: 'worker', open: page === 'team' });
         const name = b.name || b.title || '';
         const role = b.role || '';
         const summary = el('summary', {}, [
@@ -110,7 +194,24 @@
         ]);
         details.append(summary);
         const bodyWrap = el('div', { class: 'worker-body' });
-  if (b.img) bodyWrap.append(el('img', { src: b.img, alt: b.alt || name, loading: 'lazy', class: 'avatar', 'data-lightbox': 'true', tabIndex: 0, role: 'button', 'aria-label': 'Ampliar imagen', title: 'Ampliar imagen' }));
+        if (b.img) {
+          bodyWrap.append(el('img', {
+            src: b.img,
+            alt: b.alt || name,
+            loading: 'lazy',
+            class: 'avatar',
+            'data-lightbox': 'true',
+            tabIndex: 0,
+            role: 'button',
+            'aria-label': 'Ampliar imagen',
+            title: 'Ampliar imagen',
+          }));
+        } else {
+          bodyWrap.append(el('div', {
+            class: 'worker-avatar',
+            'aria-hidden': 'true',
+          }, [name.replace(/^AI/, '').slice(0, 2).toUpperCase()]));
+        }
         const contentWrap = el('div', { class: 'worker-content' });
         if (Array.isArray(b.capabilities) && b.capabilities.length) {
           const ul = el('ul', { class: 'list list-primary' });
@@ -183,24 +284,7 @@
         container.append(c);
       }
       if (b.type === 'event') container.append(el('div', { class: 'card', role: 'article' }, [el('h3', {}, [b.title || 'Evento']), el('p', {}, [b.date || '']), el('p', {}, [b.body || ''])]));
-      if (b.type === 'post') {
-        const article = el('article', { class: 'card' }, [
-          el('h3', {}, [b.title || 'Entrada']),
-          el('p', { class: 'muted' }, [
-            [b.date, b.author].filter(Boolean).join(' · '),
-          ]),
-        ]);
-        if (b.img) {
-          article.append(el('img', {
-            src: b.img,
-            alt: b.alt || `Imagen editorial para ${b.title || 'el artículo'}`,
-            class: 'post-cover',
-            loading: 'lazy',
-          }));
-        }
-        article.append(renderPostBody(b.body));
-        container.append(article);
-      }
+      if (b.type === 'post') container.append(renderPost(b, page !== 'blog'));
       if (b.type === 'links') {
         const row = el('div', { class: b.class || '' });
         (b.items || []).filter((item) => isAllowedHref(item.href)).forEach((item) => row.append(el('a', { href: item.href, class: 'btn' }, [item.title || item.href])));
@@ -313,14 +397,27 @@
       }
     });
 
+    if (page === 'home' && sec.id === 'blog') {
+      container.append(el('a', { href: 'blog.html', class: 'btn section-cta' }, ['Explorar todos los artículos']));
+    }
+    if (page === 'home' && sec.id === 'aiworkers') {
+      container.append(el('a', { href: 'equipo.html', class: 'btn section-cta' }, ['Conocer al equipo']));
+    }
+
     section.append(container);
     return section;
   }
 
   function renderSections(sections) {
     const mount = $('#sections');
-    mount.innerHTML = '';
-    sections.filter(s => s.id !== 'home').forEach(sec => mount.append(renderSection(sec)));
+    mount.replaceChildren();
+    const page = document.body.dataset.page || 'home';
+    const visibleSections = page === 'blog'
+      ? sections.filter((section) => section.id === 'blog')
+      : page === 'team'
+        ? sections.filter((section) => section.id === 'aiworkers')
+        : sections.filter((section) => section.id !== 'home');
+    visibleSections.forEach((section) => mount.append(renderSection(section)));
   }
 
   function setupTheme() {
@@ -328,10 +425,11 @@
     const KEY = 'ae_theme';
     function apply(v) {
       document.documentElement.dataset.theme = v;
-      btn.setAttribute('aria-pressed', v === 'dark');
+      if (btn) btn.setAttribute('aria-pressed', v === 'dark');
     }
     const stored = localStorage.getItem(KEY);
     apply(stored || 'dark');
+    if (!btn) return;
     btn.addEventListener('click', () => {
       const next = (document.documentElement.dataset.theme === 'dark') ? 'light' : 'dark';
       localStorage.setItem(KEY, next); apply(next);
@@ -391,6 +489,9 @@
       renderSections(state.content.sections);
       setupTheme();
   setupLightbox();
+  if (window.location.hash) {
+    document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
+  }
     } catch (e) {
       console.error(e);
       $('#sections').innerHTML = '<p>Error cargando contenido.</p>';

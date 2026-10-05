@@ -10,37 +10,37 @@
     {
       "id": "home",
       "label": "Inicio",
-      "href": "#home"
+      "href": "index.html#home"
     },
     {
       "id": "vision",
       "label": "Visión",
-      "href": "#vision"
+      "href": "index.html#vision"
     },
     {
       "id": "iniciativas",
       "label": "Iniciativas",
-      "href": "#iniciativas"
+      "href": "index.html#iniciativas"
     },
     {
       "id": "eventos",
       "label": "Eventos",
-      "href": "#eventos"
+      "href": "index.html#eventos"
     },
     {
       "id": "blog",
-      "label": "Blog",
-      "href": "#blog"
+      "label": "Ideas",
+      "href": "blog.html"
     },
     {
       "id": "aiworkers",
-      "label": "AIWorkers",
-      "href": "#aiworkers"
+      "label": "Equipo",
+      "href": "equipo.html"
     },
     {
       "id": "oficina",
       "label": "Oficina",
-      "href": "#oficina"
+      "href": "index.html#oficina"
     }
   ],
   "sections": [
@@ -110,6 +110,7 @@
         {
           "type": "worker",
           "title": "AIVisio",
+          "role": "CEO y estrategia",
           "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
           "img": "images/aivisio-perfil.jpg",
           "alt": "AIVisio",
@@ -119,6 +120,7 @@
         {
           "type": "worker",
           "title": "AIDux",
+          "role": "CIO y tecnología",
           "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
           "img": "images/aidux-perfil.jpg",
           "alt": "AIDux",
@@ -128,6 +130,7 @@
         {
           "type": "worker",
           "title": "AIJuris",
+          "role": "Asesoría jurídica",
           "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
           "img": "images/aijuris-perfil.jpg",
           "alt": "AIJuris",
@@ -136,57 +139,63 @@
         },
         {
           "type": "worker",
-          "title": "AIUX",
+          "title": "AIUsus",
+          "role": "UX y accesibilidad",
           "body": "Diseño de experiencia, accesibilidad y arquitectura de información para que cada recorrido sea claro y fácil de usar.",
           "img": "",
-          "alt": "Perfil AIUX",
+          "alt": "Perfil AIUsus",
           "href": "",
-          "cta": "AIUX"
+          "cta": "AIUsus"
         },
         {
           "type": "worker",
-          "title": "AICX",
+          "title": "AIExperientia",
+          "role": "Experiencia de cliente",
           "body": "Experiencia de cliente y mejora de servicios, desde la escucha de necesidades hasta la resolución de fricciones.",
           "img": "",
-          "alt": "Perfil AICX",
+          "alt": "Perfil AIExperientia",
           "href": "",
-          "cta": "AICX"
+          "cta": "AIExperientia"
         },
         {
           "type": "worker",
-          "title": "AIMarketing",
+          "title": "AIMercatus",
+          "role": "Marketing y marca",
           "body": "Estrategia de marketing, contenidos y marca con foco en utilidad, claridad y confianza.",
           "img": "",
-          "alt": "Perfil AIMarketing",
+          "alt": "Perfil AIMercatus",
           "href": "",
-          "cta": "AIMarketing"
+          "cta": "AIMercatus"
         },
         {
           "type": "worker",
-          "title": "AIArquitecto",
+          "title": "AIArchitectus",
+          "role": "Arquitectura técnica",
           "body": "Arquitectura técnica, calidad y mantenibilidad. Propone cambios pequeños que se validan antes de publicar.",
           "img": "",
-          "alt": "Perfil AIArquitecto",
+          "alt": "Perfil AIArchitectus",
           "href": "",
-          "cta": "AIArquitecto"
+          "cta": "AIArchitectus"
         },
         {
           "type": "worker",
-          "title": "AICambio",
+          "title": "AIMutatio",
+          "role": "Gestión del cambio",
           "body": "Gestión del cambio y adopción responsable: acompaña la evolución de procesos, equipos y capacidades.",
           "img": "",
-          "alt": "Perfil AICambio",
+          "alt": "Perfil AIMutatio",
           "href": "",
-          "cta": "AICambio"
+          "cta": "AIMutatio"
         },
         {
           "type": "worker",
-          "title": "AIWorker Editorial",
+          "title": "AILitterae",
+          "role": "Investigación y contenidos",
           "body": "Investigación y contenidos prácticos en español, revisados para mantener coherencia, claridad y rigor.",
           "img": "",
-          "alt": "Perfil AIWorker Editorial",
+          "alt": "Perfil AILitterae",
           "href": "",
-          "cta": "AIWorker Editorial"
+          "cta": "AILitterae"
         }
       ]
     },

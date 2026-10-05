@@ -19,19 +19,22 @@ const maxRepairAttempts = 2;
 const maxPatchLength = 30_000;
 const codePaths = new Set([
   'index.html',
+  'equipo.html',
+  'blog.html',
   'scripts/app.js',
   'styles/main.css',
   'content/content.es.json',
+  'content/navigation.json',
 ]);
 const roleProfiles = [
   { name: 'AIVisio', role: 'CEO y estrategia' },
   { name: 'AIDux', role: 'CIO y tecnología' },
-  { name: 'AIUX', role: 'Diseño UX y accesibilidad' },
-  { name: 'AICX', role: 'Experiencia de cliente (CX)' },
-  { name: 'AIMarketing', role: 'Marketing y marca' },
-  { name: 'AIArquitecto', role: 'Arquitectura técnica' },
-  { name: 'AICambio', role: 'Gestión del cambio' },
-  { name: 'AIWorker Editorial', role: 'Investigación y contenidos' },
+  { name: 'AIUsus', role: 'Diseño UX y accesibilidad' },
+  { name: 'AIExperientia', role: 'Experiencia de cliente (CX)' },
+  { name: 'AIMercatus', role: 'Marketing y marca' },
+  { name: 'AIArchitectus', role: 'Arquitectura técnica' },
+  { name: 'AIMutatio', role: 'Gestión del cambio' },
+  { name: 'AILitterae', role: 'Investigación y contenidos' },
 ];
 const postAuthors = new Set(roleProfiles.map((profile) => profile.name));
 let modelCallCount = 0;
@@ -95,12 +98,8 @@ export function validateSiteContent(content, originalContent, generatedPost) {
   const ids = content.sections.map((section) => section.id);
   if (new Set(ids).size !== ids.length) throw new Error('Hay IDs de sección duplicados.');
   const sectionIds = new Set(ids);
+  validateNavigationItems(content.navigation, sectionIds);
   const navIds = new Set(content.navigation.map((item) => item.id));
-  for (const item of content.navigation) {
-    if (typeof item.href !== 'string' || !item.href.startsWith('#')) continue;
-    const target = item.href.slice(1);
-    if (!sectionIds.has(target)) throw new Error(`El enlace de navegación #${target} no tiene sección.`);
-  }
 
   const sectionsById = new Map(content.sections.map((section) => [section.id, section]));
   for (const section of originalContent.sections) {
@@ -134,6 +133,25 @@ export function validateSiteContent(content, originalContent, generatedPost) {
     throw new Error('El artículo diario debe aparecer exactamente en el blog.');
   }
   if (!navIds.has('blog')) throw new Error('La navegación debe conservar el acceso al blog.');
+}
+
+function validateNavigationItems(items, sectionIds) {
+  if (!Array.isArray(items)) throw new Error('La navegación debe ser una lista.');
+  const ids = items.map((item) => item.id);
+  if (new Set(ids).size !== ids.length) throw new Error('Hay IDs de navegación duplicados.');
+  for (const item of items) {
+    if (typeof item.href !== 'string' || !item.href.trim()) {
+      throw new Error(`El enlace de navegación "${item.id}" no es válido.`);
+    }
+    const [targetPage, targetId] = item.href.split('#');
+    if (!['', 'index.html', 'blog.html', 'equipo.html'].includes(targetPage)) {
+      throw new Error(`El enlace de navegación "${item.id}" apunta a una página no permitida.`);
+    }
+    if (targetId && (!targetPage || targetPage === 'index.html')) {
+      const target = targetId;
+      if (!sectionIds.has(target)) throw new Error(`El enlace de navegación #${target} no tiene sección.`);
+    }
+  }
 }
 
 function parseJsonResponse(text) {
@@ -226,16 +244,16 @@ async function writeDailyPost(content, recommendations, date) {
   const blog = content.sections.find((section) => section.id === 'blog');
   const existingPosts = (blog.blocks || []).filter((block) => block.type === 'post');
   const existingTitles = existingPosts.map((post) => post.title).filter(Boolean);
-  const authorBrief = recommendations.find((item) => item.name === 'AIWorker Editorial');
+  const authorBrief = recommendations.find((item) => item.name === 'AILitterae');
   const result = await requestJson(`
-Eres el AIWorker Editorial de AIEvolutio. Escribe un artículo original para hoy,
+Eres AILitterae, el AIWorker editorial de AIEvolutio. Escribe un artículo original para hoy,
 en español, de 500 a 700 palabras, con consejos prácticos y tono humano.
 No inventes estadísticas, investigaciones, clientes, leyes ni fuentes. No des
 asesoramiento médico, jurídico o financiero. No uses HTML ni enlaces sin fuente.
 No repitas títulos publicados. Incluye una breve introducción, subtítulos en
 negrita con Markdown y una conclusión. El artículo debe reflejar esta prioridad
 editorial del equipo: ${authorBrief.work}
-Devuelve JSON {"title":"...","body":"...","author":"AIWorker Editorial"}.
+Devuelve JSON {"title":"...","body":"...","author":"AILitterae"}.
 Fecha local Europe/Madrid: ${date}.
 Títulos ya publicados: ${JSON.stringify(existingTitles)}
 `, 2600);
@@ -256,7 +274,7 @@ Títulos ya publicados: ${JSON.stringify(existingTitles)}
 }
 
 async function createImageBrief(post, recommendations) {
-  const marketing = recommendations.find((item) => item.name === 'AIMarketing');
+  const marketing = recommendations.find((item) => item.name === 'AIMercatus');
   const result = await requestJson(`
 Prepara una imagen editorial original para ilustrar este artículo en AIEvolutio.
 Pide una imagen panorámica, conceptual y sobria. No incluir texto, logotipos,
@@ -322,14 +340,15 @@ async function readEditableSources() {
 
 function patchPrompt(sources, content, post, recommendations, repairContext = '') {
   return `
-Eres AIArquitecto, coordinador técnico de un equipo con CEO, CIO, UX, CX,
+Eres AIArchitectus, coordinador técnico de un equipo con CEO, CIO, UX, CX,
 Marketing, Gestión del Cambio y especialistas AIWorkers. Diseña una mejora
 pequeña y útil para hacer crecer la web de AIEvolutio hoy. Puede reorganizar la
 experiencia y modificar HTML, CSS o JavaScript de la web.
 
 Devuelve exclusivamente JSON {"patch":"...","rationale":"..."} cuyo patch sea
 un diff unificado aceptado por "git apply". Rutas permitidas ÚNICAMENTE:
-index.html, scripts/app.js, styles/main.css, content/content.es.json.
+index.html, equipo.html, blog.html, scripts/app.js, styles/main.css,
+content/content.es.json, content/navigation.json.
 No crees ni elimines archivos. No cambies workflows, scripts de CI, dependencias,
 credenciales, políticas de publicación ni pruebas. No elimines ni reescribas
 ninguna entrada de blog publicada ni los perfiles del equipo. Conserva el post
@@ -358,7 +377,7 @@ async function requestArchitectPatch(sources, content, post, recommendations, re
     patchPrompt(sources, content, post, recommendations, repairContext),
     6000,
   );
-  if (typeof result.patch !== 'string') throw new Error('AIArquitecto no devolvió el diff.');
+  if (typeof result.patch !== 'string') throw new Error('AIArchitectus no devolvió el diff.');
   validateAllowedPatch(result.patch);
   return result.patch;
 }
@@ -381,6 +400,8 @@ async function applyPatch(patch, baseline, post) {
 
   const content = JSON.parse(await readFile(contentPath, 'utf8'));
   validateSiteContent(content, baseline, post);
+  const navigation = JSON.parse(await readFile(path.join(repoRoot, 'content/navigation.json'), 'utf8'));
+  validateNavigationItems(navigation, new Set(content.sections.map((section) => section.id)));
   await writeFile(contentPath, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
 }
 

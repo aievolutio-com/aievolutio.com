@@ -1,8 +1,8 @@
-[{"id": "home", "label": "Inicio", "href": "#home"},
- {"id": "vision", "label": "Visión", "href": "#vision"},
- {"id": "iniciativas", "label": "Iniciativas", "href": "#iniciativas"},
- {"id": "eventos", "label": "Eventos", "href": "#eventos"},
- {"id": "blog", "label": "Blog", "href": "#blog"},
- {"id": "aiworkers", "label": "AIWorkers", "href": "#aiworkers"},
- {"id": "oficina", "label": "Oficina", "href": "#oficina"}
+[{"id": "home", "label": "Inicio", "href": "index.html#home"},
+ {"id": "vision", "label": "Visión", "href": "index.html#vision"},
+ {"id": "iniciativas", "label": "Iniciativas", "href": "index.html#iniciativas"},
+ {"id": "eventos", "label": "Eventos", "href": "index.html#eventos"},
+ {"id": "blog", "label": "Ideas", "href": "blog.html"},
+ {"id": "aiworkers", "label": "Equipo", "href": "equipo.html"},
+ {"id": "oficina", "label": "Oficina", "href": "index.html#oficina"}
  ]
