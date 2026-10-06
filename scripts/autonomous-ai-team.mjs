@@ -582,13 +582,19 @@ async function main() {
         }
 
         const sources = await readEditableSources();
-        const patch = await requestArchitectPatch(
-          sources,
-          JSON.parse(await readFile(contentPath, 'utf8')),
-          post,
-          recommendations,
-          repairContext,
-        );
+        let patch = '';
+        try {
+          patch = await requestArchitectPatch(
+            sources,
+            JSON.parse(await readFile(contentPath, 'utf8')),
+            post,
+            recommendations,
+            repairContext,
+          );
+        } catch (error) {
+          if (attempt !== maxRepairAttempts) throw error;
+          console.warn(`No se pudo obtener un diff técnico válido; se publica solo el artículo: ${error.message}`);
+        }
         let additionalChangesApplied = Boolean(patch.trim());
         try {
           await applyPatch(patch, baseline, post);

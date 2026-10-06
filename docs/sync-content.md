@@ -35,9 +35,11 @@ accesibilidad y rendimiento; solo si CI termina correctamente se promueve el
 mismo commit a `pre` y se despliega a producción. Si el diff de código no se
 puede aplicar tras la última autocorrección, se descarta ese diff y se valida el
 artículo diario sin cambios técnicos adicionales; los controles de contenido y
-CI siguen siendo obligatorios. Si se agotan los reintentos sin un candidato
-válido, la versión publicada no cambia y el workflow crea una incidencia de
-aviso con el enlace a los logs. No se requiere aprobación de PR.
+CI siguen siendo obligatorios. Si AIArchitectus no puede devolver un diff válido
+al agotar sus reintentos, también se puede validar el artículo sin cambios
+técnicos adicionales. Si falla la generación o validación del contenido diario,
+la versión publicada no cambia y el workflow crea una incidencia de aviso con
+el enlace a los logs. No se requiere aprobación de PR.
 
 Además, cada push directo o integrado en `pre` pasa las mismas comprobaciones y
 se despliega automáticamente a producción cuando CI termina correctamente.
