@@ -155,12 +155,23 @@ function validateNavigationItems(items, sectionIds) {
   }
 }
 
-function parseJsonResponse(text) {
+export function parseJsonResponse(text) {
   const cleaned = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+  const start = cleaned.indexOf('{');
+  const end = cleaned.lastIndexOf('}');
+  const candidate = start >= 0 && end > start ? cleaned.slice(start, end + 1) : cleaned;
   try {
-    return JSON.parse(cleaned);
+    return JSON.parse(candidate);
   } catch (error) {
-    throw new Error(`Vertex AI devolvió JSON no válido: ${error.message}`);
+    const normalized = candidate
+      .replace(/([{,]\s*)'([A-Za-z_$][\w$]*)'(\s*:)/g, '$1"$2"$3')
+      .replace(/([{,]\s*)([A-Za-z_$][\w$]*)(\s*:)/g, '$1"$2"$3')
+      .replace(/'((?:\\.|[^'\\])*)'/g, (_, value) => `"${value.replace(/\\'/g, "'").replace(/"/g, '\\"')}"`);
+    try {
+      return JSON.parse(normalized);
+    } catch {
+      throw new Error(`Vertex AI devolvió JSON no válido: ${error.message}. Respuesta: ${candidate.slice(0, 300)}`);
+    }
   }
 }
 

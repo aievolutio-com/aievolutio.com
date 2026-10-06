@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   getCandidatePostDate,
+  parseJsonResponse,
   validateAllowedPatch,
   validateSiteContent,
 } from './autonomous-ai-team.mjs';
@@ -43,6 +44,20 @@ test('allows late scheduled retries but creates at most one post per Madrid date
   assert.equal(getCandidatePostDate(content, '2026-10-06'), '2026-10-06');
   assert.equal(getCandidatePostDate(content, '2025-10-05'), null);
   assert.equal(getCandidatePostDate({ sections: [] }, '2026-10-06'), '2026-10-06');
+});
+
+test('parses model JSON with unquoted keys, single quotes, and surrounding prose', () => {
+  assert.deepEqual(parseJsonResponse("Respuesta:\n```json\n{decision: 'adelante', work: 'Criterio humano'}\n```"), {
+    decision: 'adelante',
+    work: 'Criterio humano',
+  });
+});
+
+test('reports a bounded response sample when model output cannot be repaired', () => {
+  assert.throws(
+    () => parseJsonResponse('{decision: nope}'),
+    /Vertex AI devolvió JSON no válido:.*Respuesta: \{decision: nope\}/,
+  );
 });
 
 test('allows only the explicit website patch paths', () => {
