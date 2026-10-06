@@ -435,6 +435,11 @@ async function applyPatch(patch, baseline, post) {
   await writeFile(contentPath, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
 }
 
+export function isPatchCheckFailure(error) {
+  const details = `${error.message || error}\n${error.stderr || ''}`;
+  return details.includes('git apply --check');
+}
+
 function validateChangedPaths(image) {
   const changed = run('git', ['diff', '--name-only']).split(/\r?\n/).filter(Boolean);
   const untracked = run('git', ['ls-files', '--others', '--exclude-standard'])
@@ -580,7 +585,15 @@ async function main() {
           recommendations,
           repairContext,
         );
-        await applyPatch(patch, baseline, post);
+        let additionalChangesApplied = Boolean(patch.trim());
+        try {
+          await applyPatch(patch, baseline, post);
+        } catch (error) {
+          if (attempt !== maxRepairAttempts || !isPatchCheckFailure(error)) throw error;
+          console.warn('El parche técnico no pasó git apply --check; se valida y publica solo el artículo diario.');
+          await applyPatch('', baseline, post);
+          additionalChangesApplied = false;
+        }
         validateChangedPaths(image);
         const commitSha = commitCandidate(branch, image, post);
         const ciRunId = await dispatchAndWaitForCi(branch, commitSha);
@@ -589,7 +602,7 @@ async function main() {
 
         const summaryPath = process.env.GITHUB_STEP_SUMMARY;
         if (summaryPath) {
-          await appendFile(summaryPath, `## Evolución autónoma publicada\n\n- Fecha: ${candidateDate}\n- Artículo: ${post.title}\n- Equipo: ${roleProfiles.map((profile) => profile.name).join(', ')}\n- Imagen: ${image ? image.src : 'omitida'}\n- CI: ${ciRunId}\n- Llamadas de texto: ${modelCallCount}/${maxModelCalls}\n`);
+          await appendFile(summaryPath, `## Evolución autónoma publicada\n\n- Fecha: ${candidateDate}\n- Artículo: ${post.title}\n- Equipo: ${roleProfiles.map((profile) => profile.name).join(', ')}\n- Imagen: ${image ? image.src : 'omitida'}\n- Cambios técnicos adicionales: ${additionalChangesApplied ? 'aplicados' : 'omitidos'}\n- CI: ${ciRunId}\n- Llamadas de texto: ${modelCallCount}/${maxModelCalls}\n`);
         }
         break;
       } catch (error) {

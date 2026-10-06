@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   getCandidatePostDate,
+  isPatchCheckFailure,
   parseJsonResponse,
   validateAllowedPatch,
   validateSiteContent,
@@ -62,6 +63,11 @@ test('reports a bounded response sample when model output cannot be repaired', (
     () => parseJsonResponse('{'),
     /Vertex AI devolvió JSON no válido:.*Respuesta: \{/,
   );
+});
+
+test('allows the article-only fallback only for an unapplied Git patch', () => {
+  assert.equal(isPatchCheckFailure(new Error('Command failed: git apply --check patch\nerror: corrupt patch')), true);
+  assert.equal(isPatchCheckFailure(new Error('CI validation failed')), false);
 });
 
 test('allows only the explicit website patch paths', () => {
