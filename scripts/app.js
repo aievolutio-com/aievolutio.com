@@ -183,7 +183,7 @@
       }
       if (b.type === 'worker') {
         // Collapsible worker profile: summary shows name + role + hint; details show photo + capabilities
-        const details = el('details', { class: 'worker', open: page === 'team' });
+        const details = el('details', { class: 'worker' });
         const name = b.name || b.title || '';
         const role = b.role || '';
         const summary = el('summary', {}, [
@@ -412,12 +412,30 @@
     const mount = $('#sections');
     mount.replaceChildren();
     const page = document.body.dataset.page || 'home';
+    const today = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Europe/Madrid',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date());
     const visibleSections = page === 'blog'
       ? sections.filter((section) => section.id === 'blog')
       : page === 'team'
         ? sections.filter((section) => section.id === 'aiworkers')
         : sections.filter((section) => section.id !== 'home');
-    visibleSections.forEach((section) => mount.append(renderSection(section)));
+    visibleSections.forEach((section) => {
+      if (section.id !== 'eventos') {
+        mount.append(renderSection(section));
+        return;
+      }
+
+      const upcomingEvents = (section.blocks || []).filter((event) => (
+        event.type !== 'event' || !/^\d{4}-\d{2}-\d{2}$/.test(event.date || '') || event.date >= today
+      ));
+      if (upcomingEvents.length) {
+        mount.append(renderSection({ ...section, blocks: upcomingEvents }));
+      }
+    });
   }
 
   function setupTheme() {
@@ -487,7 +505,9 @@
   const navOverride = await loadNavigationOverride();
   renderNav(navOverride || state.content.navigation);
       renderSections(state.content.sections);
-      setupTheme();
+  const currentYear = $('#current-year');
+  if (currentYear) currentYear.textContent = String(new Date().getFullYear());
+  setupTheme();
   setupLightbox();
   if (window.location.hash) {
     document.getElementById(window.location.hash.slice(1))?.scrollIntoView();

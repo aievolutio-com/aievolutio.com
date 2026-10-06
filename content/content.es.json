@@ -3,7 +3,7 @@
     "siteName": "AIEvolutio",
     "tagline": "IA para ganar tiempo y vida",
     "language": "es",
-    "copyright": "© 2025 AIEvolutio — Comunidad",
+    "copyright": "© AIEvolutio",
     "license": "CC BY-SA 4.0"
   },
   "navigation": [
@@ -13,35 +13,16 @@
       "href": "index.html#home"
     },
     {
-      "id": "vision",
-      "label": "Visión",
-      "href": "index.html#vision"
-    },
-    {
       "id": "iniciativas",
-      "label": "Iniciativas",
+      "label": "Qué hacemos",
       "href": "index.html#iniciativas"
-    },
-    {
-      "id": "eventos",
-      "label": "Eventos",
-      "href": "index.html#eventos"
     },
     {
       "id": "blog",
       "label": "Ideas",
       "href": "blog.html"
     },
-    {
-      "id": "aiworkers",
-      "label": "Equipo",
-      "href": "equipo.html"
-    },
-    {
-      "id": "oficina",
-      "label": "Oficina",
-      "href": "index.html#oficina"
-    }
+    { "id": "aiworkers", "label": "Equipo", "href": "equipo.html" }
   ],
   "sections": [
     {
@@ -206,7 +187,7 @@
       "blocks": [
         {
           "type": "event",
-          "title": "Evento 1",
+          "title": "Sesión abierta",
           "date": "2026-08-15",
           "body": "Sesión abierta para explorar cómo la IA puede ayudarnos a ganar tiempo y mejorar la calidad de vida."
         }

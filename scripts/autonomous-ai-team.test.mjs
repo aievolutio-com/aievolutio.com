@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  shouldRunScheduledCycle,
+  getCandidatePostDate,
   validateAllowedPatch,
   validateSiteContent,
 } from './autonomous-ai-team.mjs';
@@ -36,12 +36,13 @@ function createContent() {
   };
 }
 
-test('runs scheduled cycles at 08:00 Madrid in both winter and summer', () => {
-  assert.equal(shouldRunScheduledCycle('schedule', new Date('2026-01-19T07:00:00Z')), true);
-  assert.equal(shouldRunScheduledCycle('schedule', new Date('2026-01-19T06:00:00Z')), false);
-  assert.equal(shouldRunScheduledCycle('schedule', new Date('2026-07-20T06:00:00Z')), true);
-  assert.equal(shouldRunScheduledCycle('schedule', new Date('2026-07-20T07:00:00Z')), false);
-  assert.equal(shouldRunScheduledCycle('workflow_dispatch'), true);
+test('allows late scheduled retries but creates at most one post per Madrid date', () => {
+  const content = {
+    sections: [{ id: 'blog', blocks: [originalPost] }],
+  };
+  assert.equal(getCandidatePostDate(content, '2026-10-06'), '2026-10-06');
+  assert.equal(getCandidatePostDate(content, '2025-10-05'), null);
+  assert.equal(getCandidatePostDate({ sections: [] }, '2026-10-06'), '2026-10-06');
 });
 
 test('allows only the explicit website patch paths', () => {

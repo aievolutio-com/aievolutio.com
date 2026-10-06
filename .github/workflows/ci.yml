@@ -73,10 +73,13 @@ jobs:
             rm -f server.pid
           fi
 
-  deploy-scheduled-content:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/pre' }}
+  deploy-pre:
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/pre') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/pre') }}
     needs: check
     runs-on: ubuntu-latest
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
     permissions:
       contents: write
     steps:
@@ -88,7 +91,7 @@ jobs:
       - name: Add .nojekyll
         run: echo > .nojekyll
 
-      - name: Deploy validated content to gh-pages
+      - name: Deploy validated pre to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -104,7 +107,7 @@ jobs:
     permissions:
       contents: write
     concurrency:
-      group: scheduled-content-publication
+      group: production-deploy
       cancel-in-progress: false
     steps:
       - name: Checkout the validated candidate
@@ -127,3 +130,40 @@ jobs:
 
       - name: Promote deployed candidate to pre
         run: git push origin "${GITHUB_SHA}:refs/heads/pre"
+
+  notify-publication-failure:
+    if: ${{ failure() && (github.ref == 'refs/heads/pre' || startsWith(github.ref, 'refs/heads/ai/daily-evolution/')) }}
+    needs: [check, deploy-pre, publish-ai-evolution]
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Notify the site owner
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const date = new Intl.DateTimeFormat('en-CA', {
+              timeZone: 'Europe/Madrid',
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+            }).format(new Date());
+            const title = `[Website] CI or deployment failed (${date})`;
+            const runUrl = `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`;
+            const existing = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+            });
+            if (existing.some(issue => issue.title === title)) {
+              core.info(`An open notification already exists: ${title}`);
+              return;
+            }
+            await github.rest.issues.create({
+              owner,
+              repo,
+              title,
+              body: `@luisromeroperez-com La validación o el despliegue automático de \`${context.ref}\` ha fallado. Producción conserva la última versión validada.\n\n[Consultar ejecución y logs](${runUrl})`,
+            });

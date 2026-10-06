@@ -7,10 +7,13 @@ autónomo ni reemplazar el blog.
 
 ## Ciclo diario del equipo de IA
 
-El workflow `Autonomous AI Team` se ejecuta a las 06:00 y 07:00 UTC para cubrir
-las 08:00 en `Europe/Madrid` tanto en invierno como en verano. El script descarta
-la ejecución de respaldo si no son las 08:00 locales. También puede ejecutarse
-manualmente desde Actions o con:
+El workflow `Autonomous AI Team` se programa a las 06:00 y 07:00 UTC, alrededor
+de las 08:00 en `Europe/Madrid` en invierno y verano. GitHub Actions puede
+retrasar una tarea programada; por eso se aceptan ambas ejecuciones aunque
+arranquen tarde. El contenido comprueba la fecha local del artículo existente
+antes de generar: así un reintento puede recuperar un ciclo retrasado y nunca
+publica más de un artículo diario. También puede ejecutarse manualmente desde
+Actions o con:
 
 ```powershell
 gh workflow run autonomous-ai-team.yml --ref pre
@@ -32,6 +35,11 @@ mismo commit a `pre` y se despliega a producción. Si se agotan los reintentos,
 la versión publicada no cambia y el workflow crea una incidencia de aviso con
 el enlace a los logs. No se requiere aprobación de PR.
 
+Además, cada push directo o integrado en `pre` pasa las mismas comprobaciones y
+se despliega automáticamente a producción cuando CI termina correctamente.
+Los fallos de validación o despliegue crean una incidencia con enlace a la
+ejecución; no se publica una versión que no haya pasado las comprobaciones.
+
 Se requieren las variables `GCP_PROJECT_ID`, `GCP_WORKLOAD_IDENTITY_PROVIDER`
 y `GCP_SERVICE_ACCOUNT` en el repositorio, así como Workload Identity
 Federation y permisos en Vertex AI para Gemini y, opcionalmente, Imagen.
@@ -45,6 +53,10 @@ cada una con su artículo en el archivo, para que las entradas anteriores sigan
 siendo fáciles de encontrar. Las imágenes de perfil existentes se muestran
 cuando están disponibles; los perfiles sin retrato usan una identidad gráfica
 provisional en lugar de simular una fotografía.
+
+La navegación principal prioriza Inicio, Qué hacemos, Ideas y Equipo. Los
+perfiles del equipo se muestran plegados para facilitar la lectura y los eventos
+pasados no se anuncian como próximos en la portada.
 
 ## Sincronización manual desde Google Sheets
 

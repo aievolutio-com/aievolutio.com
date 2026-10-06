@@ -60,9 +60,10 @@ function localDateParts(date = new Date()) {
   return Object.fromEntries(parts.map(({ type, value }) => [type, value]));
 }
 
-export function shouldRunScheduledCycle(eventName, date = new Date()) {
-  if (eventName !== 'schedule') return true;
-  return localDateParts(date).hour === '08';
+export function getCandidatePostDate(content, date) {
+  const blog = content.sections.find((section) => section.id === 'blog');
+  const posts = (blog?.blocks || []).filter((block) => block.type === 'post');
+  return posts.some((post) => post.date === date) ? null : date;
 }
 
 export function validateAllowedPatch(patch) {
@@ -416,14 +417,14 @@ function validateChangedPaths(image) {
 }
 
 async function findCandidateContent(baseline) {
-  const date = localDateParts().year + '-' + localDateParts().month + '-' + localDateParts().day;
-  const blog = baseline.sections.find((section) => section.id === 'blog');
-  const posts = (blog?.blocks || []).filter((block) => block.type === 'post');
-  if (posts.some((post) => post.date === date)) {
+  const dateParts = localDateParts();
+  const date = `${dateParts.year}-${dateParts.month}-${dateParts.day}`;
+  const candidateDate = getCandidatePostDate(baseline, date);
+  if (!candidateDate) {
     console.log(`Ya hay un artículo para ${date}; no se genera otro.`);
     return null;
   }
-  return date;
+  return candidateDate;
 }
 
 function commitCandidate(branch, image, post) {
@@ -487,12 +488,6 @@ async function main() {
   if (!projectId || !accessToken) {
     throw new Error('GCP_PROJECT_ID y GOOGLE_ACCESS_TOKEN son obligatorios.');
   }
-  const eventName = process.env.GITHUB_EVENT_NAME || 'workflow_dispatch';
-  if (!shouldRunScheduledCycle(eventName)) {
-    console.log(`Ejecución de respaldo fuera de las 08:00 Europe/Madrid; se omite sin consumir modelos.`);
-    return;
-  }
-
   const baseline = JSON.parse(await readFile(contentPath, 'utf8'));
   const dateParts = localDateParts();
   const date = `${dateParts.year}-${dateParts.month}-${dateParts.day}`;
@@ -500,7 +495,13 @@ async function main() {
   const dateForBranch = date.replaceAll('-', '');
   const branch = `ai/daily-evolution/${dateForBranch}-${runId}`;
   const candidateDate = await findCandidateContent(baseline);
-  if (!candidateDate) return;
+  if (!candidateDate) {
+    const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+    if (summaryPath) {
+      await appendFile(summaryPath, `## Ciclo diario sin cambios\n\nYa existe un artículo publicado para ${date} (Europe/Madrid); no se ha generado otro.\n`);
+    }
+    return;
+  }
 
   if (run('git', ['branch', '--show-current']) !== 'pre') {
     throw new Error('El ciclo autónomo debe partir de la rama pre.');
