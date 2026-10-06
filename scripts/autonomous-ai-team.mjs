@@ -446,8 +446,11 @@ export function isPatchCheckFailure(error) {
 
 function validateChangedPaths(image) {
   const changed = run('git', ['diff', '--name-only']).split(/\r?\n/).filter(Boolean);
+  const credentialFile = process.env.GOOGLE_GHA_CREDS_PATH
+    ? path.relative(repoRoot, process.env.GOOGLE_GHA_CREDS_PATH).replaceAll(path.sep, '/')
+    : '';
   const untracked = run('git', ['ls-files', '--others', '--exclude-standard'])
-    .split(/\r?\n/).filter(Boolean);
+    .split(/\r?\n/).filter((filePath) => filePath && filePath !== credentialFile);
   const allowed = new Set(codePaths);
   if (image) allowed.add(path.relative(repoRoot, image.file).replaceAll(path.sep, '/'));
   const forbidden = [...changed, ...untracked].filter((filePath) => !allowed.has(filePath));
