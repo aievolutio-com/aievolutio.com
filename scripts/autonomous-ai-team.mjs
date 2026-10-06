@@ -14,7 +14,8 @@ const location = process.env.VERTEX_AI_LOCATION || 'us-central1';
 const textModel = process.env.VERTEX_AI_MODEL || 'gemini-2.5-flash';
 const imageModel = process.env.VERTEX_AI_IMAGE_MODEL || 'imagen-4.0-generate-001';
 const timeZone = 'Europe/Madrid';
-const maxModelCalls = 13;
+const maxModelCalls = 15;
+const maxJsonRetries = 2;
 const maxRepairAttempts = 2;
 const maxPatchLength = 30_000;
 const codePaths = new Set([
@@ -38,6 +39,7 @@ const roleProfiles = [
 ];
 const postAuthors = new Set(roleProfiles.map((profile) => profile.name));
 let modelCallCount = 0;
+let jsonRetryCount = 0;
 
 function run(command, args, options = {}) {
   return execFileSync(command, args, {
@@ -176,36 +178,51 @@ export function parseJsonResponse(text) {
 }
 
 async function requestJson(prompt, maxOutputTokens) {
-  if (modelCallCount >= maxModelCalls) {
-    throw new Error(`Se alcanzó el límite técnico de ${maxModelCalls} llamadas de texto.`);
-  }
-  modelCallCount += 1;
-
   const endpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/${textModel}:generateContent`;
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.5,
-        maxOutputTokens,
-        responseMimeType: 'application/json',
-      },
-    }),
-  });
-  if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(`Vertex AI (${textModel}) respondió ${response.status}: ${detail.slice(0, 1500)}`);
-  }
+  let requestPrompt = prompt;
+  while (true) {
+    if (modelCallCount >= maxModelCalls) {
+      throw new Error(`Se alcanzó el límite técnico de ${maxModelCalls} llamadas de texto.`);
+    }
+    modelCallCount += 1;
 
-  const result = await response.json();
-  const text = result.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join('');
-  if (!text) throw new Error('Vertex AI no devolvió texto utilizable.');
-  return parseJsonResponse(text);
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: requestPrompt }] }],
+        generationConfig: {
+          temperature: 0.5,
+          maxOutputTokens,
+          responseMimeType: 'application/json',
+        },
+      }),
+    });
+    if (!response.ok) {
+      const detail = await response.text();
+      throw new Error(`Vertex AI (${textModel}) respondió ${response.status}: ${detail.slice(0, 1500)}`);
+    }
+
+    const result = await response.json();
+    const candidate = result.candidates?.[0];
+    const text = candidate?.content?.parts?.map((part) => part.text || '').join('');
+    if (!text) throw new Error('Vertex AI no devolvió texto utilizable.');
+    try {
+      return parseJsonResponse(text);
+    } catch (error) {
+      if (jsonRetryCount >= maxJsonRetries || modelCallCount >= maxModelCalls) throw error;
+      jsonRetryCount += 1;
+      console.warn(
+        `Vertex AI devolvió JSON incompleto o no válido (finishReason: ${candidate.finishReason || 'desconocido'}); ` +
+        `se reintenta ${jsonRetryCount}/${maxJsonRetries}.`,
+      );
+      requestPrompt = `${prompt}\n\nLa respuesta anterior llegó incompleta o no era JSON válido. ` +
+        'Devuelve ahora una única respuesta JSON completa, breve y sin bloques de código.';
+    }
+  }
 }
 
 function sectionSummary(content) {

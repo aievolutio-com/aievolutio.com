@@ -58,6 +58,10 @@ test('reports a bounded response sample when model output cannot be repaired', (
     () => parseJsonResponse('{decision: nope}'),
     /Vertex AI devolvió JSON no válido:.*Respuesta: \{decision: nope\}/,
   );
+  assert.throws(
+    () => parseJsonResponse('{'),
+    /Vertex AI devolvió JSON no válido:.*Respuesta: \{/,
+  );
 });
 
 test('allows only the explicit website patch paths', () => {

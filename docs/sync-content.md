@@ -25,9 +25,10 @@ Marketing (AIMercatus), Arquitectura (AIArchitectus), Gestión del Cambio
 un término de raíz latina que representa su función; el pipeline valida que
 los perfiles canónicos sigan presentes. Genera como máximo un artículo al día, y
 solicita como máximo una imagen editorial; si Imagen no está disponible, el
-artículo puede publicarse sin imagen. El límite técnico es de 13 llamadas de
-texto y dos intentos de autocorrección. Estos límites reducen el consumo, pero
-no garantizan un importe contable diario exacto en Google Cloud.
+artículo puede publicarse sin imagen. El límite técnico es de 15 llamadas de
+texto, incluidos hasta dos reintentos globales ante respuestas JSON incompletas,
+y dos intentos de autocorrección de cambios. Estos límites reducen el consumo,
+pero no garantizan un importe contable diario exacto en Google Cloud.
 
 Cada ciclo trabaja en una rama candidata. CI valida HTML, CSS, JavaScript,
 accesibilidad y rendimiento; solo si CI termina correctamente se promueve el
