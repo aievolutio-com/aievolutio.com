@@ -198,6 +198,7 @@ async function requestJson(prompt, maxOutputTokens) {
           temperature: 0.5,
           maxOutputTokens,
           responseMimeType: 'application/json',
+          thinkingConfig: { thinkingBudget: 0 },
         },
       }),
     });
