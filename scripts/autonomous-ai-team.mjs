@@ -177,6 +177,10 @@ export function parseJsonResponse(text) {
   }
 }
 
+export function stripHtmlTags(text) {
+  return text.replace(/<\/?[a-z][^>]*>/gi, '').trim();
+}
+
 async function requestJson(prompt, maxOutputTokens) {
   const endpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/${textModel}:generateContent`;
   let requestPrompt = prompt;
@@ -289,7 +293,7 @@ Títulos ya publicados: ${JSON.stringify(existingTitles)}
 `, 2600);
 
   const title = String(result.title || '').trim();
-  const body = String(result.body || '').trim();
+  const body = stripHtmlTags(String(result.body || ''));
   const author = String(result.author || '');
   const words = body.split(/\s+/).filter(Boolean).length;
   if (!title || !body || words < 400 || words > 850) {

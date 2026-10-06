@@ -4,6 +4,7 @@ import {
   getCandidatePostDate,
   isPatchCheckFailure,
   parseJsonResponse,
+  stripHtmlTags,
   validateAllowedPatch,
   validateSiteContent,
 } from './autonomous-ai-team.mjs';
@@ -68,6 +69,10 @@ test('reports a bounded response sample when model output cannot be repaired', (
 test('allows the article-only fallback only for an unapplied Git patch', () => {
   assert.equal(isPatchCheckFailure(new Error('Command failed: git apply --check patch\nerror: corrupt patch')), true);
   assert.equal(isPatchCheckFailure(new Error('CI validation failed')), false);
+});
+
+test('removes HTML tags while preserving the article text', () => {
+  assert.equal(stripHtmlTags('<p>Una idea <strong>útil</strong>.</p>'), 'Una idea útil.');
 });
 
 test('allows only the explicit website patch paths', () => {
