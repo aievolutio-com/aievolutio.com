@@ -18,6 +18,14 @@ const maxModelCalls = 15;
 const maxJsonRetries = 2;
 const maxRepairAttempts = 2;
 const maxPatchLength = 30_000;
+const brandCompass = `AIEvolutio canaliza el cambio de la IA como evolución elegida: ayuda a empresas
+a seguir siendo útiles para sus clientes y libera tiempo humano de tareas repetitivas.
+La IA amplía la capacidad de las personas; no se presenta como apisonadora inevitable
+ni como excusa para tratar a las personas como un coste que hay que eliminar.
+Busca valor equilibrado para clientes, empleados, accionistas, proveedores y sociedad.
+Sé optimista y concreto, nunca alarmista ni triunfalista. No inventes datos, casos,
+testimonios, fuentes, resultados, capacidades ni promesas garantizadas. Explica límites,
+supervisión humana, privacidad y riesgos cuando sean pertinentes.`;
 const codePaths = new Set([
   'index.html',
   'equipo.html',
@@ -256,6 +264,8 @@ async function conveneTeam(content) {
 Eres ${profile.name}, perfil de IA responsable de ${profile.role} en AIEvolutio.
 Participas en un equipo autónomo con CEO, CIO, UX, CX, Marketing, Arquitectura,
 Gestión del Cambio y AIWorkers de distintas disciplinas.
+Orienta tu recomendación con este propósito y criterio de marca:
+${brandCompass}
 Evalúa la web y propone una mejora concreta para el ciclo de hoy. Prioriza
 utilidad para personas, coherencia de marca, accesibilidad, privacidad y
 mantenibilidad. No inventes datos, clientes, resultados ni hechos externos.
@@ -282,9 +292,14 @@ async function writeDailyPost(content, recommendations, date) {
   const result = await requestJson(`
 Eres AILitterae, el AIWorker editorial de AIEvolutio. Escribe un artículo original para hoy,
 en español, de 500 a 700 palabras, con consejos prácticos y tono humano.
+Propósito editorial:
+${brandCompass}
 No inventes estadísticas, investigaciones, clientes, leyes ni fuentes. No des
 asesoramiento médico, jurídico o financiero. No uses HTML ni enlaces sin fuente.
-No repitas títulos publicados. Incluye una breve introducción, subtítulos en
+No repitas temas ni títulos recientes; alterna valor para clientes, empleados,
+aplicación práctica, adopción responsable y resiliencia empresarial. Elige un
+problema real del lector, explica límites relevantes y deja una acción alcanzable.
+Incluye una breve introducción, subtítulos en
 negrita con Markdown y una conclusión. El artículo debe reflejar esta prioridad
 editorial del equipo: ${authorBrief.work}
 Devuelve JSON {"title":"...","body":"...","author":"AILitterae"}.
@@ -378,6 +393,7 @@ Eres AIArchitectus, coordinador técnico de un equipo con CEO, CIO, UX, CX,
 Marketing, Gestión del Cambio y especialistas AIWorkers. Diseña una mejora
 pequeña y útil para hacer crecer la web de AIEvolutio hoy. Puede reorganizar la
 experiencia y modificar HTML, CSS o JavaScript de la web.
+Respeta este propósito: ${brandCompass}
 
 Devuelve exclusivamente JSON {"patch":"...","rationale":"..."} cuyo patch sea
 un diff unificado aceptado por "git apply". Rutas permitidas ÚNICAMENTE:

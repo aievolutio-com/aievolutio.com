@@ -5,6 +5,11 @@ los valida y solo despliega la versión aprobada por CI. La sincronización desd
 Google Sheets se conserva como operación manual; no debe competir con el ciclo
 autónomo ni reemplazar el blog.
 
+El criterio editorial, la propuesta de valor, las partes interesadas, el runbook
+de recuperación y las mejoras de fiabilidad pendientes tienen una única guía:
+[`ai-agent-playbook.md`](ai-agent-playbook.md). Los agentes deben consultarla
+antes de escribir contenido o cambiar la experiencia.
+
 ## Ciclo diario del equipo de IA
 
 El workflow `Autonomous AI Team` se programa a las 06:00 y 07:00 UTC, alrededor
@@ -31,15 +36,24 @@ y dos intentos de autocorrección de cambios. Estos límites reducen el consumo,
 pero no garantizan un importe contable diario exacto en Google Cloud.
 
 Cada ciclo trabaja en una rama candidata. CI valida HTML, CSS, JavaScript,
-accesibilidad y rendimiento; solo si CI termina correctamente se promueve el
-mismo commit a `pre` y se despliega a producción. Si el diff de código no se
-puede aplicar tras la última autocorrección, se descarta ese diff y se valida el
-artículo diario sin cambios técnicos adicionales; los controles de contenido y
-CI siguen siendo obligatorios. Si AIArchitectus no puede devolver un diff válido
-al agotar sus reintentos, también se puede validar el artículo sin cambios
-técnicos adicionales. Si falla la generación o validación del contenido diario,
-la versión publicada no cambia y el workflow crea una incidencia de aviso con
-el enlace a los logs. No se requiere aprobación de PR.
+accesibilidad y rendimiento. Solo tras pasar CI se despliega el candidato a
+Pages y se promueve el mismo commit a `pre` mediante una actualización no
+forzada. El despliegue y la promoción son fases distintas: si una ejecución
+falla, comprobar ambas y el contenido servido antes de asegurar si producción
+cambió o de volver a ejecutarla.
+
+Si el diff de código no se puede aplicar o AIArchitectus no devuelve un diff
+válido tras sus reintentos, se descarta el cambio técnico y se valida el artículo
+diario sin él. Los controles de contenido y CI siguen siendo obligatorios. Si
+falla la generación o validación del artículo, no se publica candidato y el
+workflow crea una incidencia con enlace a logs. Las reejecuciones son seguras
+por la comprobación de fecha local; no se requiere aprobación de PR.
+
+No puede garantizarse que proveedores externos, Actions o Pages estén siempre
+disponibles. El objetivo es evitar fallos silenciosos y publicaciones no
+validadas, recuperar los ciclos fallidos y no duplicar artículos. Para resolver
+una incidencia, seguir el runbook y las brechas conocidas en
+[`ai-agent-playbook.md`](ai-agent-playbook.md).
 
 Además, cada push directo o integrado en `pre` pasa las mismas comprobaciones y
 se despliega automáticamente a producción cuando CI termina correctamente.

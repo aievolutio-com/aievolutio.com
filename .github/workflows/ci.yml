@@ -184,5 +184,5 @@ jobs:
               owner,
               repo,
               title,
-              body: `@luisromeroperez-com La validación o el despliegue automático de \`${context.ref}\` ha fallado. Producción conserva la última versión validada.\n\n[Consultar ejecución y logs](${runUrl})`,
+              body: `@luisromeroperez-com La validación o alguna fase de publicación de \`${context.ref}\` ha fallado. Comprueba el job de Pages y el contenido servido antes de concluir si producción cambió o reintentar.\n\n[Consultar ejecución y logs](${runUrl})`,
             });

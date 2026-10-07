@@ -81,5 +81,5 @@ jobs:
               owner,
               repo,
               title,
-              body: `@luisromeroperez-com El equipo de IA no pudo completar el ciclo diario después de sus reintentos. La última versión validada sigue publicada; no se desplegó ningún cambio fallido.\n\n[Consultar ejecución y logs](${runUrl})`,
+              body: `@luisromeroperez-com El ciclo diario falló. Comprueba en producción si Pages llegó a actualizarse antes de reintentar: el despliegue y la promoción de la rama son fases separadas. Si el artículo de hoy ya aparece, no generes otro.\n\n[Consultar ejecución y logs](${runUrl})`,
             });
