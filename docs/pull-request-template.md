@@ -1,5 +1,5 @@
 ## Objetivo
-- [ ] Contenido revisado (ortografía/tono)
+- [ ] Contenido revisado (ortografía español de España/tono)
 - [ ] Accesibilidad (pa11y-ci ok)
 - [ ] Rendimiento (LH budgets ok)
 - [ ] Seguridad (CSP/headers listos)

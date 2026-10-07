@@ -3,10 +3,10 @@
 Objetivo: Mantener contexto y consistencia al comenzar una nueva sesión.
 
 ## Principios
-- Prioriza seguridad, simplicidad y mantenibilidad.
+- Prioriza impacto, seguridad, simplicidad y mantenibilidad.
 - Usa versionado semántico (SemVer): MAJOR.MINOR.PATCH.
 - Sigue Conventional Commits para mensajes de commit y generación de changelog.
- - Documenta cada cambio relevante (README/docs) y procura que el título del PR sea semántico.
+- Documenta cada cambio relevante (README/docs) y procura que el título del PR sea semántico.
 
 ## Flujo de trabajo
 1. Trabaja en la rama `pre` para cambios y revisiones.
@@ -49,7 +49,7 @@ Automatización: cada push a `pre` abre/actualiza un PR `pre` → `main` y activ
 - Verificar que la estructura se mantiene limpia.
 - Ejecutar una vista local del sitio si hay cambios en HTML/CSS.
 - Verificar que el PR cumpla el formato SemVer/Conventional Commits y que la documentación se haya actualizado.
- - Revisar el preview automático del PR.
+- Revisar el preview automático del PR.
 
 ## GitHub Pages y permisos (si falla el deploy)
 - En el repositorio: Settings > Pages > Build and deployment > Source: selecciona "GitHub Actions".

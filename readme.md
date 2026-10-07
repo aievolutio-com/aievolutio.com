@@ -10,6 +10,8 @@ Estado actual (fuente de verdad)
 URL de la web (sin DNS):
 https://aievolutio-com.github.io/aievolutio.com/
 
+URL de la web: https://aievolutio.com
+
 ## Estructura
 
 - `index.html` – Home del sitio (usa rutas relativas: `assets/...`, `styles/...`, `scripts/...`).
@@ -35,7 +37,7 @@ python -m http.server 8080
 - `feature/*` → PR automático a `pre` (título semántico). Auto‑merge cuando CI está verde.
 - `pre` → PR automático a `main` ("ci: sync pre -> main"). Auto‑merge cuando CI está verde.
 - `gh-pages` → rama de publicación (no editar a mano).
-- Los flujos programados de blog y Sheets publican directamente en `pre`, ejecutan CI y despliegan a `gh-pages` sólo si todas las validaciones pasan; no requieren PR ni aprobación manual.
+- Los flujos programados de blog y Sheets publican directamente en `pre`, ejecutan CI y despliegan a `gh-pages` sólo si todas las validaciones pasan; no requieren PR ni aprobación manual. Si las validaciones no pasan, se modifica la web para que pasen. Así que siempre tienen que acabar publicándose los cambios.
 
 Protecciones: sólo mediante PRs a `main`.
 
