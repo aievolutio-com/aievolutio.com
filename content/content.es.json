@@ -26,6 +26,11 @@
       "id": "aiworkers",
       "label": "Equipo",
       "href": "equipo.html"
+    },
+    {
+      "id": "contact",
+      "label": "Contacto",
+      "href": "contacto.html"
     }
   ],
   "sections": [

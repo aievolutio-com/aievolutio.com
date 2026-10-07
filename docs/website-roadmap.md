@@ -4,8 +4,9 @@
 
 - El archivo del blog mostraba el texto completo de cada artículo en tarjetas
   y la cuadrícula podía crecer hasta cuatro columnas en escritorio.
-- Dos publicaciones recientes recomendaban una sección de contacto que la web
-  no ofrecía.
+- Dos publicaciones recientes recomendaban una sección de contacto inexistente;
+  ya se retiraron/actualizaron y se añadió una página con el correo público
+  confirmado.
 - En el repositorio no se encontró instrumentación de analítica ni resultados
   de pruebas con visitantes. Por tanto, no hay evidencia para afirmar que la
   web guste a su audiencia ni para medir su impacto comercial.
@@ -29,12 +30,16 @@
 
 ### P1 — Completar el recorrido de confianza y contacto
 
-- Acordar un canal público real de contacto antes de publicarlo. No inventar
-  correo, formulario, tiempos de respuesta ni presencia en redes.
+- Mantener visible el correo público confirmado, sin fingir un formulario ni
+  prometer tiempos de respuesta.
 - Aclarar en Inicio qué problema resuelve AIEvolutio, para quién y cuál es el
   siguiente paso útil.
+- Hecho: página de contacto con el correo oficial confirmado, enlace en la
+  navegación global y CTA en Inicio; no se recogen datos desde la web.
+- Pendiente: aclarar aún más en Inicio qué problema resuelve AIEvolutio para
+  quién y qué prueba concreta de valor puede consultar.
 - Criterios: una persona nueva puede describir la propuesta, encontrar una
-  prueba concreta de valor y localizar un canal de contacto real sin ayuda.
+  prueba concreta de valor y localizar el canal de contacto sin ayuda.
 
 ### P2 — Validar con personas
 

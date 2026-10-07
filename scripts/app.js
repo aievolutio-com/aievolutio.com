@@ -40,7 +40,7 @@
     const page = document.body.dataset.page || 'home';
     const activeId = page === 'blog' || page === 'blog-archive'
       ? 'blog'
-      : page === 'team' ? 'aiworkers' : 'home';
+      : page === 'team' ? 'aiworkers' : page === 'contact' ? 'contact' : 'home';
     nav.replaceChildren(...items.map((item) => {
       const attrs = {
         href: isAllowedHref(item.href) ? item.href : 'index.html',
@@ -452,7 +452,9 @@
       ? sections.filter((section) => section.id === 'blog')
       : page === 'team'
         ? sections.filter((section) => section.id === 'aiworkers')
-        : sections.filter((section) => section.id !== 'home');
+        : page === 'contact'
+          ? []
+          : sections.filter((section) => section.id !== 'home');
     visibleSections.forEach((section) => {
       if (section.id !== 'eventos') {
         mount.append(renderSection(section));
