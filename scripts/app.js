@@ -38,7 +38,9 @@
   function renderNav(items) {
     const nav = $('#nav');
     const page = document.body.dataset.page || 'home';
-    const activeId = page === 'blog' ? 'blog' : page === 'team' ? 'aiworkers' : 'home';
+    const activeId = page === 'blog' || page === 'blog-archive'
+      ? 'blog'
+      : page === 'team' ? 'aiworkers' : 'home';
     nav.replaceChildren(...items.map((item) => {
       const attrs = {
         href: isAllowedHref(item.href) ? item.href : 'index.html',
@@ -78,18 +80,20 @@
     }).format(new Date(`${date}T12:00:00Z`));
   }
 
-  function renderPost(post, preview) {
+  function renderPost(post, preview, showTitle = true) {
     const id = articleId(post);
     const articleAttrs = { class: 'card post-card' };
     if (!preview) articleAttrs.id = id;
     const article = el('article', articleAttrs, []);
-    const title = el('h3');
-    if (preview) {
-      title.append(el('a', { href: `blog.html#${id}` }, [post.title || 'Entrada']));
-    } else {
-      title.textContent = post.title || 'Entrada';
+    if (showTitle) {
+      const title = el('h3');
+      if (preview) {
+        title.append(el('a', { href: `blog.html#${id}` }, [post.title || 'Entrada']));
+      } else {
+        title.textContent = post.title || 'Entrada';
+      }
+      article.append(title);
     }
-    article.append(title);
     const metadata = [formatPostDate(post.date), post.author].filter(Boolean).join(' · ');
     article.append(el('p', { class: 'muted post-meta' }, [metadata]));
     if (post.img) {
@@ -144,18 +148,29 @@
   function renderSection(sec) {
     const section = el('section', { id: sec.id, class: 'section' }, []);
     const page = document.body.dataset.page || 'home';
+    const posts = sec.id === 'blog' ? sortedPosts(sec.blocks || []) : [];
+    const selectedPost = page === 'blog'
+      ? posts.find((post) => articleId(post) === window.location.hash.slice(1))
+      : null;
     const sectionTitle = sec.id === 'blog' && page === 'home'
       ? 'Ideas recientes'
       : sec.id === 'blog' && page === 'blog'
-        ? 'Archivo de artículos'
-        : sec.title;
+        ? selectedPost ? 'Artículo' : 'Artículos recientes'
+        : sec.id === 'blog' && page === 'blog-archive'
+          ? 'Artículos anteriores'
+          : sec.title;
     const h = el('h2', {}, [sectionTitle]);
     section.append(h);
 
+    if (selectedPost) {
+      section.append(el('a', { href: 'blog.html', class: 'archive-back' }, ['← Volver a artículos recientes']));
+    } else if (page === 'blog-archive') {
+      section.append(el('a', { href: 'blog.html', class: 'archive-back' }, ['← Ver artículos recientes']));
+    }
     const containerClass = sec.kind === 'grid' || (sec.id === 'aiworkers' && page === 'team')
       ? 'grid'
       : sec.id === 'blog'
-        ? 'grid post-grid'
+        ? `grid post-grid${selectedPost ? ' post-grid-single' : ''}`
         : '';
     const container = el('div', { class: containerClass });
     let blocks = sec.blocks || [];
@@ -163,8 +178,13 @@
       blocks = blocks.filter((block) => block.type === 'worker').slice(0, 3);
     }
     if (sec.id === 'blog') {
-      const posts = sortedPosts(blocks);
-      blocks = page === 'blog' ? posts : posts.slice(0, 3);
+      if (page === 'blog') {
+        blocks = selectedPost ? [selectedPost] : posts.slice(0, 4);
+      } else if (page === 'blog-archive') {
+        blocks = posts.slice(4);
+      } else {
+        blocks = posts.slice(0, 3);
+      }
     }
 
     blocks.forEach(b => {
@@ -284,7 +304,11 @@
         container.append(c);
       }
       if (b.type === 'event') container.append(el('div', { class: 'card', role: 'article' }, [el('h3', {}, [b.title || 'Evento']), el('p', {}, [b.date || '']), el('p', {}, [b.body || ''])]));
-      if (b.type === 'post') container.append(renderPost(b, page !== 'blog'));
+      if (b.type === 'post') {
+        const isArticle = page === 'blog' && selectedPost === b;
+        const isPreview = page === 'home' || ((page === 'blog' || page === 'blog-archive') && !selectedPost);
+        container.append(renderPost(b, isPreview, !isArticle));
+      }
       if (b.type === 'links') {
         const row = el('div', { class: b.class || '' });
         (b.items || []).filter((item) => isAllowedHref(item.href)).forEach((item) => row.append(el('a', { href: item.href, class: 'btn' }, [item.title || item.href])));
@@ -397,6 +421,12 @@
       }
     });
 
+    if (page === 'blog' && sec.id === 'blog' && !selectedPost && posts.length > 4) {
+      container.append(el('a', {
+        href: 'archivo.html',
+        class: 'btn section-cta',
+      }, ['Ver artículos anteriores']));
+    }
     if (page === 'home' && sec.id === 'blog') {
       container.append(el('a', { href: 'blog.html', class: 'btn section-cta' }, ['Explorar todos los artículos']));
     }
@@ -418,7 +448,7 @@
       month: '2-digit',
       day: '2-digit',
     }).format(new Date());
-    const visibleSections = page === 'blog'
+    const visibleSections = page === 'blog' || page === 'blog-archive'
       ? sections.filter((section) => section.id === 'blog')
       : page === 'team'
         ? sections.filter((section) => section.id === 'aiworkers')
@@ -436,6 +466,20 @@
         mount.append(renderSection({ ...section, blocks: upcomingEvents }));
       }
     });
+  }
+
+  function updateBlogView() {
+    if (document.body.dataset.page !== 'blog' || !state.content) return;
+    const blogSection = state.content.sections.find((section) => section.id === 'blog');
+    const posts = sortedPosts(blogSection ? blogSection.blocks : []);
+    const selectedPost = posts.find((post) => articleId(post) === window.location.hash.slice(1));
+    const pageTitle = $('#page-title');
+    if (pageTitle) pageTitle.textContent = selectedPost?.title || 'Ideas para evolucionar';
+    document.title = selectedPost
+      ? `${selectedPost.title} — AIEvolutio`
+      : 'Ideas para evolucionar — AIEvolutio';
+    renderSections(state.content.sections);
+    if (selectedPost) document.getElementById(articleId(selectedPost))?.scrollIntoView();
   }
 
   function setupTheme() {
@@ -502,16 +546,21 @@
   async function main() {
     try {
       await loadContent('es');
-  const navOverride = await loadNavigationOverride();
-  renderNav(navOverride || state.content.navigation);
-      renderSections(state.content.sections);
-  const currentYear = $('#current-year');
-  if (currentYear) currentYear.textContent = String(new Date().getFullYear());
-  setupTheme();
-  setupLightbox();
-  if (window.location.hash) {
-    document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
-  }
+      const navOverride = await loadNavigationOverride();
+      renderNav(navOverride || state.content.navigation);
+      if (document.body.dataset.page === 'blog') {
+        window.addEventListener('hashchange', updateBlogView);
+        updateBlogView();
+      } else {
+        renderSections(state.content.sections);
+      }
+      const currentYear = $('#current-year');
+      if (currentYear) currentYear.textContent = String(new Date().getFullYear());
+      setupTheme();
+      setupLightbox();
+      if (window.location.hash) {
+        document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
+      }
     } catch (e) {
       console.error(e);
       $('#sections').innerHTML = '<p>Error cargando contenido.</p>';
