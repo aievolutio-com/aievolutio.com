@@ -22,12 +22,12 @@ jobs:
       SHEET_CSV_URL: https://docs.google.com/spreadsheets/d/e/2PACX-1vTXUzpg8G45BF6TaUA-RGGVn1jl4mBlf2GFg1pq6wgJq-5WhOAZ9ZflFgsKc0RuNCCZlOYrVPAL6J5D/pub?output=csv
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: pre
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '20'
 
