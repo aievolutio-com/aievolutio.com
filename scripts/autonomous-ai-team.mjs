@@ -155,7 +155,7 @@ function validateNavigationItems(items, sectionIds) {
       throw new Error(`El enlace de navegación "${item.id}" no es válido.`);
     }
     const [targetPage, targetId] = item.href.split('#');
-    if (!['', 'index.html', 'blog.html', 'equipo.html'].includes(targetPage)) {
+    if (!['', 'index.html', 'blog.html', 'equipo.html', 'contacto.html'].includes(targetPage)) {
       throw new Error(`El enlace de navegación "${item.id}" apunta a una página no permitida.`);
     }
     if (targetId && (!targetPage || targetPage === 'index.html')) {
@@ -546,6 +546,10 @@ async function main() {
     throw new Error('GCP_PROJECT_ID y GOOGLE_ACCESS_TOKEN son obligatorios.');
   }
   const baseline = JSON.parse(await readFile(contentPath, 'utf8'));
+  validateNavigationItems(
+    baseline.navigation,
+    new Set(baseline.sections.map((section) => section.id)),
+  );
   const dateParts = localDateParts();
   const date = `${dateParts.year}-${dateParts.month}-${dateParts.day}`;
   const runId = process.env.GITHUB_RUN_ID || String(Date.now());

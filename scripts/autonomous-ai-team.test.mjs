@@ -35,7 +35,10 @@ function createContent() {
       },
       { id: 'blog', blocks: [originalPost, generatedPost] },
     ],
-    navigation: [{ id: 'blog', href: '#blog' }],
+    navigation: [
+      { id: 'blog', href: '#blog' },
+      { id: 'contact', href: 'contacto.html' },
+    ],
   };
 }
 

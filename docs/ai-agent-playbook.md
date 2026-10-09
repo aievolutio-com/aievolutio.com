@@ -15,7 +15,7 @@ tratar a las personas como un coste que hay que eliminar.
 
 Mensaje central:
 
-> Evolucionar con IA para que las empresas sigan siendo útiles y las personas
+> Evolucionar con IA para que las empresas sigan siendo valiosas para la sociedad y las personas
 > ganen tiempo, capacidad y confianza.
 
 No vender miedo a la extinción, milagros, sustitución indiscriminada de puestos,
@@ -137,6 +137,8 @@ recuperarse sin duplicar contenido.
 
 - Dos disparadores programados diarios y ejecución serializada.
 - Idempotencia por fecha local: como máximo un artículo por día.
+- La navegación existente se valida antes de llamar al modelo; el destino real
+  `contacto.html` está permitido y cubierto por una prueba de regresión.
 - Límite de llamadas, reintentos acotados ante JSON incompleto y límites de
   reparación.
 - La imagen es opcional; el contenido y CI no dependen de Imagen.
@@ -185,7 +187,8 @@ recuperarse sin duplicar contenido.
 5. **Pruebas de contrato:** simular respuestas truncadas, 429, HTML en texto,
    imagen 404, parche corrupto, CI fallido, deploy exitoso con promoción
    fallida y reejecución del mismo día. Asegurar la comprobación de que solo el
-   commit validado se publica.
+   commit validado se publica. Mantener las rutas de navegación reales en los
+   fixtures para detectar desajustes con el sitio antes de consumir llamadas.
 6. **Calidad editorial verificable:** añadir validaciones automáticas para
    evidencia/citas, enlaces, repetición temática, llamadas a la acción y
    coherencia de autor; mantener revisión humana opcional como observación, no
