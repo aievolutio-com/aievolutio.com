@@ -27,7 +27,7 @@ jobs:
               return;
             }
             const title = 'ci: sync pre -> main';
-            const body = 'PR automático para integrar cambios de pre en main. Se auto-mergeará cuando los checks pasen (según reglas de protección).';
+            const body = 'PR automático para integrar cambios de pre en main. Se auto-mergeará cuando los checks pasen (según reglas de protección). La sincronización conserva el historial mediante merge commits.';
             const pr = await github.rest.pulls.create({owner, repo, base: 'main', head: 'pre', title, body, maintainer_can_modify: true});
             core.setOutput('number', pr.data.number);
             core.setOutput('created', 'true');
@@ -39,4 +39,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           pull-request-number: ${{ steps.ensure_pr.outputs.number }}
-          merge-method: squash
+          merge-method: merge
