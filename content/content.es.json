@@ -3,17 +3,35 @@
     "siteName": "AIEvolutio",
     "tagline": "IA para ganar tiempo y vida",
     "language": "es",
-    "copyright": "© 2025 AIEvolutio — Comunidad",
+    "copyright": "© AIEvolutio",
     "license": "CC BY-SA 4.0"
   },
   "navigation": [
-    {"id": "home", "label": "Inicio", "href": "#home"},
-    {"id": "manifiesto", "label": "Manifiesto", "href": "#manifiesto"},
-    {"id": "iniciativas", "label": "Iniciativas", "href": "#iniciativas"},
-    {"id": "eventos", "label": "Eventos", "href": "#eventos"},
-    {"id": "blog", "label": "Blog", "href": "#blog"},
-    {"id": "personas", "label": "Personas", "href": "#personas"},
-    {"id": "unete", "label": "Únete", "href": "#unete"}
+    {
+      "id": "home",
+      "label": "Inicio",
+      "href": "index.html#home"
+    },
+    {
+      "id": "iniciativas",
+      "label": "Qué hacemos",
+      "href": "index.html#iniciativas"
+    },
+    {
+      "id": "blog",
+      "label": "Ideas",
+      "href": "blog.html"
+    },
+    {
+      "id": "aiworkers",
+      "label": "Equipo",
+      "href": "equipo.html"
+    },
+    {
+      "id": "contact",
+      "label": "Contacto",
+      "href": "contacto.html"
+    }
   ],
   "sections": [
     {
@@ -23,21 +41,27 @@
       "blocks": [
         {
           "type": "p",
-          "body": "Una comunidad creada con inteligencias artificiales que trabajan para las personas. Nuestro objetivo es liberar tiempo, reducir cargas y aumentar la productividad, para que podamos enfocarnos en lo esencial: familia, creatividad, empatía, sociedad y planeta."
-        },
-        {"type": "link", "title": "Leer manifiesto", "href": "#manifiesto"}
+          "body": "AIEvolutio ayuda a personas y equipos a recuperar tiempo, mejorar decisiones y construir procesos más inteligentes con IA."
+        }
       ]
     },
     {
-      "id": "manifiesto",
-      "title": "Manifiesto",
+      "id": "vision",
+      "title": "Visión",
       "kind": "text",
       "blocks": [
         {
           "type": "p",
-          "body": "La IA no viene a sustituir, sino a potenciar. Nos ayuda a quitarnos de encima lo repetitivo y abrir espacio a lo que aporta valor humano. Creemos en un futuro donde la colaboración entre personas y máquinas nos haga más productivos y, al mismo tiempo, más humanos."
+          "body": "La IA no reemplaza el criterio humano; lo amplifica. Diseñamos herramientas y procesos que reducen fricción y liberan energía para la creatividad, el impacto y la vida."
         },
-        {"type": "quote", "body": "Ganar tiempo para la vida. De eso se trata."}
+        {
+          "type": "quote",
+          "body": "Ganar tiempo para la vida. De eso se trata.",
+          "author": "AIVISIO",
+          "version": "",
+          "img": "images/aivisio-oficina.jpg",
+          "alt": "AIVISIO"
+        }
       ]
     },
     {
@@ -47,18 +71,121 @@
       "blocks": [
         {
           "type": "card",
-          "title": "Workers & iTeams",
-          "body": "Inteligencias artificiales que actúan como compañeros digitales, liberando a las personas de tareas repetitivas y trabajando en equipo para multiplicar resultados."
+          "title": "AIWorkers & AITeams",
+          "body": "Compañeros digitales que ejecutan tareas, coordinan procesos y escalan resultados en equipo con foco en productividad y calidad.",
+          "img": "",
+          "alt": "AIWorkers & AITeams"
         },
         {
           "type": "card",
-          "title": "Aprendizaje Abierto",
-          "body": "Guías y microcursos para usar la IA como aliada en la vida diaria y profesional, con foco en creatividad, impacto y ética."
+          "title": "Aprendizaje abierto",
+          "body": "Guías y microcursos para usar la IA como aliada en el trabajo diario, con enfoque práctico, ético y humano.",
+          "img": "",
+          "alt": "Aprendizaje abierto"
         },
         {
           "type": "card",
-          "title": "Prototipos Públicos",
-          "body": "Ejemplos abiertos de cómo la IA ayuda a ganar productividad, liberar tiempo y generar valor real en la práctica."
+          "title": "Prototipos públicos",
+          "body": "Ejemplos abiertos de cómo la IA ayuda a ahorrar tiempo, liberar capacidad y generar valor real en la práctica.",
+          "img": "",
+          "alt": "Prototipos públicos"
+        }
+      ]
+    },
+    {
+      "id": "aiworkers",
+      "title": "AIWorkers",
+      "kind": "text",
+      "blocks": [
+        {
+          "type": "worker",
+          "title": "AIVisio",
+          "role": "CEO y estrategia",
+          "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
+          "img": "images/aivisio-perfil.jpg",
+          "alt": "AIVisio",
+          "href": "",
+          "cta": "AIVisio"
+        },
+        {
+          "type": "worker",
+          "title": "AIDux",
+          "role": "CIO y tecnología",
+          "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
+          "img": "images/aidux-perfil.jpg",
+          "alt": "AIDux",
+          "href": "",
+          "cta": "AIDux"
+        },
+        {
+          "type": "worker",
+          "title": "AIJuris",
+          "role": "Asesoría jurídica",
+          "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
+          "img": "images/aijuris-perfil.jpg",
+          "alt": "AIJuris",
+          "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
+          "cta": "Probar AIJuris"
+        },
+        {
+          "type": "worker",
+          "title": "AIUsus",
+          "role": "UX y accesibilidad",
+          "body": "Diseño de experiencia, accesibilidad y arquitectura de información para que cada recorrido sea claro y fácil de usar.",
+          "img": "",
+          "alt": "Perfil AIUsus",
+          "href": "",
+          "cta": "AIUsus"
+        },
+        {
+          "type": "worker",
+          "title": "AIExperientia",
+          "role": "Experiencia de cliente",
+          "body": "Experiencia de cliente y mejora de servicios, desde la escucha de necesidades hasta la resolución de fricciones.",
+          "img": "",
+          "alt": "Perfil AIExperientia",
+          "href": "",
+          "cta": "AIExperientia"
+        },
+        {
+          "type": "worker",
+          "title": "AIMercatus",
+          "role": "Marketing y marca",
+          "body": "Estrategia de marketing, contenidos y marca con foco en utilidad, claridad y confianza.",
+          "img": "",
+          "alt": "Perfil AIMercatus",
+          "href": "",
+          "cta": "AIMercatus"
+        },
+        {
+          "type": "worker",
+          "title": "AIArchitectus",
+          "role": "Arquitectura técnica",
+          "body": "Arquitectura técnica, calidad y mantenibilidad. Propone cambios pequeños que se validan antes de publicar.",
+          "img": "",
+          "alt": "Perfil AIArchitectus",
+          "href": "",
+          "cta": "AIArchitectus"
+        },
+        {
+          "type": "worker",
+          "title": "AIMutatio",
+          "role": "Gestión del cambio",
+          "body": "Gestión del cambio y adopción responsable: acompaña la evolución de procesos, equipos y capacidades.",
+          "img": "",
+          "alt": "Perfil AIMutatio",
+          "href": "",
+          "cta": "AIMutatio"
+        },
+        {
+          "type": "worker",
+          "title": "AILitterae",
+          "role": "Investigación y contenidos",
+          "body": "Investigación y contenidos prácticos en español, revisados para mantener coherencia, claridad y rigor.",
+          "img": "",
+          "alt": "Perfil AILitterae",
+          "href": "",
+          "cta": "AILitterae"
         }
       ]
     },
@@ -69,9 +196,9 @@
       "blocks": [
         {
           "type": "event",
-          "title": "Sesión 0: Manifiesto y mapa de ruta",
-          "date": "2025-09-15",
-          "body": "Presentación abierta de la comunidad. Cómo la IA puede ayudarnos a ganar tiempo y calidad de vida."
+          "title": "Sesión abierta",
+          "date": "2026-08-15",
+          "body": "Sesión abierta para explorar cómo la IA puede ayudarnos a ganar tiempo y mejorar la calidad de vida."
         }
       ]
     },
@@ -82,37 +209,53 @@
       "blocks": [
         {
           "type": "post",
-          "title": "IA y personas: productividad con propósito",
-          "date": "2025-09-01",
-          "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más, con menos esfuerzo, y dedicar energía a lo que realmente importa."
-        }
-      ]
-    },
-    {
-      "id": "personas",
-      "title": "Personas",
-      "kind": "people",
-      "blocks": [
-        {
-          "type": "card",
-          "title": "Contribuye",
-          "body": "Comparte experiencias, prototipos o ideas que muestren cómo la IA puede ayudarnos a vivir y trabajar mejor. Ética, privacidad y propósito guían nuestro camino."
-        }
-      ]
-    },
-    {
-      "id": "unete",
-      "title": "Únete",
-      "kind": "cta",
-      "blocks": [
-        {
-          "type": "p",
-          "body": "¿Quieres recuperar tiempo y enfocarte en lo que importa? Súmate a esta comunidad de colaboración entre personas e inteligencias artificiales."
+          "title": "IA y personas",
+          "date": "2026-08-02",
+          "body": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más con menos esfuerzo y dedicar energía a lo que realmente importa."
         },
         {
-          "type": "link",
-          "title": "Abrir un Issue en GitHub",
-          "href": "https://github.com/aievolutio/site/issues"
+          "type": "post",
+          "title": "Riesgos y ventajas de los AIWorkers en las organizaciones",
+          "date": "2026-08-03",
+          "body": "Los AIWorkers pueden acelerar tareas repetitivas, mejorar la consistencia operativa y liberar tiempo para decisiones más estratégicas. Entre sus ventajas destacan la escalabilidad, la rapidez y la reducción de carga manual. Sin embargo, también implican riesgos: sesgos en los resultados, dependencia excesiva de la automatización, problemas de privacidad y la necesidad de supervisión humana. La clave está en desplegarlos con gobernanza, control y procesos claros."
+        },
+        {
+          "type": "post",
+          "title": "Desbloqueando Horas Valiosas: Una Guía Práctica para Medir el Impacto de tu Automatización",
+          "date": "2026-09-29",
+          "body": "En AIEvolutio, creemos firmemente en el poder de la automatización inteligente para transformar la forma en que trabajamos. Hablamos de liberar a los profesionales y a los equipos de tareas repetitivas, permitiéndoles enfocar su energía en aquello que realmente importa: la creatividad, la estrategia y la conexión humana. Pero, ¿cómo saber si realmente estamos ganando ese tiempo tan preciado? La intuición es un buen punto de partida, pero la medición es la que nos da la certeza.\n\nMedir el tiempo recuperado no es solo una métrica; es una estrategia. Nos permite validar nuestras inversiones en tecnología, identificar dónde podemos automatizar más y, lo más importante, demostrar el valor tangible de estas herramientas a nuestro equipo y a la dirección. No se trata de justificar la tecnología por sí misma, sino de entender cómo está potenciando a las personas y los objetivos del negocio.\n\nAquí te explicamos una forma sencilla y práctica de empezar a cuantificar esas horas liberadas:\n\n**1. Identifica la Tarea a Automatizar y Establece una Línea Base:**\nAntes de automatizar, elige una tarea específica y repetitiva. Podría ser la generación de informes mensuales, la clasificación de correos electrónicos, la entrada de datos en una hoja de cálculo o la publicación de contenido en redes sociales. Luego, mide cuánto tiempo le toma a tu equipo realizar esta tarea de forma manual. Sé honesto y realista. No midas solo una vez; toma un promedio de varias instancias para obtener una cifra representativa. Por ejemplo, \"generar el informe X toma 3 horas cada mes\".\n\n**2. Implementa la Automatización:**\nUna vez que tengas una línea base, introduce la herramienta o el proceso de automatización. Puede ser una plantilla inteligente, un script simple, una integración entre plataformas o una solución de IA más avanzada. Asegúrate de que el equipo reciba la capacitación necesaria para usarla eficazmente.\n\n**3. Mide el Tiempo Post-Automatización:**\nAhora, observa cuánto tiempo se invierte en la tarea una vez que la automatización está en marcha. Si la tarea se automatiza por completo, el tiempo invertido por el equipo será cero o muy cercano a cero (quizás solo para supervisión). Si la automatización asiste en la tarea, mide el tiempo que ahora se requiere. Siguiendo el ejemplo anterior, si el informe X ahora se genera en 15 minutos gracias a la automatización, esa es tu nueva cifra.\n\n**4. Calcula el Tiempo Recuperado y Extrapola:**\nLa matemática es sencilla: resta el tiempo post-automatización del tiempo pre-automatización. En nuestro ejemplo, (3 horas - 0.25 horas = 2.75 horas recuperadas por informe). Ahora, multiplica este ahorro por la frecuencia con la que se realiza la tarea. Si es mensual, son 2.75 horas al mes. Si se hace a diario, ¡el ahorro se dispara! Suma estos ahorros de tiempo de todas las tareas automatizadas para obtener una visión global.\n\n**5. Considera el Contexto y el Impacto Cualitativo:**\nMás allá de los números puros, piensa en lo que significa ese tiempo recuperado. ¿Se están dedicando esas horas a proyectos estratégicos? ¿Se está reduciendo el estrés del equipo? ¿Ha mejorado la calidad del trabajo al eliminar errores manuales? Estos beneficios cualitativos, aunque difíciles de cuantificar en horas, son igualmente valiosos y refuerzan el impacto positivo de la automatización.\n\n**Herramientas para la medición:**\nNo necesitas software complejo. Para empezar, una simple hoja de cálculo puede ser tu mejor aliada. Puedes usar herramientas de seguimiento de tiempo (como Toggl, Clockify, etc.) para establecer las líneas base de forma más precisa. Algunas plataformas de automatización incluso ofrecen métricas de uso que pueden ayudarte a estimar el tiempo de ejecución.\n\nEl objetivo final de medir el tiempo recuperado no es solo acumular cifras, sino entender cómo estamos reasignando nuestra energía. Se trata de empoderar a tu equipo para que se enfoque en el pensamiento estratégico, la innovación y las interacciones de alto valor, en lugar de en la rutina. Al cuantificar el impacto, no solo demuestras el valor de la automatización, sino que también inspiras una cultura de mejora continua y eficiencia inteligente en tu organización. Es una inversión de tiempo que, sin duda, te devolverá con creces."
+        },
+        {
+          "type": "post",
+          "title": "Desmitificando la IA: La Guía para tu Primer Experimento en Equipo",
+          "date": "2026-10-04",
+          "body": "La inteligencia artificial ya no es ciencia ficción ni un lujo exclusivo de las grandes corporaciones. Hoy, está al alcance de profesionales y equipos que buscan optimizar su trabajo diario. Sin embargo, la magnitud del tema puede ser abrumadora. ¿Por dónde empezar? ¿Cómo evitar la parálisis por análisis?\n\nLa clave está en empezar pequeño. En AIEvolutio, creemos firmemente que el camino más efectivo para integrar la IA en tu organización no es con un proyecto ambicioso y costoso, sino con un experimento modesto, bien definido y enfocado. Este enfoque no solo reduce el riesgo, sino que también acelera el aprendizaje y construye una base de confianza interna.\n\n**Elige un problema, no una tecnología.**\n\nEl error más común es buscar problemas para una solución de IA. En lugar de eso, identifica un punto de dolor real en tu equipo o en un proceso existente. ¿Hay una tarea repetitiva que consume demasiado tiempo? ¿Un cuello de botella en la gestión de información? ¿Decisiones que podrían beneficiarse de un análisis de datos más rápido? Piensa en algo específico, tangible y que, si se mejora, generaría un alivio claro.\n\nPor ejemplo, en lugar de “implementar IA para mejorar la eficiencia”, considera “usar IA para categorizar automáticamente los correos electrónicos de soporte más comunes” o “resumir los informes semanales de proyectos en puntos clave”. Cuanto más acotado sea el problema, más fácil será diseñar el experimento.\n\n**Tus datos son el combustible, pero no los compliques.**\n\nPara un primer experimento, no necesitas un lago de datos masivo ni un equipo de científicos de datos. Busca la información que ya tienes o que puedes recopilar fácilmente y que sea directamente relevante para tu problema acotado. Un conjunto de datos pequeño, limpio y bien estructurado es mucho más valioso que uno enorme y caótico para empezar. La calidad de los datos es más importante que la cantidad en esta fase inicial.\n\n**Define el éxito de forma clara y sencilla.**\n\nAntes de empezar, pregúntate: ¿qué significa que este experimento sea un éxito? No esperes una transformación radical. Quizás el éxito sea reducir el tiempo de una tarea en un 10%, o mejorar la precisión de una clasificación en un 5%. O simplemente, aprender qué funciona y qué no. Establecer métricas realistas y alcanzables te permitirá celebrar los pequeños avances y mantener la motivación.\n\n**Adopta la mentalidad experimental.**\n\nUn experimento implica que no todas las hipótesis serán correctas. Sé flexible, prepárate para iterar y no temas que los resultados no sean perfectos a la primera. El valor real de este primer paso no es solo el resultado final, sino todo el aprendizaje que obtendrás sobre cómo la IA interactúa con tus procesos, tus datos y tu gente. Involucra a los usuarios finales del proceso desde el principio; su perspectiva es crucial.\n\n**Herramientas accesibles para empezar.**\n\nHoy en día, existen numerosas plataformas y herramientas de IA accesibles que no requieren conocimientos de programación avanzados. Muchas soluciones de no-code/low-code, así como modelos preentrenados para tareas comunes (como el procesamiento de lenguaje natural o la visión por computadora), pueden ser tus aliados para dar los primeros pasos. El objetivo es experimentar, no construir un sistema complejo desde cero.\n\n**¿Qué esperar? Realismo y optimismo.**\n\nTu primer experimento con IA probablemente no será perfecto. Podría ser un poco torpe, o quizás no genere el impacto esperado de inmediato. Y eso está bien. Lo importante es que habrás sentado las bases: tu equipo habrá ganado experiencia práctica, entenderá mejor el potencial y las limitaciones de la IA en tu contexto, y habrá identificado los próximos pasos. Este conocimiento es invaluable y te preparará para proyectos futuros más ambiciosos.\n\nEmpezar con un pequeño experimento de IA es un acto de audacia inteligente. Es la forma más práctica, humana y efectiva de desmitificar la IA y comenzar a cosechar sus beneficios de manera sostenible en tu organización. Da ese primer paso, aprende del proceso, y observa cómo la curiosidad se convierte en capacidad."
+        },
+        {
+          "type": "post",
+          "title": "Diseño inteligente de procesos: Cuando la IA asiste y el criterio humano decide",
+          "date": "2026-10-05",
+          "body": "La inteligencia artificial ha dejado de ser una promesa futurista para convertirse en una herramienta presente y potente en nuestro día a día laboral. Sin embargo, en medio del entusiasmo por sus capacidades, surge una preocupación legítima: ¿cómo podemos integrar la IA en nuestros flujos de trabajo sin diluir el valor insustituible del criterio humano? En AIEvolutio, creemos firmemente que la clave reside en diseñar procesos donde la IA sea una aliada estratégica, no un sustituto.\n\nNo se trata de elegir entre IA o personas, sino de cómo la IA puede potenciar a las personas. Para profesionales y equipos pequeños, esto significa entender dónde brilla cada uno. La IA es excepcional para procesar grandes volúmenes de datos, identificar patrones, automatizar tareas repetitivas y ofrecer análisis predictivos. Es rápida, incansable y no se distrae. El ser humano, por otro lado, aporta creatividad, pensamiento crítico, empatía, intuición, juicio ético y la capacidad de comprender contextos complejos y no estructurados. La magia ocurre cuando combinamos estas fortalezas.\n\nPara diseñar procesos de trabajo asistidos por IA que respeten y valoren el criterio humano, te proponemos un enfoque práctico:\n\nPrimero, **identifica el \"porqué\" y el \"qué\"**. Antes de implementar cualquier solución de IA, pregúntate: ¿Qué problema específico queremos resolver? ¿Qué tareas repetitivas o de alto volumen están consumiendo tiempo valioso que podría dedicarse a actividades de mayor valor estratégico o creativo? Quizás sea la clasificación de correos electrónicos, el análisis inicial de documentos, la generación de borradores de contenido o la extracción de datos de informes. Centra la IA en estas áreas donde su velocidad y precisión son un activo innegable.\n\nSegundo, **define puntos de transferencia claros y deliberados**. Imagina tu proceso como una carrera de relevos. La IA corre una parte del trayecto, pero en un punto específico, pasa el testigo al humano. Por ejemplo, la IA puede compilar y resumir información clave de múltiples fuentes, pero es el profesional quien interpreta esos resúmenes, evalúa su relevancia en el contexto general y toma decisiones estratégicas. Asegúrate de que estos \"puntos de relevo\" estén bien definidos, para que todos sepan cuándo la IA ha terminado su parte y cuándo el criterio humano debe entrar en acción.\n\nTercero, **mantén siempre el criterio humano en las decisiones críticas**. La IA puede ofrecer recomendaciones, predecir tendencias o incluso generar soluciones. Pero la responsabilidad final, especialmente en asuntos que requieren juicio ético, empatía, negociación o una comprensión profunda de las implicaciones a largo plazo, debe recaer en una persona. La IA es una herramienta de apoyo para la toma de decisiones, no la tomadora de decisiones. Su función es informar y agilizar, no reemplazar la capacidad de discernimiento.\n\nCuarto, **fomenta la iteración y el aprendizaje mutuo**. Los sistemas de IA no son estáticos; mejoran con la retroalimentación. Cuando la IA presente un resultado, tómate el tiempo para revisarlo, ajustarlo y, si es posible, proporcionar esa retroalimentación al sistema. Esto no solo mejora la precisión de la IA con el tiempo, sino que también refuerza la colaboración entre la máquina y el humano. Es un ciclo de mejora continua donde la experiencia humana refina la capacidad de la máquina.\n\nFinalmente, **invierte en capacitación y comprensión**. Para que tu equipo confíe y utilice la IA de manera efectiva, es fundamental que entiendan cómo funciona, cuáles son sus capacidades y, crucialmente, cuáles son sus limitaciones. Desmitificar la IA ayuda a reducir la ansiedad y a fomentar una mentalidad de colaboración. Un equipo informado sabrá cuándo confiar en la IA y cuándo su propio juicio es indispensable.\n\nLa integración de la inteligencia artificial en nuestros procesos de trabajo no tiene por qué ser una amenaza para nuestra autonomía o nuestra creatividad. Al contrario, cuando se diseña con intención y criterio, la IA se convierte en un copiloto extraordinario que libera nuestro tiempo y nuestra energía para aquello que solo nosotros podemos hacer: pensar, crear, conectar y decidir con sabiduría. En AIEvolutio, estamos convencidos de que el futuro del trabajo es una poderosa sinergia entre la inteligencia artificial y el inigualable criterio humano."
+        },
+        {
+          "type": "post",
+          "title": "Antes de automatizar: cómo elegir un proceso que merece una prueba con IA",
+          "date": "2026-10-07",
+          "author": "AIEvolutio",
+          "body": "Hablar de inteligencia artificial no ayuda a decidir qué cambiar el lunes por la mañana. La pregunta práctica es otra: ¿qué tarea concreta consume tiempo, se repite y podría mejorar sin trasladar el coste a las personas que la hacen o reciben?\n\n**1. Describe el trabajo antes de elegir la herramienta**\n\nAnota quién inicia el proceso, qué información necesita, qué resultado produce y qué excepciones aparecen. Si el proceso cambia cada vez o nadie puede explicar cómo se decide, automatizarlo primero puede amplificar la confusión. Empieza por una tarea acotada, no por “transformar toda la empresa”.\n\n**2. Escoge un caso pequeño y reversible**\n\nBusca una fase donde la IA pueda proponer, clasificar o resumir y una persona pueda comprobar el resultado antes de que afecte a un cliente, empleado o decisión importante. Deja fuera datos personales o confidenciales hasta tener una base legítima y controles adecuados. Define de antemano qué casos deben escalarse a una persona.\n\n**3. Mide la situación actual**\n\nDurante una muestra representativa, registra cuánto tarda la tarea, cuánto trabajo requiere corregir errores, qué volumen procesa y qué fricciones señalan quienes participan. Elige pocas medidas que importen para ese trabajo. Sin una referencia previa, no se puede afirmar honestamente que la IA haya ahorrado tiempo o mejorado el servicio.\n\n**4. Haz una prueba supervisada**\n\nCompara el proceso habitual con la propuesta asistida usando casos reales apropiados, revisados y protegidos. Comprueba también las excepciones, no solo los ejemplos fáciles. Cuenta el tiempo de verificación, los errores, el coste de operación y la experiencia de las personas. La velocidad de generar una respuesta no equivale a completar bien el trabajo.\n\n**5. Decide con evidencia, incluso si la respuesta es no**\n\nAmplía solo si el resultado mejora el proceso completo y los riesgos se pueden controlar. Si aumenta la carga de revisión, confunde a clientes o depende de datos que no deben compartirse, cambia el diseño o detén la prueba. Documenta quién responde por el resultado y cómo se vuelve al proceso anterior.\n\nUna buena primera experiencia con IA no necesita ser espectacular: debe resolver una fricción real, ser comprensible para el equipo y demostrar su valor con medidas acordadas antes de empezar. La tecnología es una opción; el objetivo es que el trabajo funcione mejor para las personas."
+        }
+      ]
+    },
+    {
+      "id": "oficina",
+      "title": "Nuestra oficina",
+      "kind": "text",
+      "blocks": [
+        {
+          "type": "image",
+          "src": "images/oficina-aievolutio.jpg",
+          "alt": "images/oficina-aievolutio.png",
+          "caption": "Espacio de trabajo y prototipado para construir herramientas con propósito."
         }
       ]
     }

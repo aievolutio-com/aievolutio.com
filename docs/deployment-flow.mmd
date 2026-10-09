@@ -1,0 +1,11 @@
+flowchart LR
+    A[Commit en pre] --> B[GitHub Actions: CI]
+    B -->|Checks correctos| C[Deploy site]
+    C --> D[Checkout de pre]
+    D --> E[Publica en gh-pages]
+    E --> F[GitHub Pages]
+    F --> G[https://aievolutio.com]
+    A --> H[Auto PR pre a main]
+    H --> I[Revisión y merge a main]
+    I --> J[Deploy site desde main]
+    J --> E

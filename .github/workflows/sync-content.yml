@@ -1,0 +1,55 @@
+name: Sync content from Sheets
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'content/sync.example.csv'
+      - 'scripts/sync-content.mjs'
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: scheduled-content-publication
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      SHEET_CSV_URL: https://docs.google.com/spreadsheets/d/e/2PACX-1vTXUzpg8G45BF6TaUA-RGGVn1jl4mBlf2GFg1pq6wgJq-5WhOAZ9ZflFgsKc0RuNCCZlOYrVPAL6J5D/pub?output=csv
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: pre
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+
+      - name: Sync content
+        run: node scripts/sync-content.mjs
+
+      - name: Publish content update to pre
+        id: publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/content.es.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "chore: sync content from sheets"
+          git push origin HEAD:pre
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Run CI and publish to production
+        if: steps.publish.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run ci.yml --ref pre

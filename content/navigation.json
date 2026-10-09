@@ -1,9 +1,7 @@
 [
-  {"id": "home", "label": "Inicio", "href": "#home"},
-  {"id": "manifiesto", "label": "Manifiesto", "href": "#manifiesto"},
-  {"id": "iniciativas", "label": "Iniciativas", "href": "#iniciativas"},
-  {"id": "eventos", "label": "Eventos", "href": "#eventos"},
-  {"id": "blog", "label": "Blog", "href": "#blog"},
-  {"id": "personas", "label": "Personas", "href": "#personas"},
-  {"id": "unete", "label": "Únete", "href": "#unete"}
+  { "id": "home", "label": "Inicio", "href": "index.html#home" },
+  { "id": "iniciativas", "label": "Qué hacemos", "href": "index.html#iniciativas" },
+  { "id": "blog", "label": "Ideas", "href": "blog.html" },
+  { "id": "aiworkers", "label": "Equipo", "href": "equipo.html" },
+  { "id": "contact", "label": "Contacto", "href": "contacto.html" }
 ]

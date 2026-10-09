@@ -6,6 +6,7 @@
     "alpha-value-notation": "number",
     "color-function-notation": "legacy",
     "value-keyword-case": null,
-    "color-hex-length": "short"
+    "color-hex-length": "short",
+    "no-descending-specificity": null
   }
 }

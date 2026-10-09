@@ -2,7 +2,7 @@ name: Deploy site
 
 on:
   push:
-    branches: [ main, pre ]
+    branches: [ main ]
   workflow_dispatch:
     inputs:
       ref:
@@ -18,17 +18,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # On manual runs, use the requested ref; on push, use the triggering commit
           ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref }}
       - name: Add .nojekyll
         run: echo > .nojekyll
       - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
           exclude_assets: |
-            .github,docs,*.md,*.yml,*.yaml,CNAME
+            .github,docs,*.md,*.yml,*.yaml
           force_orphan: true
