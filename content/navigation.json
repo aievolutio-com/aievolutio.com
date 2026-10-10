@@ -1,0 +1,7 @@
+[
+  { "id": "home", "label": "Inicio", "href": "index.html#home" },
+  { "id": "iniciativas", "label": "Qué hacemos", "href": "index.html#iniciativas" },
+  { "id": "blog", "label": "Ideas", "href": "blog.html" },
+  { "id": "aiworkers", "label": "Equipo", "href": "equipo.html" },
+  { "id": "contact", "label": "Contacto", "href": "contacto.html" }
+]
