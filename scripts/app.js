@@ -84,7 +84,7 @@
     const id = articleId(post);
     const articleAttrs = { class: 'card post-card' };
     if (!preview) articleAttrs.id = id;
-    const article = el('article', articleAttrs, []);
+    const article = el('article', articleAttrs, [el('div', { class: 'post-body-wrap' })]);
     if (showTitle) {
       const title = el('h3');
       if (preview) {
@@ -104,7 +104,7 @@
         loading: 'lazy',
       }));
     }
-    article.append(renderPostBody(preview ? postSummary(post.body) : post.body));
+    article.querySelector('.post-body-wrap').append(renderPostBody(preview ? postSummary(post.body) : post.body));
     if (preview) {
       article.append(el('a', { href: `blog.html#${id}`, class: 'text-link' }, ['Leer artículo']));
     }
