@@ -50,7 +50,6 @@ jobs:
           nohup npx http-server -c-1 dist -p 8081 > /dev/null 2>&1 &
           echo $! > server.pid
           sleep 2
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -80,7 +79,6 @@ jobs:
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/pre') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/pre') }}
     needs: check
     runs-on: ubuntu-latest
-    # MODIFICADO: Ahora comparte cola con el equipo autónomo de IA para no solapar llamadas
     concurrency:
       group: gcp-deployment-lock
       cancel-in-progress: false
@@ -88,14 +86,14 @@ jobs:
       contents: write
     steps:
       - name: Checkout validated commit
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4 # Corregido a @v4
         with:
           ref: ${{ github.sha }}
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4 # Corregido a @v4
         with:
-          node-version: '20'
+          node-version: '22' # Actualizado a Node 22
 
       - name: Pre-render static content
         run: npm run build:site
@@ -118,21 +116,20 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    # MODIFICADO: Comparte la misma cola unificada de GCP para evitar colisiones de IAM
     concurrency:
       group: gcp-deployment-lock
       cancel-in-progress: false
     steps:
       - name: Checkout the validated candidate
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4 # Corregido a @v4
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4 # Corregido a @v4
         with:
-          node-version: '20'
+          node-version: '22' # Actualizado a Node 22
 
       - name: Pre-render static content
         run: npm run build:site
