@@ -2,6 +2,14 @@
 
 ## Situación comprobada
 
+- En producción, Equipo y Blog sí se renderizan con JavaScript; al bloquearlo,
+  sus contenedores quedan vacíos. Esto explica que algunas herramientas de
+  revisión no vean fichas ni artículos, aunque no sea una caída del sitio en
+  un navegador que ejecuta JavaScript.
+- El build genera HTML estático para las fichas de equipo, el archivo del blog
+  y cada artículo; la publicación y la auditoría Lighthouse consumen ese mismo
+  directorio generado. Los enlaces a artículos tienen URL propia y su contenido
+  no depende de JavaScript. Falta verificar el cambio tras desplegarlo.
 - El archivo del blog mostraba el texto completo de cada artículo en tarjetas
   y la cuadrícula podía crecer hasta cuatro columnas en escritorio.
 - Dos publicaciones recientes recomendaban una sección de contacto inexistente;
@@ -21,12 +29,14 @@
   usar extractos breves, con dos columnas como máximo en escritorio y una en
   móvil.
 - Abrir cada pieza en una vista individual con URL enlazable y regreso claro
-  al archivo.
+  al archivo; las páginas de Equipo, Blog, Archivo y artículos deben mostrar
+  su contenido en el HTML inicial, también sin JavaScript.
 - Revisar y retirar contenido que recomiende funciones inexistentes o presente
   consejos genéricos como si fueran una propuesta propia.
 - Criterios: sin desplazamiento horizontal a 360 px, cuerpo de artículo de
-  ancho cómodo, navegación directa a URL con hash, Atrás/Adelante del navegador
-  y enlaces de lectura operativos.
+  ancho cómodo, navegación directa a una URL estable (se conserva compatibilidad
+  con enlaces antiguos con hash), Atrás/Adelante del navegador y enlaces de
+  lectura operativos.
 
 ### P1 — Completar el recorrido de confianza y contacto
 

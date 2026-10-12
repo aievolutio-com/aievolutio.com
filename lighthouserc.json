@@ -1,6 +1,9 @@
 {
   "ci": {
-    "collect": { "staticDistDir": ".", "startServerCommand": "npx http-server -c-1 ." },
+    "collect": {
+      "staticDistDir": "dist",
+      "url": ["/", "/equipo.html", "/blog.html", "/archivo.html", "/contacto.html"]
+    },
     "assert": {
       "assertions": {
         "categories:performance": ["error", {"minScore": 0.7}],
