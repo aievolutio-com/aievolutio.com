@@ -12,8 +12,9 @@ permissions:
   id-token: write
   issues: write
 
+# MODIFICADO: Grupo de concurrencia global compartido para evitar colisiones en GCP
 concurrency:
-  group: autonomous-ai-daily-cycle
+  group: gcp-deployment-lock
   cancel-in-progress: false
 
 jobs:

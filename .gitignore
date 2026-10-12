@@ -16,6 +16,6 @@ npm-debug.log*
 node_modules/
 .pnpm-store/
 
-# Build artifacts (not used yet)
+# Build artifacts
 dist/
 build/

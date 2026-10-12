@@ -60,6 +60,10 @@
     return `articulo-${slug}`;
   }
 
+  function articleUrl(post) {
+    return `articulos/${articleId(post)}.html`;
+  }
+
   function sortedPosts(blocks) {
     return blocks
       .filter((block) => block.type === 'post')
@@ -88,7 +92,7 @@
     if (showTitle) {
       const title = el('h3');
       if (preview) {
-        title.append(el('a', { href: `blog.html#${id}` }, [post.title || 'Entrada']));
+        title.append(el('a', { href: articleUrl(post) }, [post.title || 'Entrada']));
       } else {
         title.textContent = post.title || 'Entrada';
       }
@@ -106,7 +110,7 @@
     }
     article.append(renderPostBody(preview ? postSummary(post.body) : post.body));
     if (preview) {
-      article.append(el('a', { href: `blog.html#${id}`, class: 'text-link' }, ['Leer artículo']));
+      article.append(el('a', { href: articleUrl(post), class: 'text-link' }, ['Leer artículo']));
     }
     return article;
   }

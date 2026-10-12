@@ -22,13 +22,19 @@ jobs:
         with:
           # On manual runs, use the requested ref; on push, use the triggering commit
           ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref }}
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+      - name: Pre-render static content
+        run: npm run build:site
       - name: Add .nojekyll
-        run: echo > .nojekyll
+        run: echo > dist/.nojekyll
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: dist
           exclude_assets: |
             .github,docs,*.md,*.yml,*.yaml
           force_orphan: true
