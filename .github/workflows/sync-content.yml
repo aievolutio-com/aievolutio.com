@@ -22,14 +22,14 @@ jobs:
       SHEET_CSV_URL: https://docs.google.com/spreadsheets/d/e/2PACX-1vTXUzpg8G45BF6TaUA-RGGVn1jl4mBlf2GFg1pq6wgJq-5WhOAZ9ZflFgsKc0RuNCCZlOYrVPAL6J5D/pub?output=csv
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4 # Corregido de @v7 a @v4
         with:
           ref: pre
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4 # Asegurando @v4 oficial
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Sync content
         run: node scripts/sync-content.mjs
