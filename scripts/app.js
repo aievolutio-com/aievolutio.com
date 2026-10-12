@@ -88,7 +88,7 @@
     const id = articleId(post);
     const articleAttrs = { class: 'card post-card' };
     if (!preview) articleAttrs.id = id;
-    const article = el('article', articleAttrs, []);
+    const article = el('article', articleAttrs, [el('div', { class: 'post-body-wrap' })]);
     if (showTitle) {
       const title = el('h3');
       if (preview) {
@@ -108,11 +108,15 @@
         loading: 'lazy',
       }));
     }
-    article.append(renderPostBody(preview ? postSummary(post.body) : post.body));
+    article.querySelector('.post-body-wrap').append(renderPostBody(preview ? postSummary(post.body) : post.body));
     if (preview) {
       article.append(el('a', { href: articleUrl(post), class: 'text-link' }, ['Leer artículo']));
     }
     return article;
+  }
+
+  function truncateString(str, num) {
+    if (str.length <= num) return str; return str.slice(0, num) + '...';
   }
 
   function renderPostBody(body) {
@@ -310,7 +314,10 @@
       if (b.type === 'event') container.append(el('div', { class: 'card', role: 'article' }, [el('h3', {}, [b.title || 'Evento']), el('p', {}, [b.date || '']), el('p', {}, [b.body || ''])]));
       if (b.type === 'post') {
         const isArticle = page === 'blog' && selectedPost === b;
-        const isPreview = page === 'home' || ((page === 'blog' || page === 'blog-archive') && !selectedPost);
+        const isPreview = (page === 'home' || ((page === 'blog' || page === 'blog-archive') && !selectedPost));
+        if (isPreview && b.title && b.title.length > 50) {
+          b.title = truncateString(b.title, 50);
+        }
         container.append(renderPost(b, isPreview, !isArticle));
       }
       if (b.type === 'links') {
