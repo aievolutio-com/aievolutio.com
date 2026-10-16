@@ -136,6 +136,18 @@ El workflow `Sync content from Sheets` usa la URL CSV pública configurada en
 `.github/workflows/sync-content.yml`. Si cambia la hoja, actualiza
 `SHEET_CSV_URL` en ese workflow y publica el cambio en `pre`.
 
+El workflow requiere las variables de repositorio `GCP_PROJECT_ID`,
+`GCP_WORKLOAD_IDENTITY_PROVIDER` y `GCP_SERVICE_ACCOUNT`, con Workload Identity
+Federation y permisos para invocar Vertex AI. Si falla una ejecución, un job de
+recuperación envía a Gemini los logs del fallo y el código del sincronizador para
+que diagnostique la causa. Vertex solo puede proponer un parche para
+`scripts/sync-content.mjs`; el workflow, sus permisos, credenciales y el
+lanzamiento de CI no se modifican automáticamente. Los parches se validan antes
+de aplicarlos. Se permiten hasta tres ejecuciones totales; al fallar una, se
+intenta corregir y relanzar hasta alcanzar ese límite. Si Vertex no está
+disponible o el error no puede corregirse con el archivo permitido, se reintenta
+sin cambios y el fallo final queda visible en Actions.
+
 ## 4. Ejecutar la sincronización
 
 La sincronización ya no tiene una programación automática. Se puede lanzar
