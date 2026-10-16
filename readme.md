@@ -1,83 +1,44 @@
 # aievolutio.com
 
-Repositorio del sitio estático con CI/CD en GitHub Actions, flujo de ramas `pre` → `main` y publicación en GitHub Pages (rama `gh-pages`).
+Sitio web estático de AIEvolutio. Se valida mediante GitHub Actions y se
+publica en GitHub Pages.
 
-Estado actual (fuente de verdad)
-- `pre`: OK (rutas relativas, sin CNAME).
-- `main`: alineado cuando merges el PR "ci: sync pre -> main".
-- `gh-pages`: artefacto de despliegue (se sobreescribe desde `pre`/`main`).
-
-URL de la web (sin DNS):
-https://aievolutio-com.github.io/aievolutio.com/
-
-URL de la web: https://aievolutio.com
+- Web: <https://aievolutio.com>
+- URL de Pages: <https://aievolutio-com.github.io/aievolutio.com/>
 
 ## Estructura
 
-- `index.html` – Home del sitio (usa rutas relativas: `assets/...`, `styles/...`, `scripts/...`).
-- `assets/`, `images/` – Recursos estáticos.
-- `styles/` – CSS (`tokens.css`, `main.css`).
-- `scripts/` – JS (`app.js`).
-- `content/` – Contenido JSON (`content.es.json`).
-- `.github/workflows/` – CI/CD (lint, checks, auto‑PRs, deploy).
-- `docs/` – Guías operativas (véase Operaciones más abajo).
+- HTML en la raíz; estilos en `styles/` y JavaScript en `scripts/`.
+- Contenido y navegación en `content/*.json`.
+- Automatización, CI y despliegue en `.github/workflows/`.
+- Guías de trabajo en `docs/`.
 
-## Ejecutar en local
-
-- Abrir directamente `index.html` o usar servidor simple:
+## Desarrollo local
 
 ```powershell
+npm ci
 npm run dev
-# ó
-python -m http.server 8080
 ```
 
-## Flujo de ramas
+## Publicación editorial autónoma
 
-- `feature/*` → PR automático a `pre` (título semántico). Auto‑merge cuando CI está verde.
-- `pre` → PR automático a `main` ("ci: sync pre -> main"). Auto‑merge cuando CI está verde.
-- `gh-pages` → rama de publicación (no editar a mano).
-- Los flujos programados de blog y Sheets publican directamente en `pre`, ejecutan CI y despliegan a `gh-pages` sólo si todas las validaciones pasan; no requieren PR ni aprobación manual. Si las validaciones no pasan, se modifica la web para que pasen. Así que siempre tienen que acabar publicándose los cambios.
+El único flujo editorial programado es
+`.github/workflows/autonomous-ai-team.yml`, ejecutado con Vertex AI. El
+contenido se mantiene en los JSON del repositorio; no se usa Google Sheets ni
+una fuente CSV externa. Consulta el playbook para sus misiones, horarios,
+validaciones y recuperación, evitando duplicar aquí las reglas operativas.
 
-Protecciones: sólo mediante PRs a `main`.
+Consulta [`AGENTS.md`](AGENTS.md) para las instrucciones compartidas y
+[`docs/ai-agent-playbook.md`](docs/ai-agent-playbook.md) para el proceso y el
+runbook de recuperación.
 
-## Despliegue (Deploy)
+## Ramas y despliegue
 
-Workflow: `.github/workflows/gh-pages.yml` (nombre: "Deploy site"/"Deploy to gh‑pages").
+- Los cambios se integran mediante PR según los flujos activos del repositorio.
+- CI valida los cambios y despliega a Pages el commit validado.
+- `gh-pages` es un artefacto de publicación; no se edita manualmente.
+- No fuerces actualizaciones de `pre` y no afirmes que producción se actualizó
+  sin verificar el despliegue y el contenido servido.
 
-- Manual: Actions → Deploy → Run workflow →
-	- Use workflow from: `pre` (o `main`)
-	- ref: la misma rama
-- Automático: en cada push a `main`; los contenidos programados desde `pre` se despliegan tras pasar CI.
-
-Los contenidos programados siguen un flujo independiente: escriben en `pre`, despachan CI explícitamente (porque los pushes con `GITHUB_TOKEN` no disparan otros workflows) y el job final de CI despliega el mismo commit validado.
-
-El deploy reescribe `gh-pages` con `force_orphan` y excluye `CNAME`.
-
-## Operaciones (playbook)
-
-1) Rutas absolutas rompen en GitHub Pages. Usa rutas relativas en HTML/JS.
-2) Si `gh-pages` publica mal o aparece CNAME:
-	 - Settings → Pages → Custom domain vacío.
-	 - Actions → Deploy → Use workflow from `pre`, ref `pre`.
-3) Conflictos en PR `pre` → `main` demasiado grandes para la web:
-	 - Estrategia segura:
-		 - En local: `git checkout pre && git fetch`.
-		 - `git merge -s ours origin/main -m "ci: sync pre -> main (resolve via pre)"`.
-		 - `git push origin pre`.
-	 - Esto deja el PR listo para "Squash and merge" (manteniendo el contenido de `pre`).
-4) Títulos de PR (Conventional Commits): usa prefijos como `feat:`, `fix:`, `docs:`, `chore:`, `ci:`.
-
-## Estilo y validaciones
-
-- ESLint, Stylelint, html-validate, lychee, html5validator, Pa11y, Lighthouse.
-- Política de nombres: minúsculas y sin espacios (excepciones: `.github/CODEOWNERS`, `.github/ISSUE_TEMPLATE/*`, `.github/pull_request_template.md`, `CHANGELOG.md`, `VERSION`, `_headers`).
-
-## Documentación adicional
-
-- Guía rápida de operaciones: `docs/operaciones.md`
-- Cómo contribuir (breve): `docs/contributing.md`
-
-## Licencia
-
-MIT (si no indicas lo contrario).
+Más información: [`docs/operaciones.md`](docs/operaciones.md) y
+[`docs/contributing.md`](docs/contributing.md).
