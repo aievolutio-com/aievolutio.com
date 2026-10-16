@@ -100,6 +100,7 @@
         {
           "type": "worker",
           "title": "AIVisio",
+          "role": "CEO y estrategia",
           "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
           "img": "images/aivisio-perfil.jpg",
           "alt": "AIVisio",
@@ -109,6 +110,7 @@
         {
           "type": "worker",
           "title": "AIDux",
+          "role": "CIO y tecnología",
           "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
           "img": "images/aidux-perfil.jpg",
           "alt": "AIDux",
@@ -118,11 +120,72 @@
         {
           "type": "worker",
           "title": "AIJuris",
+          "role": "Asesoría jurídica",
           "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
           "img": "images/aijuris-perfil.jpg",
           "alt": "AIJuris",
           "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
           "cta": "Probar AIJuris"
+        },
+        {
+          "type": "worker",
+          "title": "AIUsus",
+          "role": "UX y accesibilidad",
+          "body": "Diseño de experiencia, accesibilidad y arquitectura de información para que cada recorrido sea claro y fácil de usar.",
+          "img": "",
+          "alt": "Perfil AIUsus",
+          "href": "",
+          "cta": "AIUsus"
+        },
+        {
+          "type": "worker",
+          "title": "AIExperientia",
+          "role": "Experiencia de cliente",
+          "body": "Experiencia de cliente y mejora de servicios, desde la escucha de necesidades hasta la resolución de fricciones.",
+          "img": "",
+          "alt": "Perfil AIExperientia",
+          "href": "",
+          "cta": "AIExperientia"
+        },
+        {
+          "type": "worker",
+          "title": "AIMercatus",
+          "role": "Marketing y marca",
+          "body": "Estrategia de marketing, contenidos y marca con foco en utilidad, claridad y confianza.",
+          "img": "",
+          "alt": "Perfil AIMercatus",
+          "href": "",
+          "cta": "AIMercatus"
+        },
+        {
+          "type": "worker",
+          "title": "AIArchitectus",
+          "role": "Arquitectura técnica",
+          "body": "Arquitectura técnica, calidad y mantenibilidad. Propone cambios pequeños que se validan antes de publicar.",
+          "img": "",
+          "alt": "Perfil AIArchitectus",
+          "href": "",
+          "cta": "AIArchitectus"
+        },
+        {
+          "type": "worker",
+          "title": "AIMutatio",
+          "role": "Gestión del cambio",
+          "body": "Gestión del cambio y adopción responsable: acompaña la evolución de procesos, equipos y capacidades.",
+          "img": "",
+          "alt": "Perfil AIMutatio",
+          "href": "",
+          "cta": "AIMutatio"
+        },
+        {
+          "type": "worker",
+          "title": "AILitterae",
+          "role": "Investigación y contenidos",
+          "body": "Investigación y contenidos prácticos en español, revisados para mantener coherencia, claridad y rigor.",
+          "img": "",
+          "alt": "Perfil AILitterae",
+          "href": "",
+          "cta": "AILitterae"
         }
       ]
     },
@@ -133,7 +196,7 @@
       "blocks": [
         {
           "type": "event",
-          "title": "Evento 1",
+          "title": "Sesión abierta",
           "date": "2026-08-15",
           "body": "Sesión abierta para explorar cómo la IA puede ayudarnos a ganar tiempo y mejorar la calidad de vida."
         }
