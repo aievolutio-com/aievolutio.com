@@ -158,19 +158,30 @@ recuperarse sin duplicar contenido.
 - Idempotencia por fecha local: como máximo un artículo por día.
 - La navegación existente se valida antes de llamar al modelo; el destino real
   `contacto.html` está permitido y cubierto por una prueba de regresión.
-- Límite de llamadas, reintentos acotados ante JSON incompleto y límites de
-  reparación.
-- Tras generar el artículo, la fase de parche y CI tiene hasta tres intentos
-  totales. Si CI falla, el script obtiene los logs fallidos y se los pasa a
-  AIArchitectus para orientar el siguiente parche; antes de reintentar restaura
-  los archivos editables y vuelve a validar el candidato.
+- Límite global de llamadas de texto, reintentos acotados ante JSON incompleto
+  y hasta tres intentos por ejecución, sujetos a ese presupuesto global. Cada
+  intento cubre planificación, generación y validación del artículo, propuesta
+  y aplicación del parche y CI. Ante un fallo, Vertex recibe el error como
+  evidencia y puede corregirlo en el siguiente intento; si CI falla, también
+  recibe sus logs fallidos. Se conserva el trabajo editorial válido, se
+  restaura el árbol de trabajo y se crea una rama candidata aislada nueva.
+- Si los tres intentos fallan, el flujo termina como fallido y notifica; no
+  vuelve a intentarlo en esa ejecución ni publica un candidato que no haya
+  superado CI.
 - La imagen es opcional; el contenido y CI no dependen de Imagen.
-- El parche técnico puede omitirse si no se puede generar o aplicar; el
-  artículo y las validaciones obligatorias no se omiten.
+- La imagen puede omitirse si Imagen falla. En cambio, un error al generar o
+  aplicar el artículo, validar el contenido o ejecutar CI invalida el intento:
+  no se omiten esas validaciones para publicar.
 - Rama candidata aislada, CI antes del despliegue, despliegue de Pages y
   promoción no forzada a `pre`.
 - Aviso automático en una incidencia de GitHub si el ciclo o la publicación
   fallan.
+- La recuperación está limitada a errores que Vertex pueda diagnosticar con
+  el código y los logs disponibles. No modifica el flujo que le da identidad,
+  credenciales o permisos ni puede resolver indisponibilidad de GitHub, Vertex,
+  IAM, secretos o configuración del repositorio. En el workflow de CI solo
+  puede ajustar comandos de validación de una lista permitida; no puede
+  reconfigurar jobs, acciones, permisos, disparadores ni despliegues.
 
 ### Runbook ante fallo
 
@@ -182,14 +193,13 @@ recuperarse sin duplicar contenido.
 3. Comprobar `content/content.es.json` servido en producción y localizar el
    artículo por fecha local. Si ya está, no generar otro; reparar solo el
    estado de la rama o del aviso.
-4. Si no está y falló la fase de parche o CI, revisar los intentos automáticos
-   y los logs enviados a AIArchitectus. Para fallos anteriores a esa fase,
-   corregir la causa y relanzar el workflow de `pre`; la idempotencia debe hacer
-   que repetir una ejecución sea segura.
-5. Si hay cuota o proveedor indisponible, no publicar texto parcial, inventado
-   o no validado. Reintentar con límite y alertar con la URL del run. Publicar
-   desde una reserva editorial previamente verificada solo cuando exista un
-   mecanismo explícito que compruebe fecha, derechos, vigencia y duplicados.
+4. Si no está y falló una fase recuperable, revisar los tres intentos y el error
+   que Vertex recibió. Si la ejecución agotó los intentos, corregir la causa
+   externa o el límite de recuperación antes de relanzar el workflow de `pre`;
+   la idempotencia debe hacer que repetir una ejecución sea segura.
+5. Si hay un error de credenciales, permisos, cuota agotada o proveedor/
+   plataforma indisponible, no publicar texto parcial, inventado o no validado.
+   El flujo notifica y termina; resolver la causa externa antes de relanzar.
 6. Cerrar la incidencia únicamente tras confirmar Pages, contenido y estado de
    `pre`; documentar la resolución y cualquier publicación parcial.
 
@@ -203,15 +213,12 @@ recuperarse sin duplicar contenido.
    Pages, promoción a `pre`, CI y notificación. Los avisos deben decir “estado
    de producción por confirmar” cuando no se haya verificado; no asegurar que
    producción está intacta si Pages ya pudo desplegar.
-3. **Reintentos por fase y causa:** las tres tentativas actuales cubren la
-   obtención/aplicación del parche y CI después de generar el artículo. Los
-   errores de generación previos a esa fase —por ejemplo, un título que repite
-   uno existente— no reciben todavía autocorrección con Vertex: se notifican y
-   el siguiente disparador puede volver a encontrar el mismo error. Evaluar
-   reintentos acotados con el error de validación como contexto, sin superar el
-   presupuesto global de llamadas. Para 429/5xx y errores de red, usar backoff
-   con jitter; no repetir errores permanentes como credenciales, 404 de modelo,
-   esquema inválido o contenido no seguro.
+3. **Recuperación externa:** los tres intentos cubren los fallos detectados
+   durante planificación, generación, validación, parche y CI/CD. No pueden
+   autocorregirse fallos de autenticación, permisos, cuotas, configuración del
+   repositorio, indisponibilidad de GitHub/Vertex ni cambios al propio flujo de
+   autenticación. Confirmar que los avisos identifiquen claramente estos casos
+   y no sugieran que se repararon automáticamente.
 4. **Imagen:** Imagen devolvió HTTP 404 en ejecuciones recientes. Mantenerla
    como opcional y corregir modelo/región/permisos antes de considerarla
    requisito.
