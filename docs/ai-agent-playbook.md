@@ -204,7 +204,10 @@ los permisos del pipeline sin documentar coste, privacidad, límites y pruebas.
   frameworks, scripts inline, rastreadores ni llamadas remotas.
 - Mantener los parches IA restringidos a rutas autorizadas. No permitir que el
   modelo edite workflows, scripts de seguridad/publicación, secretos, permisos,
-  pruebas o este manual.
+  pruebas o este manual. Excepción acotada: el recuperador del workflow de
+  sincronización desde Sheets puede proponer cambios únicamente a
+  `scripts/sync-content.mjs`; nunca puede modificar el workflow, sus permisos,
+  credenciales, CI ni los controles de publicación.
 - No desplegar por saltarse CI. No forzar actualizaciones de `pre`; si la rama
   avanzó desde la base, rebasar/recrear y volver a validar.
 - Si producción y rama discrepan, reconciliar con el SHA probado; no borrar ni
