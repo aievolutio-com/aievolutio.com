@@ -10,7 +10,7 @@ while IFS= read -r path; do
   [[ -z "$path" ]] && continue
   # allowlist for conventional uppercase files
   case "$path" in
-    CHANGELOG.md|VERSION|CNAME|_headers|.github/CODEOWNERS|.github/ISSUE_TEMPLATE/*|.github/pull_request_template.md) continue;;
+    AGENTS.md|GEMINI.md|CHANGELOG.md|VERSION|CNAME|_headers|.github/CODEOWNERS|.github/ISSUE_TEMPLATE/*|.github/pull_request_template.md) continue;;
   esac
   # check for uppercase
   if grep -q '[A-Z]' <<<"$path"; then
@@ -22,7 +22,7 @@ while IFS= read -r path; do
     violations+=("Spaces: $path")
     continue
   fi
-done < <(git ls-files)
+done < <(git ls-files --cached --others --exclude-standard)
 
 if ((${#violations[@]})); then
   printf 'Filename policy violations (%d):\n' "${#violations[@]}" >&2

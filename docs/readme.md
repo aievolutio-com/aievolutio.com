@@ -1,27 +1,31 @@
-# AIEvolutio — Static Web Starter (v0.1)
+# Guía rápida del repositorio
 
-Comunidad sociotécnica (no empresa). Sitio **100% estático**, accesible, seguro y rápido.
-
-## Estructura
-- `content/` — JSON (texto visible). Validado con `content.schema.json`.
-- `styles/` — tokens + estilos base.
-- `scripts/` — JS vanilla para renderizar secciones desde JSON.
-- `assets/` — logo SVG.
-- `quality.md` — normativa de seguridad, accesibilidad, rendimiento y mantenibilidad.
-- `.github/workflows/ci.yml` — CI con linters, pa11y-ci y budgets Lighthouse.
+El proyecto es un sitio estático con HTML en la raíz y contenido en
+`content/*.json`. La fuente de contexto compartida para agentes y colaboradores
+es [`../AGENTS.md`](../AGENTS.md); las normas de calidad están en
+[`quality.md`](quality.md).
 
 ## Desarrollo
-```bash
+
+```powershell
 npm ci
-npm run dev # abre un server estático
+npm run dev
 ```
-Visita http://localhost:8080
 
-## Despliegue rápido
-- GitHub Pages (branch main, root) **o** Netlify (incluye `_headers` y `netlify.toml`).
+## Automatización editorial
 
-## Copilot
-Lee `copilot-instructions.md` para guiar sugerencias.
+El único flujo editorial programado es el equipo autónomo de Vertex AI:
+`.github/workflows/autonomous-ai-team.yml`. Consulta
+[`ai-agent-playbook.md`](ai-agent-playbook.md) para conocer sus dos misiones
+(artículo y mejora acotada del sitio), controles, límites y recuperación.
+Google Sheets y su sincronización no forman parte del proceso.
+
+## Validación y publicación
+
+GitHub Actions ejecuta CI para los cambios y publica en Pages solo el commit
+validado. Consulta [`operaciones.md`](operaciones.md) para el procedimiento
+vigente.
+
 # aievolutio.com
 
 Repositorio del sitio web estático con CI/CD para GitHub Pages, dos ramas (`pre` y `main`), versionado semántico y plantillas de colaboración.
@@ -46,17 +50,17 @@ Si aún no existe `index.html`, crea uno en la raíz para comenzar.
 
 - Abrir directamente: haz doble clic en `index.html` (si ya existe) para verlo en el navegador.
 - Servir con un servidor local (opcional):
-	- Python 3:
+  - Python 3:
 
-		```powershell
-		python -m http.server 8080
-		```
+    ```powershell
+    python -m http.server 8080
+    ```
 
-	- Node (http-server):
+  - Node (http-server):
 
-		```powershell
-		npm run dev
-		```
+    ```powershell
+    npm run dev
+    ```
 
 ## Estándares y convenciones
 
@@ -83,10 +87,9 @@ Este sitio puede publicarse en cualquier hosting estático. Actualmente: gh-page
 - Crear una hoja de estilos base en `css/` (por ejemplo, `styles.css`).
 - Agregar un favicon y metaetiquetas (SEO, Open Graph, viewport).
 - Configurar despliegue automático desde el repositorio.
- - Adoptar Conventional Commits (feat, fix, docs, chore, etc.) para historial limpio.
- - Generar releases con SemVer y mantener `CHANGELOG.md`.
+- Adoptar Conventional Commits (feat, fix, docs, chore, etc.) para historial limpio.
+- Generar releases con SemVer y mantener `CHANGELOG.md`.
 
 ## Licencia
 
 Si no se especifica lo contrario, todos los derechos reservados. Agrega un archivo `LICENSE` si deseas usar una licencia abierta.
-

@@ -101,7 +101,26 @@ analítica consentida, usar indicadores técnicos y observables: CI, accesibilid
 rendimiento, enlaces rotos, cobertura del contenido, claridad de la navegación
 y disponibilidad de la página.
 
-## 5. Cadencia diaria del equipo
+## 5. Cadencia diaria del equipo autónomo de Vertex AI
+
+La única fuente automática de publicaciones es el workflow
+`.github/workflows/autonomous-ai-team.yml`, que ejecuta
+`scripts/autonomous-ai-team.mjs` con Vertex AI. No se usa Google Sheets ni una
+sincronización CSV para publicar contenido.
+
+El workflow tiene disparadores a las 06:00 y 07:00 UTC. Son dos oportunidades
+para completar el mismo ciclo diario, no dos misiones distintas: el control por
+fecha de `Europe/Madrid` hace que solo se genere un artículo. Una vez publicada
+la pieza del día, una ejecución repetida termina sin volver a publicar.
+
+En un ciclo que sí genera contenido, Vertex realiza las dos misiones:
+
+1. El equipo crea y valida como máximo un artículo nuevo.
+2. AIArchitectus propone como máximo una mejora pequeña y acotada del sitio.
+
+Ambas se validan juntas. Si no hay artículo pendiente para la fecha local, el
+ciclo termina antes de pedir cambios técnicos; no se ejecuta una misión de
+mejora independiente.
 
 En cada ciclo:
 
@@ -125,7 +144,7 @@ En cada ciclo:
 8. Dejar un resumen breve: qué valor aporta, qué cambió, pruebas, URL/SHA y
    cualquier limitación, omisión o incidencia.
 
-## 6. Publicación: objetivo de fiabilidad
+## 6. Publicación autónoma: objetivo de fiabilidad
 
 No es honesto prometer que una publicación nunca fallará: Actions, el proveedor
 del modelo, cuotas, red, validadores y Pages pueden estar indisponibles. El
@@ -141,6 +160,10 @@ recuperarse sin duplicar contenido.
   `contacto.html` está permitido y cubierto por una prueba de regresión.
 - Límite de llamadas, reintentos acotados ante JSON incompleto y límites de
   reparación.
+- Tras generar el artículo, la fase de parche y CI tiene hasta tres intentos
+  totales. Si CI falla, el script obtiene los logs fallidos y se los pasa a
+  AIArchitectus para orientar el siguiente parche; antes de reintentar restaura
+  los archivos editables y vuelve a validar el candidato.
 - La imagen es opcional; el contenido y CI no dependen de Imagen.
 - El parche técnico puede omitirse si no se puede generar o aplicar; el
   artículo y las validaciones obligatorias no se omiten.
@@ -152,15 +175,17 @@ recuperarse sin duplicar contenido.
 ### Runbook ante fallo
 
 1. Consultar los logs de `Autonomous AI Team` y el CI asociado al SHA exacto.
-2. Clasificar la fase: planificación, generación, validación, CI, Pages o
-   promoción a `pre`. Un fallo de promoción puede ocurrir después de que Pages
-   ya se haya actualizado: comprobar producción antes de afirmar que no hubo
-   publicación o repetir el ciclo.
+2. Clasificar la fase: autenticación, planificación, generación, validación,
+   CI, Pages o promoción a `pre`. Un fallo de promoción puede ocurrir después
+   de que Pages ya se haya actualizado: comprobar producción antes de afirmar
+   que no hubo publicación o repetir el ciclo.
 3. Comprobar `content/content.es.json` servido en producción y localizar el
    artículo por fecha local. Si ya está, no generar otro; reparar solo el
    estado de la rama o del aviso.
-4. Si no está, corregir la causa y relanzar el workflow de `pre`. La
-   idempotencia debe hacer que repetir una ejecución sea seguro.
+4. Si no está y falló la fase de parche o CI, revisar los intentos automáticos
+   y los logs enviados a AIArchitectus. Para fallos anteriores a esa fase,
+   corregir la causa y relanzar el workflow de `pre`; la idempotencia debe hacer
+   que repetir una ejecución sea segura.
 5. Si hay cuota o proveedor indisponible, no publicar texto parcial, inventado
    o no validado. Reintentar con límite y alertar con la URL del run. Publicar
    desde una reserva editorial previamente verificada solo cuando exista un
@@ -178,9 +203,15 @@ recuperarse sin duplicar contenido.
    Pages, promoción a `pre`, CI y notificación. Los avisos deben decir “estado
    de producción por confirmar” cuando no se haya verificado; no asegurar que
    producción está intacta si Pages ya pudo desplegar.
-3. **Reintentos por causa:** usar backoff con jitter para 429/5xx y errores de
-   red; no repetir errores permanentes como credenciales, 404 de modelo,
-   esquema inválido o contenido no seguro. Mantener un presupuesto de llamadas.
+3. **Reintentos por fase y causa:** las tres tentativas actuales cubren la
+   obtención/aplicación del parche y CI después de generar el artículo. Los
+   errores de generación previos a esa fase —por ejemplo, un título que repite
+   uno existente— no reciben todavía autocorrección con Vertex: se notifican y
+   el siguiente disparador puede volver a encontrar el mismo error. Evaluar
+   reintentos acotados con el error de validación como contexto, sin superar el
+   presupuesto global de llamadas. Para 429/5xx y errores de red, usar backoff
+   con jitter; no repetir errores permanentes como credenciales, 404 de modelo,
+   esquema inválido o contenido no seguro.
 4. **Imagen:** Imagen devolvió HTTP 404 en ejecuciones recientes. Mantenerla
    como opcional y corregir modelo/región/permisos antes de considerarla
    requisito.
@@ -199,15 +230,14 @@ los permisos del pipeline sin documentar coste, privacidad, límites y pruebas.
 
 ## 7. Límites técnicos y publicación segura
 
-- Seguir `.github/copilot-instructions.md`, `docs/quality.md` y `docs/sync-content.md`.
+- Seguir `AGENTS.md`, `.github/copilot-instructions.md` y `GEMINI.md` para las
+  instrucciones de repositorio; consultar `docs/quality.md` para los controles
+  de calidad.
 - Mantener contenido visible en `content/*.json`; no introducir dependencias,
   frameworks, scripts inline, rastreadores ni llamadas remotas.
 - Mantener los parches IA restringidos a rutas autorizadas. No permitir que el
   modelo edite workflows, scripts de seguridad/publicación, secretos, permisos,
-  pruebas o este manual. Excepción acotada: el recuperador del workflow de
-  sincronización desde Sheets puede proponer cambios únicamente a
-  `scripts/sync-content.mjs`; nunca puede modificar el workflow, sus permisos,
-  credenciales, CI ni los controles de publicación.
+  pruebas o este manual.
 - No desplegar por saltarse CI. No forzar actualizaciones de `pre`; si la rama
   avanzó desde la base, rebasar/recrear y volver a validar.
 - Si producción y rama discrepan, reconciliar con el SHA probado; no borrar ni

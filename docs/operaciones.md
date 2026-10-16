@@ -1,51 +1,27 @@
-# Operaciones (guía rápida)
+# Operaciones
 
-Esta guía es la versión corta para trabajar con el sitio.
+Esta guía apunta al contexto operativo canónico en [`ai-agent-playbook.md`](ai-agent-playbook.md)
+y a las instrucciones comunes de agentes en [`../AGENTS.md`](../AGENTS.md).
 
-## Ver la web
-- GitHub Pages: https://aievolutio-com.github.io/aievolutio.com/
+## Desarrollo local
 
-## Ejecutar en local
 ```powershell
+npm ci
 npm run dev
-# ó
-python -m http.server 8080
 ```
 
-## Flujo de trabajo
-- Trabaja en una rama (feature/*) → se abre PR a `pre` automáticamente.
-- Al fusionar en `pre`, se abre PR a `main` (título: `ci: sync pre -> main`).
-- Al fusionar en `main`, se despliega a GitHub Pages.
-- Los flujos programados de blog y Sheets publican directamente en `pre`, despachan CI y llegan a producción sólo si todas las validaciones pasan. No crean PR y no necesitan aprobación manual.
+## Publicación diaria
 
-## Desplegar manualmente (si lo necesitas ya)
-1) Actions → "Deploy to gh-pages" (o "Deploy site").
-2) Run workflow → "Use workflow from": `pre` (o `main`), campo `ref`: la misma rama.
-3) Abrir la web con Ctrl+F5: https://aievolutio-com.github.io/aievolutio.com/
+`.github/workflows/autonomous-ai-team.yml` es el único flujo editorial
+programado. Sus misiones, cadencia, validaciones y recuperación están
+documentadas en [`ai-agent-playbook.md`](ai-agent-playbook.md). Consulta la
+ejecución `Autonomous AI Team` en Actions y verifica el SHA, CI, despliegue y
+contenido servido antes de afirmar que hubo publicación.
 
-## Recuperación rápida
-Si la web redirige a un dominio o no carga estilos:
-1) Settings → Pages → Custom domain: vacío → Save.
-2) Actions → Deploy → `Use workflow from: pre`, `ref: pre` (limpia `gh-pages` y quita CNAME).
+## Ramas y despliegue
 
-## Reglas importantes
-- En `index.html` y JS usa rutas relativas (sin `/` inicial):
-  - `assets/logo.svg`, `styles/main.css`, `scripts/app.js`.
-- No edites la rama `gh-pages` a mano (la sobreescribe el deploy).
-- Títulos de PR: usa Conventional Commits (ej.: `feat: …`, `fix: …`, `ci: …`).
-
-## PR grande con conflictos (pre → main)
-Si GitHub dice que "hay demasiados conflictos para resolver en la web":
-1) En local, asegúrate de estar en `pre` actualizado.
-2) Ejecuta:
-```powershell
-git fetch origin
-git checkout pre
-git reset --hard origin/pre
-git merge -s ours origin/main -m "ci: sync pre -> main (resolve via pre)"
-git push origin pre
-```
-3) Vuelve al PR y haz "Squash and merge".
-
-## Contacto
-Si algo se rompe, despliega desde `pre` y avisa en el repo.
+- Trabaja desde una rama de cambio y abre el PR que corresponda a `pre`.
+- `pre` valida y despliega el commit validado a GitHub Pages.
+- `main` se integra mediante PR desde `pre`.
+- No edites `gh-pages` a mano ni fuerces la rama `pre`.
+- Usa rutas relativas para los recursos estáticos.

@@ -12,8 +12,7 @@
     "lint:html": "html-validate \"**/*.html\"",
     "format": "prettier -w .",
     "a11y": "pa11y-ci --config pa11yci.json",
-    "lhci:ci": "lhci autorun --config=lighthouserc.json",
-    "sync:content": "node scripts/sync-content.mjs"
+    "lhci:ci": "lhci autorun --config=lighthouserc.json"
   },
   "devDependencies": {
     "@html-validate/stylish": "^4.3.0",
