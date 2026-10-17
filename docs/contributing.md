@@ -26,8 +26,10 @@
 
 ## Despliegue
 
-- Automático al fusionar en `pre`/`main`.
-- Manual: Actions → Deploy → `Use workflow from: pre` (o `main`), `ref` igual.
+- Automático al actualizar `pre` o `main`: CI valida el commit y solo después
+  publica ese mismo SHA en GitHub Pages.
+- Manual: Actions → CI → `Run workflow` desde `pre` o `main`; el flujo valida
+  esa rama antes de desplegarla.
 
 ## Contexto común y publicaciones autónomas
 

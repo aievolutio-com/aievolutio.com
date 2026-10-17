@@ -2,15 +2,27 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   getCandidatePostDate,
-  isPatchCheckFailure,
   parseJsonResponse,
   stripHtmlTags,
   validateAllowedPatch,
+  validateCiWorkflow,
   validateSiteContent,
+  transientRetryDelayMs,
 } from './autonomous-ai-team.mjs';
 
-const originalPost = { type: 'post', title: 'Publicado', date: '2025-10-05', body: 'Texto existente.' };
-const generatedPost = { type: 'post', title: 'Nuevo', date: '2026-07-20', author: 'AILitterae', body: 'Texto nuevo.' };
+const originalPost = {
+  type: 'post',
+  title: 'Publicado',
+  date: '2025-10-05',
+  body: 'Texto existente.',
+};
+const generatedPost = {
+  type: 'post',
+  title: 'Nuevo',
+  date: '2026-07-20',
+  author: 'AILitterae',
+  body: 'Texto nuevo.',
+};
 const profileNames = [
   'AIVisio',
   'AIDux',
@@ -63,15 +75,7 @@ test('reports a bounded response sample when model output cannot be repaired', (
     () => parseJsonResponse('{decision: nope}'),
     /Vertex AI devolvió JSON no válido:.*Respuesta: \{decision: nope\}/,
   );
-  assert.throws(
-    () => parseJsonResponse('{'),
-    /Vertex AI devolvió JSON no válido:.*Respuesta: \{/,
-  );
-});
-
-test('allows the article-only fallback only for an unapplied Git patch', () => {
-  assert.equal(isPatchCheckFailure(new Error('Command failed: git apply --check patch\nerror: corrupt patch')), true);
-  assert.equal(isPatchCheckFailure(new Error('CI validation failed')), false);
+  assert.throws(() => parseJsonResponse('{'), /Vertex AI devolvió JSON no válido:.*Respuesta: \{/);
 });
 
 test('removes HTML tags while preserving the article text', () => {
@@ -79,26 +83,91 @@ test('removes HTML tags while preserving the article text', () => {
 });
 
 test('allows only the explicit website patch paths', () => {
-  assert.doesNotThrow(() => validateAllowedPatch([
-    'diff --git a/styles/main.css b/styles/main.css',
-    '--- a/styles/main.css',
-    '+++ b/styles/main.css',
-  ].join('\n')));
-  assert.doesNotThrow(() => validateAllowedPatch([
-    'diff --git a/blog.html b/blog.html',
-    '--- a/blog.html',
-    '+++ b/blog.html',
-  ].join('\n')));
-  assert.throws(() => validateAllowedPatch([
-    'diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml',
-    '--- a/.github/workflows/ci.yml',
-    '+++ b/.github/workflows/ci.yml',
-  ].join('\n')), /rutas no autorizadas/);
-  assert.throws(() => validateAllowedPatch([
-    'diff --git a/scripts/app.js b/scripts/app.js',
-    'old mode 100644',
-    'new mode 100755',
-  ].join('\n')), /no puede crear, borrar, renombrar/);
+  assert.doesNotThrow(() =>
+    validateAllowedPatch(
+      ['diff --git a/styles/main.css b/styles/main.css', '--- a/styles/main.css', '+++ b/styles/main.css'].join('\n'),
+    ),
+  );
+  assert.throws(
+    () => validateAllowedPatch(['diff --git a/blog.html b/blog.html', '--- a/blog.html', '+++ b/blog.html'].join('\n')),
+    /rutas no autorizadas/,
+  );
+  assert.throws(
+    () =>
+      validateAllowedPatch(
+        [
+          'diff --git a/.github/workflows/autonomous-ai-team.yml b/.github/workflows/autonomous-ai-team.yml',
+          '--- a/.github/workflows/autonomous-ai-team.yml',
+          '+++ b/.github/workflows/autonomous-ai-team.yml',
+        ].join('\n'),
+      ),
+    /rutas no autorizadas/,
+  );
+  assert.throws(
+    () =>
+      validateAllowedPatch(
+        ['diff --git a/scripts/prerender-site.mjs b/scripts/prerender-site.mjs'].join('\n'),
+      ),
+    /rutas no autorizadas/,
+  );
+  assert.throws(
+    () =>
+      validateAllowedPatch(
+        ['diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml'].join('\n'),
+      ),
+    /rutas no autorizadas/,
+  );
+  assert.throws(
+    () =>
+      validateAllowedPatch(
+        ['diff --git a/scripts/app.js b/scripts/app.js', 'old mode 100644', 'new mode 100755'].join('\n'),
+      ),
+    /no puede crear, borrar, renombrar/,
+  );
+});
+
+test('backs off for transient Vertex errors and honors Retry-After', () => {
+  const response = (retryAfter) => ({
+    headers: { get: () => retryAfter },
+  });
+  assert.equal(transientRetryDelayMs(response(null), 0), 10_000);
+  assert.equal(transientRetryDelayMs(response(null), 1), 20_000);
+  assert.equal(transientRetryDelayMs(response('3'), 0), 3_000);
+  assert.equal(transientRetryDelayMs(response('120'), 0), 60_000);
+});
+
+test('preserves required CI validation, deploy, and promotion steps', () => {
+  const validWorkflow = [
+    'run: npm run build:site',
+    'run: bash scripts/validate-filenames.sh',
+    'run: npm run lint:js',
+    'run: node --test scripts/*.test.mjs',
+    'run: npm run lint:css',
+    'run: npm run lint:html',
+    'uses: lycheeverse/lychee-action@v2',
+    'args: --verbose .',
+    'run: npm ci',
+    'run: npm run a11y',
+    'run: npm run lhci:ci',
+    '  deploy-validated:',
+    'name: Verify main commit was merged through a pull request',
+    'listPullRequestsAssociatedWithCommit',
+    'persist-credentials: false',
+    '  publish-ai-evolution:',
+    'needs: check',
+    'uses: peaceiris/actions-gh-pages@v4',
+    'name: Promote deployed candidate to pre',
+    'force: false',
+  ].join('\n');
+  assert.doesNotThrow(() => validateCiWorkflow(validWorkflow));
+  assert.throws(
+    () => validateCiWorkflow(validWorkflow.replace('run: npm run a11y', 'run: echo skipped')),
+    /controles obligatorios/,
+  );
+  assert.throws(
+    () => validateCiWorkflow(validWorkflow.replace('listPullRequestsAssociatedWithCommit', '')),
+    /controles obligatorios/,
+  );
 });
 
 test('requires existing content, all AI profiles, navigation, and the daily post', () => {

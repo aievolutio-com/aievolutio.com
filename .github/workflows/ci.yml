@@ -3,9 +3,12 @@ name: CI
 on:
   workflow_dispatch:
   pull_request:
-    branches: [ pre, main ]
+    branches: [pre, main]
   push:
-    branches: [ pre ]
+    branches: [pre, main]
+
+permissions:
+  contents: read
 
 jobs:
   check:
@@ -13,14 +16,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: Install tools
-        run: npm ci || npm i --no-fund --no-audit
+        run: npm ci
 
       - name: Pre-render static content
         run: npm run build:site
@@ -43,7 +48,7 @@ jobs:
       - name: Validate HTML links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --verbose .
+          args: --verbose .
 
       - name: Start static server for pa11y (8081)
         run: |
@@ -53,7 +58,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
       - name: Install html5validator
         run: pip install --upgrade pip html5validator
@@ -75,8 +80,8 @@ jobs:
             rm -f server.pid
           fi
 
-  deploy-pre:
-    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/pre') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/pre') }}
+  deploy-validated:
+    if: "${{ ((github.event_name == 'push' && (github.ref == 'refs/heads/pre' || github.ref == 'refs/heads/main')) || (github.event_name == 'workflow_dispatch' && (github.ref == 'refs/heads/pre' || github.ref == 'refs/heads/main'))) && !(github.ref == 'refs/heads/pre' && startsWith(github.event.head_commit.message, 'feat: daily AI team evolution (')) }}"
     needs: check
     runs-on: ubuntu-latest
     concurrency:
@@ -84,16 +89,36 @@ jobs:
       cancel-in-progress: false
     permissions:
       contents: write
+      pull-requests: read
     steps:
       - name: Checkout validated commit
-        uses: actions/checkout@v4 # Corregido a @v4
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Verify main commit was merged through a pull request
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const { data: pullRequests } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner,
+              repo,
+              commit_sha: context.sha,
+            });
+            const mergedPullRequest = pullRequests.some(
+              pullRequest => pullRequest.merged_at && pullRequest.merge_commit_sha === context.sha,
+            );
+            if (!mergedPullRequest) {
+              core.setFailed('Refusing to deploy a main commit that is not the merge commit of a pull request.');
+            }
 
       - name: Setup Node
-        uses: actions/setup-node@v4 # Corregido a @v4
+        uses: actions/setup-node@v4
         with:
-          node-version: '22' # Actualizado a Node 22
+          node-version: "22"
 
       - name: Pre-render static content
         run: npm run build:site
@@ -101,7 +126,7 @@ jobs:
       - name: Add .nojekyll
         run: echo > dist/.nojekyll
 
-      - name: Deploy validated pre to gh-pages
+      - name: Deploy validated site to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -121,15 +146,16 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Checkout the validated candidate
-        uses: actions/checkout@v4 # Corregido a @v4
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node
-        uses: actions/setup-node@v4 # Corregido a @v4
+        uses: actions/setup-node@v4
         with:
-          node-version: '22' # Actualizado a Node 22
+          node-version: "22"
 
       - name: Pre-render static content
         run: npm run build:site
@@ -169,8 +195,8 @@ jobs:
             });
 
   notify-publication-failure:
-    if: ${{ failure() && (github.ref == 'refs/heads/pre' || startsWith(github.ref, 'refs/heads/ai/daily-evolution/')) }}
-    needs: [check, deploy-pre, publish-ai-evolution]
+    if: ${{ failure() && (github.ref == 'refs/heads/pre' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/ai/daily-evolution/')) }}
+    needs: [check, deploy-validated, publish-ai-evolution]
     runs-on: ubuntu-latest
     permissions:
       issues: write

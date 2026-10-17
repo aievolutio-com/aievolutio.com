@@ -6,11 +6,7 @@ on:
     - cron: "0 6 * * *"
     - cron: "0 7 * * *"
 
-permissions:
-  actions: write
-  contents: write
-  id-token: write
-  issues: write
+permissions: {}
 
 # MODIFICADO: Grupo de concurrencia global compartido para evitar colisiones en GCP
 concurrency:
@@ -21,6 +17,10 @@ jobs:
   evolve:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
     steps:
       - name: Checkout current production source
         uses: actions/checkout@v4
@@ -51,7 +51,6 @@ jobs:
           GOOGLE_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
           VERTEX_AI_LOCATION: us-central1
           VERTEX_AI_MODEL: gemini-2.5-flash
-          VERTEX_AI_IMAGE_MODEL: imagen-4.0-generate-001
         run: node scripts/autonomous-ai-team.mjs
 
   notify-failure:
