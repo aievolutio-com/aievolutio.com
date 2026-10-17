@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import {
   getCandidatePostDate,
   parseJsonResponse,
@@ -162,6 +163,12 @@ test('recognizes only the exact remote candidate branch ref', () => {
   assert.equal(remoteRefExists(`abc123\trefs/heads/ai/daily-evolution/test`, 'ai/daily-evolution/test'), true);
   assert.equal(remoteRefExists(`abc123\trefs/heads/ai/daily-evolution/test-extra`, 'ai/daily-evolution/test'), false);
   assert.equal(remoteRefExists('', 'ai/daily-evolution/test'), false);
+});
+
+test('serializes Vertex runs independently from candidate deployments', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/autonomous-ai-team.yml', import.meta.url), 'utf8');
+  assert.match(workflow, /^concurrency:\r?\n {2}group: autonomous-ai-team\r?\n/m);
+  assert.doesNotMatch(workflow, /gcp-deployment-lock/);
 });
 
 test('backs off for transient Vertex errors and honors Retry-After', () => {
