@@ -3,11 +3,13 @@ import assert from 'node:assert/strict';
 import {
   getCandidatePostDate,
   parseJsonResponse,
+  buildArchitectPatchPrompt,
   stripHtmlTags,
   validateAllowedPatch,
   validateCiWorkflow,
   validateSiteContent,
   transientRetryDelayMs,
+  remoteRefExists,
 } from './autonomous-ai-team.mjs';
 
 const originalPost = {
@@ -104,17 +106,11 @@ test('allows only the explicit website patch paths', () => {
     /rutas no autorizadas/,
   );
   assert.throws(
-    () =>
-      validateAllowedPatch(
-        ['diff --git a/scripts/prerender-site.mjs b/scripts/prerender-site.mjs'].join('\n'),
-      ),
+    () => validateAllowedPatch(['diff --git a/scripts/prerender-site.mjs b/scripts/prerender-site.mjs'].join('\n')),
     /rutas no autorizadas/,
   );
   assert.throws(
-    () =>
-      validateAllowedPatch(
-        ['diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml'].join('\n'),
-      ),
+    () => validateAllowedPatch(['diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml'].join('\n')),
     /rutas no autorizadas/,
   );
   assert.throws(
@@ -124,6 +120,48 @@ test('allows only the explicit website patch paths', () => {
       ),
     /no puede crear, borrar, renombrar/,
   );
+  assert.throws(
+    () =>
+      validateAllowedPatch(
+        [
+          'diff --git a/content/content.es.json b/content/content.es.json',
+          '--- a/content/content.es.json',
+          '+++ b/content/content.es.json',
+        ].join('\n'),
+      ),
+    /rutas no autorizadas/,
+  );
+});
+
+test('keeps architect prompts compact and limits patches to CSS and navigation', () => {
+  const longArticleBody = 'Contenido privado al prompt '.repeat(1000);
+  const content = createContent();
+  content.sections[1].blocks[0].body = longArticleBody;
+  const prompt = buildArchitectPatchPrompt(
+    {
+      'styles/main.css': 'body { color: black; }',
+      'content/navigation.json': '[]',
+    },
+    content,
+    {
+      title: generatedPost.title,
+      date: generatedPost.date,
+      body: longArticleBody,
+    },
+    [],
+  );
+
+  assert.match(prompt, /styles\/main\.css, content\/navigation\.json/);
+  assert.doesNotMatch(prompt, /Contenido privado al prompt/);
+  assert.doesNotMatch(prompt, /content\/content\.es\.json/);
+  assert.match(prompt, /menos de 50 líneas/);
+  assert.match(prompt, /patch vacío/);
+});
+
+test('recognizes only the exact remote candidate branch ref', () => {
+  assert.equal(remoteRefExists(`abc123\trefs/heads/ai/daily-evolution/test`, 'ai/daily-evolution/test'), true);
+  assert.equal(remoteRefExists(`abc123\trefs/heads/ai/daily-evolution/test-extra`, 'ai/daily-evolution/test'), false);
+  assert.equal(remoteRefExists('', 'ai/daily-evolution/test'), false);
 });
 
 test('backs off for transient Vertex errors and honors Retry-After', () => {
