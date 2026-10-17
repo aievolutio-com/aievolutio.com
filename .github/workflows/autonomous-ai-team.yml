@@ -8,9 +8,9 @@ on:
 
 permissions: {}
 
-# MODIFICADO: Grupo de concurrencia global compartido para evitar colisiones en GCP
+# Serializa ciclos de Vertex sin bloquear el despliegue de sus ramas candidatas.
 concurrency:
-  group: gcp-deployment-lock
+  group: autonomous-ai-team
   cancel-in-progress: false
 
 jobs:

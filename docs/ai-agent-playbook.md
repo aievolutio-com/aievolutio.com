@@ -154,7 +154,9 @@ recuperarse sin duplicar contenido.
 
 ### Controles que ya existen
 
-- Dos disparadores programados diarios y ejecución serializada.
+- Dos disparadores programados diarios y ciclos autónomos serializados con un
+  bloqueo independiente del despliegue; así la CI puede desplegar y promover un
+  candidato mientras el ciclo espera su resultado.
 - Idempotencia por fecha local: como máximo un artículo por día.
 - La navegación existente se valida antes de llamar al modelo; el destino real
   `contacto.html` está permitido y cubierto por una prueba de regresión.
