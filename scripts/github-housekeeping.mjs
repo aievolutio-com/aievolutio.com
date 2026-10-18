@@ -9,6 +9,22 @@ export function getCommitAgeDays(commit, now = Date.now()) {
   return Math.floor((now - timestamp) / 86_400_000);
 }
 
+export function summarizeTagRefs(refs) {
+  const prefix = 'refs/tags/';
+  const names = [];
+  let malformedCount = 0;
+
+  for (const tag of refs) {
+    if (typeof tag?.ref !== 'string' || !tag.ref.startsWith(prefix) || tag.ref.length === prefix.length) {
+      malformedCount += 1;
+      continue;
+    }
+    names.push(tag.ref.slice(prefix.length));
+  }
+
+  return { names, malformedCount };
+}
+
 export function decideBranchCleanup({
   branchName,
   defaultBranch,

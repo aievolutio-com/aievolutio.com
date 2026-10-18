@@ -1,6 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { decideBranchCleanup, getCommitAgeDays } from './github-housekeeping.mjs';
+import {
+  decideBranchCleanup,
+  getCommitAgeDays,
+  summarizeTagRefs,
+} from './github-housekeeping.mjs';
 
 const eligibleBranch = {
   branchName: 'feat/example',
@@ -49,5 +53,17 @@ test('calculates branch age from commit metadata', () => {
   assert.equal(
     getCommitAgeDays({ commit: { committer: { date: '2026-01-01T00:00:00.000Z' } } }, now),
     9,
+  );
+});
+
+test('reports tag names while counting malformed references', () => {
+  assert.deepEqual(
+    summarizeTagRefs([
+      { ref: 'refs/tags/v0.1.0' },
+      {},
+      { ref: 'refs/heads/pre' },
+      { ref: 'refs/tags/' },
+    ]),
+    { names: ['v0.1.0'], malformedCount: 3 },
   );
 });
