@@ -50,7 +50,7 @@ jobs:
             const fs = require('node:fs');
             const path = require('node:path');
             const { pathToFileURL } = require('node:url');
-            const { decideBranchCleanup, getCommitAgeDays } = await import(
+            const { decideBranchCleanup, getCommitAgeDays, summarizeTagRefs } = await import(
               pathToFileURL(path.join(process.env.GITHUB_WORKSPACE, 'scripts/github-housekeeping.mjs')).href
             );
             const { owner, repo } = context.repo;
@@ -68,6 +68,7 @@ jobs:
               github.paginate(github.rest.repos.listMatchingRefs, { owner, repo, ref: 'tags/', per_page: 100 }),
               github.paginate(github.rest.repos.listReleases, { owner, repo, per_page: 100 }),
             ]);
+            const tagSummary = summarizeTagRefs(tags);
             const activeBranchRuns = activeRuns.flat().filter(run => run.head_branch);
             const branchResults = [];
             const now = Date.now();
@@ -118,7 +119,10 @@ jobs:
               `- \`pre\`: \`${branches.find(branch => branch.name === 'pre')?.commit.sha || 'missing'}\``,
               `- \`main\`: \`${branches.find(branch => branch.name === 'main')?.commit.sha || 'missing'}\``,
               `- \`gh-pages\`: \`${branches.find(branch => branch.name === 'gh-pages')?.commit.sha || 'missing'}\``,
-              `- Semantic tags: ${tags.length ? tags.map(tag => `\`${tag.ref.replace('refs/tags/', '')}\``).join(', ') : 'none yet'}`,
+              `- Semantic tags: ${tagSummary.names.length ? tagSummary.names.map(name => `\`${safeCell(name)}\``).join(', ') : 'none yet'}`,
+              ...(tagSummary.malformedCount
+                ? [`- Tag refs omitted because the API response lacked a valid tag ref: ${tagSummary.malformedCount}.`]
+                : []),
               `- GitHub releases: ${releases.length}`,
               '',
               '## Branches',
