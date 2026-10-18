@@ -7,13 +7,19 @@ on:
 
 permissions:
   actions: write
-  contents: write
+  contents: read
   pull-requests: write
 
 jobs:
   validate-and-open-pr:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout production-sync guard
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
       - name: Require successful CI for the exact pre commit
         uses: actions/github-script@v9
         id: validation
