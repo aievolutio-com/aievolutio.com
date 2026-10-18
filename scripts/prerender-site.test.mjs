@@ -2,7 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { access, readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { buildSite, renderArticle, renderArticleAlias, renderBlog, renderTeam } from './prerender-site.mjs';
+import {
+  buildSite,
+  legacyArticleAliases,
+  renderArticle,
+  renderArticleAlias,
+  renderBlog,
+  renderTeam,
+} from './prerender-site.mjs';
 
 const content = {
   sections: [
@@ -81,6 +88,15 @@ test('redirects the known truncated legacy article URL to its canonical page', (
   assert.throws(() => renderArticleAlias('articulos/antiguo.html', '../blog.html'), /debe apuntar a una ruta local/);
 });
 
+test('builds redirects for all known truncated legacy article URLs', async () => {
+  await buildSite();
+  for (const [aliasPath, targetPath] of legacyArticleAliases) {
+    const alias = await readFile(path.join(process.cwd(), 'dist', aliasPath), 'utf8');
+    assert.ok(alias.includes(`url=${path.posix.basename(targetPath)}`), `${aliasPath} redirects to its canonical article`);
+    await access(path.join(process.cwd(), 'dist', targetPath));
+  }
+});
+
 test('deployment output contains every profile and a static page for every article', async () => {
   await buildSite();
   const source = JSON.parse(await readFile(path.join(process.cwd(), 'content/content.es.json'), 'utf8'));
@@ -121,16 +137,10 @@ test('deployment output contains every profile and a static page for every artic
     assert.ok(articleHtml.includes('<h1>'), `${post.title} has a rendered article heading`);
     assert.doesNotMatch(articleHtml, /<script\b/i, `${post.title} does not require JavaScript`);
   }
-  const aliasPath = path.join(
-    process.cwd(),
-    'dist/articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resum.html',
+  assert.equal(
+    (await readdir(path.join(process.cwd(), 'dist/articulos'))).length,
+    posts.length + legacyArticleAliases.size,
   );
-  const aliasHtml = await readFile(aliasPath, 'utf8');
-  assert.match(
-    aliasHtml,
-    /articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital\.html/,
-  );
-  assert.equal((await readdir(path.join(process.cwd(), 'dist/articulos'))).length, posts.length + 1);
 
   const outputRoot = path.resolve(process.cwd(), 'dist');
   const htmlFiles = [

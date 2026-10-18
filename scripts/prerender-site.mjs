@@ -11,10 +11,50 @@ const htmlPages = ['index.html', 'equipo.html', 'blog.html', 'archivo.html', 'co
 const publicDirectories = ['assets', 'content', 'images', 'styles'];
 const publicFiles = ['CNAME', '_headers', 'site.webmanifest'];
 const articleBaseUrl = 'https://aievolutio.com';
-const legacyArticleAliases = new Map([
+export const legacyArticleAliases = new Map([
   [
     'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resum.html',
     'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital.html',
+  ],
+  [
+    'articulos/articulo-2026-10-17-la-clave-para-una-comunicacion-efectiva-el-arte-d.html',
+    'articulos/articulo-2026-10-17-la-clave-para-una-comunicacion-efectiva-el-arte-del-resumen-en-la-era-digital.html',
+  ],
+  [
+    'articulos/articulo-2026-10-12-mas-alla-del-titular-por-que-un-buen-resumen-es-t.html',
+    'articulos/articulo-2026-10-12-mas-alla-del-titular-por-que-un-buen-resumen-es-tu-mejor-aliado-en-la-era-de-la-informacion.html',
+  ],
+  [
+    'articulos/articulo-2026-10-11-aiworkers-tu-equipo-invisible-que-multiplica-el-v.html',
+    'articulos/articulo-2026-10-11-aiworkers-tu-equipo-invisible-que-multiplica-el-valor.html',
+  ],
+  [
+    'articulos/articulo-2026-10-10-el-poder-del-resumen-como-un-pequeno-cambio-acele.html',
+    'articulos/articulo-2026-10-10-el-poder-del-resumen-como-un-pequeno-cambio-acelera-la-informacion-para-tus-clientes.html',
+  ],
+  [
+    'articulos/articulo-2026-10-09-navegando-el-futuro-como-la-ia-potencia-la-resili.html',
+    'articulos/articulo-2026-10-09-navegando-el-futuro-como-la-ia-potencia-la-resiliencia-de-tu-negocio.html',
+  ],
+  [
+    'articulos/articulo-2026-10-07-antes-de-automatizar-como-elegir-un-proceso-que-m.html',
+    'articulos/articulo-2026-10-07-antes-de-automatizar-como-elegir-un-proceso-que-merece-una-prueba-con-ia.html',
+  ],
+  [
+    'articulos/articulo-2026-10-05-diseno-inteligente-de-procesos-cuando-la-ia-asist.html',
+    'articulos/articulo-2026-10-05-diseno-inteligente-de-procesos-cuando-la-ia-asiste-y-el-criterio-humano-decide.html',
+  ],
+  [
+    'articulos/articulo-2026-10-04-desmitificando-la-ia-la-guia-para-tu-primer-exper.html',
+    'articulos/articulo-2026-10-04-desmitificando-la-ia-la-guia-para-tu-primer-experimento-en-equipo.html',
+  ],
+  [
+    'articulos/articulo-2026-09-29-desbloqueando-horas-valiosas-una-guia-practica-pa.html',
+    'articulos/articulo-2026-09-29-desbloqueando-horas-valiosas-una-guia-practica-para-medir-el-impacto-de-tu-automatizacion.html',
+  ],
+  [
+    'articulos/articulo-2026-08-03-riesgos-y-ventajas-de-los-aiworkers-en-las-organiz.html',
+    'articulos/articulo-2026-08-03-riesgos-y-ventajas-de-los-aiworkers-en-las-organizaciones.html',
   ],
 ]);
 
