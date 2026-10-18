@@ -35,3 +35,18 @@ convierte en un cambio cosmético ni en una entrada de mejora.
   su artículo canónico y el build falla si falta el destino.
 - Verificación: se probará localmente la generación y destino de todos los
   alias; pendiente CI y Pages para confirmar su publicación.
+
+## 2026-10-18 — Dirección editorial y diferenciación de artículos
+
+- Motivo: las aperturas de los artículos del 12, 13 y 17 repetían la misma
+  premisa de sobrecarga informativa y valor de resumir, pese a cambiar título y
+  redacción. El redactor automático recibía títulos, pero no una comparación
+  editorial suficiente del catálogo.
+- Cambio: diferenciados esos artículos en fidelidad de síntesis para decisiones,
+  diseño de extractos para elegir contenido y traspaso de acuerdos internos.
+  AIVisio queda definido y conectado como responsable editorial; AILitterae
+  redacta con un dossier global del catálogo y AIVisio debe aprobar el borrador
+  por su diferencia de necesidad, tesis y acción.
+- Verificación local: las 23 pruebas, ESLint, `git diff --check` y el build
+  estático pasan. No se ejecutó Vertex real; CI, Pages y el contenido servido
+  siguen pendientes, así que esto no confirma una publicación.
