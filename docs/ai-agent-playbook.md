@@ -186,8 +186,9 @@ recuperarse sin duplicar contenido.
   Lighthouse y evidencia visual de 14 capturas. Solo puede modificar CSS o
   navegación; los cambios efectivos incluyen motivo en `docs/improvement-log.md`
   y se despliegan únicamente tras superar CI.
-- Rama candidata aislada, CI antes del despliegue, despliegue de Pages y
-  promoción no forzada a `pre`.
+- Rama candidata aislada y CI antes de promoverla a `pre` con fast-forward
+  no forzado; solo después se despliega en Pages. Una candidata obsoleta falla
+  en la promoción antes de poder sobrescribir el sitio.
 - Aviso automático en una incidencia de GitHub si el ciclo o la publicación
   fallan.
 - La recuperación está limitada a errores que Vertex pueda diagnosticar con
@@ -201,9 +202,9 @@ recuperarse sin duplicar contenido.
 
 1. Consultar los logs de `Autonomous AI Team` y el CI asociado al SHA exacto.
 2. Clasificar la fase: autenticación, planificación, generación, validación,
-   CI, Pages o promoción a `pre`. Un fallo de promoción puede ocurrir después
-   de que Pages ya se haya actualizado: comprobar producción antes de afirmar
-   que no hubo publicación o repetir el ciclo.
+   CI, promoción a `pre` o Pages. La candidata debe promoverse antes de su
+   despliegue; aun así, comprobar Pages antes de afirmar el estado de producción
+   o repetir el ciclo, porque puede haber otros despliegues concurrentes.
 3. Comprobar `content/content.es.json` servido en producción y localizar el
    artículo por fecha local. Si ya está, no generar otro; reparar solo el
    estado de la rama o del aviso.
@@ -238,10 +239,11 @@ recuperarse sin duplicar contenido.
    modelo, región y permisos en el proyecto. Hasta entonces, los artículos
    nuevos se rechazan de forma explícita y no se publica texto sin imagen.
 5. **Pruebas de contrato:** simular respuestas truncadas, 429, HTML en texto,
-   imagen 404, parche corrupto, CI fallido, deploy exitoso con promoción
-   fallida y reejecución del mismo día. Asegurar la comprobación de que solo el
-   commit validado se publica. Mantener las rutas de navegación reales en los
-   fixtures para detectar desajustes con el sitio antes de consumir llamadas.
+   imagen 404, parche corrupto, CI fallido, candidata obsoleta rechazada antes
+   de Pages y reejecución del mismo día. Asegurar la comprobación de que solo
+   un commit validado y promovido se publica. Mantener las rutas de navegación
+   reales en los fixtures para detectar desajustes con el sitio antes de
+   consumir llamadas.
 6. **Calidad editorial verificable:** añadir validaciones automáticas para
    evidencia/citas, enlaces, repetición temática, llamadas a la acción y
    coherencia de autor; mantener revisión humana opcional como observación, no

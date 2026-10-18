@@ -281,10 +281,21 @@ test('preserves required CI validation, deploy, and promotion steps', () => {
     '  publish-ai-evolution:',
     'needs: check',
     'uses: peaceiris/actions-gh-pages@v4',
-    'name: Promote deployed candidate to pre',
+    'name: Promote validated candidate to pre',
     'force: false',
+    'name: Deploy validated candidate to gh-pages',
   ].join('\n');
   assert.doesNotThrow(() => validateCiWorkflow(validWorkflow));
+  assert.throws(
+    () =>
+      validateCiWorkflow(
+        validWorkflow.replace(
+          'name: Promote validated candidate to pre\nforce: false\nname: Deploy validated candidate to gh-pages',
+          'name: Deploy validated candidate to gh-pages\nforce: false\nname: Promote validated candidate to pre',
+        ),
+      ),
+    /promover el candidato.*antes de desplegarlo/,
+  );
   assert.throws(
     () => validateCiWorkflow(validWorkflow.replace('run: npm run a11y', 'run: echo skipped')),
     /controles obligatorios/,

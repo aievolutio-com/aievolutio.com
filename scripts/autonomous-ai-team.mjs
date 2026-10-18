@@ -47,7 +47,8 @@ const requiredCiWorkflowContent = [
   '  publish-ai-evolution:',
   'needs: check',
   'uses: peaceiris/actions-gh-pages@v4',
-  'name: Promote deployed candidate to pre',
+  'name: Promote validated candidate to pre',
+  'name: Deploy validated candidate to gh-pages',
   'force: false',
 ];
 const brandCompass = `AIEvolutio canaliza el cambio de la IA como evolución elegida: ayuda a empresas
@@ -175,6 +176,11 @@ export function validateCiWorkflow(source) {
   const missing = requiredCiWorkflowContent.filter((required) => !source.includes(required));
   if (missing.length) {
     throw new Error(`El workflow de CI/CD no conserva sus controles obligatorios: ${missing.join(', ')}`);
+  }
+  const promotionPosition = source.indexOf('name: Promote validated candidate to pre');
+  const deploymentPosition = source.indexOf('name: Deploy validated candidate to gh-pages');
+  if (promotionPosition > deploymentPosition) {
+    throw new Error('El workflow debe promover el candidato de forma segura antes de desplegarlo.');
   }
 }
 

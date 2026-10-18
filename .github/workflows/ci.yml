@@ -163,16 +163,7 @@ jobs:
       - name: Add .nojekyll
         run: echo > dist/.nojekyll
 
-      - name: Deploy validated candidate to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
-          exclude_assets: |
-            .github,docs,*.md,*.yml,*.yaml
-          force_orphan: true
-
-      - name: Promote deployed candidate to pre
+      - name: Promote validated candidate to pre
         uses: actions/github-script@v9
         with:
           script: |
@@ -193,6 +184,15 @@ jobs:
               sha: context.sha,
               force: false,
             });
+
+      - name: Deploy validated candidate to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
+          exclude_assets: |
+            .github,docs,*.md,*.yml,*.yaml
+          force_orphan: true
 
   notify-publication-failure:
     if: ${{ failure() && (github.ref == 'refs/heads/pre' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/ai/daily-evolution/') || startsWith(github.ref, 'refs/heads/ai/site-improvement/')) }}
