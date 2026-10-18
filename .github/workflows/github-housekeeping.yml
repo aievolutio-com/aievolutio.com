@@ -50,15 +50,30 @@ jobs:
             const fs = require('node:fs');
             const path = require('node:path');
             const { pathToFileURL } = require('node:url');
-            const { decideBranchCleanup, getCommitAgeDays, summarizeTagRefs } = await import(
+            const {
+              decideBranchCleanup,
+              getCommitAgeDays,
+              hasMergedPullRequestHead,
+              summarizeTagRefs,
+            } = await import(
               pathToFileURL(path.join(process.env.GITHUB_WORKSPACE, 'scripts/github-housekeeping.mjs')).href
             );
             const { owner, repo } = context.repo;
             const safeCell = value => String(value).replace(/[\r\n|]/g, ' ').replace(/`/g, '\\`');
-            const [repository, branches, openPullRequests, openIssues, activeRuns, tags, releases] = await Promise.all([
+            const [
+              repository,
+              branches,
+              openPullRequests,
+              closedPullRequests,
+              openIssues,
+              activeRuns,
+              tags,
+              releases,
+            ] = await Promise.all([
               github.rest.repos.get({ owner, repo }),
               github.paginate(github.rest.repos.listBranches, { owner, repo, per_page: 100 }),
               github.paginate(github.rest.pulls.list, { owner, repo, state: 'open', per_page: 100 }),
+              github.paginate(github.rest.pulls.list, { owner, repo, state: 'closed', per_page: 100 }),
               github.paginate(github.rest.issues.listForRepo, { owner, repo, state: 'open', per_page: 100 }),
               Promise.all(['queued', 'in_progress'].map(status =>
                 github.paginate(github.rest.actions.listWorkflowRunsForRepo, {
@@ -90,7 +105,10 @@ jobs:
                 const comparison = await github.rest.repos.compareCommitsWithBasehead({
                   owner, repo, basehead: `pre...${branch.name}`,
                 });
-                mergedIntoPre = comparison.data.ahead_by === 0;
+                mergedIntoPre = comparison.data.ahead_by === 0 || hasMergedPullRequestHead(
+                  closedPullRequests,
+                  { branchName: branch.name, branchSha: branch.commit.sha },
+                );
               }
 
               const decision = decideBranchCleanup({

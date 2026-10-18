@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   decideBranchCleanup,
   getCommitAgeDays,
+  hasMergedPullRequestHead,
   summarizeTagRefs,
 } from './github-housekeeping.mjs';
 
@@ -54,6 +55,29 @@ test('calculates branch age from commit metadata', () => {
   assert.equal(
     getCommitAgeDays({ commit: { committer: { date: '2026-01-01T00:00:00.000Z' } } }, now),
     9,
+  );
+});
+
+test('recognizes an exact branch head merged into pre by squash', () => {
+  const mergedPullRequest = {
+    base: { ref: 'pre' },
+    head: { ref: 'chore/fix-ci-deps', sha: 'merged-head' },
+    merged_at: '2025-09-05T14:05:07Z',
+  };
+  const branch = { branchName: 'chore/fix-ci-deps', branchSha: 'merged-head' };
+
+  assert.equal(hasMergedPullRequestHead([mergedPullRequest], branch), true);
+  assert.equal(
+    hasMergedPullRequestHead([mergedPullRequest], { ...branch, branchSha: 'newer-unmerged-head' }),
+    false,
+  );
+  assert.equal(
+    hasMergedPullRequestHead([{ ...mergedPullRequest, base: { ref: 'main' } }], branch),
+    false,
+  );
+  assert.equal(
+    hasMergedPullRequestHead([{ ...mergedPullRequest, merged_at: null }], branch),
+    false,
   );
 });
 

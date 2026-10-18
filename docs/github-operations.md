@@ -15,6 +15,9 @@
   está desactivado actualmente; requiere permisos de administrador. El workflow
   semanal puede eliminar una rama adicional solo cuando tenga al menos siete
   días, no tenga PR ni ejecución activa y su commit esté integrado en `pre`.
+  Para detectar fusiones squash, también reconoce una punta cuyo SHA coincide
+  exactamente con el head de una PR ya fusionada hacia `pre`; cualquier avance
+  posterior de la rama sigue considerándose trabajo no integrado.
 - Una rama no integrada de 30 días o más se informa para revisión humana; no se
   elimina automáticamente. Las ramas base `main`, `pre`, `gh-pages` y la
   predeterminada, así como cualquier rama protegida por GitHub, están siempre
