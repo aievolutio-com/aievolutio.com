@@ -21,7 +21,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout pre
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: pre
           fetch-depth: 0

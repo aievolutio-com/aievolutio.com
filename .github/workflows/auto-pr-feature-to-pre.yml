@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 50
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Create/ensure PR to pre and enable auto-merge
         env:
