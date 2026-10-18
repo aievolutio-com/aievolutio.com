@@ -140,6 +140,7 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       contents: write
     concurrency:
       group: gcp-deployment-lock
@@ -193,6 +194,17 @@ jobs:
           exclude_assets: |
             .github,docs,*.md,*.yml,*.yaml
           force_orphan: true
+
+      - name: Request production sync after validated candidate deployment
+        uses: actions/github-script@v9
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'auto-pr-pre-to-main.yml',
+              ref: 'pre',
+            });
 
   notify-publication-failure:
     if: ${{ failure() && (github.ref == 'refs/heads/pre' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/ai/daily-evolution/') || startsWith(github.ref, 'refs/heads/ai/site-improvement/')) }}

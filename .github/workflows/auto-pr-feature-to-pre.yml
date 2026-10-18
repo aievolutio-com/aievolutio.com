@@ -13,6 +13,7 @@ on:
     branches: [ pre ]
 
 permissions:
+  actions: write
   contents: write
   pull-requests: write
 
@@ -20,6 +21,7 @@ jobs:
   open-and-automerge:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,6 +55,25 @@ jobs:
           # Asegurar título compatible con Conventional Commits para pasar el check semántico
           gh pr edit --repo "$REPO" "$PR_NUMBER" --title "ci: auto-PR $BRANCH -> pre" || true
           gh pr merge --repo "$REPO" --auto --squash "$PR_NUMBER" || true
+          for attempt in $(seq 1 120); do
+            PR_STATE=$(gh pr view --repo "$REPO" "$PR_NUMBER" --json state --jq '.state')
+            STATE_STATUS=$?
+            if [ $STATE_STATUS -ne 0 ]; then
+              echo "No se pudo consultar el estado del PR $PR_NUMBER; no se solicitará la promoción a main." >&2
+              exit 1
+            fi
+            if [ "$PR_STATE" = "MERGED" ]; then
+              gh workflow run auto-pr-pre-to-main.yml --repo "$REPO" --ref pre
+              exit $?
+            fi
+            if [ "$PR_STATE" = "CLOSED" ]; then
+              echo "El PR $PR_NUMBER se cerró sin fusionarse; no se solicitará la promoción a main."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "El PR $PR_NUMBER no se fusionó en 20 minutos; no se solicitará la promoción a main." >&2
+          exit 1
 
   retitle-existing-pr:
     if: ${{ github.event_name == 'pull_request_target' }}

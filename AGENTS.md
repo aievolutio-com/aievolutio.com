@@ -12,6 +12,10 @@ sus archivos de configuración solo apuntan aquí.
   de experiencia y las hipótesis que deben validarse con personas.
 - [`docs/quality.md`](docs/quality.md) define calidad, accesibilidad,
   rendimiento y privacidad.
+- [`docs/github-operations.md`](docs/github-operations.md) define ramas,
+  housekeeping y releases semánticas.
+- [`docs/agent-evolution-log.md`](docs/agent-evolution-log.md) registra la
+  evolución demostrable de las skills de agentes.
 
 Si otro documento contradice estas fuentes, corrige la información obsoleta;
 no propagues ambas versiones.
@@ -34,8 +38,17 @@ no propagues ambas versiones.
 
 ## Cambios
 
-- Trabaja desde `pre`; respeta los cambios concurrentes y no fuerces pushes.
+- `main` es la fuente canónica de producción; `pre` es la integración. Para
+  trabajo ordinario, crea una rama corta desde `pre` y abre PR hacia `pre`;
+  respeta cambios concurrentes y no fuerces pushes. Los ciclos Vertex usan su
+  flujo candidato aislado y sus validaciones antes de promover a `pre`.
+- Mantén ramas, PRs e incidencias ordenadas siguiendo
+  `docs/github-operations.md`; no borres cambios sin integrar ni cierres
+  incidentes sin evidencia de resolución.
 - Mantén las rutas de edición de Vertex limitadas a las que valida
   `scripts/autonomous-ai-team.mjs`.
+- Las skills de `agents/skills/` se cargan en las recomendaciones de cada perfil.
+  Evoluciónalas con evidencia y evaluación; no amplíes con ellas los permisos
+  ni controles del flujo.
 - Ejecuta las validaciones pertinentes y actualiza la documentación si cambia
   un flujo.
