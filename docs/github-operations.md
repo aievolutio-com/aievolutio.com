@@ -21,6 +21,9 @@
   protegidas por la lógica de housekeeping.
 - Los informes se publican como resumen de Actions y artefacto con retención de
   90 días. El workflow no cierra incidencias ni PRs.
+- Después de integrar un PR, el automatismo solicita explícitamente el informe
+  de housekeeping; esto no depende de eventos `push` o `pull_request` que
+  GitHub puede suprimir cuando una acción usa `GITHUB_TOKEN`.
 - El flujo `pre` → `main` consulta el SHA actual y exige CI exitoso para ese
   mismo SHA antes de abrir y habilitar el PR de producción. Si la rama avanzó,
   CI falla o vence el límite, no sincroniza. Los candidatos también solicitan

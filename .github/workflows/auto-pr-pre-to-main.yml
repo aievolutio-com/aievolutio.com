@@ -27,7 +27,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const {owner, repo} = context.repo;
-            const {canSyncProduction} = await import(
+            const {canSyncProduction, isNewerWorkflowRun} = await import(
               `${process.env.GITHUB_WORKSPACE}/scripts/production-sync.mjs`
             );
             const timeout = Date.now() + 20 * 60 * 1000;
@@ -46,12 +46,19 @@ jobs:
                 .filter(run => run.path?.startsWith('.github/workflows/ci.yml') && ['push', 'workflow_dispatch'].includes(run.event))
                 .sort((left, right) => new Date(right.created_at) - new Date(left.created_at));
               const latestRun = ciRuns[0];
-              const dispatchedAt = dispatches.get(currentPreSha);
+              const dispatchState = dispatches.get(currentPreSha);
+              const isFreshRun =
+                !dispatchState ||
+                (latestRun &&
+                  isNewerWorkflowRun({
+                    runId: latestRun.id,
+                    previousRunId: dispatchState.previousRunId,
+                  }));
 
               if (
                 latestRun?.status === 'completed' &&
                 latestRun.conclusion === 'success' &&
-                (!dispatchedAt || Date.parse(latestRun.created_at) >= dispatchedAt)
+                isFreshRun
               ) {
                 validatedSha = latestRun.head_sha;
                 if (canSyncProduction({
@@ -63,10 +70,10 @@ jobs:
               if (
                 latestRun?.status === 'completed' &&
                 latestRun.conclusion !== 'success' &&
-                (!dispatchedAt || Date.parse(latestRun.created_at) >= dispatchedAt)
+                isFreshRun
               ) {
-                if (!dispatchedAt && context.eventName === 'workflow_dispatch') {
-                  dispatches.set(currentPreSha, Date.now());
+                if (!dispatchState && context.eventName === 'workflow_dispatch') {
+                  dispatches.set(currentPreSha, { previousRunId: latestRun.id });
                   await github.rest.actions.createWorkflowDispatch({
                     owner, repo, workflow_id: 'ci.yml', ref: 'pre',
                   });
@@ -82,7 +89,7 @@ jobs:
               const hasMissingRunForLongEnough =
                 !latestRun && Date.now() - missingSince.get(currentPreSha) >= 30_000;
               if (!hasActiveRun && !validatedSha && !dispatches.has(currentPreSha) && hasMissingRunForLongEnough) {
-                dispatches.set(currentPreSha, Date.now());
+                dispatches.set(currentPreSha, { previousRunId: latestRun?.id || 0 });
                 await github.rest.actions.createWorkflowDispatch({
                   owner, repo, workflow_id: 'ci.yml', ref: 'pre',
                 });

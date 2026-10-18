@@ -85,6 +85,7 @@ jobs:
             PR_STATE=$(gh pr view --repo "$REPO" "$PR_NUMBER" --json state --jq '.state')
             if [ "$PR_STATE" = "MERGED" ]; then
               gh workflow run auto-pr-pre-to-main.yml --repo "$REPO" --ref pre
+              gh workflow run github-housekeeping.yml --repo "$REPO" --ref pre
               exit $?
             fi
             if [ "$PR_STATE" = "CLOSED" ]; then
