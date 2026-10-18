@@ -50,7 +50,7 @@ jobs:
             const fs = require('node:fs');
             const path = require('node:path');
             const { pathToFileURL } = require('node:url');
-            const { decideBranchCleanup } = await import(
+            const { decideBranchCleanup, getCommitAgeDays } = await import(
               pathToFileURL(path.join(process.env.GITHUB_WORKSPACE, 'scripts/github-housekeeping.mjs')).href
             );
             const { owner, repo } = context.repo;
@@ -73,8 +73,7 @@ jobs:
             const now = Date.now();
 
             for (const branch of branches) {
-              const commitDate = branch.commit.commit.committer?.date || branch.commit.commit.author.date;
-              const ageDays = Math.floor((now - Date.parse(commitDate)) / 86_400_000);
+              const ageDays = getCommitAgeDays(branch.commit, now);
               const hasOpenPullRequest = openPullRequests.some(pr => pr.head.ref === branch.name);
               const hasActiveWorkflow = activeBranchRuns.some(run => run.head_branch === branch.name);
               let mergedIntoPre = false;
@@ -101,7 +100,7 @@ jobs:
               }
               branchResults.push({
                 name: branch.name,
-                ageDays,
+                ageDays: ageDays ?? 'unknown',
                 sha: branch.commit.sha,
                 protected: branch.protected,
                 ...decision,
