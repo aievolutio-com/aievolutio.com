@@ -31,8 +31,11 @@
 
 ## Pull requests e incidencias
 
-- Los PR de funcionalidad entran en `pre`; la integración validada `pre` → `main`
-  conserva el recorrido de producción existente.
+- Los PR de funcionalidad entran en `pre`; el automatismo solo habilita su
+  auto-merge después de CI exitoso para el SHA exacto de la rama. Si el evento
+  de PR no ejecuta jobs, dispara CI manual para ese SHA y falla de forma
+  explícita si no lo valida. La integración validada `pre` → `main` conserva el
+  recorrido de producción existente.
 - Revisar PR abiertos por checks, seguridad, compatibilidad y antigüedad.
   Checks verdes son evidencia para decidir, no autorización automática para
   cambios de dependencias o producción.

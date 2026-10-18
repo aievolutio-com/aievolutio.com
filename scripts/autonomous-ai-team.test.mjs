@@ -390,6 +390,29 @@ test('keeps the candidate Pages deployment and production dispatch correctly sco
   assert.match(candidateJob ?? '', /^ {4}permissions:\r?\n {6}actions: write$/m);
 });
 
+test('validates a feature branch SHA before enabling its PR auto-merge', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/auto-pr-feature-to-pre.yml', import.meta.url), 'utf8');
+  const dispatchPosition = workflow.indexOf('gh workflow run ci.yml');
+  const successGatePosition = workflow.indexOf('CI_CONCLUSION');
+  const mergePosition = workflow.indexOf('gh pr merge --repo "$REPO" --auto --squash');
+
+  assert.ok(dispatchPosition >= 0 && dispatchPosition < successGatePosition);
+  assert.ok(successGatePosition < mergePosition);
+  assert.ok(workflow.includes('select(.headSha == \\"$HEAD_SHA\\")'));
+  assert.match(workflow, /CURRENT_HEAD_SHA.*!= "\$HEAD_SHA"/);
+});
+
+test('checks out the production-sync guard and uses read-only repository contents', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/auto-pr-pre-to-main.yml', import.meta.url), 'utf8');
+
+  assert.ok(
+    workflow.indexOf('name: Checkout production-sync guard') <
+      workflow.indexOf('name: Require successful CI for the exact pre commit'),
+  );
+  assert.match(workflow, /^ {2}contents: read$/m);
+  assert.match(workflow, /persist-credentials: false/);
+});
+
 test('requires existing content, all AI profiles, navigation, and the daily post', () => {
   assert.ok(profileNames.every((name) => /^AI[A-Z][A-Za-z]+$/.test(name)));
   const content = createContent();

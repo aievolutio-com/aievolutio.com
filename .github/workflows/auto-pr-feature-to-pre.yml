@@ -21,7 +21,7 @@ jobs:
   open-and-automerge:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 50
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,38 +30,59 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: ${{ github.ref_name }}
+          HEAD_SHA: ${{ github.sha }}
           REPO: ${{ github.repository }}
         run: |
-          set +e
+          set -euo pipefail
           PR_NUMBER=$(gh pr list --repo "$REPO" --base pre --head "$BRANCH" --json number --jq '.[0].number')
-          LIST_STATUS=$?
-          if [ $LIST_STATUS -ne 0 ]; then
-            echo "Aviso: gh pr list falló (posibles permisos insuficientes)." >&2
-            echo "Acción sugerida: Settings > Actions > Workflow permissions: 'Read and write' + 'Allow GitHub Actions to create and approve pull requests'." >&2
-            echo "Alternativa: usar un PAT como secret y exportarlo en GH_TOKEN." >&2
-            exit 0
-          fi
           if [ -z "$PR_NUMBER" ]; then
             gh pr create --repo "$REPO" --base pre --head "$BRANCH" \
               --title "ci: auto-PR $BRANCH -> pre" \
               --body "Pull request automático desde $BRANCH hacia pre. Se activará auto-merge al pasar los checks."
-            CREATE_STATUS=$?
-            if [ $CREATE_STATUS -ne 0 ]; then
-              echo "Aviso: No se pudo crear el PR (permisos). Verifica configuración indicada arriba." >&2
-              exit 0
-            fi
             PR_NUMBER=$(gh pr list --repo "$REPO" --base pre --head "$BRANCH" --json number --jq '.[0].number')
           fi
           # Asegurar título compatible con Conventional Commits para pasar el check semántico
-          gh pr edit --repo "$REPO" "$PR_NUMBER" --title "ci: auto-PR $BRANCH -> pre" || true
-          gh pr merge --repo "$REPO" --auto --squash "$PR_NUMBER" || true
+          gh pr edit --repo "$REPO" "$PR_NUMBER" --title "ci: auto-PR $BRANCH -> pre"
+          CURRENT_HEAD_SHA=$(gh pr view --repo "$REPO" "$PR_NUMBER" --json headRefOid --jq '.headRefOid')
+          if [ "$CURRENT_HEAD_SHA" != "$HEAD_SHA" ]; then
+            echo "El SHA del PR cambió antes de validar; se cancela la integración." >&2
+            exit 1
+          fi
+
+          gh workflow run ci.yml --repo "$REPO" --ref "$BRANCH"
+          VALIDATED=false
+          for attempt in $(seq 1 120); do
+            CI_RUN=$(gh run list --repo "$REPO" --workflow ci.yml --branch "$BRANCH" \
+              --event workflow_dispatch --limit 50 \
+              --json databaseId,headSha,status,conclusion,url \
+              --jq "[.[] | select(.headSha == \"$HEAD_SHA\")] | sort_by(.databaseId) | last // empty")
+            if [ -n "$CI_RUN" ]; then
+              CI_STATUS=$(printf '%s' "$CI_RUN" | jq -r '.status')
+              CI_CONCLUSION=$(printf '%s' "$CI_RUN" | jq -r '.conclusion // ""')
+              if [ "$CI_STATUS" = "completed" ]; then
+                if [ "$CI_CONCLUSION" != "success" ]; then
+                  echo "CI no validó $HEAD_SHA (conclusión: $CI_CONCLUSION)." >&2
+                  exit 1
+                fi
+                VALIDATED=true
+                break
+              fi
+            fi
+            sleep 10
+          done
+          if [ "$VALIDATED" != "true" ]; then
+            echo "CI no validó el SHA $HEAD_SHA dentro de 20 minutos." >&2
+            exit 1
+          fi
+
+          CURRENT_HEAD_SHA=$(gh pr view --repo "$REPO" "$PR_NUMBER" --json headRefOid --jq '.headRefOid')
+          if [ "$CURRENT_HEAD_SHA" != "$HEAD_SHA" ]; then
+            echo "El SHA del PR avanzó después de CI; se cancela la integración." >&2
+            exit 1
+          fi
+          gh pr merge --repo "$REPO" --auto --squash "$PR_NUMBER"
           for attempt in $(seq 1 120); do
             PR_STATE=$(gh pr view --repo "$REPO" "$PR_NUMBER" --json state --jq '.state')
-            STATE_STATUS=$?
-            if [ $STATE_STATUS -ne 0 ]; then
-              echo "No se pudo consultar el estado del PR $PR_NUMBER; no se solicitará la promoción a main." >&2
-              exit 1
-            fi
             if [ "$PR_STATE" = "MERGED" ]; then
               gh workflow run auto-pr-pre-to-main.yml --repo "$REPO" --ref pre
               exit $?
