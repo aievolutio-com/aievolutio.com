@@ -21,8 +21,10 @@ no propagues ambas versiones.
 - El sitio es estático. El contenido se mantiene en `content/*.json`; las
   publicaciones no se alimentan desde hojas de cálculo.
 - `.github/workflows/autonomous-ai-team.yml` es el único flujo editorial
-  programado. Sigue `docs/ai-agent-playbook.md` para las misiones, cadencia,
-  límites y recuperación de Vertex AI.
+  programado; `.github/workflows/autonomous-site-review.yml` audita y puede
+  proponer mejoras cada ocho horas, sin publicar artículos. Sigue
+  `docs/ai-agent-playbook.md` para las misiones, cadencia, límites y
+  recuperación de Vertex AI.
 - Publica únicamente cambios validados por CI; ningún fallo autoriza a saltarse
   controles.
 - No reintroduzcas sincronización desde Sheets ni otra fuente de contenido

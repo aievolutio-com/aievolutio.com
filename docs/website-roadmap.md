@@ -80,9 +80,21 @@
 
 ## Cadencia y responsabilidad
 
-Cada cambio diario debe tener una hipótesis de usuario, una mejora observable,
-una comprobación automática pertinente y un registro del resultado. Un cambio
-de contenido no cuenta como mejora de UX si no hace más clara, útil o fiable la
-experiencia. El equipo autónomo puede proponer y ejecutar cambios dentro de
-estos criterios; no debe inventar testimonios, datos, capacidades ni canales
-de contacto.
+La publicación editorial continúa siendo como máximo un artículo al día. Una
+revisión independiente cada ocho horas combina pruebas, accesibilidad,
+rendimiento y capturas de móvil/escritorio en modo claro/oscuro; puede proponer
+una corrección, pero no necesita fabricar cambios si la evidencia no los
+justifica. Cada mejora técnica aplicada debe explicar su hipótesis y alcance en
+[`improvement-log.md`](improvement-log.md), pasar CI y respetar este roadmap.
+Un cambio de contenido no cuenta como mejora de UX si no hace más clara, útil o
+fiable la experiencia. No se deben inventar testimonios, datos, capacidades ni
+canales de contacto.
+
+Los artículos nuevos necesitan imagen editorial propia. El modelo de Imagen
+debe probarse y configurarse antes de activar publicaciones; si la generación
+falla, se detiene la publicación en lugar de degradar silenciosamente el
+resultado. La oficina usa `images/oficina.webp`, optimizada desde la fotografía
+aportada y dentro del presupuesto de tamaño. Los retratos fotorrealistas de
+AIWorkers y las imágenes históricas del blog aún requieren una generación
+inicial verificada y una revisión de coherencia visual; no deben sustituirse
+por personas reales ni por imágenes sin derechos.

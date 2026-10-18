@@ -113,14 +113,21 @@ para completar el mismo ciclo diario, no dos misiones distintas: el control por
 fecha de `Europe/Madrid` hace que solo se genere un artículo. Una vez publicada
 la pieza del día, una ejecución repetida termina sin volver a publicar.
 
+La revisión de experiencia es independiente: `.github/workflows/autonomous-site-review.yml`
+se programa cada ocho horas. Ejecuta pruebas, accesibilidad y Lighthouse, y
+entrega a Vertex capturas de Inicio, Blog y Equipo en escritorio/móvil y modo
+claro/oscuro. Puede proponer una mejora CSS o de navegación, pero no fuerza un
+cambio cosmético: si no identifica un problema demostrable, termina sin
+modificar el sitio. Las mejoras que sí se aplican dejan su motivo en
+`docs/improvement-log.md`.
+
 En un ciclo que sí genera contenido, Vertex realiza las dos misiones:
 
 1. El equipo crea y valida como máximo un artículo nuevo.
 2. AIArchitectus propone como máximo una mejora pequeña y acotada del sitio.
 
 Ambas se validan juntas. Si no hay artículo pendiente para la fecha local, el
-ciclo termina antes de pedir cambios técnicos; no se ejecuta una misión de
-mejora independiente.
+ciclo editorial termina; la revisión separada cada ocho horas sigue funcionando.
 
 En cada ciclo:
 
@@ -130,10 +137,11 @@ En cada ciclo:
    o cambio. No reescribir contenido publicado ni borrar perfiles existentes.
 3. Pedir a los perfiles perspectivas distintas; sintetizar una sola prioridad
    centrada en el usuario y compatible con el propósito.
-4. Crear una publicación útil, original, verificable y coherente. Preparar una
-   imagen solo cuando aporte significado y sea posible validar derechos,
-   seguridad, alternativa textual y carga. La falta de imagen no debe bloquear
-   un artículo válido.
+4. Crear una publicación útil, original, verificable y coherente. Cada artículo
+   nuevo necesita una imagen editorial generada y validada, texto alternativo
+   útil y un recurso WebP de menos de 200 KB. Si Imagen falla o el modelo no
+   está configurado, no se publica el artículo; se notifica y se conserva el
+   control de una publicación diaria.
 5. Proponer como máximo un cambio web pequeño y acotado. Si el cambio es
    especulativo, incompatible o difícil de validar, publicar el contenido
    válido sin ese cambio y registrar la razón.
@@ -154,9 +162,9 @@ recuperarse sin duplicar contenido.
 
 ### Controles que ya existen
 
-- Dos disparadores programados diarios y ciclos autónomos serializados con un
-  bloqueo independiente del despliegue; así la CI puede desplegar y promover un
-  candidato mientras el ciclo espera su resultado.
+- Dos disparadores editoriales diarios, revisión visual cada ocho horas y ciclos
+  de Vertex serializados con un bloqueo independiente del despliegue; así la CI
+  puede desplegar y promover un candidato mientras el ciclo espera su resultado.
 - Idempotencia por fecha local: como máximo un artículo por día.
 - La navegación existente se valida antes de llamar al modelo; el destino real
   `contacto.html` está permitido y cubierto por una prueba de regresión.
@@ -170,12 +178,17 @@ recuperarse sin duplicar contenido.
 - Si los tres intentos fallan, el flujo termina como fallido y notifica; no
   vuelve a intentarlo en esa ejecución ni publica un candidato que no haya
   superado CI.
-- La imagen es opcional; el contenido y CI no dependen de Imagen.
-- La imagen puede omitirse si Imagen falla. En cambio, un error al generar o
-  aplicar el artículo, validar el contenido o ejecutar CI invalida el intento:
-  no se omiten esas validaciones para publicar.
-- Rama candidata aislada, CI antes del despliegue, despliegue de Pages y
-  promoción no forzada a `pre`.
+- La publicación diaria requiere un modelo Imagen configurado y accesible. La
+  imagen se optimiza a WebP y se rechaza si es inválida o supera 200 KB. Si no
+  hay modelo o falla la generación, el artículo no se publica y el flujo
+  notifica el error.
+- La revisión cada ocho horas combina pruebas de rutas/HTML, accesibilidad,
+  Lighthouse y evidencia visual de 14 capturas. Solo puede modificar CSS o
+  navegación; los cambios efectivos incluyen motivo en `docs/improvement-log.md`
+  y se despliegan únicamente tras superar CI.
+- Rama candidata aislada y CI antes de promoverla a `pre` con fast-forward
+  no forzado; solo después se despliega en Pages. Una candidata obsoleta falla
+  en la promoción antes de poder sobrescribir el sitio.
 - Aviso automático en una incidencia de GitHub si el ciclo o la publicación
   fallan.
 - La recuperación está limitada a errores que Vertex pueda diagnosticar con
@@ -189,9 +202,9 @@ recuperarse sin duplicar contenido.
 
 1. Consultar los logs de `Autonomous AI Team` y el CI asociado al SHA exacto.
 2. Clasificar la fase: autenticación, planificación, generación, validación,
-   CI, Pages o promoción a `pre`. Un fallo de promoción puede ocurrir después
-   de que Pages ya se haya actualizado: comprobar producción antes de afirmar
-   que no hubo publicación o repetir el ciclo.
+   CI, promoción a `pre` o Pages. La candidata debe promoverse antes de su
+   despliegue; aun así, comprobar Pages antes de afirmar el estado de producción
+   o repetir el ciclo, porque puede haber otros despliegues concurrentes.
 3. Comprobar `content/content.es.json` servido en producción y localizar el
    artículo por fecha local. Si ya está, no generar otro; reparar solo el
    estado de la rama o del aviso.
@@ -221,14 +234,16 @@ recuperarse sin duplicar contenido.
    repositorio, indisponibilidad de GitHub/Vertex ni cambios al propio flujo de
    autenticación. Confirmar que los avisos identifiquen claramente estos casos
    y no sugieran que se repararon automáticamente.
-4. **Imagen:** Imagen devolvió HTTP 404 en ejecuciones recientes. La generación
-   queda desactivada hasta verificar modelo, región y permisos; no debe consumir
-   llamadas de Vertex ni bloquear la publicación mientras siga desactivada.
+4. **Imagen:** Imagen devolvió HTTP 404 en ejecuciones recientes. Configurar la
+   variable de repositorio `VERTEX_AI_IMAGE_MODEL` solo después de verificar
+   modelo, región y permisos en el proyecto. Hasta entonces, los artículos
+   nuevos se rechazan de forma explícita y no se publica texto sin imagen.
 5. **Pruebas de contrato:** simular respuestas truncadas, 429, HTML en texto,
-   imagen 404, parche corrupto, CI fallido, deploy exitoso con promoción
-   fallida y reejecución del mismo día. Asegurar la comprobación de que solo el
-   commit validado se publica. Mantener las rutas de navegación reales en los
-   fixtures para detectar desajustes con el sitio antes de consumir llamadas.
+   imagen 404, parche corrupto, CI fallido, candidata obsoleta rechazada antes
+   de Pages y reejecución del mismo día. Asegurar la comprobación de que solo
+   un commit validado y promovido se publica. Mantener las rutas de navegación
+   reales en los fixtures para detectar desajustes con el sitio antes de
+   consumir llamadas.
 6. **Calidad editorial verificable:** añadir validaciones automáticas para
    evidencia/citas, enlaces, repetición temática, llamadas a la acción y
    coherencia de autor; mantener revisión humana opcional como observación, no
