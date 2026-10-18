@@ -68,13 +68,19 @@ jobs:
               github.paginate(github.rest.repos.listMatchingRefs, { owner, repo, ref: 'tags/', per_page: 100 }),
               github.paginate(github.rest.repos.listReleases, { owner, repo, per_page: 100 }),
             ]);
+            const branchCommits = new Map(await Promise.all(branches.map(async branch => {
+              const { data: commit } = await github.rest.repos.getCommit({
+                owner, repo, ref: branch.commit.sha,
+              });
+              return [branch.name, commit];
+            })));
             const tagSummary = summarizeTagRefs(tags);
             const activeBranchRuns = activeRuns.flat().filter(run => run.head_branch);
             const branchResults = [];
             const now = Date.now();
 
             for (const branch of branches) {
-              const ageDays = getCommitAgeDays(branch.commit, now);
+              const ageDays = getCommitAgeDays(branchCommits.get(branch.name), now);
               const hasOpenPullRequest = openPullRequests.some(pr => pr.head.ref === branch.name);
               const hasActiveWorkflow = activeBranchRuns.some(run => run.head_branch === branch.name);
               let mergedIntoPre = false;

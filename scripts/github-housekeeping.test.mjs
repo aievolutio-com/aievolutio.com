@@ -41,6 +41,7 @@ test('never auto-deletes unmerged work and flags it for review after 30 days', (
 
 test('retains branches when the API omits commit timestamps', () => {
   assert.equal(getCommitAgeDays({}, Date.UTC(2026, 0, 10)), null);
+  assert.equal(getCommitAgeDays({ sha: 'abc123' }, Date.UTC(2026, 0, 10)), null);
   assert.equal(getCommitAgeDays({ commit: { author: { date: 'invalid' } } }), null);
 
   const result = decideBranchCleanup({ ...eligibleBranch, ageDays: null });
