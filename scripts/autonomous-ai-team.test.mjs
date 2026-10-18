@@ -293,11 +293,13 @@ test('requires a generated article image and records a reason for every non-empt
 test('schedules independent visual reviews every eight hours and validates candidate deployments', async () => {
   const workflow = await readFile(new URL('../.github/workflows/autonomous-site-review.yml', import.meta.url), 'utf8');
   const ciWorkflow = await readFile(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  const gitignore = await readFile(new URL('../.gitignore', import.meta.url), 'utf8');
   assert.match(workflow, /cron: ['"]0 \*\/8 \* \* \*['"]/);
   assert.match(workflow, /AUTONOMOUS_AI_TEAM_MODE: maintenance/);
   assert.match(workflow, /npm run a11y/);
   assert.match(workflow, /npm run lhci:ci/);
   assert.match(ciWorkflow, /startsWith\(github\.ref, 'refs\/heads\/ai\/site-improvement\/'\)/);
+  assert.match(gitignore, /^\.lighthouseci\/$/m);
 });
 
 test('recognizes only the exact remote candidate branch ref', () => {
