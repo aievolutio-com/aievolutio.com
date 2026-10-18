@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { decideBranchCleanup } from './github-housekeeping.mjs';
+import { decideBranchCleanup, getCommitAgeDays } from './github-housekeeping.mjs';
 
 const eligibleBranch = {
   branchName: 'feat/example',
@@ -33,4 +33,21 @@ test('never auto-deletes unmerged work and flags it for review after 30 days', (
   const result = decideBranchCleanup({ ...eligibleBranch, ageDays: 31, mergedIntoPre: false });
   assert.equal(result.action, 'review');
   assert.match(result.reason, /requiere revisión/);
+});
+
+test('retains branches when the API omits commit timestamps', () => {
+  assert.equal(getCommitAgeDays({}, Date.UTC(2026, 0, 10)), null);
+  assert.equal(getCommitAgeDays({ commit: { author: { date: 'invalid' } } }), null);
+
+  const result = decideBranchCleanup({ ...eligibleBranch, ageDays: null });
+  assert.equal(result.action, 'retain');
+  assert.match(result.reason, /antigüedad del commit/);
+});
+
+test('calculates branch age from commit metadata', () => {
+  const now = Date.UTC(2026, 0, 10);
+  assert.equal(
+    getCommitAgeDays({ commit: { committer: { date: '2026-01-01T00:00:00.000Z' } } }, now),
+    9,
+  );
 });
