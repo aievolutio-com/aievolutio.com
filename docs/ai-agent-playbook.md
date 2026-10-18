@@ -98,6 +98,23 @@ debe existir solo para cumplir el calendario.
   debe resolver una necesidad real y aportar valor propio. El resumen diario
   de Actions registra la necesidad elegida y su diferencia respecto al archivo.
 
+### Skills versionadas y evolución de agentes
+
+- Cada AIWorker carga una skill de disciplina en `agents/skills/` y comparte
+  `ethical-reasoning.md`. Las skills concretan propósito, límites y una
+  evaluación observable; son contexto de trabajo, no permisos ejecutables.
+- Una nueva versión requiere un problema observado, evidencia repetida o una
+  evaluación que identifique una brecha, cambio acotado, prueba de regresión,
+  comparación antes/después y reversión posible. Registrar el resultado en
+  `docs/agent-evolution-log.md`.
+- Vertex puede proponer skills por un PR revisable. No puede aprobar su propia
+  propuesta ni cambiar mediante skills su misión, herramientas, credenciales,
+  permisos, límites de edición, publicación o validadores.
+- Los perfiles especializados incluyen estrategia, tecnología, UX,
+  experiencia de cliente, marketing, arquitectura, cambio e investigación; el
+  razonamiento ético y filosófico es transversal y examina autonomía,
+  distribución del valor, poder, daños, corrección y capacidad de detener.
+
 ## 4. El sitio como recorrido de difusión y marketing
 
 Cada página y publicación debe cumplir un trabajo reconocible:

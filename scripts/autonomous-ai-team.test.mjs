@@ -14,7 +14,9 @@ import {
   improvementLogEntry,
   assertImageModelConfigured,
   editorialArchive,
+  loadAgentSkills,
   validateEditorialReview,
+  validateNewArticleTitle,
 } from './autonomous-ai-team.mjs';
 
 const originalPost = {
@@ -89,6 +91,25 @@ test('reports a bounded response sample when model output cannot be repaired', (
 
 test('removes HTML tags while preserving the article text', () => {
   assert.equal(stripHtmlTags('<p>Una idea <strong>útil</strong>.</p>'), 'Una idea útil.');
+});
+
+test('loads versioned role skills and shared ethical reasoning for every AI worker', async () => {
+  for (const profileName of profileNames) {
+    const skills = await loadAgentSkills(profileName);
+    const roleSkill = skills.roleSkill.replace(/\r\n/g, '\n');
+    assert.match(roleSkill, /^---\s*\nid: .+\nversion: \d+\.\d+\.\d+/m);
+    assert.match(roleSkill, /^## Evaluación$/m);
+    assert.match(skills.ethicalSkill, /autonomía, justicia y bienestar/);
+  }
+  await assert.rejects(() => loadAgentSkills('unknown'), /No hay un perfil de agente/);
+});
+
+test('marks duplicate editorial titles for a fresh generation attempt', () => {
+  assert.doesNotThrow(() => validateNewArticleTitle('Una idea nueva', [{ title: 'Otra idea' }]));
+  assert.throws(
+    () => validateNewArticleTitle('IDEA EXISTENTE', [{ title: 'Idea existente' }]),
+    (error) => error.retryPost === true && /repite un título existente/.test(error.message),
+  );
 });
 
 test('builds a chronological editorial dossier with paragraph openings and structure', () => {
@@ -326,6 +347,9 @@ test('preserves required CI validation, deploy, and promotion steps', () => {
     'name: Promote validated candidate to pre',
     'force: false',
     'name: Deploy validated candidate to gh-pages',
+    'name: Request production sync after validated candidate deployment',
+    '      actions: write',
+    'force_orphan: true',
   ].join('\n');
   assert.doesNotThrow(() => validateCiWorkflow(validWorkflow));
   assert.throws(
@@ -346,6 +370,47 @@ test('preserves required CI validation, deploy, and promotion steps', () => {
     () => validateCiWorkflow(validWorkflow.replace('listPullRequestsAssociatedWithCommit', '')),
     /controles obligatorios/,
   );
+});
+
+test('keeps the candidate Pages deployment and production dispatch correctly scoped', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  const deployment = workflow.match(
+    /^ {6}- name: Deploy validated candidate to gh-pages\r?\n([\s\S]*?)(?=^ {6}- name: )/m,
+  )?.[1];
+  const productionSync = workflow.match(
+    /^ {6}- name: Request production sync after validated candidate deployment\r?\n([\s\S]*?)(?=^ {2}notify-publication-failure:)/m,
+  )?.[1];
+  const candidateJob = workflow.match(
+    /^ {2}publish-ai-evolution:\r?\n([\s\S]*?)(?=^ {2}notify-publication-failure:)/m,
+  )?.[1];
+
+  assert.match(deployment ?? '', /^\s+force_orphan: true\s*$/m);
+  assert.doesNotMatch(productionSync ?? '', /force_orphan/);
+  assert.match(productionSync ?? '', /actions\.createWorkflowDispatch/);
+  assert.match(candidateJob ?? '', /^ {4}permissions:\r?\n {6}actions: write$/m);
+});
+
+test('validates a feature branch SHA before enabling its PR auto-merge', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/auto-pr-feature-to-pre.yml', import.meta.url), 'utf8');
+  const dispatchPosition = workflow.indexOf('gh workflow run ci.yml');
+  const successGatePosition = workflow.indexOf('CI_CONCLUSION');
+  const mergePosition = workflow.indexOf('gh pr merge --repo "$REPO" --auto --squash');
+
+  assert.ok(dispatchPosition >= 0 && dispatchPosition < successGatePosition);
+  assert.ok(successGatePosition < mergePosition);
+  assert.ok(workflow.includes('select(.headSha == \\"$HEAD_SHA\\")'));
+  assert.match(workflow, /CURRENT_HEAD_SHA.*!= "\$HEAD_SHA"/);
+});
+
+test('checks out the production-sync guard and grants validated production promotion access', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/auto-pr-pre-to-main.yml', import.meta.url), 'utf8');
+
+  assert.ok(
+    workflow.indexOf('name: Checkout production-sync guard') <
+      workflow.indexOf('name: Require successful CI for the exact pre commit'),
+  );
+  assert.match(workflow, /^ {2}contents: write$/m);
+  assert.match(workflow, /persist-credentials: false/);
 });
 
 test('requires existing content, all AI profiles, navigation, and the daily post', () => {
