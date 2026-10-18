@@ -395,11 +395,15 @@ test('validates a feature branch SHA before enabling its PR auto-merge', async (
   const dispatchPosition = workflow.indexOf('gh workflow run ci.yml');
   const successGatePosition = workflow.indexOf('CI_CONCLUSION');
   const mergePosition = workflow.indexOf('gh pr merge --repo "$REPO" --auto --squash');
+  const productionSyncPosition = workflow.indexOf('gh workflow run auto-pr-pre-to-main.yml');
+  const housekeepingPosition = workflow.indexOf('gh workflow run github-housekeeping.yml');
 
   assert.ok(dispatchPosition >= 0 && dispatchPosition < successGatePosition);
   assert.ok(successGatePosition < mergePosition);
   assert.ok(workflow.includes('select(.headSha == \\"$HEAD_SHA\\")'));
   assert.match(workflow, /CURRENT_HEAD_SHA.*!= "\$HEAD_SHA"/);
+  assert.ok(mergePosition < productionSyncPosition);
+  assert.ok(productionSyncPosition < housekeepingPosition);
 });
 
 test('checks out the production-sync guard and grants validated production promotion access', async () => {
@@ -411,6 +415,8 @@ test('checks out the production-sync guard and grants validated production promo
   );
   assert.match(workflow, /^ {2}contents: write$/m);
   assert.match(workflow, /persist-credentials: false/);
+  assert.match(workflow, /isNewerWorkflowRun/);
+  assert.doesNotMatch(workflow, /Date\.parse\(latestRun\.created_at\).*dispatchedAt/);
 });
 
 test('requires existing content, all AI profiles, navigation, and the daily post', () => {
