@@ -402,14 +402,14 @@ test('validates a feature branch SHA before enabling its PR auto-merge', async (
   assert.match(workflow, /CURRENT_HEAD_SHA.*!= "\$HEAD_SHA"/);
 });
 
-test('checks out the production-sync guard and uses read-only repository contents', async () => {
+test('checks out the production-sync guard and grants validated production promotion access', async () => {
   const workflow = await readFile(new URL('../.github/workflows/auto-pr-pre-to-main.yml', import.meta.url), 'utf8');
 
   assert.ok(
     workflow.indexOf('name: Checkout production-sync guard') <
       workflow.indexOf('name: Require successful CI for the exact pre commit'),
   );
-  assert.match(workflow, /^ {2}contents: read$/m);
+  assert.match(workflow, /^ {2}contents: write$/m);
   assert.match(workflow, /persist-credentials: false/);
 });
 
