@@ -60,3 +60,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Validación: CI del candidato #39135230130 pasó pruebas, lint, accesibilidad y
   Lighthouse. La mejora se integró en `main` mediante el PR #65 y el CSS
   actualizado está servido por Pages.
+
+## 2026-10-18 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, los elementos del menú se apilan en dos líneas, y la última opción Contacto queda desalineada a la izquierda, creando un espacio visual irregular Al aplicar justify-content: space-around a la navegación en móvil, se distribuyen los elementos de manera equitativa, mejorando la coherencia visual y el aprovechamiento del espacio disponible sin alterar la jerarquía ni el contenido
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
