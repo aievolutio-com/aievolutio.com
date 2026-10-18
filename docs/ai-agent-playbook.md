@@ -78,6 +78,26 @@ Revisar títulos y artículos recientes antes de elegir tema. Buscar una
 necesidad concreta del lector, no una palabra clave aislada. Un artículo no
 debe existir solo para cumplir el calendario.
 
+### Dirección editorial y control de repetición
+
+- **AIVisio es responsable de la línea editorial**: decide qué necesidad del
+  lector merece atención, el pilar y el enfoque de cada pieza. **AILitterae es
+  responsable de investigar y redactar**; el equipo aporta perspectivas y
+  detecta riesgos, pero no sustituye la decisión editorial.
+- Antes de proponer un tema, AIVisio y AILitterae reciben un dossier de todas
+  las publicaciones, en orden cronológico, con fecha, título, inicios de cada
+  párrafo y subtítulos; el resto del equipo recibe el índice global. No basta
+  con pasarle los títulos ni una selección arbitraria de publicaciones
+  recientes.
+- AIVisio define una dirección concreta y compara el borrador con el conjunto
+  del archivo. Se rechaza una pieza que responda a la misma pregunta, sostenga
+  la misma tesis o recomiende la misma acción que otra, aunque cambien el
+  título, el sector o las palabras. El borrador vuelve a AILitterae para elegir
+  un enfoque distinto; no se publica sin aprobación editorial explícita.
+- La rotación de pilares orienta la variedad, pero no es una cuota. Cada pieza
+  debe resolver una necesidad real y aportar valor propio. El resumen diario
+  de Actions registra la necesidad elegida y su diferencia respecto al archivo.
+
 ## 4. El sitio como recorrido de difusión y marketing
 
 Cada página y publicación debe cumplir un trabajo reconocible:
@@ -135,9 +155,10 @@ En cada ciclo:
    primero si ya existe una publicación para la fecha de `Europe/Madrid`.
 2. Revisar páginas, navegación y publicaciones recientes antes de decidir tema
    o cambio. No reescribir contenido publicado ni borrar perfiles existentes.
-3. Pedir a los perfiles perspectivas distintas; sintetizar una sola prioridad
-   centrada en el usuario y compatible con el propósito.
-4. Crear una publicación útil, original, verificable y coherente. Cada artículo
+3. Pedir a los perfiles perspectivas distintas. AIVisio fija la dirección
+   editorial y AILitterae recibe el archivo completo para desarrollar la pieza.
+4. Crear una publicación útil, original, verificable y coherente; AIVisio debe
+   aprobar expresamente su diferencia frente al archivo completo. Cada artículo
    nuevo necesita una imagen editorial generada y validada, texto alternativo
    útil y un recurso WebP de menos de 200 KB. Si Imagen falla o el modelo no
    está configurado, no se publica el artículo; se notifica y se conserva el

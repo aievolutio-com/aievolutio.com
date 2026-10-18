@@ -13,6 +13,8 @@ import {
   remoteRefExists,
   improvementLogEntry,
   assertImageModelConfigured,
+  editorialArchive,
+  validateEditorialReview,
 } from './autonomous-ai-team.mjs';
 
 const originalPost = {
@@ -87,6 +89,46 @@ test('reports a bounded response sample when model output cannot be repaired', (
 
 test('removes HTML tags while preserving the article text', () => {
   assert.equal(stripHtmlTags('<p>Una idea <strong>útil</strong>.</p>'), 'Una idea útil.');
+});
+
+test('builds a chronological editorial dossier with paragraph openings and structure', () => {
+  const content = createContent();
+  content.sections[1].blocks = [
+    { type: 'post', title: 'Segundo', date: '2026-02-02', body: 'Apertura dos.\n\n**Criterio**\n\nCierre dos.' },
+    { type: 'post', title: 'Primero', date: '2026-01-01', body: 'Apertura uno.\n\n**Práctica**\n\nCierre uno.' },
+  ];
+  assert.deepEqual(editorialArchive(content), [
+    {
+      date: '2026-01-01',
+      title: 'Primero',
+      paragraphs: ['Apertura uno.', 'Cierre uno.'],
+      structure: ['Práctica'],
+    },
+    {
+      date: '2026-02-02',
+      title: 'Segundo',
+      paragraphs: ['Apertura dos.', 'Cierre dos.'],
+      structure: ['Criterio'],
+    },
+  ]);
+});
+
+test('requires explicit low-overlap approval from the editorial lead', () => {
+  const approval = {
+    approved: true,
+    overlapRisk: 'low',
+    readerNeed: 'Decidir cómo resumir una reunión con acuerdos ambiguos.',
+    editorialDistinction: 'Se centra en registrar responsables y condiciones, no en extractos para un blog.',
+  };
+  assert.equal(validateEditorialReview(approval), approval);
+  assert.throws(
+    () => validateEditorialReview({ ...approval, overlapRisk: 'high' }),
+    (error) => error.retryPost === true && /AIVisio no aprobó/.test(error.message),
+  );
+  assert.throws(
+    () => validateEditorialReview({ ...approval, approved: false }),
+    (error) => error.retryPost === true,
+  );
 });
 
 test('allows only the explicit website patch paths', () => {
