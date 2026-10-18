@@ -19,3 +19,6 @@ node_modules/
 # Build artifacts
 dist/
 build/
+
+# Lighthouse CI reports
+.lighthouseci/
