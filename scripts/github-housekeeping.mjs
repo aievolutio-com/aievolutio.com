@@ -25,6 +25,19 @@ export function summarizeTagRefs(refs) {
   return { names, malformedCount };
 }
 
+export function hasMergedPullRequestHead(pullRequests, {
+  branchName,
+  branchSha,
+  baseBranch = 'pre',
+}) {
+  return pullRequests.some(pullRequest =>
+    pullRequest.merged_at &&
+    pullRequest.base?.ref === baseBranch &&
+    pullRequest.head?.ref === branchName &&
+    pullRequest.head?.sha === branchSha,
+  );
+}
+
 export function decideBranchCleanup({
   branchName,
   defaultBranch,
