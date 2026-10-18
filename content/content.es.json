@@ -295,8 +295,8 @@
       "blocks": [
         {
           "type": "image",
-          "src": "images/oficina-aievolutio.jpg",
-          "alt": "images/oficina-aievolutio.png",
+          "src": "images/oficina.webp",
+          "alt": "Oficina de AIEvolutio",
           "caption": "Espacio de trabajo y prototipado para construir herramientas con propósito."
         }
       ]

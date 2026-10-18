@@ -1,0 +1,117 @@
+name: Autonomous Site Review
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */8 * * *'
+
+permissions: {}
+
+concurrency:
+  group: autonomous-ai-team
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout pre
+        uses: actions/checkout@v4
+        with:
+          ref: pre
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install tools
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build:site
+
+      - name: Run regression tests and linters
+        run: |
+          node --test scripts/*.test.mjs
+          npm run lint:js
+          npm run lint:css
+          npm run lint:html
+
+      - name: Start static server for accessibility checks
+        run: |
+          nohup npx http-server -c-1 dist -p 8081 > /dev/null 2>&1 &
+          echo $! > server.pid
+          sleep 2
+
+      - name: Run accessibility and performance audits
+        run: |
+          npm run a11y
+          npm run lhci:ci
+
+      - name: Stop static server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill "$(cat server.pid)" || true
+            rm -f server.pid
+          fi
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+          token_format: access_token
+
+      - name: Review screenshots and propose a verified improvement
+        env:
+          AUTONOMOUS_AI_TEAM_MODE: maintenance
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          GOOGLE_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          VERTEX_AI_LOCATION: us-central1
+          VERTEX_AI_MODEL: gemini-2.5-flash
+          CHROME_EXECUTABLE_PATH: /usr/bin/google-chrome
+        run: node scripts/autonomous-ai-team.mjs
+
+  notify-failure:
+    if: ${{ failure() }}
+    needs: review
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Notify the site owner
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const title = `[Site review] Audit or improvement failed (${new Date().toISOString().slice(0, 10)})`;
+            const runUrl = `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`;
+            const existing = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+            });
+            if (existing.some(issue => issue.title === title)) {
+              core.info(`An open notification already exists: ${title}`);
+              return;
+            }
+            await github.rest.issues.create({
+              owner,
+              repo,
+              title,
+              body: `@luisromeroperez-com La auditoría técnica/visual o su validación falló. No se debe asumir que se aplicó una mejora ni que producción cambió. Revisa primero las capturas, el CI candidato y el estado de Pages.\n\n[Consultar ejecución y logs](${runUrl})`,
+            });

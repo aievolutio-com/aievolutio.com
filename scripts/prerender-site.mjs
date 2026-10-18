@@ -11,6 +11,12 @@ const htmlPages = ['index.html', 'equipo.html', 'blog.html', 'archivo.html', 'co
 const publicDirectories = ['assets', 'content', 'images', 'styles'];
 const publicFiles = ['CNAME', '_headers', 'site.webmanifest'];
 const articleBaseUrl = 'https://aievolutio.com';
+const legacyArticleAliases = new Map([
+  [
+    'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resum.html',
+    'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital.html',
+  ],
+]);
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -50,7 +56,10 @@ function formatPostDate(date) {
 }
 
 function postSummary(body, maxLength = 280) {
-  const text = String(body || '').replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
+  const text = String(body || '')
+    .replace(/\*\*/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
   if (text.length <= maxLength) return text;
   return `${text.slice(0, maxLength).replace(/\s+\S*$/, '')}…`;
 }
@@ -61,12 +70,18 @@ function renderPostBody(body) {
     .split(/\n\s*\n/)
     .filter(Boolean)
     .map((paragraph) => {
-      const lines = paragraph.split('\n').map((line) => line
-        .split(/(\*\*.+?\*\*)/g)
-        .map((part) => part.startsWith('**') && part.endsWith('**') && part.length > 4
-          ? `<strong>${escapeHtml(part.slice(2, -2))}</strong>`
-          : escapeHtml(part))
-        .join(''))
+      const lines = paragraph
+        .split('\n')
+        .map((line) =>
+          line
+            .split(/(\*\*.+?\*\*)/g)
+            .map((part) =>
+              part.startsWith('**') && part.endsWith('**') && part.length > 4
+                ? `<strong>${escapeHtml(part.slice(2, -2))}</strong>`
+                : escapeHtml(part),
+            )
+            .join(''),
+        )
         .join('<br>');
       return `<p>${lines}</p>`;
     })
@@ -74,20 +89,21 @@ function renderPostBody(body) {
 }
 
 function renderNavigation(items, activeId, prefix = '') {
-  return items.map((item) => {
-    const current = item.id === activeId ? ' aria-current="page"' : '';
-    const href = prefix && !/^(?:[a-z]+:|#|\/)/i.test(String(item.href || ''))
-      ? `${prefix}${item.href}`
-      : item.href;
-    return `<a href="${escapeHtml(href)}"${current}>${escapeHtml(item.label || 'Inicio')}</a>`;
-  }).join('\n');
+  return items
+    .map((item) => {
+      const current = item.id === activeId ? ' aria-current="page"' : '';
+      const href = prefix && !/^(?:[a-z]+:|#|\/)/i.test(String(item.href || '')) ? `${prefix}${item.href}` : item.href;
+      return `<a href="${escapeHtml(href)}"${current}>${escapeHtml(item.label || 'Inicio')}</a>`;
+    })
+    .join('\n');
 }
 
 function renderWorker(worker) {
   const name = worker.name || worker.title || '';
-  const capabilities = Array.isArray(worker.capabilities) && worker.capabilities.length
-    ? `<ul class="list list-primary">${worker.capabilities.map((capability) => `<li>${escapeHtml(capability)}</li>`).join('')}</ul>`
-    : '';
+  const capabilities =
+    Array.isArray(worker.capabilities) && worker.capabilities.length
+      ? `<ul class="list list-primary">${worker.capabilities.map((capability) => `<li>${escapeHtml(capability)}</li>`).join('')}</ul>`
+      : '';
   const avatar = worker.img
     ? `<img src="${escapeHtml(worker.img)}" alt="${escapeHtml(worker.alt || name)}" loading="lazy" class="avatar">`
     : `<div class="worker-avatar" aria-hidden="true"><span>${escapeHtml(name.replace(/^AI/, '').slice(0, 2).toUpperCase())}</span></div>`;
@@ -132,12 +148,9 @@ export function renderBlog(content, { archive = false } = {}) {
   const posts = sortedPosts(blog.blocks || []);
   const visiblePosts = archive ? posts.slice(4) : posts.slice(0, 4);
   const title = archive ? 'Artículos anteriores' : 'Artículos recientes';
-  const backLink = archive
-    ? '<a href="blog.html" class="archive-back">← Ver artículos recientes</a>'
-    : '';
-  const archiveLink = !archive && posts.length > 4
-    ? '<a href="archivo.html" class="btn section-cta">Ver artículos anteriores</a>'
-    : '';
+  const backLink = archive ? '<a href="blog.html" class="archive-back">← Ver artículos recientes</a>' : '';
+  const archiveLink =
+    !archive && posts.length > 4 ? '<a href="archivo.html" class="btn section-cta">Ver artículos anteriores</a>' : '';
   return `<section id="blog" class="section">
   <h2>${title}</h2>
   ${backLink}
@@ -210,6 +223,30 @@ ${image}
 </html>`;
 }
 
+export function renderArticleAlias(aliasPath, targetPath) {
+  const target = path.posix.relative(path.posix.dirname(aliasPath), targetPath);
+  if (!target || target.startsWith('../')) {
+    throw new Error(`El alias de artículo debe apuntar a una ruta local: ${aliasPath}`);
+  }
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta name="robots" content="noindex, follow">
+<meta http-equiv="refresh" content="0; url=${escapeHtml(target)}">
+<link rel="canonical" href="${escapeHtml(`${articleBaseUrl}/${targetPath}`)}">
+<title>Artículo actualizado — AIEvolutio</title>
+</head>
+<body>
+<main>
+<h1>Este artículo tiene una dirección nueva</h1>
+<p><a href="${escapeHtml(target)}">Continuar al artículo completo</a>.</p>
+</main>
+</body>
+</html>`;
+}
+
 function replaceExactlyOnce(source, pattern, replacement, description) {
   const matches = source.match(pattern);
   if (!matches || matches.length !== 1) {
@@ -225,7 +262,9 @@ async function copyPublicSource() {
     await cp(path.join(repoRoot, page), path.join(outputRoot, page));
   }
   for (const directory of publicDirectories) {
-    await cp(path.join(repoRoot, directory), path.join(outputRoot, directory), { recursive: true });
+    await cp(path.join(repoRoot, directory), path.join(outputRoot, directory), {
+      recursive: true,
+    });
   }
   await mkdir(path.join(outputRoot, 'scripts'), { recursive: true });
   await cp(path.join(repoRoot, 'scripts/app.js'), path.join(outputRoot, 'scripts/app.js'));
@@ -240,9 +279,17 @@ export async function buildSite() {
   await copyPublicSource();
 
   const pages = [
-    { file: 'equipo.html', activeId: 'aiworkers', section: renderTeam(content) },
+    {
+      file: 'equipo.html',
+      activeId: 'aiworkers',
+      section: renderTeam(content),
+    },
     { file: 'blog.html', activeId: 'blog', section: renderBlog(content) },
-    { file: 'archivo.html', activeId: 'blog', section: renderBlog(content, { archive: true }) },
+    {
+      file: 'archivo.html',
+      activeId: 'blog',
+      section: renderBlog(content, { archive: true }),
+    },
   ];
   for (const page of pages) {
     const outputPath = path.join(outputRoot, page.file);
@@ -276,12 +323,23 @@ export async function buildSite() {
     const outputPath = path.join(outputRoot, relativePath);
     await writeFile(outputPath, renderArticle(post, navigation), 'utf8');
   }
-  return { pages: pages.map(({ file }) => file), articles: generatedPaths.size };
+  for (const [aliasPath, targetPath] of legacyArticleAliases) {
+    if (!generatedPaths.has(targetPath)) {
+      throw new Error(`El alias ${aliasPath} apunta a un artículo que no existe: ${targetPath}`);
+    }
+    await writeFile(path.join(outputRoot, aliasPath), renderArticleAlias(aliasPath, targetPath), 'utf8');
+  }
+  return {
+    pages: pages.map(({ file }) => file),
+    articles: generatedPaths.size,
+  };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   buildSite()
-    .then(({ pages, articles }) => console.log(`Sitio prerenderizado: ${pages.length} páginas dinámicas y ${articles} artículos.`))
+    .then(({ pages, articles }) =>
+      console.log(`Sitio prerenderizado: ${pages.length} páginas dinámicas y ${articles} artículos.`),
+    )
     .catch((error) => {
       console.error(error.stack || error.message);
       process.exitCode = 1;

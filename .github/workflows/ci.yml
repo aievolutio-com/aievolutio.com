@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: '22'
 
       - name: Install tools
         run: npm ci
@@ -58,7 +58,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: '3.x'
 
       - name: Install html5validator
         run: pip install --upgrade pip html5validator
@@ -118,7 +118,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: '22'
 
       - name: Pre-render static content
         run: npm run build:site
@@ -136,7 +136,7 @@ jobs:
           force_orphan: true
 
   publish-ai-evolution:
-    if: ${{ github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/ai/daily-evolution/') }}
+    if: ${{ github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/ai/daily-evolution/') || startsWith(github.ref, 'refs/heads/ai/site-improvement/')) }}
     needs: check
     runs-on: ubuntu-latest
     permissions:
@@ -155,7 +155,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: '22'
 
       - name: Pre-render static content
         run: npm run build:site
@@ -195,7 +195,7 @@ jobs:
             });
 
   notify-publication-failure:
-    if: ${{ failure() && (github.ref == 'refs/heads/pre' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/ai/daily-evolution/')) }}
+    if: ${{ failure() && (github.ref == 'refs/heads/pre' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/ai/daily-evolution/') || startsWith(github.ref, 'refs/heads/ai/site-improvement/')) }}
     needs: [check, deploy-validated, publish-ai-evolution]
     runs-on: ubuntu-latest
     permissions:

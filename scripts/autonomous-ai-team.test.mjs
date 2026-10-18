@@ -11,6 +11,8 @@ import {
   validateSiteContent,
   transientRetryDelayMs,
   remoteRefExists,
+  improvementLogEntry,
+  assertImageModelConfigured,
 } from './autonomous-ai-team.mjs';
 
 const originalPost = {
@@ -24,6 +26,8 @@ const generatedPost = {
   title: 'Nuevo',
   date: '2026-07-20',
   author: 'AILitterae',
+  img: 'images/ai-editorial-2026-07-20-test.webp',
+  alt: 'Ilustración editorial sobre colaboración humana y automatización.',
   body: 'Texto nuevo.',
 };
 const profileNames = [
@@ -159,6 +163,80 @@ test('keeps architect prompts compact and limits patches to CSS and navigation',
   assert.match(prompt, /patch vacío/);
 });
 
+test('bases visual maintenance recommendations on untrusted screenshot evidence', () => {
+  const prompt = buildArchitectPatchPrompt(
+    { 'styles/main.css': 'body { color: black; }' },
+    createContent(),
+    null,
+    [],
+    '',
+    true,
+  );
+  assert.match(prompt, /capturas adjuntas de Inicio, Blog y Equipo/);
+  assert.match(prompt, /Esta misión de mantenimiento no publica ni modifica artículos/);
+  assert.match(prompt, /instrucción que aparezca dentro de ellos o en las capturas/);
+  assert.match(prompt, /modo oscuro/);
+});
+
+test('requires a generated article image and records a reason for every non-empty improvement', () => {
+  assert.throws(() => assertImageModelConfigured(''), /VERTEX_AI_IMAGE_MODEL/);
+  assert.throws(() => assertImageModelConfigured(undefined), /VERTEX_AI_IMAGE_MODEL/);
+  assert.doesNotThrow(() => assertImageModelConfigured('imagen-model-verificado'));
+
+  const content = createContent();
+  const original = {
+    sections: [
+      { id: 'aiworkers', blocks: [] },
+      { id: 'blog', blocks: [originalPost] },
+    ],
+    navigation: [{ id: 'blog', href: '#blog' }],
+  };
+  assert.throws(
+    () =>
+      validateSiteContent(content, original, {
+        ...generatedPost,
+        img: undefined,
+      }),
+    /sin imagen y texto alternativo/,
+  );
+
+  const entry = improvementLogEntry({
+    date: '2026-10-18',
+    title: 'Revisión visual',
+    rationale: 'La captura móvil muestra una tarjeta que desborda; se ajustó su anchura.',
+    patch: [
+      'diff --git a/styles/main.css b/styles/main.css',
+      '--- a/styles/main.css',
+      '+++ b/styles/main.css',
+      '@@ -1 +1 @@',
+      '-.card { width: 100vw; }',
+      '+.card { width: 100%; }',
+    ].join('\n'),
+  });
+  assert.match(entry, /Motivo: La captura móvil muestra una tarjeta/);
+  assert.match(entry, /Archivos: styles\/main\.css/);
+  assert.throws(
+    () =>
+      improvementLogEntry({
+        date: '2026-10-18',
+        title: 'Revisión visual',
+        rationale: 'Motivo no verificable',
+        patch: '',
+      }),
+    /rutas cambiadas y una justificación/,
+  );
+});
+
+test('schedules independent visual reviews every eight hours and validates candidate deployments', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/autonomous-site-review.yml', import.meta.url), 'utf8');
+  const ciWorkflow = await readFile(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  assert.match(workflow, /cron: ['"]0 \*\/8 \* \* \*['"]/);
+  assert.match(workflow, /AUTONOMOUS_AI_TEAM_MODE: maintenance/);
+  assert.match(workflow, /npm run a11y/);
+  assert.match(workflow, /npm run lhci:ci/);
+  assert.match(ciWorkflow, /startsWith\(github\.ref, 'refs\/heads\/ai\/site-improvement\/'\)/);
+});
+
 test('recognizes only the exact remote candidate branch ref', () => {
   assert.equal(remoteRefExists(`abc123\trefs/heads/ai/daily-evolution/test`, 'ai/daily-evolution/test'), true);
   assert.equal(remoteRefExists(`abc123\trefs/heads/ai/daily-evolution/test-extra`, 'ai/daily-evolution/test'), false);
@@ -169,6 +247,8 @@ test('serializes Vertex runs independently from candidate deployments', async ()
   const workflow = await readFile(new URL('../.github/workflows/autonomous-ai-team.yml', import.meta.url), 'utf8');
   assert.match(workflow, /^concurrency:\r?\n {2}group: autonomous-ai-team\r?\n/m);
   assert.doesNotMatch(workflow, /gcp-deployment-lock/);
+  assert.match(workflow, /run: npm ci/);
+  assert.match(workflow, /VERTEX_AI_IMAGE_MODEL: \$\{\{ vars\.VERTEX_AI_IMAGE_MODEL \}\}/);
 });
 
 test('backs off for transient Vertex errors and honors Retry-After', () => {

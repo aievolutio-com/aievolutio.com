@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readFile, readdir } from 'node:fs/promises';
+import { access, readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { buildSite, renderArticle, renderBlog, renderTeam } from './prerender-site.mjs';
+import { buildSite, renderArticle, renderArticleAlias, renderBlog, renderTeam } from './prerender-site.mjs';
 
 const content = {
   sections: [
@@ -58,11 +58,27 @@ test('renders complete articles with escaped text and sharing metadata', () => {
   const html = renderArticle(content.sections[1].blocks[0], navigation);
   assert.match(html, /<title>Una idea &lt;útil&gt; — AIEvolutio<\/title>/);
   assert.match(html, /<meta property="og:type" content="article">/);
-  assert.match(html, /<link rel="canonical" href="https:\/\/aievolutio\.com\/articulos\/articulo-2026-10-09-una-idea-util\.html">/);
+  assert.match(
+    html,
+    /<link rel="canonical" href="https:\/\/aievolutio\.com\/articulos\/articulo-2026-10-09-una-idea-util\.html">/,
+  );
   assert.match(html, /<strong>Idea clave<\/strong>/);
   assert.doesNotMatch(html, /<útil>/);
   assert.match(html, /href="\.\.\/contacto\.html" class="btn section-cta">Cuéntanos tu reto/);
   assert.match(html, /href="\.\.\/blog\.html" aria-current="page">Ideas/);
+});
+
+test('redirects the known truncated legacy article URL to its canonical page', () => {
+  const alias = renderArticleAlias(
+    'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resum.html',
+    'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital.html',
+  );
+  assert.match(
+    alias,
+    /http-equiv="refresh" content="0; url=articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital\.html"/,
+  );
+  assert.match(alias, /name="robots" content="noindex, follow"/);
+  assert.throws(() => renderArticleAlias('articulos/antiguo.html', '../blog.html'), /debe apuntar a una ruta local/);
 });
 
 test('deployment output contains every profile and a static page for every article', async () => {
@@ -71,10 +87,18 @@ test('deployment output contains every profile and a static page for every artic
   const teamHtml = await readFile(path.join(process.cwd(), 'dist/equipo.html'), 'utf8');
   const blogHtml = await readFile(path.join(process.cwd(), 'dist/blog.html'), 'utf8');
   const archiveHtml = await readFile(path.join(process.cwd(), 'dist/archivo.html'), 'utf8');
-  const posts = source.sections.find((section) => section.id === 'blog').blocks
-    .filter((block) => block.type === 'post');
-  const workers = source.sections.find((section) => section.id === 'aiworkers').blocks
-    .filter((block) => block.type === 'worker');
+  const posts = source.sections
+    .find((section) => section.id === 'blog')
+    .blocks.filter((block) => block.type === 'post');
+  const office = source.sections
+    .find((section) => section.id === 'oficina')
+    .blocks.find((block) => block.type === 'image');
+  assert.equal(office.src, 'images/oficina.webp');
+  assert.ok(office.alt);
+  assert.ok((await stat(path.join(process.cwd(), 'dist', office.src))).size < 200 * 1024);
+  const workers = source.sections
+    .find((section) => section.id === 'aiworkers')
+    .blocks.filter((block) => block.type === 'worker');
   const scriptPosition = teamHtml.indexOf('<script');
 
   assert.ok(scriptPosition > 0, 'team page should still load the existing client enhancement');
@@ -91,23 +115,31 @@ test('deployment output contains every profile and a static page for every artic
     const articlePath = path.join(process.cwd(), 'dist', 'articulos', `articulo-${slug}.html`);
     const articleHtml = await readFile(articlePath, 'utf8');
     assert.ok(
-      blogHtml.includes(`articulos/articulo-${slug}.html`)
-        || archiveHtml.includes(`articulos/articulo-${slug}.html`),
+      blogHtml.includes(`articulos/articulo-${slug}.html`) || archiveHtml.includes(`articulos/articulo-${slug}.html`),
       `${post.title} is linked from the blog or archive`,
     );
     assert.ok(articleHtml.includes('<h1>'), `${post.title} has a rendered article heading`);
     assert.doesNotMatch(articleHtml, /<script\b/i, `${post.title} does not require JavaScript`);
   }
-  assert.equal((await readdir(path.join(process.cwd(), 'dist/articulos'))).length, posts.length);
+  const aliasPath = path.join(
+    process.cwd(),
+    'dist/articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resum.html',
+  );
+  const aliasHtml = await readFile(aliasPath, 'utf8');
+  assert.match(
+    aliasHtml,
+    /articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital\.html/,
+  );
+  assert.equal((await readdir(path.join(process.cwd(), 'dist/articulos'))).length, posts.length + 1);
 
   const outputRoot = path.resolve(process.cwd(), 'dist');
   const htmlFiles = [
     ...['index.html', 'equipo.html', 'blog.html', 'archivo.html', 'contacto.html'].map((file) =>
       path.join(outputRoot, file),
     ),
-    ...(await readdir(path.join(outputRoot, 'articulos'))).map((file) =>
-      path.join(outputRoot, 'articulos', file),
-    ),
+    ...(await readdir(path.join(outputRoot, 'articulos')))
+      .filter((file) => file.endsWith('.html'))
+      .map((file) => path.join(outputRoot, 'articulos', file)),
   ];
   for (const htmlFile of htmlFiles) {
     const html = await readFile(htmlFile, 'utf8');

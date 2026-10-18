@@ -22,10 +22,16 @@ Configura reglas de rama en GitHub para exigir PR y el check `check` en `pre` y
 `main`. El workflow `audit-main-branch.yml` solo detecta un push directo después
 de que ocurre; no sustituye la protección de ramas.
 
-El único flujo editorial programado es
-`.github/workflows/autonomous-ai-team.yml`. Sigue
+La publicación diaria la gestiona
+`.github/workflows/autonomous-ai-team.yml`; la auditoría visual independiente
+cada ocho horas la gestiona `.github/workflows/autonomous-site-review.yml`.
+Ambos ciclos de Vertex comparten el bloqueo de concurrencia. Sigue
 [`ai-agent-playbook.md`](ai-agent-playbook.md) para Vertex AI, sus límites y el
-procedimiento de recuperación.
+procedimiento de recuperación. Los motivos de cambios web efectivos se
+conservan en [`improvement-log.md`](improvement-log.md). Los artículos nuevos
+no se publican si no se genera y valida su imagen; antes de habilitar la
+publicación diaria hay que configurar un modelo Imagen verificado en la variable
+de repositorio `VERTEX_AI_IMAGE_MODEL`.
 
 Consulta [`../AGENTS.md`](../AGENTS.md) para las instrucciones compartidas,
 [`quality.md`](quality.md) para los controles de calidad y

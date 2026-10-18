@@ -3,8 +3,8 @@ name: Autonomous AI Team
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * *"
-    - cron: "0 7 * * *"
+    - cron: '0 6 * * *'
+    - cron: '0 7 * * *'
 
 permissions: {}
 
@@ -31,7 +31,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: '22'
+
+      - name: Install tools
+        run: npm ci
 
       - name: Authenticate to Google Cloud
         id: auth
@@ -51,6 +54,7 @@ jobs:
           GOOGLE_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
           VERTEX_AI_LOCATION: us-central1
           VERTEX_AI_MODEL: gemini-2.5-flash
+          VERTEX_AI_IMAGE_MODEL: ${{ vars.VERTEX_AI_IMAGE_MODEL }}
         run: node scripts/autonomous-ai-team.mjs
 
   notify-failure:
