@@ -24,3 +24,14 @@ convierte en un cambio cosmético ni en una entrada de mejora.
   después; una prueba protege el orden para que una candidata obsoleta no pueda
   sobrescribir Pages.
 - Verificación local: las 14 pruebas de automatización y ESLint pasan.
+
+## 2026-10-18 — Compatibilidad con enlaces de artículos en caché
+
+- Motivo: la página publicada con enlaces antiguos aún servida desde caché
+  enlazaba a slugs truncados. La auditoría del blog y el archivo confirmó que
+  varios de esos destinos devolvían 404 aunque sus artículos canónicos existían.
+- Cambio: generar alias estáticos para las diez URLs truncadas observadas que
+  fallaban, además del alias anterior del 13 de octubre. Cada alias redirige a
+  su artículo canónico y el build falla si falta el destino.
+- Verificación: se probará localmente la generación y destino de todos los
+  alias; pendiente CI y Pages para confirmar su publicación.
