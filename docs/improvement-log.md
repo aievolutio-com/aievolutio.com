@@ -53,6 +53,10 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 
 ## 2026-10-18 — Revisión visual y de experiencia
 
-- Motivo: La visualización de los artículos del blog en dispositivos móviles y en escritorio con anchos de pantalla intermedios puede resultar en un diseño de una sola columna que no aprovecha el espacio disponible o en un desbordamiento La fricción observada es una rigidez en la disposición de los elementos del blog Al cambiar grid-template-columns: repeat2, minmax0, 1fr; a grid-template-columns: repeatauto-fit, minmax280px, 1fr;, se permite que la cuadrícula se adapte automáticamente, mostrando más columnas cuando hay espacio suficiente y asegurando que los elementos no se desborden en p
-- Archivos: styles/main.css
-- Validación: el candidato solo se publica tras superar la validación completa de CI.
+- Motivo: La cuadrícula fija en dos columnas desaprovechaba espacio en
+  pantallas amplias y podía estrechar las tarjetas.
+- Cambio: `styles/main.css` adapta el número de columnas al ancho disponible,
+  con un mínimo de 280 px por tarjeta; la regla móvil conserva una columna.
+- Validación: CI del candidato #39135230130 pasó pruebas, lint, accesibilidad y
+  Lighthouse. La mejora se integró en `main` mediante el PR #65 y el CSS
+  actualizado está servido por Pages.
