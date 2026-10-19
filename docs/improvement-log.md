@@ -66,3 +66,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, los elementos del menú se apilan en dos líneas, y la última opción Contacto queda desalineada a la izquierda, creando un espacio visual irregular Al aplicar justify-content: space-around a la navegación en móvil, se distribuyen los elementos de manera equitativa, mejorando la coherencia visual y el aprovechamiento del espacio disponible sin alterar la jerarquía ni el contenido
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-19 — Revisión visual y de experiencia
+
+- Motivo: En las capturas de móvil en modo oscuro y claro, la sección hero tiene un desbordamiento horizontal debido al pseudo-elemento ::before que crea el efecto de fondo Este parche añade overflow: hidden; a la clase hero para contener este desbordamiento, mejorando la experiencia visual en dispositivos móviles sin afectar el diseño en escritorio Además, se ajusta el padding-bottom del hero en móvil para evitar que el contenido inferior quede demasiado pegado al borde, mejorando la legibilidad y el espaciado
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
