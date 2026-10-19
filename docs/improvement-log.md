@@ -78,3 +78,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: Observo que el espaciado vertical entre secciones en escritorio y móvil es inconsistente, lo que puede generar una experiencia de lectura abrupta En móvil, el hero section tiene menos padding superior de lo que sería óptimo para la legibilidad Aumento el padding vertical general de las secciones y el padding superior del hero en móvil para mejorar la jerarquía visual y la legibilidad, proporcionando más aire entre bloques de contenido y una presentación más equilibrada en pantallas pequeñas
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-19 — Revisión visual y de experiencia
+
+- Motivo: El CICD falló en el intento anterior debido a un error de linting en stylesmaincss en la línea 54, que esperaba una línea vacía antes de la regla He corregido este problema añadiendo la propiedad display: grid; a la clase post-grid Esta propiedad es necesaria para que las subsiguientes propiedades de grid-template-columns y gap funcionen correctamente y organicen los elementos de la cuadrícula de manera esperada Aunque las capturas no mostraban un problema visual directo en esta sección, la corrección es un ajuste técnico que asegura la correcta interpretación del CSS, previen
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
