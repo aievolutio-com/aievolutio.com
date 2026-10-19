@@ -72,3 +72,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En las capturas de móvil en modo oscuro y claro, la sección hero tiene un desbordamiento horizontal debido al pseudo-elemento ::before que crea el efecto de fondo Este parche añade overflow: hidden; a la clase hero para contener este desbordamiento, mejorando la experiencia visual en dispositivos móviles sin afectar el diseño en escritorio Además, se ajusta el padding-bottom del hero en móvil para evitar que el contenido inferior quede demasiado pegado al borde, mejorando la legibilidad y el espaciado
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-19 — Revisión visual y de experiencia
+
+- Motivo: Observo que el espaciado vertical entre secciones en escritorio y móvil es inconsistente, lo que puede generar una experiencia de lectura abrupta En móvil, el hero section tiene menos padding superior de lo que sería óptimo para la legibilidad Aumento el padding vertical general de las secciones y el padding superior del hero en móvil para mejorar la jerarquía visual y la legibilidad, proporcionando más aire entre bloques de contenido y una presentación más equilibrada en pantallas pequeñas
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
