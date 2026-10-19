@@ -175,7 +175,7 @@ jobs:
             fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, report);
             fs.writeFileSync('housekeeping-report.md', report, 'utf8');
       - name: Preserve report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: github-housekeeping-${{ github.run_id }}
           path: housekeeping-report.md
