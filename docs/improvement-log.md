@@ -90,3 +90,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: La navegación actual en dispositivos móviles, especialmente en modo claro, presenta un problema de legibilidad y jerarquía visual El elemento Contacto se superpone o se muestra de forma inconsistente con los demás elementos de navegación cuando la pantalla es estrecha Además, el padding de los elementos de navegación en móvil es inconsistente entre los enlaces activos y los inactivos, lo que puede generar una percepción de desorden visual La hipótesis es que al ajustar el padding de los elementos de navegación inactivos en móvil y asegurar que el Contacto se alinee correctamente con los
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-20 — Revisión visual y de experiencia
+
+- Motivo: Se ha observado que el enlace archive-back en la página de blog tiene un subrayado por defecto que no es coherente con el estilo de otros enlaces de navegación y acción Al eliminar la decoración de texto, se mejora la coherencia visual y se alinea con la estética general del sitio También se observó que, en las tarjetas de blog, el título h3 que sigue inmediatamente a la imagen de portada post-cover tiene un margen superior predeterminado que puede generar un espacio excesivo Al establecer margin-top: 0 para este caso específico, se logra una distribución más compacta y visualm
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.

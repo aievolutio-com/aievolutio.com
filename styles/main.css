@@ -59,7 +59,7 @@ a:hover, a:focus-visible { color: var(--brand-primary); text-decoration: none; }
   margin-inline: auto;
 }
 .post-grid-single { grid-template-columns: minmax(0, 1fr); max-width: 48rem; }
-.archive-back { display: inline-block; margin-bottom: var(--space-4); font-weight: 700; }
+.archive-back { display: inline-block; margin-bottom: var(--space-4); font-weight: 700; text-decoration: none; }
 .post-grid .section-cta { grid-column: 1 / -1; }
 .contact-card { max-width: 48rem; margin-inline: auto; }
 .post-card { display: flex; min-width: 0; flex-direction: column; }
@@ -67,6 +67,7 @@ a:hover, a:focus-visible { color: var(--brand-primary); text-decoration: none; }
 .post-card h3 a:hover, .post-card h3 a:focus-visible { text-decoration: underline; }
 .post-card .post-meta { margin: 0 0 var(--space-4); font-size: .9rem; }
 .post-card .post-cover { height: 12rem; margin-bottom: var(--space-4); }
+.post-card .post-cover + h3 { margin-top: 0; }
 .post-card .post-body-wrap { flex: 1; display: flex; flex-direction: column; }
 .post-card .text-link { align-self: flex-start; margin-top: var(--space-4); color: var(--brand-primary); }
 .section-cta { grid-column: 1 / -1; justify-self: start; margin-top: var(--space-2); }
