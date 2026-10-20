@@ -84,3 +84,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: El CICD falló en el intento anterior debido a un error de linting en stylesmaincss en la línea 54, que esperaba una línea vacía antes de la regla He corregido este problema añadiendo la propiedad display: grid; a la clase post-grid Esta propiedad es necesaria para que las subsiguientes propiedades de grid-template-columns y gap funcionen correctamente y organicen los elementos de la cuadrícula de manera esperada Aunque las capturas no mostraban un problema visual directo en esta sección, la corrección es un ajuste técnico que asegura la correcta interpretación del CSS, previen
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-20 — Revisión visual y de experiencia
+
+- Motivo: La navegación actual en dispositivos móviles, especialmente en modo claro, presenta un problema de legibilidad y jerarquía visual El elemento Contacto se superpone o se muestra de forma inconsistente con los demás elementos de navegación cuando la pantalla es estrecha Además, el padding de los elementos de navegación en móvil es inconsistente entre los enlaces activos y los inactivos, lo que puede generar una percepción de desorden visual La hipótesis es que al ajustar el padding de los elementos de navegación inactivos en móvil y asegurar que el Contacto se alinee correctamente con los
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
