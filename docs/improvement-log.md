@@ -96,3 +96,15 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: Se ha observado que el enlace archive-back en la página de blog tiene un subrayado por defecto que no es coherente con el estilo de otros enlaces de navegación y acción Al eliminar la decoración de texto, se mejora la coherencia visual y se alinea con la estética general del sitio También se observó que, en las tarjetas de blog, el título h3 que sigue inmediatamente a la imagen de portada post-cover tiene un margen superior predeterminado que puede generar un espacio excesivo Al establecer margin-top: 0 para este caso específico, se logra una distribución más compacta y visualm
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-21 — Revisión visual y de experiencia
+
+- Motivo: En las capturas de móvil, tanto en modo claro como oscuro, se observa que la navegación superior Inicio, Qué hacemos, Blog, Equipo, Contacto se desborda horizontalmente, haciendo que Contacto quede parcialmente oculto o forzando un scroll horizontal indeseado Esto genera fricción al usuario al dificultar el acceso a todas las opciones de navegación La hipótesis es que el gap entre los elementos de navegación en móvil, combinado con el justify-content: space-around; y la posible longitud de los textos, provoca que los elementos no quepan en una sola línea El cambio propuesto aborda e
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-21 — Revisión visual y de experiencia
+
+- Motivo: En la vista móvil del modo oscuro, los avatares de los AIWorkers en la sección de equipo se ven desproporcionados o no se ajustan correctamente a su contenedor cuando se expanden los detalles La hipótesis es que la regla CSS para el tamaño del avatar en detailsworker worker-body avatar no se aplica consistentemente al worker-avatar en pantallas pequeñas, causando una inconsistencia visual El cambio propuesto extiende la regla existente para que también afecte a worker-avatar en el mismo contexto, asegurando que ambos tipos de avatares mantengan un tamaño coherente y adecuado en móv
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
