@@ -114,3 +114,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, los elementos del menú se distribuyen con justify-content: space-between, lo que provoca que el último elemento Contacto quede muy separado de los anteriores, creando un espacio visual incómodo y una jerarquía poco clara Al cambiar justify-content a flex-start y añadir flex-grow: 1 a los enlaces, se asegura que los elementos se alineen al inicio y se distribuyan uniformemente, mejorando la legibilidad y la coherencia visual en pantallas pequeñas
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-22 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, el enlace Contacto aparece en una línea separada debajo de los otros elementos de navegación, creando un espacio visual inconsistente y una posible fricción al interactuar con la navegación Al aplicar un margen superior al theme-toggle que en este caso está oculto, pero su estilo podría afectar el flujo de la navegación si se hiciera visible o si se interactuara con otros elementos en su lugar, se busca asegurar que si en el futuro se añade algún elemento en esa posición, o si el theme-toggle se vuelve visible, no afecte negativamente la distribución de los ele
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
