@@ -108,3 +108,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la vista móvil del modo oscuro, los avatares de los AIWorkers en la sección de equipo se ven desproporcionados o no se ajustan correctamente a su contenedor cuando se expanden los detalles La hipótesis es que la regla CSS para el tamaño del avatar en detailsworker worker-body avatar no se aplica consistentemente al worker-avatar en pantallas pequeñas, causando una inconsistencia visual El cambio propuesto extiende la regla existente para que también afecte a worker-avatar en el mismo contexto, asegurando que ambos tipos de avatares mantengan un tamaño coherente y adecuado en móv
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-22 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, los elementos del menú se distribuyen con justify-content: space-between, lo que provoca que el último elemento Contacto quede muy separado de los anteriores, creando un espacio visual incómodo y una jerarquía poco clara Al cambiar justify-content a flex-start y añadir flex-grow: 1 a los enlaces, se asegura que los elementos se alineen al inicio y se distribuyan uniformemente, mejorando la legibilidad y la coherencia visual en pantallas pequeñas
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
