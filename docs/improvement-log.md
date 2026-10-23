@@ -126,3 +126,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, la opción Qué hacemos se divide en dos líneas debido a la falta de espacio, lo que rompe la coherencia visual y la legibilidad La hipótesis es que al añadir white-space: nowrap; al elemento a dentro de la navegación móvil, se evitará que el texto se divida en varias líneas, mejorando la presentación y la experiencia del usuario al mantener todos los elementos de navegación en una sola línea y alineados
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-23 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, los elementos del menú Inicio, Qué hacemos, Blog, Equipo y Contacto se muestran alineados a la izquierda, lo que genera un espacio vacío poco estético a la derecha y una apariencia desequilibrada Al centrar estos elementos, se mejora la coherencia visual y la legibilidad en pantallas pequeñas, aprovechando mejor el espacio disponible y ofreciendo una experiencia más pulcra y organizada al usuario
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
