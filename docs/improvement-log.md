@@ -120,3 +120,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, el enlace Contacto aparece en una línea separada debajo de los otros elementos de navegación, creando un espacio visual inconsistente y una posible fricción al interactuar con la navegación Al aplicar un margen superior al theme-toggle que en este caso está oculto, pero su estilo podría afectar el flujo de la navegación si se hiciera visible o si se interactuara con otros elementos en su lugar, se busca asegurar que si en el futuro se añade algún elemento en esa posición, o si el theme-toggle se vuelve visible, no afecte negativamente la distribución de los ele
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-23 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, la opción Qué hacemos se divide en dos líneas debido a la falta de espacio, lo que rompe la coherencia visual y la legibilidad La hipótesis es que al añadir white-space: nowrap; al elemento a dentro de la navegación móvil, se evitará que el texto se divida en varias líneas, mejorando la presentación y la experiencia del usuario al mantener todos los elementos de navegación en una sola línea y alineados
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
