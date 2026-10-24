@@ -144,3 +144,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En las capturas de móvil, la navegación superior se desborda en una segunda línea, y los elementos Blog, Equipo y Contacto se ven apretados o cortados Esto genera fricción visual y dificultad para interactuar con los enlaces La hipótesis es que el margin-left excesivo en la navegación principal en escritorio, sumado a justify-content: space-around en móvil, no permite una distribución óptima de los elementos en pantallas pequeñas El cambio propuesto reduce el margin-left de la navegación en escritorio para dar más espacio general y, en móvil, ajusta justify-content a space-be
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-24 — Revisión visual y de experiencia
+
+- Motivo: La navegación actual del Blog en el menú principal lleva a una página separada bloghtml, mientras que la sección de blog en la página de inicio indexhtmlblog ya muestra contenido relevante Esta discrepancia puede generar confusión en el usuario, ya que podría esperar ver el mismo contenido o una continuación al hacer clic en Blog en la navegación Al cambiar el enlace del menú Blog para que apunte a la sección blog de la página de inicio, se unifica la experiencia de navegación, asegurando que el usuario acceda directamente al contenido del blog sin ser redirigido a una página
+- Archivos: content/navigation.json
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
