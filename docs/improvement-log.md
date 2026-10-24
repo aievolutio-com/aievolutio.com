@@ -138,3 +138,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación de escritorio, los elementos del menú principal están demasiado pegados al logo, lo que genera una sensación de aglomeración y dificulta la lectura visual Al añadir un margin-left al nav en stylesmaincss, se crea un espacio adecuado entre el logo y los enlaces de navegación, mejorando la legibilidad y la estética general En la navegación móvil, los elementos del menú se agrupan en el centro, lo que puede resultar en un uso ineficiente del espacio disponible y una apariencia menos organizada Al cambiar justify-content: center a justify-content: space-around en e
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-24 — Revisión visual y de experiencia
+
+- Motivo: En las capturas de móvil, la navegación superior se desborda en una segunda línea, y los elementos Blog, Equipo y Contacto se ven apretados o cortados Esto genera fricción visual y dificultad para interactuar con los enlaces La hipótesis es que el margin-left excesivo en la navegación principal en escritorio, sumado a justify-content: space-around en móvil, no permite una distribución óptima de los elementos en pantallas pequeñas El cambio propuesto reduce el margin-left de la navegación en escritorio para dar más espacio general y, en móvil, ajusta justify-content a space-be
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
