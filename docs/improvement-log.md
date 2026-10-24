@@ -132,3 +132,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, los elementos del menú Inicio, Qué hacemos, Blog, Equipo y Contacto se muestran alineados a la izquierda, lo que genera un espacio vacío poco estético a la derecha y una apariencia desequilibrada Al centrar estos elementos, se mejora la coherencia visual y la legibilidad en pantallas pequeñas, aprovechando mejor el espacio disponible y ofreciendo una experiencia más pulcra y organizada al usuario
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-24 — Revisión visual y de experiencia
+
+- Motivo: En la navegación de escritorio, los elementos del menú principal están demasiado pegados al logo, lo que genera una sensación de aglomeración y dificulta la lectura visual Al añadir un margin-left al nav en stylesmaincss, se crea un espacio adecuado entre el logo y los enlaces de navegación, mejorando la legibilidad y la estética general En la navegación móvil, los elementos del menú se agrupan en el centro, lo que puede resultar en un uso ineficiente del espacio disponible y una apariencia menos organizada Al cambiar justify-content: center a justify-content: space-around en e
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
