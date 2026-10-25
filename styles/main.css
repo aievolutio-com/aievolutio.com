@@ -114,7 +114,7 @@ footer .disclaimer { margin-top: var(--space-2); font-size: 0.85rem; color: var(
   .nav { flex-wrap: wrap; align-items: center; gap: var(--space-2); padding: var(--space-2) 0; }
   .nav #nav { width: 100%; margin-left: 0; gap: var(--space-2); justify-content: space-between; }
   .nav #nav a { padding: .35rem .5rem; flex-grow: 1; text-align: center; white-space: nowrap; }
-  .nav .logo { order: -1; }
+  .nav .logo { order: -1; margin-right: auto; }
 }
 
 /* Header logo: smaller on mobile for ergonomics */
