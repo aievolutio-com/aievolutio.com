@@ -162,3 +162,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, el logo de AIEvolutio y los elementos de navegación Inicio, Qué hacemos, Blog, Equipo, Contacto se encuentran en la misma línea, con el logo a la izquierda y los elementos de navegación a la derecha Debajo, el elemento Contacto aparece en una línea separada y centrado, lo que rompe la coherencia visual y la jerarquía de la navegación Al añadir margin-right: auto al logo en la vista móvil, se empuja el logo a la izquierda y el resto de los elementos de navegación a la derecha, agrupándolos de manera más lógica y permitiendo que Contacto se alinee con los demás 
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-25 — Revisión visual y de experiencia
+
+- Motivo: La fricción observada es que el enlace Volver al archivo en la página de blog no tiene un color distintivo en el tema claro, lo que reduce su visibilidad y lo hace menos intuitivo como un elemento interactivo En el tema oscuro, el color del enlace se mezcla con el fondo, disminuyendo aún más su contraste y legibilidad La hipótesis es que al aplicar el color de la marca primaria --brand-primary a este enlace, se mejorará su visibilidad y coherencia con otros elementos interactivos de la marca El cambio propuesto resuelve esta fricción al asignar explícitamente color: var--brand-prima
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
