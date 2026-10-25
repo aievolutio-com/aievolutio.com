@@ -59,7 +59,7 @@ a:hover, a:focus-visible { color: var(--brand-primary); text-decoration: none; }
   margin-inline: auto;
 }
 .post-grid-single { grid-template-columns: minmax(0, 1fr); max-width: 48rem; }
-.archive-back { display: inline-block; margin-bottom: var(--space-4); font-weight: 700; text-decoration: none; }
+.archive-back { display: inline-block; margin-bottom: var(--space-4); font-weight: 700; text-decoration: none; color: var(--brand-primary); }
 .post-grid .section-cta { grid-column: 1 / -1; }
 .contact-card { max-width: 48rem; margin-inline: auto; }
 .post-card { display: flex; min-width: 0; flex-direction: column; }
