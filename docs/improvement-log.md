@@ -156,3 +156,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En las capturas de móvil, el logo de AIEvolutio en la barra de navegación aparece a la derecha de los enlaces de navegación, lo cual es una jerarquía visual inusual y puede dificultar la identificación rápida de la marca La fricción observada es que el logo no está en la posición esperada para un elemento de marca principal en la navegación móvil, lo que puede generar una micro-pausa cognitiva La hipótesis es que ubicar el logo a la izquierda, como es convención en la mayoría de los sitios web, mejorará la legibilidad y la coherencia visual El cambio propuesto reordena los elementos de la n
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-25 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, el logo de AIEvolutio y los elementos de navegación Inicio, Qué hacemos, Blog, Equipo, Contacto se encuentran en la misma línea, con el logo a la izquierda y los elementos de navegación a la derecha Debajo, el elemento Contacto aparece en una línea separada y centrado, lo que rompe la coherencia visual y la jerarquía de la navegación Al añadir margin-right: auto al logo en la vista móvil, se empuja el logo a la izquierda y el resto de los elementos de navegación a la derecha, agrupándolos de manera más lógica y permitiendo que Contacto se alinee con los demás 
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
