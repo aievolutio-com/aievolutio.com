@@ -150,3 +150,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: La navegación actual del Blog en el menú principal lleva a una página separada bloghtml, mientras que la sección de blog en la página de inicio indexhtmlblog ya muestra contenido relevante Esta discrepancia puede generar confusión en el usuario, ya que podría esperar ver el mismo contenido o una continuación al hacer clic en Blog en la navegación Al cambiar el enlace del menú Blog para que apunte a la sección blog de la página de inicio, se unifica la experiencia de navegación, asegurando que el usuario acceda directamente al contenido del blog sin ser redirigido a una página
 - Archivos: content/navigation.json
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-25 — Revisión visual y de experiencia
+
+- Motivo: En las capturas de móvil, el logo de AIEvolutio en la barra de navegación aparece a la derecha de los enlaces de navegación, lo cual es una jerarquía visual inusual y puede dificultar la identificación rápida de la marca La fricción observada es que el logo no está en la posición esperada para un elemento de marca principal en la navegación móvil, lo que puede generar una micro-pausa cognitiva La hipótesis es que ubicar el logo a la izquierda, como es convención en la mayoría de los sitios web, mejorará la legibilidad y la coherencia visual El cambio propuesto reordena los elementos de la n
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
