@@ -180,3 +180,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, los elementos del menú Inicio, Qué hacemos, Blog, Equipo y Contacto se muestran en dos líneas Para mejorar la legibilidad y evitar que el texto se vea apretado, se reduce ligeramente el tamaño de la fuente de los enlaces de navegación en dispositivos móviles Esto permite que todos los elementos se ajusten mejor en una sola línea, mejorando la coherencia visual y la experiencia del usuario al navegar
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-26 — Revisión visual y de experiencia
+
+- Motivo: En la vista móvil, el espaciado superior del hero en la página de inicio es excesivo, empujando el contenido principal demasiado abajo Esto reduce la visibilidad inicial del mensaje clave de AIEvolutio Reducir el padding-top del hero en dispositivos móviles mejora la jerarquía visual y la legibilidad al acercar el título y el subtítulo a la parte superior de la pantalla, haciendo que el contenido principal sea más accesible sin necesidad de desplazamiento inicial
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
