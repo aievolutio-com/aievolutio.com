@@ -174,3 +174,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la vista móvil, el espaciado entre los botones de acción en la sección hero es excesivo, causando que los botones se vean demasiado separados o que el texto se desborde en algunos casos Reducir el gap en hero-actions a var--space-4 unifica el espaciado y mejora la legibilidad y la estética general en dispositivos móviles, previniendo posibles desbordamientos Además, se observó que el gap de la clase grid en móvil se redujo a var--space-3, lo cual no es consistente con el gap general establecido en desktop de var--space-4 Unificarlo a var--space-4 en móvil ta
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-26 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, los elementos del menú Inicio, Qué hacemos, Blog, Equipo y Contacto se muestran en dos líneas Para mejorar la legibilidad y evitar que el texto se vea apretado, se reduce ligeramente el tamaño de la fuente de los enlaces de navegación en dispositivos móviles Esto permite que todos los elementos se ajusten mejor en una sola línea, mejorando la coherencia visual y la experiencia del usuario al navegar
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
