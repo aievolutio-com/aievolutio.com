@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [0.2.1](https://github.com/aievolutio-com/aievolutio.com/compare/v0.2.0...v0.2.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* autonomous website improvement (2026-10-19) ([d37ab2b](https://github.com/aievolutio-com/aievolutio.com/commit/d37ab2b121ad1dcf05e53290d09d0b2b71671b2f))
+* autonomous website improvement (2026-10-20) ([48f54d4](https://github.com/aievolutio-com/aievolutio.com/commit/48f54d435a87be1aeb0852fd2fbe98dc835cc77f))
+* autonomous website improvement (2026-10-20) ([d0e4211](https://github.com/aievolutio-com/aievolutio.com/commit/d0e4211d68cd04ea1dd4f36cd12a0eb994e999f0))
+* autonomous website improvement (2026-10-21) ([da84cc1](https://github.com/aievolutio-com/aievolutio.com/commit/da84cc1e99bf4fc9fcf225b22129779116f465a5))
+* autonomous website improvement (2026-10-21) ([d6e3d37](https://github.com/aievolutio-com/aievolutio.com/commit/d6e3d371724c60748bb8c84351ae63c5d5d124e9))
+* autonomous website improvement (2026-10-22) ([606f004](https://github.com/aievolutio-com/aievolutio.com/commit/606f0041f975f78b145fcc1fbb75c802e2b187de))
+* autonomous website improvement (2026-10-22) ([76f30db](https://github.com/aievolutio-com/aievolutio.com/commit/76f30db3fa0d966e7932ec42ad29441d10e07ec4))
+* autonomous website improvement (2026-10-23) ([2466137](https://github.com/aievolutio-com/aievolutio.com/commit/24661379b11471c211533e7c91951e73ccac5047))
+* autonomous website improvement (2026-10-23) ([651ffd2](https://github.com/aievolutio-com/aievolutio.com/commit/651ffd2870232cd9d4fdc50c75e7ebf9fa132150))
+* autonomous website improvement (2026-10-24) ([73b3f83](https://github.com/aievolutio-com/aievolutio.com/commit/73b3f831242f2a794515b168ad2b5d19b88c2c14))
+* autonomous website improvement (2026-10-24) ([e25c87f](https://github.com/aievolutio-com/aievolutio.com/commit/e25c87ff0039aa03508c4d9c62f2c23e3ccdf4a8))
+* autonomous website improvement (2026-10-24) ([9d6ff1e](https://github.com/aievolutio-com/aievolutio.com/commit/9d6ff1e018e0a5f1cdd133615e939e93adbd267d))
+* autonomous website improvement (2026-10-25) ([cfa603d](https://github.com/aievolutio-com/aievolutio.com/commit/cfa603dce1e12f63db8bc18086e8f67f52a47230))
+* autonomous website improvement (2026-10-25) ([a6af161](https://github.com/aievolutio-com/aievolutio.com/commit/a6af161935b739b6041095c8fcc8417d7af73458))
+* autonomous website improvement (2026-10-25) ([9545f6d](https://github.com/aievolutio-com/aievolutio.com/commit/9545f6d203d1def114bbf942c822ff61664de139))
+* autonomous website improvement (2026-10-26) ([1514fa0](https://github.com/aievolutio-com/aievolutio.com/commit/1514fa050018ad081be49082b94757a8c687ff87))
+* autonomous website improvement (2026-10-26) ([5fdd8d4](https://github.com/aievolutio-com/aievolutio.com/commit/5fdd8d4e5d2fbf51d050635a75b3422230c552e4))
+* make AIVisio proactive in setting editorial criteria and improve JSON truncation recovery ([3f45389](https://github.com/aievolutio-com/aievolutio.com/commit/3f4538993042c9dded578106b14880b61b63c93b))
+
 ## [0.2.0](https://github.com/aievolutio-com/aievolutio.com/compare/v0.1.0...v0.2.0) (2026-10-19)
 
 
