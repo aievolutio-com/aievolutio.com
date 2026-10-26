@@ -163,7 +163,7 @@ figure.quote figcaption { margin: 0; color: var(--muted); font-size: .9rem; disp
 @media (width <= 640px) {
   /* mobile tweaks */
   .grid { gap: var(--space-4); }
-  .hero { padding-top: var(--space-10); padding-bottom: var(--space-6); }
+  .hero { padding-top: var(--space-8); padding-bottom: var(--space-6); }
   .hero::before { right: 0; left: 20%; }
 }
 
