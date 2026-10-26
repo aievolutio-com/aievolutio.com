@@ -168,3 +168,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: La fricción observada es que el enlace Volver al archivo en la página de blog no tiene un color distintivo en el tema claro, lo que reduce su visibilidad y lo hace menos intuitivo como un elemento interactivo En el tema oscuro, el color del enlace se mezcla con el fondo, disminuyendo aún más su contraste y legibilidad La hipótesis es que al aplicar el color de la marca primaria --brand-primary a este enlace, se mejorará su visibilidad y coherencia con otros elementos interactivos de la marca El cambio propuesto resuelve esta fricción al asignar explícitamente color: var--brand-prima
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-26 — Revisión visual y de experiencia
+
+- Motivo: En la vista móvil, el espaciado entre los botones de acción en la sección hero es excesivo, causando que los botones se vean demasiado separados o que el texto se desborde en algunos casos Reducir el gap en hero-actions a var--space-4 unifica el espaciado y mejora la legibilidad y la estética general en dispositivos móviles, previniendo posibles desbordamientos Además, se observó que el gap de la clase grid en móvil se redujo a var--space-3, lo cual no es consistente con el gap general establecido en desktop de var--space-4 Unificarlo a var--space-4 en móvil ta
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
