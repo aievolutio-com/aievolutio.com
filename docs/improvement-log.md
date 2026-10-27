@@ -186,3 +186,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la vista móvil, el espaciado superior del hero en la página de inicio es excesivo, empujando el contenido principal demasiado abajo Esto reduce la visibilidad inicial del mensaje clave de AIEvolutio Reducir el padding-top del hero en dispositivos móviles mejora la jerarquía visual y la legibilidad al acercar el título y el subtítulo a la parte superior de la pantalla, haciendo que el contenido principal sea más accesible sin necesidad de desplazamiento inicial
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-27 — Revisión visual y de experiencia
+
+- Motivo: En las capturas de móvil, el logo de AIEvolutio en la barra de navegación aparece pegado al borde izquierdo de la pantalla, lo que genera una fricción visual al no tener un espaciado consistente con el resto de los elementos o el padding general de la página Esto puede dar una sensación de diseño descuidado o de falta de atención al detalle en la experiencia móvil La hipótesis es que añadir un margen izquierdo al logo en dispositivos móviles mejorará la alineación y la estética general de la navegación, haciendo que el diseño se sienta más equilibrado y profesional sin alterar la funcionalid
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
