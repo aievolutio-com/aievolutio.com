@@ -192,3 +192,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En las capturas de móvil, el logo de AIEvolutio en la barra de navegación aparece pegado al borde izquierdo de la pantalla, lo que genera una fricción visual al no tener un espaciado consistente con el resto de los elementos o el padding general de la página Esto puede dar una sensación de diseño descuidado o de falta de atención al detalle en la experiencia móvil La hipótesis es que añadir un margen izquierdo al logo en dispositivos móviles mejorará la alineación y la estética general de la navegación, haciendo que el diseño se sienta más equilibrado y profesional sin alterar la funcionalid
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-27 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, el logo de AIEvolutio tiene un margin-left de var--space-2 que no es necesario y crea un pequeño desalineamiento visual con el resto del contenido Al eliminar este margen, el logo se alinea correctamente a la izquierda, mejorando la coherencia visual y la ergonomía en dispositivos móviles
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
