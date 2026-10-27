@@ -198,3 +198,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, el logo de AIEvolutio tiene un margin-left de var--space-2 que no es necesario y crea un pequeño desalineamiento visual con el resto del contenido Al eliminar este margen, el logo se alinea correctamente a la izquierda, mejorando la coherencia visual y la ergonomía en dispositivos móviles
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-27 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, el subrayado del elemento activo aria-currentpage se superpone ligeramente con el texto, reduciendo la legibilidad La hipótesis es que esto se debe a un text-underline-offset excesivo para el tamaño de fuente más pequeño en móvil Reducir este valor a 25rem mejorará la claridad visual del elemento activo en dispositivos móviles, manteniendo la coherencia con el diseño general y la funcionalidad de la navegación
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
