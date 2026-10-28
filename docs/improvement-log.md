@@ -204,3 +204,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, el subrayado del elemento activo aria-currentpage se superpone ligeramente con el texto, reduciendo la legibilidad La hipótesis es que esto se debe a un text-underline-offset excesivo para el tamaño de fuente más pequeño en móvil Reducir este valor a 25rem mejorará la claridad visual del elemento activo en dispositivos móviles, manteniendo la coherencia con el diseño general y la funcionalidad de la navegación
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-28 — Revisión visual y de experiencia
+
+- Motivo: En la vista móvil, los elementos de acción botones y enlaces en la sección hero aparecen muy pegados al hero-mark inferior, reduciendo la legibilidad y la jerarquía visual Añadir un margen inferior a los hero-actions y aumentar el padding-bottom de la sección hero en móvil crea una separación más clara entre estos elementos, mejorando la legibilidad y la experiencia del usuario al navegar por la sección principal
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
