@@ -210,3 +210,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la vista móvil, los elementos de acción botones y enlaces en la sección hero aparecen muy pegados al hero-mark inferior, reduciendo la legibilidad y la jerarquía visual Añadir un margen inferior a los hero-actions y aumentar el padding-bottom de la sección hero en móvil crea una separación más clara entre estos elementos, mejorando la legibilidad y la experiencia del usuario al navegar por la sección principal
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-28 — Revisión visual y de experiencia
+
+- Motivo: La navegación actual en el menú principal para Blog apunta a una sección dentro de la página de inicio indexhtmlblog Esto genera una fricción al usuario, ya que al hacer clic en Blog desde cualquier otra página, el usuario es redirigido a la página de inicio y luego salta a la sección del blog, lo cual es un comportamiento inesperado y menos directo La hipótesis es que el usuario espera ser llevado directamente a la página de blog dedicada Al cambiar la URL a bloghtml, el usuario será dirigido directamente a la página de blog, mejorando la coherencia y predictibilidad de la naveg
+- Archivos: content/navigation.json
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
