@@ -228,3 +228,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la navegación móvil, el logo de AIEvolutio aparece demasiado pegado al borde izquierdo de la pantalla, lo que genera una fricción visual y una sensación de falta de espacio Añadir un padding-left al logo en la vista móvil mejorará la estética y la legibilidad, alineándolo mejor con el contenido general y proporcionando un respiro visual sin afectar la funcionalidad
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-29 — Revisión visual y de experiencia
+
+- Motivo: En las capturas de móvil, los elementos de navegación en la parte inferior del encabezado Inicio, Qué hacemos, Blog, Equipo, Contacto no tienen el mismo estilo visual que los elementos de navegación en escritorio cuando no están activos Específicamente, carecen del border-radius que se aplica a los enlaces de navegación en escritorio para darles un aspecto más suave y consistente Esto crea una pequeña fricción visual y una inconsistencia en la experiencia del usuario entre diferentes tamaños de pantalla Al añadir border-radius: 8px; a los enlaces de navegación en móvil, se unifica el 
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
