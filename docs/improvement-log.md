@@ -222,3 +222,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En las capturas de móvil, se observa que los elementos de navegación en el header Inicio, Qué hacemos, Blog, Equipo, Contacto están muy juntos, especialmente en el modo oscuro, lo que puede dificultar la interacción táctil y la legibilidad La hipótesis es que aumentar ligeramente el espacio entre estos elementos mejorará la claridad y la usabilidad en pantallas pequeñas sin afectar negativamente la experiencia en escritorio El cambio propuesto ajusta el gap en el CSS para la navegación, tanto en la vista general como específicamente para móviles, proporcionando un respiro visua
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-29 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, el logo de AIEvolutio aparece demasiado pegado al borde izquierdo de la pantalla, lo que genera una fricción visual y una sensación de falta de espacio Añadir un padding-left al logo en la vista móvil mejorará la estética y la legibilidad, alineándolo mejor con el contenido general y proporcionando un respiro visual sin afectar la funcionalidad
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
