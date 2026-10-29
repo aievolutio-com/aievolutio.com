@@ -216,3 +216,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: La navegación actual en el menú principal para Blog apunta a una sección dentro de la página de inicio indexhtmlblog Esto genera una fricción al usuario, ya que al hacer clic en Blog desde cualquier otra página, el usuario es redirigido a la página de inicio y luego salta a la sección del blog, lo cual es un comportamiento inesperado y menos directo La hipótesis es que el usuario espera ser llevado directamente a la página de blog dedicada Al cambiar la URL a bloghtml, el usuario será dirigido directamente a la página de blog, mejorando la coherencia y predictibilidad de la naveg
 - Archivos: content/navigation.json
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-29 — Revisión visual y de experiencia
+
+- Motivo: En las capturas de móvil, se observa que los elementos de navegación en el header Inicio, Qué hacemos, Blog, Equipo, Contacto están muy juntos, especialmente en el modo oscuro, lo que puede dificultar la interacción táctil y la legibilidad La hipótesis es que aumentar ligeramente el espacio entre estos elementos mejorará la claridad y la usabilidad en pantallas pequeñas sin afectar negativamente la experiencia en escritorio El cambio propuesto ajusta el gap en el CSS para la navegación, tanto en la vista general como específicamente para móviles, proporcionando un respiro visua
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
