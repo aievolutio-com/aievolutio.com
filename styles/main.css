@@ -113,7 +113,7 @@ footer .disclaimer { margin-top: var(--space-2); font-size: 0.85rem; color: var(
 @media (width <= 640px) {
   .nav { flex-wrap: wrap; align-items: center; gap: var(--space-2); padding: var(--space-2) 0; }
   .nav #nav { width: 100%; margin-left: 0; gap: var(--space-3); justify-content: space-between; }
-  .nav #nav a { padding: .35rem .5rem; flex-grow: 1; text-align: center; white-space: nowrap; font-size: .9rem; border-radius: 8px; }
+  .nav #nav a { padding: .35rem .5rem; flex-grow: 1; text-align: center; white-space: nowrap; font-size: .9rem; border-radius: 8px; line-height: 1.2; }
   .nav .logo { order: -1; margin-right: auto; margin-left: 0; padding-left: var(--space-2); }
   .nav #nav a[aria-current="page"] { text-underline-offset: .25rem; }
 }
@@ -224,10 +224,10 @@ details.worker[open] { border-color: color-mix(in oklab, var(--brand-secondary) 
 
 @media (width <= 480px) {
   details.worker .worker-body { grid-template-columns: 96px auto; }
-  details.worker .worker-body .avatar, details.worker .worker-body .worker-avatar { width: 96px; height: 96px; }
+  details.worker .worker-body .avatar, details.worker .worker-body .worker-avatar { width: 88px; height: 88px; }
 
   .grid details.worker .worker-body .avatar,
-  .grid details.worker .worker-body .worker-avatar { width: 88px; height: 88px; }
+  .grid details.worker .worker-body .worker-avatar { width: 80px; height: 80px; }
   .grid details.worker .worker-body .worker-avatar span { font-size: .8rem; }
   .hero-mark { gap: .35rem; padding: .6rem .7rem; }
 }
