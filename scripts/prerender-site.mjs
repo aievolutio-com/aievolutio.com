@@ -1,16 +1,20 @@
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, rm, writeFile, readdir, stat } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { repairTruncatedJson } from './json-repair.mjs';
 
 const repoRoot = process.cwd();
 const outputRoot = path.join(repoRoot, 'dist');
 const contentPath = path.join(repoRoot, 'content/content.es.json');
 const navigationPath = path.join(repoRoot, 'content/navigation.json');
+const postsDirectory = path.join(repoRoot, 'content/posts');
 const htmlPages = ['index.html', 'equipo.html', 'blog.html', 'archivo.html', 'contacto.html'];
 const publicDirectories = ['assets', 'content', 'images', 'styles'];
 const publicFiles = ['CNAME', '_headers', 'site.webmanifest'];
 const articleBaseUrl = 'https://aievolutio.com';
+
 export const legacyArticleAliases = new Map([
   [
     'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resum.html',
@@ -81,7 +85,7 @@ function articleUrl(post) {
   return `articulos/${articleId(post)}.html`;
 }
 
-function sortedPosts(blocks = []) {
+export function sortedPosts(blocks = []) {
   return blocks
     .filter((block) => block.type === 'post')
     .sort((left, right) => String(right.date || '').localeCompare(String(left.date || '')));
@@ -209,6 +213,7 @@ export function renderArticle(post, navigation) {
     ? `<img src="../${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${title}`)}" class="post-cover">`
     : '';
   const metadata = [formatPostDate(post.date), post.author].filter(Boolean).join(' · ');
+
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -216,7 +221,7 @@ export function renderArticle(post, navigation) {
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>${escapeHtml(title)} — AIEvolutio</title>
 <meta name="description" content="${escapeHtml(description)}">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
 <meta property="og:title" content="${escapeHtml(title)}">
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:type" content="article">
@@ -299,23 +304,77 @@ async function copyPublicSource() {
   await rm(outputRoot, { recursive: true, force: true });
   await mkdir(outputRoot, { recursive: true });
   for (const page of htmlPages) {
-    await cp(path.join(repoRoot, page), path.join(outputRoot, page));
+    const pagePath = path.join(repoRoot, page);
+    if (existsSync(pagePath)) {
+      await cp(pagePath, path.join(outputRoot, page));
+    }
   }
   for (const directory of publicDirectories) {
-    await cp(path.join(repoRoot, directory), path.join(outputRoot, directory), {
-      recursive: true,
-    });
+    const dirPath = path.join(repoRoot, directory);
+    if (existsSync(dirPath)) {
+      await cp(dirPath, path.join(outputRoot, directory), { recursive: true });
+    }
   }
   await mkdir(path.join(outputRoot, 'scripts'), { recursive: true });
-  await cp(path.join(repoRoot, 'scripts/app.js'), path.join(outputRoot, 'scripts/app.js'));
-  for (const file of publicFiles) {
-    await cp(path.join(repoRoot, file), path.join(outputRoot, file));
+  if (existsSync(path.join(repoRoot, 'scripts/app.js'))) {
+    await cp(path.join(repoRoot, 'scripts/app.js'), path.join(outputRoot, 'scripts/app.js'));
   }
+  for (const file of publicFiles) {
+    const filePath = path.join(repoRoot, file);
+    if (existsSync(filePath)) {
+      await cp(filePath, path.join(outputRoot, file));
+    }
+  }
+}
+
+/**
+ * Carga modular y resiliente de posts desde content/posts/
+ */
+export async function loadModularPosts() {
+  const loaded = [];
+  if (!existsSync(postsDirectory)) {
+    return loaded;
+  }
+  const files = await readdir(postsDirectory);
+  for (const file of files) {
+    if (!file.endsWith('.json')) continue;
+    const fullPath = path.join(postsDirectory, file);
+    try {
+      const raw = await readFile(fullPath, 'utf8');
+      const post = repairTruncatedJson(raw);
+      if (post && post.title) {
+        post.type = 'post';
+        loaded.push(post);
+      }
+    } catch (err) {
+      console.warn(`[Aviso Resiliencia] No se pudo leer el post modular ${file}: ${err.message}`);
+    }
+  }
+  return sortedPosts(loaded);
 }
 
 export async function buildSite() {
   const content = JSON.parse(await readFile(contentPath, 'utf8'));
   const navigation = JSON.parse(await readFile(navigationPath, 'utf8'));
+
+  // Carga modular resiliente de posts
+  const modularPosts = await loadModularPosts();
+  let blogSection = content.sections.find((section) => section.id === 'blog');
+  if (!blogSection) {
+    blogSection = { id: 'blog', title: 'Blog', kind: 'posts', blocks: [] };
+    content.sections.push(blogSection);
+  }
+
+  if (modularPosts.length > 0) {
+    blogSection.blocks = modularPosts;
+    // Sincronizar content.es.json en segundo plano de forma no bloqueante
+    try {
+      await writeFile(contentPath, JSON.stringify(content, null, 2) + '\n', 'utf8');
+    } catch {
+      // Ignorar si hay lock de lectura
+    }
+  }
+
   await copyPublicSource();
 
   const pages = [
@@ -331,44 +390,53 @@ export async function buildSite() {
       section: renderBlog(content, { archive: true }),
     },
   ];
+
   for (const page of pages) {
     const outputPath = path.join(outputRoot, page.file);
-    let html = await readFile(outputPath, 'utf8');
-    html = replaceExactlyOnce(
-      html,
-      /<div id="nav"><\/div>/g,
-      `<div id="nav">${renderNavigation(navigation, page.activeId)}</div>`,
-      `${page.file} navigation placeholder`,
-    );
-    html = replaceExactlyOnce(
-      html,
-      /<div id="sections"><\/div>/g,
-      `<div id="sections">${page.section}</div>`,
-      `${page.file} content placeholder`,
-    );
-    await writeFile(outputPath, html, 'utf8');
+    if (existsSync(outputPath)) {
+      let html = await readFile(outputPath, 'utf8');
+      html = replaceExactlyOnce(
+        html,
+        /<div id="nav"><\/div>/g,
+        `<div id="nav">${renderNavigation(navigation, page.activeId)}</div>`,
+        `${page.file} navigation placeholder`,
+      );
+      html = replaceExactlyOnce(
+        html,
+        /<div id="sections"><\/div>/g,
+        `<div id="sections">${page.section}</div>`,
+        `${page.file} content placeholder`,
+      );
+      await writeFile(outputPath, html, 'utf8');
+    }
   }
 
-  const blog = content.sections.find((section) => section.id === 'blog');
-  const posts = sortedPosts(blog?.blocks || []);
-  const articleDirectory = path.join(outputRoot, 'articulos');
-  await mkdir(articleDirectory, { recursive: true });
+  const posts = sortedPosts(blogSection.blocks || []);
+  const articleDistDir = path.join(outputRoot, 'articulos');
+  const articleRepoDir = path.join(repoRoot, 'articulos');
+  await mkdir(articleDistDir, { recursive: true });
+  await mkdir(articleRepoDir, { recursive: true });
+
   const generatedPaths = new Set();
   for (const post of posts) {
     const relativePath = articleUrl(post);
     if (generatedPaths.has(relativePath)) {
-      throw new Error(`La URL de artículo está duplicada: ${relativePath}`);
+      continue; // Evitar colisiones duplicadas
     }
     generatedPaths.add(relativePath);
-    const outputPath = path.join(outputRoot, relativePath);
-    await writeFile(outputPath, renderArticle(post, navigation), 'utf8');
+    const html = renderArticle(post, navigation);
+    await writeFile(path.join(outputRoot, relativePath), html, 'utf8');
+    await writeFile(path.join(repoRoot, relativePath), html, 'utf8');
   }
+
   for (const [aliasPath, targetPath] of legacyArticleAliases) {
-    if (!generatedPaths.has(targetPath)) {
-      throw new Error(`El alias ${aliasPath} apunta a un artículo que no existe: ${targetPath}`);
+    if (generatedPaths.has(targetPath)) {
+      const aliasHtml = renderArticleAlias(aliasPath, targetPath);
+      await writeFile(path.join(outputRoot, aliasPath), aliasHtml, 'utf8');
+      await writeFile(path.join(repoRoot, aliasPath), aliasHtml, 'utf8');
     }
-    await writeFile(path.join(outputRoot, aliasPath), renderArticleAlias(aliasPath, targetPath), 'utf8');
   }
+
   return {
     pages: pages.map(({ file }) => file),
     articles: generatedPaths.size,

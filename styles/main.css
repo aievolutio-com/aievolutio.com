@@ -18,7 +18,7 @@ a:hover, a:focus-visible { color: var(--brand-primary); text-decoration: none; }
 .hero { position: relative; isolation: isolate; padding: var(--space-12) 0 var(--space-8); overflow: hidden; }
 .hero h1 { max-width: 21ch; margin: 0 0 var(--space-4); font-size: clamp(2.25rem, 5.2vw, 4.25rem); line-height: 1.04; letter-spacing: -.045em; }
 .section { padding: var(--space-8) 0; }
-.section h2, h1, h2, h3 { color: var(--brand-primary); }
+.section h2, h1, h2, h3 { color: var(--brand-primary); font-family: var(--font-heading); font-weight: 700; }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); }
 .grid .span-all { grid-column: 1 / -1; }
 .grid .subtitle { font-weight: 600; color: var(--brand-primary); margin-top: var(--space-2); }

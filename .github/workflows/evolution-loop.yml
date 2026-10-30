@@ -2,10 +2,10 @@ name: AIEvolutio Autonomous Evolution & Pages Deploy
 
 on:
   schedule:
-    - cron: '0 6 * * *' # Se ejecuta solo todos los días a las 06:00 UTC
+    - cron: '0 6 * * *' # Ejecución diaria autónoma a las 06:00 UTC
   push:
-    branches: [ main ]  # Despliega también cuando haces el reseteo inicial
-  workflow_dispatch:    # Botón manual por si quieres forzar un ciclo hoy mismo
+    branches: [ main ]  # Despliegue continuo en cada avance a main
+  workflow_dispatch:    # Disparador manual para evolución bajo demanda
 
 permissions:
   contents: write
