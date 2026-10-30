@@ -1,16 +1,14 @@
-name: AIEvolutio Autonomous Evolution & Pages Deploy
+name: AIEvolutio Autonomous Evolution & Deploy
 
 on:
   schedule:
     - cron: '0 6 * * *' # Ejecución diaria autónoma a las 06:00 UTC
   push:
-    branches: [ main ]  # Despliegue continuo en cada avance a main
+    branches: [ main ]  # Despliegue en cada avance a main
   workflow_dispatch:    # Disparador manual para evolución bajo demanda
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
   issues: write
 
 concurrency:
@@ -68,12 +66,15 @@ jobs:
               --body-file "docs/daily-digest.md" || true
           fi
 
-      - name: 7. Preparar y Subir Artefacto para GitHub Pages
-        uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
+      - name: 7. Compilar Sitio Estático (dist/)
+        run: |
+          npm run build:site
+          echo > dist/.nojekyll
 
-      - name: 8. Publicar en GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: 8. Desplegar a GitHub Pages (Rama gh-pages)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
+          exclude_assets: '.github,docs,*.md,*.yml,*.yaml'
+          force_orphan: true

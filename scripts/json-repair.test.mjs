@@ -38,3 +38,4 @@ test('extractFieldsFallback extrae campos por regex si todo falla', () => {
   assert.equal(extracted.slug, 'titulo-seguro');
   assert.equal(extracted.author, 'AIDux');
 });
+

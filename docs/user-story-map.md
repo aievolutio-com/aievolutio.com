@@ -29,3 +29,4 @@
 - [ ] **#010:** Telemetría GA4 automatizada en bucle diario.
 - [ ] **#011:** Optimización editorial guiada por rebote / permanencia.
 - [x] **#012:** Generación y publicación del Daily Digest en GitHub Actions (`docs/daily-digest.md`).
+

@@ -167,3 +167,4 @@ export function extractFieldsFallback(text) {
 
   return result;
 }
+
