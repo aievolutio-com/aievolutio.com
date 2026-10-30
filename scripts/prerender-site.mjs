@@ -17,6 +17,10 @@ const articleBaseUrl = 'https://aievolutio.com';
 
 export const legacyArticleAliases = new Map([
   [
+    'articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-s.html',
+    'articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-sin-friccion.html',
+  ],
+  [
     'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resum.html',
     'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital.html',
   ],

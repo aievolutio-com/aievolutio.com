@@ -52,7 +52,7 @@ jobs:
           if ! git diff --staged --quiet; then
             git commit -m "evo(spiral): actualización autónoma diaria de contenido y mejora técnica"
             git pull --rebase origin main
-            git push origin main
+            git push origin HEAD:main
           fi
 
       - name: 6. Emitir Parte Diario al Observador (Issue Diario)

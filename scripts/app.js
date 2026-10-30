@@ -315,9 +315,6 @@
       if (b.type === 'post') {
         const isArticle = page === 'blog' && selectedPost === b;
         const isPreview = (page === 'home' || ((page === 'blog' || page === 'blog-archive') && !selectedPost));
-        if (isPreview && b.title && b.title.length > 50) {
-          b.title = truncateString(b.title, 50);
-        }
         container.append(renderPost(b, isPreview, !isArticle));
       }
       if (b.type === 'links') {
