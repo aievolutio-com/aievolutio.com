@@ -224,10 +224,10 @@ details.worker[open] { border-color: color-mix(in oklab, var(--brand-secondary) 
 
 @media (width <= 480px) {
   details.worker .worker-body { grid-template-columns: 96px auto; }
-  details.worker .worker-body .avatar, details.worker .worker-body .worker-avatar { width: 96px; height: 96px; }
+  details.worker .worker-body .avatar, details.worker .worker-body .worker-avatar { width: 88px; height: 88px; }
 
   .grid details.worker .worker-body .avatar,
-  .grid details.worker .worker-body .worker-avatar { width: 88px; height: 88px; }
+  .grid details.worker .worker-body .worker-avatar { width: 80px; height: 80px; }
   .grid details.worker .worker-body .worker-avatar span { font-size: .8rem; }
   .hero-mark { gap: .35rem; padding: .6rem .7rem; }
 }
