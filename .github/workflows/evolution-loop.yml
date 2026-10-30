@@ -1,0 +1,79 @@
+name: AIEvolutio Autonomous Evolution & Pages Deploy
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Se ejecuta solo todos los días a las 06:00 UTC
+  push:
+    branches: [ main ]  # Despliega también cuando haces el reseteo inicial
+  workflow_dispatch:    # Botón manual por si quieres forzar un ciclo hoy mismo
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+concurrency:
+  group: "pages-and-evolution"
+  cancel-in-progress: false
+
+jobs:
+  evolve-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Checkout del Repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 2. Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 3. Ejecutar Ciclo Evolutivo IA (Sólo en Cron o Manual)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA4_CREDENTIALS_JSON: ${{ secrets.GA4_CREDENTIALS_JSON }}
+        run: node scripts/autonomous-evolution.mjs
+
+      - name: 4. Guardián de Calidad Autoreparable (No bloqueante)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          npx --yes prettier --write "**/*.{html,css,js,json,md}" || true
+          node scripts/self-heal-check.mjs
+
+      - name: 5. Auto-Commit Directo a Main (Cero Aprobación Humana)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name "AIEvolutio-Engine"
+          git config user.email "autonomous@aievolutio.com"
+          git add -A
+          if ! git diff --staged --quiet; then
+            git commit -m "evo(spiral): actualización autónoma diaria de contenido y mejora técnica"
+            git pull --rebase origin main
+            git push origin main
+          fi
+
+      - name: 6. Emitir Parte Diario al Observador (Issue Diario)
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f "docs/daily-digest.md" ]; then
+            gh issue create \
+              --title "📊 Informe Evolutivo AIEvolutio — $(date -u +'%Y-%m-%d')" \
+              --body-file "docs/daily-digest.md" || true
+          fi
+
+      - name: 7. Preparar y Subir Artefacto para GitHub Pages
+        uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: 8. Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

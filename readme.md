@@ -4,7 +4,7 @@ Sitio web estático de AIEvolutio. Se valida mediante GitHub Actions y se
 publica en GitHub Pages.
 
 - Web: <https://aievolutio.com>
-- URL de Pages: <https://aievolutio-com.github.io/aievolutio.com/>
+- URL de de GitHub Pages: <https://aievolutio-com.github.io/aievolutio.com/>
 
 ## Estructura
 
