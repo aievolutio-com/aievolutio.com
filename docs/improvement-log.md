@@ -240,3 +240,9 @@ convierte en un cambio cosmético ni en una entrada de mejora.
 - Motivo: En la vista móvil del equipo tanto en modo claro como oscuro, los avatares de los AIWorkers dentro de los detalles colapsables, especialmente en la disposición de cuadrícula para móviles, se ven ligeramente grandes y pueden contribuir a un desbordamiento horizontal o a una sensación de aglomeración en pantallas muy pequeñas Reducir ligeramente el tamaño de los avatares en estas condiciones de pantalla estrecha mejorará la legibilidad general y el espaciado, haciendo que la información sea más fácil de consumir sin sacrificar la identidad visual del avatar Esta modificación mejora la experi
 - Archivos: styles/main.css
 - Validación: el candidato solo se publica tras superar la validación completa de CI.
+
+## 2026-10-30 — Revisión visual y de experiencia
+
+- Motivo: En la navegación móvil, los elementos del menú se muestran en dos líneas Esto puede causar que el texto se vea apretado o se desborde en algunos dispositivos, afectando la legibilidad y la estética Al ajustar la altura de línea de los enlaces de navegación, se busca proporcionar un poco más de espacio vertical entre las líneas de texto, mejorando la legibilidad y la apariencia general en pantallas pequeñas sin alterar el diseño existente
+- Archivos: styles/main.css
+- Validación: el candidato solo se publica tras superar la validación completa de CI.
