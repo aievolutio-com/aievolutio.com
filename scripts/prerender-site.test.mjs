@@ -75,28 +75,14 @@ test('renders complete articles with escaped text and sharing metadata', () => {
   assert.match(html, /href="\.\.\/blog\.html" aria-current="page">Ideas/);
 });
 
-test('gives the October 12, 13, and 17 articles distinct editorial openings', async () => {
-  const source = JSON.parse(await readFile(path.join(process.cwd(), 'content/content.es.json'), 'utf8'));
-  const posts = source.sections
-    .find((section) => section.id === 'blog')
-    .blocks.filter((block) => ['2026-10-12', '2026-10-13', '2026-10-17'].includes(block.date));
-  const openings = new Map(posts.map((post) => [post.date, post.body.split(/\n\s*\n/)[0]]));
-
-  assert.match(openings.get('2026-10-12'), /Un informe llega a una reunión de diez minutos/);
-  assert.match(openings.get('2026-10-13'), /Al abrir un blog desde el móvil/);
-  assert.match(openings.get('2026-10-17'), /Después de una reunión sobre un cambio operativo/);
-  assert.equal(new Set(openings.values()).size, 3);
-  assert.ok([...openings.values()].every((opening) => !/la información fluye a una velocidad/i.test(opening)));
-});
-
 test('redirects the known truncated legacy article URL to its canonical page', () => {
   const alias = renderArticleAlias(
-    'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resum.html',
-    'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital.html',
+    'articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-s.html',
+    'articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-sin-friccion.html',
   );
   assert.match(
     alias,
-    /http-equiv="refresh" content="0; url=articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital\.html"/,
+    /http-equiv="refresh" content="0; url=articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-sin-friccion\.html"/,
   );
   assert.match(alias, /name="robots" content="noindex, follow"/);
   assert.throws(() => renderArticleAlias('articulos/antiguo.html', '../blog.html'), /debe apuntar a una ruta local/);
@@ -129,7 +115,7 @@ test('deployment output contains every profile and a static page for every artic
   const workers = source.sections
     .find((section) => section.id === 'aiworkers')
     .blocks.filter((block) => block.type === 'worker');
-  const scriptPosition = teamHtml.indexOf('<script');
+  const scriptPosition = teamHtml.indexOf('<script defer src="scripts/app.js');
 
   assert.ok(scriptPosition > 0, 'team page should still load the existing client enhancement');
   for (const worker of workers) {
@@ -149,7 +135,7 @@ test('deployment output contains every profile and a static page for every artic
       `${post.title} is linked from the blog or archive`,
     );
     assert.ok(articleHtml.includes('<h1>'), `${post.title} has a rendered article heading`);
-    assert.doesNotMatch(articleHtml, /<script\b/i, `${post.title} does not require JavaScript`);
+    assert.doesNotMatch(articleHtml, /<script\b[^>]*src="[^"]*scripts\/app\.js/i, `${post.title} does not require application scripts`);
   }
   assert.equal(
     (await readdir(path.join(process.cwd(), 'dist/articulos'))).length,

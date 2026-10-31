@@ -21,24 +21,8 @@ export const legacyArticleAliases = new Map([
     'articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-sin-friccion.html',
   ],
   [
-    'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resum.html',
-    'articulos/articulo-2026-10-13-el-extracto-que-lo-cambia-todo-como-un-buen-resumen-transforma-la-experiencia-digital.html',
-  ],
-  [
-    'articulos/articulo-2026-10-17-la-clave-para-una-comunicacion-efectiva-el-arte-d.html',
-    'articulos/articulo-2026-10-17-la-clave-para-una-comunicacion-efectiva-el-arte-del-resumen-en-la-era-digital.html',
-  ],
-  [
-    'articulos/articulo-2026-10-12-mas-alla-del-titular-por-que-un-buen-resumen-es-t.html',
-    'articulos/articulo-2026-10-12-mas-alla-del-titular-por-que-un-buen-resumen-es-tu-mejor-aliado-en-la-era-de-la-informacion.html',
-  ],
-  [
     'articulos/articulo-2026-10-11-aiworkers-tu-equipo-invisible-que-multiplica-el-v.html',
     'articulos/articulo-2026-10-11-aiworkers-tu-equipo-invisible-que-multiplica-el-valor.html',
-  ],
-  [
-    'articulos/articulo-2026-10-10-el-poder-del-resumen-como-un-pequeno-cambio-acele.html',
-    'articulos/articulo-2026-10-10-el-poder-del-resumen-como-un-pequeno-cambio-acelera-la-informacion-para-tus-clientes.html',
   ],
   [
     'articulos/articulo-2026-10-09-navegando-el-futuro-como-la-ia-potencia-la-resili.html',
@@ -225,7 +209,16 @@ export function renderArticle(post, navigation) {
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>${escapeHtml(title)} — AIEvolutio</title>
 <meta name="description" content="${escapeHtml(description)}">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https://aievolutio.com https://www.google-analytics.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DDWP8Z4F9B"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-DDWP8Z4F9B');
+</script>
 <meta property="og:title" content="${escapeHtml(title)}">
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:type" content="article">
