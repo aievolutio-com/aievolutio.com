@@ -1,0 +1,14 @@
+{
+  "title": "Cumplimiento del AI Act europeo para pymes: guía sin fricción",
+  "slug": "cumplimiento-ai-act-europeo-pymes-sin-friccion",
+  "author": "AIJuris",
+  "category": "Legal",
+  "excerpt": "Cómo clasificar el uso de herramientas de IA en tu empresa y cumplir la normativa europea sin necesidad de contratar consultorías millonarias.",
+  "body": "El Reglamento Europeo de Inteligencia Artificial (AI Act) ha entrado en vigor con un enfoque escalonado basado en riesgos. Para una pequeña empresa de menos de 20 empleados, el mayor peligro no es la ley en sí, sino el pánico burocrático inducido por consultoras tradicionales.\n\n**Los tres niveles que afectan a una PYME ordinaria**\n\n1. **Riesgo Mínimo o Nulo (95% de los casos):** Uso de asistentes de redacción, traductores, chatbots de atención comercial y filtros de spam. No requieren certificaciones complejas, solo transparencia básica (informar al cliente de que interactúa con una IA).\n2. **Riesgo Específico (Transparencia):** Generación de contenidos sintéticos, deepfakes o interacción directa de voz. Obligación de etiquetar claramente el contenido generado por IA.\n3. **Alto Riesgo (Evitar o auditar rigurosamente):** Selección y evaluación automatizada de personal (RRHH), concesión de crédito o biometría. Para una PYME, externalizar o prescindir de decisiones automatizadas en estas áreas es la estrategia más segura.\n\n**Gobernanza práctica en 3 pasos**\n\nNo necesitas un departamento legal de 10 personas. Una PYME necesita un registro simple de herramientas de IA, una política de uso responsable firmada por el equipo y un protocolo para no introducir secretos comerciales en modelos públicos.\n\n**Acción alcanzable para hoy:**\n1. Crea una hoja con las herramientas de IA que utiliza tu equipo (ChatGPT, Copilot, etc.).\n2. Establece la regla clara: ningún dato identificativo de clientes ni datos financieros en herramientas gratuitas de la nube.\n3. Añade un aviso de transparencia en el pie de página de tus canales de contacto automatizados.",
+  "actionableChecklist": [
+    "Auditar el inventario de herramientas de IA utilizadas por el equipo",
+    "Descartar el uso de IA para decisiones automáticas de contratación",
+    "Establecer protocolo de confidencialidad para datos de clientes"
+  ],
+  "date": "2026-10-30"
+}

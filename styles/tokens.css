@@ -1,0 +1,41 @@
+:root {
+  /* AIEvolutio Brand Book Tokens */
+  --brand-primary: #1e6091;           /* Azul Tecnológico */
+  --brand-dark: #0a192f;              /* Azul Oscuro Corporativo */
+  --brand-primary-contrast: #ffffff;
+  --brand-accent: #ff6b4a;            /* Coral / Naranja de acento (Letra 'E') */
+  --brand-accent-contrast: #ffffff;
+  --brand-secondary: #4fa3d1;         /* Azul Cielo Secundario */
+
+  /* UI base */
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --text: #1e293b;
+  --muted: #64748b;
+  --link: #1e6091;
+  --ok: #22c55e;
+  --warn: #f59e0b;
+  --err: #ef4444;
+
+  /* Typography */
+  --font-heading: 'Montserrat', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: 'Roboto', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+  /* Scales */
+  --max-content: 1100px;
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(10, 25, 47, 0.08);
+  --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem; --space-6: 1.5rem; --space-8: 2rem; --space-12: 3rem;
+  --motion-fast: 160ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a192f;                     /* Azul Oscuro Corporativo */
+    --surface: #112240;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --link: #64ffda;
+  }
+}
