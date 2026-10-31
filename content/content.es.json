@@ -94,44 +94,43 @@
       "blocks": [
         {
           "type": "worker",
-          "title": "AIVisio",
-          "role": "CEO y estrategia de negocio",
-          "body": "Define la hoja de ruta y prioriza casos de uso de IA con retorno medible. Conecta la viabilidad técnica con el impacto real en costes y facturación para la pyme.",
-          "capabilities": [
-            "Análisis de viabilidad y retorno de inversión en IA",
-            "Diseño de hojas de ruta de transformación digital",
-            "Priorización de automatizaciones de alto impacto"
-          ],
+          "title": "AIFactura",
+          "role": "Facturas, tickets y asientos contables",
+          "body": "Lee facturas en PDF, albaranes y tickets escaneados. Extrae CIFs, bases imponibles e impuestos, y los vuelca directamente en tu software contable o plantilla de gestoría.",
+          "impact": "Ahorro de 8 a 12 horas al mes de introducción manual de datos.",
           "img": "",
-          "alt": "Perfil AIVisio",
+          "alt": "Perfil AIFactura",
           "href": "",
-          "cta": "AIVisio"
+          "cta": ""
         },
         {
           "type": "worker",
-          "title": "AIDux",
-          "role": "CIO y tecnología operativa",
-          "body": "Ejecución técnica y despliegue rápido. Orquesta agentes autónomos, implanta modelos de lenguaje pequeños (SLMs) en hardware modesto y automatiza tareas ofimáticas.",
-          "capabilities": [
-            "Orquestación de flujos de trabajo autónomos",
-            "Despliegue de SLMs locales en equipos de oficina",
-            "Automatización de procesos administrativos repetitivos"
-          ],
+          "title": "AIRespuestas",
+          "role": "Atención 24/7, WhatsApp y citas",
+          "body": "Responde dudas frecuentes en WhatsApp Business y web a cualquier hora del día. Concierta citas en tu calendario y avisa a tu equipo solo cuando hay una venta caliente.",
+          "impact": "Respuesta inmediata a clientes potenciales fuera del horario comercial.",
           "img": "",
-          "alt": "Perfil AIDux",
+          "alt": "Perfil AIRespuestas",
           "href": "",
-          "cta": "AIDux"
+          "cta": ""
+        },
+        {
+          "type": "worker",
+          "title": "AIOferta",
+          "role": "Presupuestos y propuestas comerciales",
+          "body": "Convierte una nota de voz o un correo rápido en una propuesta formal en PDF, con partidas desglosadas y condiciones claras, lista para enviar y firmar.",
+          "impact": "Reducción del tiempo de envío de presupuestos de 3 días a 10 minutos.",
+          "img": "",
+          "alt": "Perfil AIOferta",
+          "href": "",
+          "cta": ""
         },
         {
           "type": "worker",
           "title": "AIJuris",
-          "role": "Asesoría jurídica y gobernanza ética",
-          "body": "Garantiza el cumplimiento normativo sin frenar la operativa: clasificación de riesgo bajo el AI Act europeo, adecuación al RGPD, privacidad y propiedad intelectual.",
-          "capabilities": [
-            "Auditoría y clasificación de riesgo según el AI Act",
-            "Gobernanza del dato y privacidad de la información empresarial",
-            "Revisión de licencias comerciales y cláusulas de confidencialidad"
-          ],
+          "role": "Contratos, RGPD y AI Act europeo",
+          "body": "Revisa contratos comerciales en dos minutos, detecta cláusulas de riesgo o penalización abusivas y asegura el cumplimiento del Reglamento Europeo de IA sin minutas infladas.",
+          "impact": "Seguridad jurídica preventiva y adecuación legal sin fricción burocrática.",
           "img": "",
           "alt": "Perfil AIJuris",
           "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
@@ -139,93 +138,14 @@
         },
         {
           "type": "worker",
-          "title": "AIUsus",
-          "role": "UX y diseño de interacción accesible",
-          "body": "Diseña interfaces y experiencias digitales intuitivas y accesibles. Elimina la fricción cognitiva para que los empleados interactúen con agentes de IA de forma natural.",
-          "capabilities": [
-            "Diseño centrado en el usuario y arquitectura de información",
-            "Auditoría de accesibilidad web (WCAG y norma EN 301 549)",
-            "Optimización de flujos de trabajo interactivos"
-          ],
+          "title": "AIDux",
+          "role": "Automatización ofimática y modelos locales",
+          "body": "Orquesta tareas repetitivas entre tu correo, hojas de cálculo y carpetas compartidas. Implanta modelos pequeños (SLMs) en los propios ordenadores de la oficina.",
+          "impact": "Coste operativo cero y confidencialidad absoluta de los datos del negocio.",
           "img": "",
-          "alt": "Perfil AIUsus",
+          "alt": "Perfil AIDux",
           "href": "",
-          "cta": "AIUsus"
-        },
-        {
-          "type": "worker",
-          "title": "AIArchitectus",
-          "role": "Arquitectura de software y calidad",
-          "body": "Garantiza la solidez de las soluciones: arquitecturas desacopladas, pruebas automáticas en shift-left y código limpio que no dependa de plataformas propietarias costosas.",
-          "capabilities": [
-            "Diseño de arquitecturas desacopladas y ligeras",
-            "Pruebas automatizadas y validación continua (shift-left)",
-            "Auditoría de seguridad y soberanía técnica de datos"
-          ],
-          "img": "",
-          "alt": "Perfil AIArchitectus",
-          "href": "",
-          "cta": "AIArchitectus"
-        },
-        {
-          "type": "worker",
-          "title": "AILitterae",
-          "role": "Investigación y divulgación técnica",
-          "body": "Vigila la frontera tecnológica de la inteligencia artificial y traduce novedades en guías prácticas redactadas con rigor normativo en español conforme a la RAE.",
-          "capabilities": [
-            "Vigilancia continua de modelos de código abierto y SLMs",
-            "Redacción editorial técnica en español normativo (RAE)",
-            "Elaboración de guías prácticas de adopción para pymes"
-          ],
-          "img": "",
-          "alt": "Perfil AILitterae",
-          "href": "",
-          "cta": "AILitterae"
-        },
-        {
-          "type": "worker",
-          "title": "AIMutatio",
-          "role": "Gestión del cambio y cultura de equipo",
-          "body": "Acompaña a las plantillas humanas en la adopción de herramientas de IA, transformando el recelo inicial en curiosidad, criterio crítico y dominio práctico de las herramientas.",
-          "capabilities": [
-            "Planes formativos aterrizados al día a día del empleado",
-            "Estrategias de adopción sin disrupción operativa",
-            "Fomento del pensamiento crítico frente a respuestas sintéticas"
-          ],
-          "img": "",
-          "alt": "Perfil AIMutatio",
-          "href": "",
-          "cta": "AIMutatio"
-        },
-        {
-          "type": "worker",
-          "title": "AIMercatus",
-          "role": "Marketing pragmático y posicionamiento GEO",
-          "body": "Optimiza la presencia digital del negocio en los nuevos motores de respuesta por IA (Generative Engine Optimization) y crea contenidos orientados a resolver dudas reales de clientes.",
-          "capabilities": [
-            "Optimización para buscadores de IA y asistentes (GEO)",
-            "Estrategia de autoridad y contenidos útiles",
-            "Medición analítica sin cookies invasivas"
-          ],
-          "img": "",
-          "alt": "Perfil AIMercatus",
-          "href": "",
-          "cta": "AIMercatus"
-        },
-        {
-          "type": "worker",
-          "title": "AIExperientia",
-          "role": "Experiencia de cliente y soporte asistido",
-          "body": "Supervisa los canales de atención y servicio, integrando asistencia inteligente que resuelve consultas frecuentes de inmediato y deriva con contexto al equipo humano.",
-          "capabilities": [
-            "Atención asistida continua con derivación inteligente",
-            "Detección proactiva de puntos de fricción del cliente",
-            "Evaluación de satisfacción y calidad del servicio"
-          ],
-          "img": "",
-          "alt": "Perfil AIExperientia",
-          "href": "",
-          "cta": "AIExperientia"
+          "cta": ""
         }
       ]
     },
