@@ -684,14 +684,18 @@
     const KEY = "ae_theme";
     function apply(v) {
       document.documentElement.dataset.theme = v;
-      if (btn) btn.setAttribute("aria-pressed", v === "dark");
+      if (btn) {
+        btn.setAttribute("aria-pressed", v === "dark");
+        btn.setAttribute("title", v === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+      }
     }
     const stored = localStorage.getItem(KEY);
-    apply(stored || "dark");
+    const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    apply(stored || (systemDark ? "dark" : "light"));
     if (!btn) return;
     btn.addEventListener("click", () => {
-      const next =
-        document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      const current = document.documentElement.dataset.theme;
+      const next = current === "dark" ? "light" : "dark";
       localStorage.setItem(KEY, next);
       apply(next);
     });
@@ -744,6 +748,98 @@
     });
   }
 
+  function setupRoiCalculator() {
+    const root = document.getElementById("roi-calculator");
+    if (!root) return;
+
+    const data = {
+      facturas: {
+        worker: "AIFactura",
+        role: "Facturas y asientos contables",
+        hours: [12, 24, 45],
+        savings: [300, 600, 1125],
+        desc: "Extracción automática de importes, CIFs y conceptos desde facturas y tickets en PDF directos a tu gestoría o ERP.",
+        link: "equipo.html",
+      },
+      whatsapp: {
+        worker: "AIRespuestas",
+        role: "Atención 24/7 y citas en WhatsApp",
+        hours: [15, 30, 60],
+        savings: [375, 750, 1500],
+        desc: "Respuesta inmediata a clientes potenciales fuera del horario comercial y filtrado de citas en tu calendario.",
+        link: "equipo.html",
+      },
+      presupuestos: {
+        worker: "AIOferta",
+        role: "Presupuestos rápidos en PDF",
+        hours: [10, 20, 38],
+        savings: [250, 500, 950],
+        desc: "Transforma notas de voz de WhatsApp o correos en propuestas formales desglosadas listas para enviar en 10 minutos.",
+        link: "equipo.html",
+      },
+      legal: {
+        worker: "AIJuris",
+        role: "Contratos y cumplimiento AI Act",
+        hours: [8, 16, 32],
+        savings: [400, 800, 1600],
+        desc: "Detección preventiva de cláusulas abusivas y adecuación legal de tus herramientas sin minutas infladas.",
+        link: "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
+      },
+    };
+
+    let teamSizeIndex = 0; // 0: 1-5, 1: 6-10, 2: 11-20
+    let currentTask = "facturas";
+
+    function update() {
+      const item = data[currentTask] || data.facturas;
+      const h = item.hours[teamSizeIndex];
+      const s = item.savings[teamSizeIndex];
+
+      const hoursEl = root.querySelector(".roi-res-hours");
+      const moneyEl = root.querySelector(".roi-res-money");
+      const workerEl = root.querySelector(".roi-res-worker");
+      const descEl = root.querySelector(".roi-res-desc");
+      const linkEl = root.querySelector(".roi-res-link");
+
+      if (hoursEl) hoursEl.textContent = `~${h} h/mes`;
+      if (moneyEl) moneyEl.textContent = `~${s} €/mes`;
+      if (workerEl) workerEl.textContent = item.worker;
+      if (descEl) descEl.textContent = item.desc;
+      if (linkEl) {
+        linkEl.href = item.link;
+        linkEl.textContent = `Conocer a ${item.worker} →`;
+      }
+
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "roi_calculation", {
+          task: currentTask,
+          team_size_idx: teamSizeIndex,
+          estimated_hours: h,
+        });
+      }
+    }
+
+    root.querySelectorAll("[data-team-size]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        root.querySelectorAll("[data-team-size]").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        teamSizeIndex = parseInt(btn.dataset.teamSize, 10) || 0;
+        update();
+      });
+    });
+
+    root.querySelectorAll("[data-task]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        root.querySelectorAll("[data-task]").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentTask = btn.dataset.task;
+        update();
+      });
+    });
+
+    update();
+  }
+
   async function main() {
     try {
       await loadContent("es");
@@ -760,6 +856,7 @@
         currentYear.textContent = String(new Date().getFullYear());
       setupTheme();
       setupLightbox();
+      setupRoiCalculator();
       if (window.location.hash) {
         document
           .getElementById(window.location.hash.slice(1))

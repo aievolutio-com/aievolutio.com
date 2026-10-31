@@ -12,7 +12,7 @@ const navigationPath = path.join(repoRoot, 'content/navigation.json');
 const postsDirectory = path.join(repoRoot, 'content/posts');
 const htmlPages = ['index.html', 'equipo.html', 'blog.html', 'archivo.html', 'contacto.html'];
 const publicDirectories = ['assets', 'content', 'images', 'styles'];
-const publicFiles = ['CNAME', '_headers', 'site.webmanifest'];
+const publicFiles = ['CNAME', '_headers', 'site.webmanifest', 'robots.txt', 'sitemap.xml'];
 const articleBaseUrl = 'https://aievolutio.com';
 
 export const legacyArticleAliases = new Map([
@@ -210,18 +210,60 @@ export function renderTeam(content) {
 </section>`;
 }
 
-function renderPostCard(post) {
+function getPostCategory(post) {
+  const text = `${post.title || ''} ${post.body || ''}`.toLowerCase();
+  const author = (post.author || '').toLowerCase();
+  if (author.includes('juris') || text.includes('ai act') || text.includes('legal') || text.includes('contrato') || text.includes('rgpd')) {
+    return 'Gobernanza & Legal';
+  }
+  if (text.includes('slm') || text.includes('hardware') || text.includes('local') || text.includes('modelo') || text.includes('offline')) {
+    return 'Tecnología & SLMs';
+  }
+  if (text.includes('aiworker') || text.includes('proceso') || text.includes('horas') || text.includes('automatiz')) {
+    return 'IAWorkers & Procesos';
+  }
+  return 'Estrategia & PYMEs';
+}
+
+function calculateReadingTime(body) {
+  const words = String(body || '').trim().split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(2, Math.ceil(words / 190));
+  return `${minutes} min de lectura`;
+}
+
+function renderPostCard(post, isFeatured = false) {
   const url = articleUrl(post);
-  const metadata = [formatPostDate(post.date), post.author].filter(Boolean).join(' · ');
+  const category = getPostCategory(post);
+  const readingTime = calculateReadingTime(post.body);
+  const metadata = [formatPostDate(post.date), post.author, readingTime].filter(Boolean).join(' · ');
   const image = post.img
-    ? `<img src="${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${post.title || 'el artículo'}`)}" class="post-cover" loading="lazy">`
+    ? `<div class="post-cover-wrap"><img src="${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${post.title || 'el artículo'}`)}" class="post-cover" loading="lazy"></div>`
     : '';
+
+  if (isFeatured) {
+    return `<article class="card post-card">
+  <div class="featured-post-wrapper">
+    ${image}
+    <div class="featured-post-content">
+      <div class="post-category-tag">${escapeHtml(category)}</div>
+      <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || 'Entrada')}</a></h3>
+      <p class="muted post-meta">${escapeHtml(metadata)}</p>
+      <div class="post-body">${renderPostBody(postSummary(post.body, 260))}</div>
+      <a href="${escapeHtml(url)}" class="btn btn-sm btn-outline">Leer artículo completo →</a>
+    </div>
+  </div>
+</article>`;
+  }
+
   return `<article class="card post-card">
-  <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || 'Entrada')}</a></h3>
-  <p class="muted post-meta">${escapeHtml(metadata)}</p>
   ${image}
-  <div class="post-body">${renderPostBody(postSummary(post.body))}</div>
-  <a href="${escapeHtml(url)}" class="text-link">Leer artículo</a>
+  <div class="post-card-inner">
+    <div class="post-category-tag">${escapeHtml(category)}</div>
+    <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || 'Entrada')}</a></h3>
+    <p class="muted post-meta">${escapeHtml(metadata)}</p>
+    <div class="post-body">${renderPostBody(postSummary(post.body, 160))}</div>
+    <a href="${escapeHtml(url)}" class="text-link">Leer artículo →</a>
+  </div>
 </article>`;
 }
 
@@ -230,16 +272,29 @@ export function renderBlog(content, { archive = false } = {}) {
   if (!blog) throw new Error('Falta la sección blog para generar los artículos.');
   const posts = sortedPosts(blog.blocks || []);
   const visiblePosts = archive ? posts.slice(4) : posts.slice(0, 4);
-  const title = archive ? 'Artículos anteriores' : 'Artículos recientes';
+  const title = archive ? 'Artículos anteriores' : 'Ideas, guías y casos de uso';
   const backLink = archive
     ? '<a href="blog.html" class="archive-back"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12L6 8L10 4"/></svg><span>Ver artículos recientes</span></a>'
     : '';
   const archiveLink =
-    !archive && posts.length > 4 ? '<a href="archivo.html" class="btn section-cta">Ver artículos anteriores</a>' : '';
+    !archive && posts.length > 4 ? '<a href="archivo.html" class="btn section-cta">Ver artículos anteriores en el archivo</a>' : '';
+
+  const cardsHtml = archive
+    ? visiblePosts.map((p) => renderPostCard(p, false)).join('\n')
+    : visiblePosts.map((p, idx) => renderPostCard(p, idx === 0)).join('\n');
+
   return `<section id="blog" class="section">
-  <h2>${title}</h2>
+  <div class="blog-header-bar">
+    <h2>${title}</h2>
+    <div class="blog-topics-pills">
+      <span class="topic-pill active">Todos</span>
+      <span class="topic-pill">IAWorkers</span>
+      <span class="topic-pill">SLMs Locales</span>
+      <span class="topic-pill">AI Act & Legal</span>
+    </div>
+  </div>
   ${backLink}
-  <div class="grid post-grid">${visiblePosts.map(renderPostCard).join('\n')}</div>
+  <div class="grid post-grid">${cardsHtml}</div>
   ${archiveLink}
 </section>`;
 }
@@ -250,10 +305,11 @@ export function renderArticle(post, navigation) {
   const articleUrlPath = articleUrl(post);
   const canonical = `${articleBaseUrl}/${articleUrlPath}`;
   const absoluteImage = post.img ? `${articleBaseUrl}/${String(post.img).replace(/^\/+/, '')}` : '';
+  const category = getPostCategory(post);
+  const readingTime = calculateReadingTime(post.body);
   const image = post.img
-    ? `<img src="../${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${title}`)}" class="post-cover">`
+    ? `<div class="article-hero-cover"><img src="../${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${title}`)}" class="post-cover" loading="lazy"></div>`
     : '';
-  const metadata = [formatPostDate(post.date), post.author].filter(Boolean).join(' · ');
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -279,6 +335,9 @@ export function renderArticle(post, navigation) {
 <meta property="og:url" content="${escapeHtml(canonical)}">
 ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage)}">\n` : ''}<meta name="twitter:card" content="${absoluteImage ? 'summary_large_image' : 'summary'}">
 <link rel="canonical" href="${escapeHtml(canonical)}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <link href="../styles/tokens.css" rel="stylesheet">
 <link href="../styles/main.css?v=20261101" rel="stylesheet">
 <link href="../images/favicon.ico" rel="icon" type="image/x-icon">
@@ -292,23 +351,36 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <span class="sr-only">AIEvolutio</span>
 </a>
 <div id="nav">${renderNavigation(navigation, 'blog', '../')}</div>
+<button aria-label="Cambiar tema" aria-pressed="false" class="theme-toggle" id="theme-toggle" type="button">🌓</button>
 </nav>
 </header>
-<main class="container" id="main" tabindex="-1">
-<section class="hero page-hero">
-<p class="eyebrow">Ideas, exploración y práctica</p>
-<h1>${escapeHtml(title)}</h1>
-<p>Guías e ideas prácticas sobre inteligencia artificial, trabajo y evolución humana.</p>
-</section>
-<section class="section">
-<a href="../blog.html" class="archive-back"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12L6 8L10 4"/></svg><span>Volver a artículos</span></a>
-<article class="card post-card">
-<p class="muted post-meta">${escapeHtml(metadata)}</p>
+<main class="container reading-container" id="main" tabindex="-1">
+<nav aria-label="Navegación secundaria" class="article-breadcrumb">
+  <a href="../blog.html" class="archive-back"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12L6 8L10 4"/></svg><span>Blog</span></a>
+  <span class="breadcrumb-separator" aria-hidden="true">/</span>
+  <span class="post-category-tag">${escapeHtml(category)}</span>
+</nav>
+<header class="article-header">
+  <h1>${escapeHtml(title)}</h1>
+  <div class="article-meta-bar">
+    <div class="author-badge" aria-hidden="true">${escapeHtml((post.author || 'AI').slice(0, 2).toUpperCase())}</div>
+    <div class="article-meta-info">
+      <span class="article-author-name">${escapeHtml(post.author || 'AIEvolutio')}</span>
+      <span class="article-date-row">${formatPostDate(post.date)} · ${escapeHtml(readingTime)}</span>
+    </div>
+  </div>
+</header>
 ${image}
-<div class="post-body">${renderPostBody(post.body)}</div>
+<article class="card post-card article-reading-card">
+  <div class="post-body">${renderPostBody(post.body)}</div>
 </article>
-<a href="../contacto.html" class="btn section-cta">Cuéntanos tu reto</a>
-</section>
+<footer class="article-footer-cta">
+  <div class="article-cta-box">
+    <h3>¿Quieres resolver este reto en tu empresa?</h3>
+    <p>Diseñamos e implantamos IAWorkers y automatizaciones pragmáticas adaptadas a la realidad operativa de tu negocio.</p>
+    <a href="../contacto.html" class="btn section-cta">Cuéntanos tu reto</a>
+  </div>
+</footer>
 </main>
 <footer class="container">
 <p>© 2026 AIEvolutio</p>
@@ -316,6 +388,40 @@ ${image}
 </footer>
 </body>
 </html>`;
+}
+
+export function generateSitemap(posts) {
+  const today = new Date().toISOString().split('T')[0];
+  const staticEntries = [
+    { loc: 'https://aievolutio.com/', changefreq: 'daily', priority: '1.0', lastmod: today },
+    { loc: 'https://aievolutio.com/equipo.html', changefreq: 'weekly', priority: '0.9', lastmod: today },
+    { loc: 'https://aievolutio.com/blog.html', changefreq: 'daily', priority: '0.9', lastmod: today },
+    { loc: 'https://aievolutio.com/contacto.html', changefreq: 'monthly', priority: '0.8', lastmod: today },
+    { loc: 'https://aievolutio.com/archivo.html', changefreq: 'weekly', priority: '0.7', lastmod: today },
+  ];
+
+  const postEntries = posts.map((post) => ({
+    loc: `https://aievolutio.com/${articleUrl(post)}`,
+    changefreq: 'weekly',
+    priority: '0.8',
+    lastmod: post.date || today,
+  }));
+
+  const allEntries = [...staticEntries, ...postEntries];
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allEntries
+  .map(
+    (e) => `  <url>
+    <loc>${e.loc}</loc>
+    <lastmod>${e.lastmod}</lastmod>
+    <changefreq>${e.changefreq}</changefreq>
+    <priority>${e.priority}</priority>
+  </url>`,
+  )
+  .join('\n')}
+</urlset>
+`;
 }
 
 export function renderArticleAlias(aliasPath, targetPath) {
@@ -486,6 +592,10 @@ export async function buildSite() {
       await writeFile(path.join(repoRoot, aliasPath), aliasHtml, 'utf8');
     }
   }
+
+  const sitemapXml = generateSitemap(posts);
+  await writeFile(path.join(outputRoot, 'sitemap.xml'), sitemapXml, 'utf8');
+  await writeFile(path.join(repoRoot, 'sitemap.xml'), sitemapXml, 'utf8');
 
   return {
     pages: pages.map(({ file }) => file),

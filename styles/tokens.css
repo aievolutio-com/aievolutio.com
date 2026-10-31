@@ -43,14 +43,39 @@
   --motion-fast: 150ms ease-out;
 }
 
+/* Modo Oscuro: activo por selector manual [data-theme="dark"] o preferencia de sistema */
+:root[data-theme="dark"] {
+  --bg: #030712;
+  --surface: #0f172a;
+  --surface-raised: #1e293b;
+  --border: #334155;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --link: #38bdf8;
+  --brand-primary: #f8fafc;
+  --brand-tech: #38bdf8;
+  --brand-dark: #ffffff;
+  --brand-primary-contrast: #030712;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.6);
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #030712; /* Slate ultra dark */
+  :root:not([data-theme="light"]) {
+    --bg: #030712;
     --surface: #0f172a;
     --surface-raised: #1e293b;
     --border: #334155;
     --text: #f8fafc;
     --muted: #94a3b8;
     --link: #38bdf8;
+    --brand-primary: #f8fafc;
+    --brand-tech: #38bdf8;
+    --brand-dark: #ffffff;
+    --brand-primary-contrast: #030712;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.6);
   }
 }
