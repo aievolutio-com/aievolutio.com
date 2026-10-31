@@ -143,6 +143,51 @@ const CONTINGENCY_POSTS = [
   }
 ];
 
+// ─── HELPER DE ESTILO RAE (SHIFT-LEFT) ────────────────────────────────────────
+
+/**
+ * Aplica Shift-Left ortográfico: convierte un título a "sentence case" estricto según la RAE.
+ * Solo la primera palabra y siglas/nombres propios conservan mayúscula.
+ */
+function applyRaeTitleCase(title) {
+  if (!title || typeof title !== 'string') return '';
+  const clean = title.trim();
+  const lower = clean.toLowerCase();
+  // Primera letra en mayúscula
+  let result = lower.charAt(0).toUpperCase() + lower.slice(1);
+
+  // Proteger siglas y nombres propios esenciales de la consultora
+  const properNouns = [
+    { pattern: /\bia\b/gi, replacement: 'IA' },
+    { pattern: /\bai act\b/gi, replacement: 'AI Act' },
+    { pattern: /\bpymes?\b/gi, replacement: (m) => m.toLowerCase() }, // RAE recomienda 'pyme' / 'pymes' en minúsculas
+    { pattern: /\baievolutio\b/gi, replacement: 'AIEvolutio' },
+    { pattern: /\baidux\b/gi, replacement: 'AIDux' },
+    { pattern: /\baijuris\b/gi, replacement: 'AIJuris' },
+    { pattern: /\baivisio\b/gi, replacement: 'AIVisio' },
+    { pattern: /\bailitt[e|a]rae\b/gi, replacement: 'AILittarae' },
+    { pattern: /\baiworkers?\b/gi, replacement: 'AIWorkers' },
+    { pattern: /\baiteams?\b/gi, replacement: 'AITeams' },
+    { pattern: /\brgpd\b/gi, replacement: 'RGPD' },
+    { pattern: /\bgeo\b/gi, replacement: 'GEO' },
+    { pattern: /\bseo\b/gi, replacement: 'SEO' },
+    { pattern: /\bslm\b/gi, replacement: 'SLM' },
+    { pattern: /\bllm\b/gi, replacement: 'LLM' },
+    { pattern: /\baeatt?\b/gi, replacement: 'AEAT' },
+    { pattern: /\bcendoj\b/gi, replacement: 'CENDOJ' },
+    { pattern: /\bespaña\b/gi, replacement: 'España' }
+  ];
+
+  for (const { pattern, replacement } of properNouns) {
+    result = result.replace(pattern, replacement);
+  }
+
+  // Si hay dos puntos ": ", la palabra inmediatamente posterior inicia en minúscula salvo nombre propio
+  result = result.replace(/:\s+([a-záéíóúñ])/gi, (match, letter) => `: ${letter.toLowerCase()}`);
+
+  return result;
+}
+
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function slugify(text) {
@@ -200,11 +245,21 @@ async function runTelemetryCritic() {
 
   const recommendedAuthor = authorsCount.AIJuris < authorsCount.AIDux / 2 ? 'AIJuris' : 'AIDux';
 
+  // ─── SHIFT-LEFT: PREVENTIVA EDITORIAL ────────────────────────────────────
+  // Analizar TODO el corpus ya existente para prohibir expresamente su repetición
+  const allExistingTitles = existingPosts.map(p => p.title);
+  const allExistingSlugs = new Set([
+    ...existingPosts.map(p => p.slug || slugify(p.title)),
+    ...editorialLog.map(p => p.slug)
+  ]);
+
   return {
     existingCount: existingPosts.length,
     recommendedAuthor,
     ga4: ga4Data,
     editorialLog,
+    allExistingTitles,
+    allExistingSlugs,
     recentTitles: existingPosts.slice(0, 8).map(p => p.title),
     categoriesCount
   };
@@ -262,19 +317,20 @@ async function runAIVisio(telemetry, apiKey) {
   }
 
   // Con API: AIVisio solicita a Gemini que defina los 4 ejes con variedad explícita
-  const briefingPrompt = `Eres AIVisio, Director Editorial de AIEvolutio. Tu tarea es definir el Briefing del artículo de hoy ANTES de que se escriba.
+  const briefingPrompt = `Eres AIVisio, Director Editorial de AIEvolutio. Tu tarea es definir el Briefing del artículo de hoy ANTES de que se escriba (Shift-Left Editorial).
 
-Contexto editorial:
+Regla de exclusión absoluta (PROHIBIDO REPETIR O PARAFRASEAR):
+- Artículos ya existentes en el sitio: ${JSON.stringify(telemetry.allExistingTitles)}
+- Slugs ya publicados: ${JSON.stringify(Array.from(telemetry.allExistingSlugs || []))}
+- Necesidades ya cubiertas recientemente: ${JSON.stringify(usedNeeds)}
+- Ángulos ya usados recientemente: ${JSON.stringify(usedAngles)}
+
+Contexto editorial obligatorio:
 - Autor asignado: ${telemetry.recommendedAuthor}
-- Artículos recientes (evitar repetición): ${JSON.stringify(telemetry.recentTitles)}
-- Necesidades ya cubiertas: ${JSON.stringify(usedNeeds)}
-- Ángulos ya usados: ${JSON.stringify(usedAngles)}
-- Perfiles ya atendidos: ${JSON.stringify(usedProfiles)}
-- Tipos de acción ya propuestos: ${JSON.stringify(usedActions)}
-- Categorías publicadas: ${JSON.stringify(telemetry.categoriesCount)}
+- Enfoque: pymes y despachos tradicionales en España (<20 empleados) con soluciones de coste marginal bajo o nulo (<100€/mes).
+- Estilo: español de España y normas ortográficas de la RAE (títulos en minúscula salvo la primera letra y nombres propios).
 
-Define un Briefing con máxima variedad respecto a lo anterior. El artículo debe ayudar a PYMEs (<20 empleados) con soluciones de coste <100€/mes.
-
+Define un Briefing completamente novedoso y no tratado.
 Responde SOLO con JSON exacto (sin backticks, sin explicaciones):
 {"readerNeed":"...","angle":"...","actionType":"...","readerProfile":"...","suggestedCategory":"...","suggestedTitle":"..."}`;
 
@@ -329,9 +385,9 @@ async function runAILittarae(telemetry, briefing, apiKey) {
   }
 
   // El prompt es compacto para garantizar que la respuesta cabe en 900 tokens
-  const articlePrompt = `Eres ${author}, redactor de AIEvolutio. Escribe un artículo corto y accionable para PYMEs.
+  const articlePrompt = `Eres ${author}, redactor de AIEvolutio. Escribe un artículo práctico y riguroso para pymes en España.
 
-BRIEFING (obligatorio respetar):
+BRIEFING APROBADO POR AIVISIO (obligatorio respetar):
 - Necesidad del lector: ${briefing.readerNeed}
 - Ángulo: ${briefing.angle}
 - Acción final: ${briefing.actionType}
@@ -339,12 +395,14 @@ BRIEFING (obligatorio respetar):
 - Categoría: ${briefing.suggestedCategory || (author === 'AIJuris' ? 'Legal' : 'Operaciones')}
 ${briefing.suggestedTitle ? `- Título sugerido: ${briefing.suggestedTitle}` : ''}
 
-Reglas de formato (críticas):
-1. Responde SOLO con JSON crudo (sin backticks).
-2. body: 240-280 palabras. Estructura: párrafo intro + 2 bloques con negritas + "Acción alcanzable para hoy:" con 3 pasos numerados.
-3. excerpt: 1 frase de 15-20 palabras.
-4. actionableChecklist: exactamente 3 ítems breves.
-5. slug: en español, con guiones, máximo 55 caracteres.
+Normas ortográficas y de estilo (Shift-Left RAE - Obligatorias):
+1. Títulos en español de España según la RAE: solo la primera palabra en mayúscula (sentence case), excepto nombres propios y siglas (IA, AI Act, RGPD, España). Ejemplo: "Modelos locales: la solución para despachos".
+2. Término "pyme" o "pymes" en minúsculas conforme a la RAE.
+3. Responde SOLO con JSON crudo (sin formato markdown ni backticks).
+4. body: 240-280 palabras. Estructura: párrafo de introducción + 2 bloques conceptuales con negritas + sección "Acción alcanzable para hoy:" con 3 pasos numerados.
+5. excerpt: 1 frase de 15-20 palabras en español normativo.
+6. actionableChecklist: exactamente 3 ítems breves e independientes.
+7. slug: en español, con guiones, máximo 55 caracteres.
 
 JSON a devolver:
 {"title":"...","slug":"...","category":"...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."]}`;
@@ -371,9 +429,10 @@ JSON a devolver:
         console.warn(`[AILittarae] Body demasiado corto (${wordCount} palabras), usando contingencia.`);
       } else {
         console.log(`[AILittarae] Artículo generado: "${parsed.title}" (${wordCount} palabras)`);
+        const normalizedTitle = applyRaeTitleCase(parsed.title);
         return {
-          title: parsed.title,
-          slug: parsed.slug || slugify(parsed.title),
+          title: normalizedTitle,
+          slug: parsed.slug || slugify(normalizedTitle),
           date: today,
           author,
           category: parsed.category || briefing.suggestedCategory || 'Operaciones',
