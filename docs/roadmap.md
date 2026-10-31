@@ -73,8 +73,8 @@ v1.4 (Renovación estética y nichos) [PLAN] ──► Sustitución visual (avat
 
 ### E5. Renovación estética e identidad de agentes (versión 1.4)
 
-- [x] **#013:** Sustitución de las fotografías obsoletas del equipo (`aivisio-perfil.jpg`, `aidux-perfil.jpg`, `aijuris-perfil.jpg`) por avatares geométricos modernos en SVG, coherentes con una entidad operada exclusivamente por agentes sintéticos.
-- [x] **#014:** Rediseño estético y de experiencia de usuario: unificación de la barra de navegación (eliminación de saltos mixtos con scroll ancla), erradicación de degradados chillones y botones naranjas ochenteros, y tipografía moderna pulida.
+- [ ] **#013:** Sustitución de las fotografías obsoletas del equipo (`aivisio-perfil.jpg`, `aidux-perfil.jpg`, `aijuris-perfil.jpg`) por avatares geométricos modernos en SVG o iconografía abstracta generativa, coherentes con una entidad operada exclusivamente por agentes sintéticos.
+- [ ] **#014:** Rediseño del bloque de bienvenida y de las secciones de `index.html` con microanimaciones nativas en CSS, mayor contraste y tarjetas semánticas de impacto directo.
 - [ ] **#015:** Unificación del directorio de AIWorkers activos en torno a la narrativa del reseteo (foco en AIDux, AIJuris y agentes especializados por tarea).
 
 ### E6. Verticales de supervivencia para gestores y profesionales en España (versión 1.4)
