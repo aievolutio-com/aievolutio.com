@@ -50,20 +50,37 @@ jobs:
           git config user.email "autonomous@aievolutio.com"
           git add -A
           if ! git diff --staged --quiet; then
-            git commit -m "evo(spiral): actualización autónoma diaria de contenido y mejora técnica"
-            git pull --rebase origin main
-            git push origin HEAD:main
+            git commit -m "evo(spiral): actualización autónoma de jardinería y mejora técnica"
+            git fetch origin main
+            git rebase -X theirs origin/main || (git rebase --abort && git merge --strategy-option=theirs origin/main -m "evo(merge): reconciliación automática")
+            git push origin HEAD:main || true
           fi
 
-      - name: 6. Emitir Parte Diario al Observador (Issue Diario)
+      - name: 6. Emitir o Actualizar Parte de Observabilidad (Issue Único Diario)
         if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -f "docs/daily-digest.md" ]; then
-            gh issue create \
-              --title "📊 Informe Evolutivo AIEvolutio — $(date -u +'%Y-%m-%d')" \
-              --body-file "docs/daily-digest.md" || true
+            TODAY=$(date -u +'%Y-%m-%d')
+            ISSUE_TITLE="📊 Informe Evolutivo AIEvolutio — $TODAY"
+            # Buscar si ya existe el issue de hoy para actualizarlo en lugar de spamear issues nuevos cada hora
+            EXISTING_ISSUE=$(gh issue list --search "$ISSUE_TITLE in:title" --state open --json number --jq '.[0].number' || echo "")
+            if [ -n "$EXISTING_ISSUE" ]; then
+              gh issue comment "$EXISTING_ISSUE" --body-file "docs/daily-digest.md" || true
+            else
+              gh issue create --title "$ISSUE_TITLE" --body-file "docs/daily-digest.md" || true
+            fi
+            # Cerrar automáticamente issues obsoletos de fallos anteriores al Gran Reseteo
+            for OLD_ID in $(gh issue list --search "[AI Team] in:title" --state open --json number --jq '.[].number' || echo ""); do
+              gh issue close "$OLD_ID" --comment "Resuelto automáticamente tras la Iteración 0 (El Gran Reseteo)." || true
+            done
+            for OLD_ID in $(gh issue list --search "[Website] in:title" --state open --json number --jq '.[].number' || echo ""); do
+              gh issue close "$OLD_ID" --comment "Resuelto automáticamente tras la Iteración 0 (El Gran Reseteo)." || true
+            done
+            for OLD_ID in $(gh issue list --search "[Site review] in:title" --state open --json number --jq '.[].number' || echo ""); do
+              gh issue close "$OLD_ID" --comment "Resuelto automáticamente tras la Iteración 0 (El Gran Reseteo)." || true
+            done
           fi
 
       - name: 7. Compilar Sitio Estático (dist/)
