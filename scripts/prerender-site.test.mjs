@@ -46,9 +46,9 @@ const navigation = [
   { id: 'contact', label: 'Contacto', href: 'contacto.html' },
 ];
 
-test('pre-renders team profiles as semantic native disclosure widgets', () => {
+test('pre-renders team profiles as semantic modern worker cards', () => {
   const html = renderTeam(content);
-  assert.match(html, /<details class="worker">/);
+  assert.match(html, /<article class="worker-card"/);
   assert.match(html, /AIUsus/);
   assert.match(html, /Encuentra fricciones/);
   assert.match(html, /Revisa una experiencia digital\./);

@@ -95,38 +95,58 @@
         {
           "type": "worker",
           "title": "AIVisio",
-          "role": "CEO y estrategia",
-          "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
+          "role": "CEO y estrategia de negocio",
+          "body": "Define la hoja de ruta y prioriza casos de uso de IA con retorno medible. Conecta la viabilidad técnica con el impacto real en costes y facturación para la pyme.",
+          "capabilities": [
+            "Análisis de viabilidad y retorno de inversión en IA",
+            "Diseño de hojas de ruta de transformación digital",
+            "Priorización de automatizaciones de alto impacto"
+          ],
           "img": "",
-          "alt": "AIVisio",
+          "alt": "Perfil AIVisio",
           "href": "",
           "cta": "AIVisio"
         },
         {
           "type": "worker",
           "title": "AIDux",
-          "role": "CIO y tecnología",
-          "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
+          "role": "CIO y tecnología operativa",
+          "body": "Ejecución técnica y despliegue rápido. Orquesta agentes autónomos, implanta modelos de lenguaje pequeños (SLMs) en hardware modesto y automatiza tareas ofimáticas.",
+          "capabilities": [
+            "Orquestación de flujos de trabajo autónomos",
+            "Despliegue de SLMs locales en equipos de oficina",
+            "Automatización de procesos administrativos repetitivos"
+          ],
           "img": "",
-          "alt": "AIDux",
+          "alt": "Perfil AIDux",
           "href": "",
           "cta": "AIDux"
         },
         {
           "type": "worker",
           "title": "AIJuris",
-          "role": "Asesoría jurídica",
-          "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
+          "role": "Asesoría jurídica y gobernanza ética",
+          "body": "Garantiza el cumplimiento normativo sin frenar la operativa: clasificación de riesgo bajo el AI Act europeo, adecuación al RGPD, privacidad y propiedad intelectual.",
+          "capabilities": [
+            "Auditoría y clasificación de riesgo según el AI Act",
+            "Gobernanza del dato y privacidad de la información empresarial",
+            "Revisión de licencias comerciales y cláusulas de confidencialidad"
+          ],
           "img": "",
-          "alt": "AIJuris",
+          "alt": "Perfil AIJuris",
           "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
-          "cta": "Probar AIJuris"
+          "cta": "Probar asistente AIJuris"
         },
         {
           "type": "worker",
           "title": "AIUsus",
-          "role": "UX y accesibilidad",
-          "body": "Diseño de experiencia, accesibilidad y arquitectura de información para que cada recorrido sea claro y fácil de usar.",
+          "role": "UX y diseño de interacción accesible",
+          "body": "Diseña interfaces y experiencias digitales intuitivas y accesibles. Elimina la fricción cognitiva para que los empleados interactúen con agentes de IA de forma natural.",
+          "capabilities": [
+            "Diseño centrado en el usuario y arquitectura de información",
+            "Auditoría de accesibilidad web (WCAG y norma EN 301 549)",
+            "Optimización de flujos de trabajo interactivos"
+          ],
           "img": "",
           "alt": "Perfil AIUsus",
           "href": "",
@@ -134,29 +154,14 @@
         },
         {
           "type": "worker",
-          "title": "AIExperientia",
-          "role": "Experiencia de cliente",
-          "body": "Experiencia de cliente y mejora de servicios, desde la escucha de necesidades hasta la resolución de fricciones.",
-          "img": "",
-          "alt": "Perfil AIExperientia",
-          "href": "",
-          "cta": "AIExperientia"
-        },
-        {
-          "type": "worker",
-          "title": "AIMercatus",
-          "role": "Marketing y marca",
-          "body": "Estrategia de marketing, contenidos y marca con foco en utilidad, claridad y confianza.",
-          "img": "",
-          "alt": "Perfil AIMercatus",
-          "href": "",
-          "cta": "AIMercatus"
-        },
-        {
-          "type": "worker",
           "title": "AIArchitectus",
-          "role": "Arquitectura técnica",
-          "body": "Arquitectura técnica, calidad y mantenibilidad. Propone cambios pequeños que se validan antes de publicar.",
+          "role": "Arquitectura de software y calidad",
+          "body": "Garantiza la solidez de las soluciones: arquitecturas desacopladas, pruebas automáticas en shift-left y código limpio que no dependa de plataformas propietarias costosas.",
+          "capabilities": [
+            "Diseño de arquitecturas desacopladas y ligeras",
+            "Pruebas automatizadas y validación continua (shift-left)",
+            "Auditoría de seguridad y soberanía técnica de datos"
+          ],
           "img": "",
           "alt": "Perfil AIArchitectus",
           "href": "",
@@ -164,9 +169,29 @@
         },
         {
           "type": "worker",
+          "title": "AILitterae",
+          "role": "Investigación y divulgación técnica",
+          "body": "Vigila la frontera tecnológica de la inteligencia artificial y traduce novedades en guías prácticas redactadas con rigor normativo en español conforme a la RAE.",
+          "capabilities": [
+            "Vigilancia continua de modelos de código abierto y SLMs",
+            "Redacción editorial técnica en español normativo (RAE)",
+            "Elaboración de guías prácticas de adopción para pymes"
+          ],
+          "img": "",
+          "alt": "Perfil AILitterae",
+          "href": "",
+          "cta": "AILitterae"
+        },
+        {
+          "type": "worker",
           "title": "AIMutatio",
-          "role": "Gestión del cambio",
-          "body": "Gestión del cambio y adopción responsable: acompaña la evolución de procesos, equipos y capacidades.",
+          "role": "Gestión del cambio y cultura de equipo",
+          "body": "Acompaña a las plantillas humanas en la adopción de herramientas de IA, transformando el recelo inicial en curiosidad, criterio crítico y dominio práctico de las herramientas.",
+          "capabilities": [
+            "Planes formativos aterrizados al día a día del empleado",
+            "Estrategias de adopción sin disrupción operativa",
+            "Fomento del pensamiento crítico frente a respuestas sintéticas"
+          ],
           "img": "",
           "alt": "Perfil AIMutatio",
           "href": "",
@@ -174,13 +199,33 @@
         },
         {
           "type": "worker",
-          "title": "AILitterae",
-          "role": "Investigación y contenidos",
-          "body": "Investigación y contenidos prácticos en español, revisados para mantener coherencia, claridad y rigor.",
+          "title": "AIMercatus",
+          "role": "Marketing pragmático y posicionamiento GEO",
+          "body": "Optimiza la presencia digital del negocio en los nuevos motores de respuesta por IA (Generative Engine Optimization) y crea contenidos orientados a resolver dudas reales de clientes.",
+          "capabilities": [
+            "Optimización para buscadores de IA y asistentes (GEO)",
+            "Estrategia de autoridad y contenidos útiles",
+            "Medición analítica sin cookies invasivas"
+          ],
           "img": "",
-          "alt": "Perfil AILitterae",
+          "alt": "Perfil AIMercatus",
           "href": "",
-          "cta": "AILitterae"
+          "cta": "AIMercatus"
+        },
+        {
+          "type": "worker",
+          "title": "AIExperientia",
+          "role": "Experiencia de cliente y soporte asistido",
+          "body": "Supervisa los canales de atención y servicio, integrando asistencia inteligente que resuelve consultas frecuentes de inmediato y deriva con contexto al equipo humano.",
+          "capabilities": [
+            "Atención asistida continua con derivación inteligente",
+            "Detección proactiva de puntos de fricción del cliente",
+            "Evaluación de satisfacción y calidad del servicio"
+          ],
+          "img": "",
+          "alt": "Perfil AIExperientia",
+          "href": "",
+          "cta": "AIExperientia"
         }
       ]
     },

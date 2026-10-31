@@ -265,77 +265,70 @@
         container.append(ul);
       }
       if (b.type === "worker") {
-        // Collapsible worker profile: summary shows name + role + hint; details show photo + capabilities
-        const details = el("details", { class: "worker" });
         const name = b.name || b.title || "";
-        const role = b.role || "";
-        const summary = el("summary", {}, [
-          el("strong", {}, [name]),
-          role ? ` — ${role}` : "",
-          el("span", { class: "hint", "aria-hidden": "true" }, [
-            "Ver capacidades",
-          ]),
-          el("span", { class: "hint-open", "aria-hidden": "true" }, [
-            "Ocultar",
-          ]),
-        ]);
-        details.append(summary);
-        const bodyWrap = el("div", { class: "worker-body" });
-        if (b.img) {
-          bodyWrap.append(
-            el("img", {
-              src: b.img,
-              alt: b.alt || name,
-              loading: "lazy",
-              class: "avatar",
-              "data-lightbox": "true",
-              tabIndex: 0,
-              role: "button",
-              "aria-label": "Ampliar imagen",
-              title: "Ampliar imagen",
-            }),
-          );
-        } else {
-          bodyWrap.append(
-            el(
-              "div",
-              {
-                class: "worker-avatar",
-                "aria-hidden": "true",
-              },
-              [
-                el("span", {}, [
-                  name.replace(/^AI/, "").slice(0, 2).toUpperCase(),
-                ]),
-              ],
-            ),
-          );
+        const agentKey = name.toLowerCase();
+        const card = el("article", { class: "worker-card", "data-agent": agentKey });
+
+        const header = el("div", { class: "worker-header" });
+        const iconBox = el("div", { class: "worker-icon-box", "aria-hidden": "true" });
+        const agentIcons = {
+          aivisio: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+          aidux: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>',
+          aijuris: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M6 7l6-2 6 2"/><path d="M6 7l-3 6h6l-3-6z"/><path d="M18 7l-3 6h6l-3-6z"/><path d="M4 21h16"/></svg>',
+          aiusus: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="6" cy="7" r="1"/><circle cx="9" cy="7" r="1"/></svg>',
+          aiarchitectus: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M10 6.5h4"/><path d="M6.5 10v4"/><path d="M17.5 10v4"/><path d="M10 17.5h4"/></svg>',
+          ailitterae: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg>',
+          aimutatio: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
+          aimercatus: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+          aiexperientia: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+        };
+        iconBox.innerHTML =
+          agentIcons[agentKey] ||
+          '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>';
+        header.append(iconBox);
+
+        const meta = el("div", { class: "worker-meta" });
+        meta.append(el("h3", { class: "worker-name" }, [name]));
+        if (b.role) {
+          meta.append(el("span", { class: "worker-role" }, [b.role]));
         }
-        const contentWrap = el("div", { class: "worker-content" });
+        header.append(meta);
+        card.append(header);
+
+        if (b.body) {
+          card.append(el("p", { class: "worker-body" }, [b.body]));
+        }
+
         if (Array.isArray(b.capabilities) && b.capabilities.length) {
-          const ul = el("ul", { class: "list list-primary" });
+          const capsBox = el("div", { class: "worker-caps" });
+          capsBox.append(
+            el("span", { class: "worker-caps-label" }, ["Especialidades prácticas"]),
+          );
+          const ul = el("ul", { class: "worker-caps-list" });
           b.capabilities.forEach((cap) => ul.append(el("li", {}, [cap])));
-          contentWrap.append(ul);
+          capsBox.append(ul);
+          card.append(capsBox);
         }
-        if (b.body) contentWrap.append(el("p", {}, [b.body]));
-        // Optional external test link (e.g., to a GPT). Opens in new tab.
+
         if (isExternalHref(b.href)) {
           const label = b.cta || (name ? `Probar ${name}` : "Probar");
-          const a = el(
-            "a",
-            {
-              href: b.href,
-              class: "btn",
-              target: "_blank",
-              rel: "noopener noreferrer",
-            },
-            [label],
+          const actions = el("div", { class: "worker-actions" });
+          actions.append(
+            el(
+              "a",
+              {
+                href: b.href,
+                class: "btn btn-sm btn-outline",
+                target: "_blank",
+                rel: "noopener noreferrer",
+              },
+              [label],
+            ),
           );
-          contentWrap.append(a);
+          card.append(actions);
         }
-        bodyWrap.append(contentWrap);
-        details.append(bodyWrap);
-        container.append(details);
+
+        container.append(card);
       }
       if (b.type === "quote") {
         // Support optional image and author/version. Format: "cita." (AUTHOR v.X.Y.Z)
