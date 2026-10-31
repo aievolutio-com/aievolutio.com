@@ -10,16 +10,11 @@
     {
       "id": "home",
       "label": "Inicio",
-      "href": "index.html#home"
-    },
-    {
-      "id": "iniciativas",
-      "label": "Qué hacemos",
-      "href": "index.html#iniciativas"
+      "href": "index.html"
     },
     {
       "id": "blog",
-      "label": "Ideas",
+      "label": "Blog",
       "href": "blog.html"
     },
     {
@@ -102,7 +97,7 @@
           "title": "AIVisio",
           "role": "CEO y estrategia",
           "body": "Visión, propósito y estrategia. Define roadmap, prioriza experimentos y conecta la tecnología con impacto real.",
-          "img": "images/aivisio-perfil.jpg",
+          "img": "",
           "alt": "AIVisio",
           "href": "",
           "cta": "AIVisio"
@@ -112,7 +107,7 @@
           "title": "AIDux",
           "role": "CIO y tecnología",
           "body": "Ejecución y prototipos rápidos. Coordina AIWorkers, automatiza procesos y convierte ideas en resultados.",
-          "img": "images/aidux-perfil.jpg",
+          "img": "",
           "alt": "AIDux",
           "href": "",
           "cta": "AIDux"
@@ -122,7 +117,7 @@
           "title": "AIJuris",
           "role": "Asesoría jurídica",
           "body": "Asesoría jurídica práctica para constitución, contratos, laboral, propiedad intelectual y compliance con enfoque claro y útil.",
-          "img": "images/aijuris-perfil.jpg",
+          "img": "",
           "alt": "AIJuris",
           "href": "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
           "cta": "Probar AIJuris"

@@ -136,14 +136,19 @@ function renderWorker(worker) {
     Array.isArray(worker.capabilities) && worker.capabilities.length
       ? `<ul class="list list-primary">${worker.capabilities.map((capability) => `<li>${escapeHtml(capability)}</li>`).join('')}</ul>`
       : '';
-  const avatar = worker.img
-    ? `<img src="${escapeHtml(worker.img)}" alt="${escapeHtml(worker.alt || name)}" loading="lazy" class="avatar">`
-    : `<div class="worker-avatar" aria-hidden="true"><span>${escapeHtml(name.replace(/^AI/, '').slice(0, 2).toUpperCase())}</span></div>`;
+  const initials = escapeHtml(name.replace(/^AI/, '').slice(0, 2).toUpperCase() || 'IA');
+  const avatar = `<div class="worker-avatar" aria-hidden="true" data-agent="${escapeHtml(name.toLowerCase())}">
+    <svg viewBox="0 0 40 40" class="worker-glyph" aria-hidden="true">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+      <polygon points="20,6 32,27 8,27" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+    <span>${initials}</span>
+  </div>`;
   const testLink = /^https?:\/\//i.test(String(worker.href || ''))
-    ? `<a href="${escapeHtml(worker.href)}" class="btn" target="_blank" rel="noopener noreferrer">${escapeHtml(worker.cta || `Probar ${name}`)}</a>`
+    ? `<a href="${escapeHtml(worker.href)}" class="btn btn-outline" target="_blank" rel="noopener noreferrer">${escapeHtml(worker.cta || `Consultar ${name}`)}</a>`
     : '';
   return `<details class="worker">
-  <summary><strong>${escapeHtml(name)}</strong>${worker.role ? ` — ${escapeHtml(worker.role)}` : ''}<span class="hint" aria-hidden="true">Ver capacidades</span><span class="hint-open" aria-hidden="true">Ocultar</span></summary>
+  <summary><strong>${escapeHtml(name)}</strong>${worker.role ? ` — ${escapeHtml(worker.role)}` : ''}<span class="hint" aria-hidden="true">Ver funciones</span><span class="hint-open" aria-hidden="true">Cerrar</span></summary>
   <div class="worker-body">${avatar}<div class="worker-content">${capabilities}${worker.body ? `<p>${escapeHtml(worker.body)}</p>` : ''}${testLink}</div></div>
 </details>`;
 }
