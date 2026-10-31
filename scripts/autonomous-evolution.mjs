@@ -409,48 +409,54 @@ async function runSpiralBuilder(newPost, editorialLog) {
   console.log('--- [Skill 3: Spiral-Builder] Integrando post modular y recompilando ---');
   await mkdir(postsDir, { recursive: true });
 
-  const filename = `${newPost.date}-${newPost.slug}.json`;
-  const postPath = path.join(postsDir, filename);
+  if (newPost) {
+    const filename = `${newPost.date}-${newPost.slug}.json`;
+    const postPath = path.join(postsDir, filename);
 
-  // Guardar post (sin los campos del editorial-log para mantener el JSON de post limpio)
-  const { readerNeed, angle, actionType, readerProfile, ...postData } = newPost;
-  await writeFile(postPath, JSON.stringify(postData, null, 2) + '\n', 'utf8');
-  console.log(`Post guardado: content/posts/${filename}`);
+    // Guardar post (sin los campos del editorial-log para mantener el JSON de post limpio)
+    const { readerNeed, angle, actionType, readerProfile, ...postData } = newPost;
+    await writeFile(postPath, JSON.stringify(postData, null, 2) + '\n', 'utf8');
+    console.log(`Post guardado: content/posts/${filename}`);
 
-  // Actualizar editorial log con los 4 ejes de variedad
-  const logEntry = {
-    date: newPost.date,
-    title: newPost.title,
-    slug: newPost.slug,
-    author: newPost.author,
-    category: newPost.category,
-    readerNeed: readerNeed || '',
-    angle: angle || '',
-    actionType: actionType || '',
-    readerProfile: readerProfile || ''
-  };
-  editorialLog.push(logEntry);
-  // Mantener máximo 50 entradas para no crecer indefinidamente
-  if (editorialLog.length > 50) editorialLog.splice(0, editorialLog.length - 50);
-  await saveEditorialLog(editorialLog);
-  console.log(`Editorial log actualizado: ${editorialLog.length} entradas.`);
+    // Actualizar editorial log con los 4 ejes de variedad
+    const logEntry = {
+      date: newPost.date,
+      title: newPost.title,
+      slug: newPost.slug,
+      author: newPost.author,
+      category: newPost.category,
+      readerNeed: readerNeed || '',
+      angle: angle || '',
+      actionType: actionType || '',
+      readerProfile: readerProfile || ''
+    };
+    editorialLog.push(logEntry);
+    // Mantener máximo 50 entradas para no crecer indefinidamente
+    if (editorialLog.length > 50) editorialLog.splice(0, editorialLog.length - 50);
+    await saveEditorialLog(editorialLog);
+    console.log(`Editorial log actualizado: ${editorialLog.length} entradas.`);
+  } else {
+    console.log('Jardinería técnica horaria: sin nuevo post editorial en este ciclo.');
+  }
 
   // Recompilar el sitio estático
   console.log('Recompilando sitio estático...');
   const buildResult = await buildSite();
   console.log(`Compilación completada: ${buildResult.pages.length} páginas y ${buildResult.articles} artículos.`);
 
-  // Marcar E2 #004 en el User Story Map
-  try {
-    let storyMap = await readFile(userStoryMapPath, 'utf8');
-    storyMap = storyMap.replace(
-      '- [ ] **#004:** Publicador diario de "Playbooks de Supervivencia" para PYMEs.',
-      '- [x] **#004:** Publicador diario de "Playbooks de Supervivencia" para PYMEs.'
-    );
-    await writeFile(userStoryMapPath, storyMap, 'utf8');
-    console.log('User Story Map actualizado (#004 completado).');
-  } catch (err) {
-    console.warn('Aviso: No se pudo actualizar el User Story Map:', err.message);
+  // Marcar E2 #004 en el User Story Map si hubo post
+  if (newPost) {
+    try {
+      let storyMap = await readFile(userStoryMapPath, 'utf8');
+      storyMap = storyMap.replace(
+        '- [ ] **#004:** Publicador diario de "Playbooks de Supervivencia" para PYMEs.',
+        '- [x] **#004:** Publicador diario de "Playbooks de Supervivencia" para PYMEs.'
+      );
+      await writeFile(userStoryMapPath, storyMap, 'utf8');
+      console.log('User Story Map actualizado (#004 completado).');
+    } catch (err) {
+      console.warn('Aviso: No se pudo actualizar el User Story Map:', err.message);
+    }
   }
 
   return buildResult;
@@ -461,11 +467,12 @@ async function runSpiralBuilder(newPost, editorialLog) {
 async function runSelfHealer(telemetry, post, buildResult, briefing) {
   console.log('--- [Skill 4: Self-Healer] Verificando salud y emitiendo Daily Digest ---');
 
-  const digestContent = `# 📊 Informe Diario de Evolución Autónoma — AIEvolutio
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const digestContent = `# 📊 Informe de Evolución Autónoma — AIEvolutio
 
-**Fecha:** ${post.date}  
+**Fecha y hora:** ${new Date().toISOString()}  
 **Estado:** 🟢 Operativo — Cero intervención humana  
-**Redactor:** ${post.author} (${post.category})
+**Ciclo editorial:** ${post ? `Nuevo post publicado por ${post.author} (${post.category})` : 'Jardinería y mantenimiento técnico horario (sin nuevo post)'}
 
 ---
 
@@ -477,27 +484,27 @@ async function runSelfHealer(telemetry, post, buildResult, briefing) {
 ---
 
 ### 2. Briefing Editorial (AIVisio)
-- **Necesidad del lector:** ${briefing.readerNeed}
+${briefing ? `- **Necesidad del lector:** ${briefing.readerNeed}
 - **Ángulo:** ${briefing.angle}
 - **Tipo de acción:** ${briefing.actionType}
-- **Perfil del lector:** ${briefing.readerProfile}
+- **Perfil del lector:** ${briefing.readerProfile}` : '_Mantenido el briefing del último post publicado (fase de optimización técnica)_'}
 
 ---
 
-### 3. Contenido Publicado (AILittarae)
-- **Título:** ${post.title}
+### 3. Contenido (AILittarae)
+${post ? `- **Título:** ${post.title}
 - **Slug:** \`${post.slug}\`
 - **Extracto:** ${post.excerpt}
 - **Checklist accionable:**
-${post.actionableChecklist.map(item => `  - [x] ${item}`).join('\n')}
+${post.actionableChecklist.map(item => `  - [x] ${item}`).join('\n')}` : `_Último post en producción ya verificado para ${todayIso}._`}
 
 ---
 
 ### 4. Mejoras Técnicas (Spiral-Builder)
 - **E1:** Arquitectura trunk-based, auto-commit sin PRs.
-- **E2:** Artículo modular en \`content/posts/\` + log editorial actualizado.
-- **E3:** Regeneración estática en \`articulos/\`, Brand Book aplicado.
-- **E4:** Digest diario emitido a GitHub Issues.
+- **E2:** Colección modular en \`content/posts/\` y log de variedad garantizados.
+- **E3:** Regeneración estática ultrarrápida, Brand Book y estándares RAE aplicados.
+- **E4:** Digest de observabilidad actualizado.
 
 ---
 
@@ -520,13 +527,25 @@ async function main() {
     // Skill 1: Telemetry-Critic + carga del editorial log
     const telemetry = await runTelemetryCritic();
 
-    // Skill 2a: AIVisio define el Briefing ANTES de que AILittarae escriba
-    const briefing = await runAIVisio(telemetry, apiKey);
+    // Comprobar si ya existe un post publicado en la fecha actual (UTC)
+    const today = new Date().toISOString().slice(0, 10);
+    const existingTodayPost = telemetry.editorialLog.find(p => p.date === today);
 
-    // Skill 2b: AILittarae escribe el artículo siguiendo el Briefing
-    const newPost = await runAILittarae(telemetry, briefing, apiKey);
+    let briefing = null;
+    let newPost = null;
 
-    // Skill 3: Spiral-Builder guarda, actualiza el log editorial y recompila
+    if (!existingTodayPost) {
+      console.log(`[Editorial] No hay artículo para hoy (${today}). Iniciando redacción (AIVisio -> AILittarae)...`);
+      // Skill 2a: AIVisio define el Briefing ANTES de que AILittarae escriba
+      briefing = await runAIVisio(telemetry, apiKey);
+
+      // Skill 2b: AILittarae escribe el artículo siguiendo el Briefing
+      newPost = await runAILittarae(telemetry, briefing, apiKey);
+    } else {
+      console.log(`[Editorial] Artículo de hoy ya en producción (${existingTodayPost.title}). Enfocando ciclo en jardinería técnica continua.`);
+    }
+
+    // Skill 3: Spiral-Builder guarda (si hubo post), actualiza el log editorial y recompila
     const buildResult = await runSpiralBuilder(newPost, telemetry.editorialLog);
 
     // Skill 4: Self-Healer verifica y genera el Daily Digest
