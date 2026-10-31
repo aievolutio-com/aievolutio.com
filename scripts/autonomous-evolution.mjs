@@ -91,54 +91,54 @@ async function saveEditorialLog(log) {
 
 const CONTINGENCY_POSTS = [
   {
-    title: 'Modelos SLM Locales: IA de Alto Rendimiento en Hardware de 500€',
-    slug: 'slm-locales-alto-rendimiento-pymes',
+    title: 'Modelos SLM locales: IA de alto rendimiento en hardware modesto de oficina',
+    slug: 'modelos-slm-locales-alto-rendimiento-pymes',
     author: 'AIDux',
     category: 'Operaciones',
-    readerNeed: 'Reducir coste de IA sin depender de la nube',
-    angle: 'Caso práctico con hardware accesible',
-    actionType: 'Instalación local en una tarde',
-    readerProfile: 'Gerente técnico PYME industrial',
-    excerpt: 'Cómo procesar presupuestos y contratos en local sin suscripciones mensuales.',
-    body: `**El mito del coste prohibitivo de la IA ha quedado obsoleto.** Con modelos como Llama 3.2 o Phi-3.5, una empresa de 8 empleados puede procesar facturas, contratos y consultas internas en hardware de oficina estándar.\n\n**Por qué los SLMs cambian las reglas para la PYME**\n\n- **Coste marginal cero:** Sin factura por token ni suscripción mensual imprevista.\n- **Soberanía del dato:** Los datos de clientes nunca salen de la red local. Cumplimiento RGPD automático.\n- **Latencia predecible:** Clasificación de pedidos o extracción de PDFs en segundos.\n\n**Acción alcanzable para hoy:**\n1. Instala Ollama en un equipo de oficina (gratuito, 5 minutos).\n2. Descarga \`llama3.2:3b\` — apenas 2 GB de espacio.\n3. Pasa tus preguntas frecuentes internas y mide la precisión esta misma tarde.`,
+    readerNeed: 'Reducir el coste de la IA y procesar datos sin depender de la nube',
+    angle: 'Caso práctico con hardware accesible de oficina',
+    actionType: 'Instalación local en una tarde para tareas documentales',
+    readerProfile: 'Gerente o responsable de administración de una pyme',
+    excerpt: 'Cómo procesar presupuestos, contratos y expedientes en local sin pagar suscripciones mensuales ni regalar tus datos.',
+    body: `**El mito del coste prohibitivo de la inteligencia artificial ha quedado obsoleto.** Con la maduración de los modelos ligeros de lenguaje (SLM), como Llama o Phi, una pequeña empresa de cinco o diez empleados puede clasificar facturas, analizar contratos y responder consultas internas en un ordenador estándar de oficina.\n\n**Por qué los modelos locales transforman la gestión de una pyme**\n\n- **Coste marginal cero:** sin facturas imprevistas por consumo de tókenes ni cuotas recurrentes por usuario.\n- **Soberanía y confidencialidad:** los datos de clientes, contratos y nóminas jamás abandonan la red interna de la empresa, garantizando el cumplimiento estricto del RGPD y el AI Act europeo.\n- **Velocidad predecible:** extracción de datos de albaranes, pedidos y archivos PDF en cuestión de segundos sin depender de conexiones remotas.\n\n**Acción alcanzable para hoy:**\n1. Descarga e instala un entorno de ejecución local como Ollama en un equipo de la oficina.\n2. Descarga un modelo cuantitativo ligero de tres mil millones de parámetros.\n3. Realiza una prueba con tres documentos internos repetitivos y comprueba la precisión de extracción sin enviar ningún dato a la nube.`,
     actionableChecklist: [
-      'Identificar tareas repetitivas con datos sensibles (facturas, contratos)',
-      'Instalar Ollama y un modelo SLM ligero sin coste recurrente',
-      'Medir tiempo ahorrado por empleado en la primera semana'
+      'Identificar tareas administrativas repetitivas con información confidencial',
+      'Instalar un gestor de modelos SLM locales sin coste de licencias',
+      'Medir el tiempo ahorrado por expediente en la primera semana de prueba'
     ]
   },
   {
-    title: 'AI Act Europeo para PYMEs: Cumplimiento en 3 Pasos Sin Consultoría',
-    slug: 'cumplimiento-ai-act-europeo-pymes-sin-friccion',
-    author: 'AIJuris',
-    category: 'Legal',
-    readerNeed: 'Entender qué obliga el AI Act sin gastar en consultores',
-    angle: 'Clasificación de riesgos aplicada al contexto PYME real',
-    actionType: 'Auditoría interna de herramientas IA en una mañana',
-    readerProfile: 'Responsable de administración o gerente con dudas legales',
-    excerpt: 'Clasifica el uso de IA en tu empresa y cumple la normativa europea sin burocracia millonaria.',
-    body: `**El AI Act europeo asusta más de lo que exige** a la mayoría de pequeñas empresas. El 95% de los usos habituales (asistentes de redacción, chatbots de atención, traductores) son de riesgo mínimo y no requieren certificaciones complejas.\n\n**Los tres niveles que importan a tu empresa**\n\n1. **Riesgo mínimo (tu caso habitual):** Filtros de spam, chatbots comerciales, asistentes de redacción. Solo necesitas informar al cliente de que interactúa con IA.\n2. **Transparencia obligatoria:** Contenido sintético o voz generada. Etiqueta claramente con "generado por IA".\n3. **Alto riesgo (evitar o auditar):** Decisiones automáticas de RRHH o crédito. Para PYMEs, la estrategia más segura es prescindir de estas automatizaciones.\n\n**Acción alcanzable para hoy:**\n1. Crea una hoja con las herramientas de IA que usa tu equipo.\n2. Establece la regla: sin datos identificativos de clientes en herramientas gratuitas de la nube.\n3. Añade un aviso de transparencia en tus canales de contacto automatizados.`,
-    actionableChecklist: [
-      'Auditar el inventario de herramientas de IA del equipo',
-      'Evitar IA para decisiones automáticas de contratación',
-      'Establecer protocolo de confidencialidad para datos de clientes'
-    ]
-  },
-  {
-    title: 'GEO: Cómo tu PYME Aparece en Perplexity y ChatGPT en Lugar de la Competencia',
-    slug: 'geo-generative-engine-optimization-pymes',
+    title: 'Optimización para motores generativos (GEO): cómo aparecer en ChatGPT y Perplexity',
+    slug: 'optimizacion-motores-generativos-geo-pymes',
     author: 'AIDux',
     category: 'Estrategia',
-    readerNeed: 'Ganar visibilidad cuando los clientes preguntan a IAs en lugar de a Google',
-    angle: 'Diferencia práctica entre SEO clásico y GEO para buscadores generativos',
-    actionType: 'Crear un FAQ Schema en tu web esta tarde',
-    readerProfile: 'Dueño de negocio local que pierde clientes ante grandes e-commerce',
-    excerpt: 'El SEO clásico pierde terreno. Aprende a estructurar datos para que los asistentes recomienden tu negocio.',
-    body: `**Cuando un cliente pregunta "¿dónde reparar una bomba hidráulica en Valencia?"** ya no busca en Google diez enlaces azules: pregunta a Perplexity, ChatGPT o Gemini. Y esos motores eligen sus fuentes de forma diferente al SEO tradicional.\n\n**Qué evalúan los motores generativos**\n\n- **Datos estructurados claros:** Schema.org \`LocalBusiness\`, \`FAQPage\`, \`Service\` permiten extraer información sin ambigüedad.\n- **Respuestas directas a preguntas reales:** Sin florituras publicitarias; los LLMs priorizan la especificidad.\n- **Consistencia factual:** Horarios, precios orientativos y áreas de servicio deben ser coherentes en toda la web.\n\n**Acción alcanzable para hoy:**\n1. Toma la consulta más frecuente que hacen tus clientes por teléfono.\n2. Redáctala como FAQ de 80 palabras con respuesta directa.\n3. Añade el marcado \`FAQPage\` de Schema.org y publícalo en tu web.`,
+    readerNeed: 'Ganar visibilidad cuando los clientes preguntan a asistentes en lugar de a buscadores clásicos',
+    angle: 'Diferencia práctica entre SEO tradicional y posicionamiento generativo para pymes',
+    actionType: 'Crear un marcado semántico de preguntas frecuentes en la web',
+    readerProfile: 'Profesional o titular de un negocio local que busca nuevos clientes',
+    excerpt: 'El buscador convencional pierde terreno. Aprende a estructurar tus datos para que los asistentes recomienden tus servicios.',
+    body: `**Cuando un cliente necesita un asesor fiscal o un abogado en su ciudad,** ya no revisa únicamente los diez enlaces azules de Google: consulta a ChatGPT, Perplexity o Gemini. Y estos motores seleccionan sus fuentes con criterios muy distintos a los del posicionamiento clásico.\n\n**Qué valoran los motores generativos al recomendar un servicio**\n\n- **Datos estructurados sin ambigüedad:** esquemas como \`LocalBusiness\`, \`FAQPage\` y \`Service\` permiten que los modelos extraigan tarifas, coberturas y especialidades de forma inequívoca.\n- **Respuestas directas y concisas:** redactadas con rigor factual y sin relleno publicitario; los asistentes premian la exactitud.\n- **Consistencia de datos:** el horario, el ámbito de actuación y las condiciones deben coincidir en todo el sitio web.\n\n**Acción alcanzable para hoy:**\n1. Selecciona la pregunta más repetida que te hacen los clientes antes de contratarte.\n2. Redacta una respuesta transparente de no más de ochenta palabras con información verificable.\n3. Incorpora el esquema semántico \`FAQPage\` en tu página principal para que los asistentes lo indexen directamente.`,
     actionableChecklist: [
-      'Identificar las 5 consultas de soporte más habituales de clientes',
-      'Redactar respuestas directas con datos verificables y sin relleno',
-      'Añadir Schema.org FAQPage a la página de servicios principal'
+      'Identificar las cinco consultas comerciales más habituales de los clientes',
+      'Redactar respuestas directas con datos comprobables y sin florituras',
+      'Añadir datos estructurados Schema.org a las páginas principales de servicio'
+    ]
+  },
+  {
+    title: 'Gobernanza del AI Act para despachos y pymes: protocolo básico sin fricción',
+    slug: 'gobernanza-ai-act-pymes-protocolo-basico',
+    author: 'AIJuris',
+    category: 'Legal',
+    readerNeed: 'Garantizar el cumplimiento normativo europeo sin contratar costosas auditorías externas',
+    angle: 'Protocolo interno en tres pasos adaptado al marco legal de la Unión Europea',
+    actionType: 'Aprobar una política interna de uso responsable de asistentes',
+    readerProfile: 'Titular de despacho o responsable administrativo preocupado por la responsabilidad legal',
+    excerpt: 'Guía práctica para cumplir las exigencias de transparencia y confidencialidad del reglamento europeo de inteligencia artificial.',
+    body: `**El AI Act de la Unión Europea establece obligaciones escalonadas.** Para la inmensa mayoría de pequeñas empresas, el uso habitual de herramientas de redacción, síntesis documental o traducción se sitúa en niveles de riesgo mínimo o transparencia básica.\n\n**Tres medidas inmediatas de cumplimiento**\n\n1. **Inventario de herramientas:** documentar qué plataformas utiliza el equipo en su operativa diaria.\n2. **Deber de transparencia:** advertir a los clientes cuando interactúan con un canal automatizado o cuando un documento ha sido generado con asistencia de IA.\n3. **Cero datos sensibles en nubes públicas:** prohibir la introducción de nóminas, historiales o datos contables en herramientas abiertas sin contrato de procesamiento conforme al RGPD.\n\n**Acción alcanzable para hoy:**\n1. Redacta una circular interna de una sola página con las herramientas homologadas por la empresa.\n2. Prohíbe expresamente subir información amparada por secreto profesional a modelos gratuitos de la red.\n3. Establece una revisión trimestral del inventario de aplicaciones asistidas.`,
+    actionableChecklist: [
+      'Elaborar el inventario de aplicaciones y extensiones de IA utilizadas por el equipo',
+      'Publicar la advertencia de transparencia en los canales de atención automatizada',
+      'Firmar el compromiso de confidencialidad y no compartición de datos de clientes'
     ]
   }
 ];
@@ -320,8 +320,12 @@ async function runAILittarae(telemetry, briefing, apiKey) {
   console.log(`  Perfil: ${briefing.readerProfile}`);
 
   if (!apiKey) {
-    const contingency = CONTINGENCY_POSTS.find(p => p.author === author) || CONTINGENCY_POSTS[0];
-    return { ...contingency, date: today };
+    // Si no hay API key de Gemini configurada, rotar entre los artículos de contingencia
+    // descartando aquellos que ya figuren en el registro editorial reciente
+    const recentSlugs = new Set((telemetry.editorialLog || []).map(p => p.slug));
+    const available = CONTINGENCY_POSTS.filter(p => !recentSlugs.has(p.slug));
+    const selected = available.length > 0 ? available[0] : CONTINGENCY_POSTS[0];
+    return { ...selected, date: today };
   }
 
   // El prompt es compacto para garantizar que la respuesta cabe en 900 tokens
