@@ -267,16 +267,27 @@
       if (b.type === "worker") {
         const name = b.name || b.title || "";
         const agentKey = name.toLowerCase();
-        const card = el("article", { class: "worker-card", "data-agent": agentKey });
+        const card = el("article", {
+          class: "worker-card",
+          "data-agent": agentKey,
+        });
 
         const header = el("div", { class: "worker-header" });
-        const iconBox = el("div", { class: "worker-icon-box", "aria-hidden": "true" });
+        const iconBox = el("div", {
+          class: "worker-icon-box",
+          "aria-hidden": "true",
+        });
         const agentIcons = {
-          aifactura: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>',
-          airespuestas: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
-          aioferta: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
-          aijuris: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M6 7l6-2 6 2"/><path d="M6 7l-3 6h6l-3-6z"/><path d="M18 7l-3 6h6l-3-6z"/><path d="M4 21h16"/></svg>',
-          aidux: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>',
+          aifactura:
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>',
+          airespuestas:
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+          aioferta:
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+          aijuris:
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M6 7l6-2 6 2"/><path d="M6 7l-3 6h6l-3-6z"/><path d="M18 7l-3 6h6l-3-6z"/><path d="M4 21h16"/></svg>',
+          aidux:
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>',
         };
         iconBox.innerHTML =
           agentIcons[agentKey] ||
@@ -298,9 +309,13 @@
         if (b.impact) {
           const impactBox = el("div", { class: "worker-impact" });
           impactBox.append(
-            el("span", { class: "worker-impact-label" }, ["Impacto para tu pyme: "]),
+            el("span", { class: "worker-impact-label" }, [
+              "Impacto para tu pyme: ",
+            ]),
           );
-          impactBox.append(el("strong", { class: "worker-impact-val" }, [b.impact]));
+          impactBox.append(
+            el("strong", { class: "worker-impact-val" }, [b.impact]),
+          );
           card.append(impactBox);
         }
 
@@ -686,11 +701,16 @@
       document.documentElement.dataset.theme = v;
       if (btn) {
         btn.setAttribute("aria-pressed", v === "dark");
-        btn.setAttribute("title", v === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+        btn.setAttribute(
+          "title",
+          v === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro",
+        );
       }
     }
     const stored = localStorage.getItem(KEY);
-    const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const systemDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
     apply(stored || (systemDark ? "dark" : "light"));
     if (!btn) return;
     btn.addEventListener("click", () => {
@@ -821,7 +841,9 @@
 
     root.querySelectorAll("[data-team-size]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        root.querySelectorAll("[data-team-size]").forEach((b) => b.classList.remove("active"));
+        root
+          .querySelectorAll("[data-team-size]")
+          .forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         teamSizeIndex = parseInt(btn.dataset.teamSize, 10) || 0;
         update();
@@ -830,7 +852,9 @@
 
     root.querySelectorAll("[data-task]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        root.querySelectorAll("[data-task]").forEach((b) => b.classList.remove("active"));
+        root
+          .querySelectorAll("[data-task]")
+          .forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         currentTask = btn.dataset.task;
         update();

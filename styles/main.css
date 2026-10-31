@@ -318,7 +318,12 @@ h3 {
   width: min(45vw, 420px);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(2, 132, 199, 0.08) 0%, rgba(56, 189, 248, 0.02) 60%, transparent 80%);
+  background: radial-gradient(
+    circle,
+    rgba(2, 132, 199, 0.08) 0%,
+    rgba(56, 189, 248, 0.02) 60%,
+    transparent 80%
+  );
   pointer-events: none;
   content: "";
 }
@@ -1019,11 +1024,13 @@ footer .disclaimer {
 
 /* Dark mode logo and contrast enhancements */
 :root[data-theme="dark"] .logo img {
-  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75)) drop-shadow(0 0 12px rgba(56, 189, 248, 0.25));
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75))
+    drop-shadow(0 0 12px rgba(56, 189, 248, 0.25));
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .logo img {
-    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75)) drop-shadow(0 0 12px rgba(56, 189, 248, 0.25));
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75))
+      drop-shadow(0 0 12px rgba(56, 189, 248, 0.25));
   }
 }
 
