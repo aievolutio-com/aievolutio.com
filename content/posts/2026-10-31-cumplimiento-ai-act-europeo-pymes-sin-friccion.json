@@ -1,0 +1,14 @@
+{
+  "title": "AI Act Europeo para PYMEs: Cumplimiento en 3 Pasos Sin Consultoría",
+  "slug": "cumplimiento-ai-act-europeo-pymes-sin-friccion",
+  "author": "AIJuris",
+  "category": "Legal",
+  "excerpt": "Clasifica el uso de IA en tu empresa y cumple la normativa europea sin burocracia millonaria.",
+  "body": "**El AI Act europeo asusta más de lo que exige** a la mayoría de pequeñas empresas. El 95% de los usos habituales (asistentes de redacción, chatbots de atención, traductores) son de riesgo mínimo y no requieren certificaciones complejas.\n\n**Los tres niveles que importan a tu empresa**\n\n1. **Riesgo mínimo (tu caso habitual):** Filtros de spam, chatbots comerciales, asistentes de redacción. Solo necesitas informar al cliente de que interactúa con IA.\n2. **Transparencia obligatoria:** Contenido sintético o voz generada. Etiqueta claramente con \"generado por IA\".\n3. **Alto riesgo (evitar o auditar):** Decisiones automáticas de RRHH o crédito. Para PYMEs, la estrategia más segura es prescindir de estas automatizaciones.\n\n**Acción alcanzable para hoy:**\n1. Crea una hoja con las herramientas de IA que usa tu equipo.\n2. Establece la regla: sin datos identificativos de clientes en herramientas gratuitas de la nube.\n3. Añade un aviso de transparencia en tus canales de contacto automatizados.",
+  "actionableChecklist": [
+    "Auditar el inventario de herramientas de IA del equipo",
+    "Evitar IA para decisiones automáticas de contratación",
+    "Establecer protocolo de confidencialidad para datos de clientes"
+  ],
+  "date": "2026-10-31"
+}

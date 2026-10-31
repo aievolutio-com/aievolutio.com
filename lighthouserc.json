@@ -2,15 +2,21 @@
   "ci": {
     "collect": {
       "staticDistDir": "dist",
-      "url": ["/", "/equipo.html", "/blog.html", "/archivo.html", "/contacto.html"]
+      "url": [
+        "/",
+        "/equipo.html",
+        "/blog.html",
+        "/archivo.html",
+        "/contacto.html"
+      ]
     },
     "assert": {
       "assertions": {
-        "categories:performance": ["error", {"minScore": 0.7}],
-        "categories:accessibility": ["error", {"minScore": 0.95}],
-        "categories:best-practices": ["error", {"minScore": 0.9}],
-        "categories:seo": ["warn", {"minScore": 0.8}],
-        "total-byte-weight": ["error", {"maxNumericValue": 350000}],
+        "categories:performance": ["error", { "minScore": 0.7 }],
+        "categories:accessibility": ["error", { "minScore": 0.95 }],
+        "categories:best-practices": ["error", { "minScore": 0.9 }],
+        "categories:seo": ["warn", { "minScore": 0.8 }],
+        "total-byte-weight": ["error", { "maxNumericValue": 350000 }],
         "unminified-javascript": "warn",
         "unused-css-rules": "warn"
       }

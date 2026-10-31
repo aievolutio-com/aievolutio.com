@@ -7,8 +7,9 @@ labels: bug
 ## Descripción
 
 ## Pasos para reproducir
-1. 
-2. 
+
+1.
+2.
 
 ## Resultado esperado
 
