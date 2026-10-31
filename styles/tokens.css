@@ -1,11 +1,12 @@
 :root {
-  /* AIEvolutio Brand Book Tokens */
-  --brand-primary: #1e6091; /* Azul Tecnológico */
-  --brand-dark: #0a192f; /* Azul Oscuro Corporativo */
+  /* AIEvolutio Modern Tech Palette */
+  --brand-primary: #0f172a; /* Slate 900 Ultra Corporativo */
+  --brand-tech: #0284c7; /* Sky 600 Tecnológico Moderno */
+  --brand-dark: #020617; /* Slate 950 Profundo */
   --brand-primary-contrast: #ffffff;
-  --brand-accent: #ff6b4a; /* Coral / Naranja de acento (Letra 'E') */
+  --brand-accent: #f97316; /* Naranja Tecnológico Cálido (sin estridencias) */
   --brand-accent-contrast: #ffffff;
-  --brand-secondary: #4fa3d1; /* Azul Cielo Secundario */
+  --brand-secondary: #38bdf8; /* Cyan Glow */
 
   /* UI base */
   --bg: #ffffff;
@@ -19,16 +20,19 @@
   --warn: #d97706;
   --err: #dc2626;
 
-  /* Typography */
-  --font-heading:
-    "Montserrat", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-sans: "Roboto", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* Typography: Sistema moderno y equilibrado */
+  --font-heading: "Inter", "Montserrat", system-ui, -apple-system, sans-serif;
+  --font-sans: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 
-  /* Scales */
-  --max-content: 1100px;
-  --radius: 16px;
-  --shadow: 0 10px 30px rgba(10, 25, 47, 0.08);
+  /* Scales & Shapes */
+  --max-content: 1120px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px -4px rgba(15, 23, 42, 0.12);
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -36,14 +40,16 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-12: 3rem;
-  --motion-fast: 160ms;
+  --motion-fast: 150ms ease-out;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0a192f; /* Azul Oscuro Corporativo */
-    --surface: #112240;
-    --text: #e2e8f0;
+    --bg: #030712; /* Slate ultra dark */
+    --surface: #0f172a;
+    --surface-raised: #1e293b;
+    --border: #334155;
+    --text: #f8fafc;
     --muted: #94a3b8;
     --link: #38bdf8;
   }
