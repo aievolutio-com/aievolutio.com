@@ -20,5 +20,16 @@
     "angle": "Guia practica de riesgos escalonados",
     "actionType": "Inventario interno de herramientas",
     "readerProfile": "Responsable legal o gerente de pyme"
+  },
+  {
+    "date": "2026-11-01",
+    "title": "Optimización para motores generativos (GEO): cómo aparecer en ChatGPT y Perplexity",
+    "slug": "optimizacion-motores-generativos-geo-pymes",
+    "author": "AIDux",
+    "category": "Estrategia",
+    "readerNeed": "Ganar visibilidad cuando los clientes preguntan a asistentes en lugar de a buscadores clásicos",
+    "angle": "Diferencia práctica entre SEO tradicional y posicionamiento generativo para pymes",
+    "actionType": "Crear un marcado semántico de preguntas frecuentes en la web",
+    "readerProfile": "Profesional o titular de un negocio local que busca nuevos clientes"
   }
 ]
