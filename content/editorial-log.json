@@ -31,5 +31,16 @@
     "angle": "Diferencia práctica entre SEO tradicional y posicionamiento generativo para pymes",
     "actionType": "Crear un marcado semántico de preguntas frecuentes en la web",
     "readerProfile": "Profesional o titular de un negocio local que busca nuevos clientes"
+  },
+  {
+    "date": "2026-11-02",
+    "title": "Gobernanza del AI Act para despachos y pymes: protocolo básico sin fricción",
+    "slug": "gobernanza-ai-act-pymes-protocolo-basico",
+    "author": "AIJuris",
+    "category": "Legal",
+    "readerNeed": "Garantizar el cumplimiento normativo europeo sin contratar costosas auditorías externas",
+    "angle": "Protocolo interno en tres pasos adaptado al marco legal de la Unión Europea",
+    "actionType": "Aprobar una política interna de uso responsable de asistentes",
+    "readerProfile": "Titular de despacho o responsable administrativo preocupado por la responsabilidad legal"
   }
 ]

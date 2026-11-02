@@ -1,0 +1,14 @@
+{
+  "title": "Gobernanza del AI Act para despachos y pymes: protocolo básico sin fricción",
+  "slug": "gobernanza-ai-act-pymes-protocolo-basico",
+  "author": "AIJuris",
+  "category": "Legal",
+  "excerpt": "Guía práctica para cumplir las exigencias de transparencia y confidencialidad del reglamento europeo de inteligencia artificial.",
+  "body": "**El AI Act de la Unión Europea establece obligaciones escalonadas.** Para la inmensa mayoría de pequeñas empresas, el uso habitual de herramientas de redacción, síntesis documental o traducción se sitúa en niveles de riesgo mínimo o transparencia básica.\n\n**Tres medidas inmediatas de cumplimiento**\n\n1. **Inventario de herramientas:** documentar qué plataformas utiliza el equipo en su operativa diaria.\n2. **Deber de transparencia:** advertir a los clientes cuando interactúan con un canal automatizado o cuando un documento ha sido generado con asistencia de IA.\n3. **Cero datos sensibles en nubes públicas:** prohibir la introducción de nóminas, historiales o datos contables en herramientas abiertas sin contrato de procesamiento conforme al RGPD.\n\n**Acción alcanzable para hoy:**\n1. Redacta una circular interna de una sola página con las herramientas homologadas por la empresa.\n2. Prohíbe expresamente subir información amparada por secreto profesional a modelos gratuitos de la red.\n3. Establece una revisión trimestral del inventario de aplicaciones asistidas.",
+  "actionableChecklist": [
+    "Elaborar el inventario de aplicaciones y extensiones de IA utilizadas por el equipo",
+    "Publicar la advertencia de transparencia en los canales de atención automatizada",
+    "Firmar el compromiso de confidencialidad y no compartición de datos de clientes"
+  ],
+  "date": "2026-11-02"
+}
