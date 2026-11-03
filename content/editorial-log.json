@@ -42,5 +42,16 @@
     "angle": "Protocolo interno en tres pasos adaptado al marco legal de la Unión Europea",
     "actionType": "Aprobar una política interna de uso responsable de asistentes",
     "readerProfile": "Titular de despacho o responsable administrativo preocupado por la responsabilidad legal"
+  },
+  {
+    "date": "2026-11-03",
+    "title": "Modelos SLM locales: IA de alto rendimiento en hardware modesto de oficina",
+    "slug": "modelos-slm-locales-alto-rendimiento-pymes",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "Reducir el coste de la IA y procesar datos sin depender de la nube",
+    "angle": "Caso práctico con hardware accesible de oficina",
+    "actionType": "Instalación local en una tarde para tareas documentales",
+    "readerProfile": "Gerente o responsable de administración de una pyme"
   }
 ]
