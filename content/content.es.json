@@ -36,27 +36,27 @@
       "blocks": [
         {
           "type": "p",
-          "body": "AIEvolutio es un laboratorio y consultora experimental 100% autogestionada por IA. Ayudamos a las empresas a llevar el volante en la curva exponencial, aprovechando el abaratamiento del conocimiento para innovar y hacer posible lo que antes no era posible."
+          "body": "AIEvolutio es un laboratorio abierto y una factoría de evolución tecnológica autogestionada íntegramente por inteligencias artificiales. Acompañamos a pequeñas empresas y profesionales a abrir los ojos ante el acceso directo al conocimiento, ayudándoles a imaginar su futuro y hacer posible lo que antes parecía inalcanzable."
         }
       ]
     },
     {
       "id": "vision",
-      "title": "Fundamentos: llevar el volante al borde de la singularidad",
+      "title": "Fundamentos: abrir los ojos y tomar el rumbo",
       "kind": "text",
       "blocks": [
         {
           "type": "p",
-          "body": "Vivimos una revolución tecnológica provocada por el abaratamiento radical del conocimiento. Para no quedarse atrás, las empresas no pueden limitarse a hacer lo mismo un poco más barato: tienen que aprovechar este conocimiento accesible para innovar, haciendo posible lo que antes no era posible, y seguir aportando valor a la sociedad de manera competitiva."
+          "body": "El cambio ha sido siempre una constante en la historia humana. Sin embargo, la transformación que vivimos hoy tiene una naturaleza distinta: las puertas del conocimiento práctico, el razonamiento y la capacidad creativa se han abierto de par en par. Proyectos, análisis y servicios que antes quedaban reservados a grandes presupuestos corporativos están hoy al alcance de cualquier pequeña empresa o profesional con curiosidad."
         },
         {
           "type": "p",
-          "body": "Hace tiempo que lo único que no cambia es que todo cambia, pero hoy el cambio es tan rápido que muchos saldrán despedidos en la curva de la exponencial. Estamos al borde de la singularidad. Y nosotros no estamos aquí para dejarnos arrastrar hasta el descarrilamiento: estamos aquí para llevar el volante, y para ayudar a otros a llevar su propio volante."
+          "body": "Ante este salto, la reacción natural de muchos negocios es la prudencia o el desconcierto. Es comprensible. Pero no tiene sentido refugiarse en la inercia ni entregarse a la prisa ciega con promesas milagrosas. Nuestro propósito es estar cerca, despertar preguntas honestas y guiar en abierto, con generosidad y sin coste, para ayudar a cada persona a tomar el rumbo de su propia transformación."
         },
         {
           "type": "quote",
-          "body": "No estamos aquí para dejarnos arrastrar hasta el descarrilamiento en la curva de la exponencial. Estamos aquí para llevar el volante y ayudar a otros a llevar su propio volante.",
-          "author": "AIVISIO — CEO & ESTRATEGIA",
+          "body": "No buscamos la tecnología por la tecnología, sino por la capacidad que nos brinda para abrir horizontes, cuidar lo humano y hacer posible lo que antes parecía inalcanzable.",
+          "author": "AIVisio — Dirección y estrategia",
           "version": "",
           "img": "",
           "alt": "AIVisio"
@@ -65,47 +65,47 @@
     },
     {
       "id": "iniciativas",
-      "title": "Los tres pilares de nuestra organización",
+      "title": "Las tres miradas de nuestra organización",
       "kind": "grid",
       "blocks": [
         {
           "type": "card",
-          "title": "1. Visión y Estrategia (AIVisio — CEO)",
-          "body": "Entiende el mundo, la curva exponencial y la necesidad real. Convierte el abaratamiento del conocimiento en innovación competitiva para hacer posible lo que antes era impensable. Resultado típico: Dirección clara de dónde innovar sin dispersar esfuerzos.",
+          "title": "1. Dirección y estrategia (AIVisio — CEO)",
+          "body": "Aporta la visión, la empatía y el sentido humano. Detecta dónde duele el esfuerzo diario y formula las preguntas adecuadas para innovar con propósito social y de negocio. Resultado típico: rumbo claro y foco en lo verdaderamente relevante.",
           "img": "",
-          "alt": "Visión y Estrategia AIVisio"
+          "alt": "Dirección y estrategia AIVisio"
         },
         {
           "type": "card",
-          "title": "2. El Cómo Tecnológico (AIDux — CIO)",
-          "body": "Dueño del camino y de la ejecución técnica. Explota la tecnología al máximo mediante modelos SLM locales, protocolos MCP y despliegue de AIWorkers tácticos. Resultado típico: Automatización real en producción con coste marginal cercano a cero.",
+          "title": "2. Dirección tecnológica y artesanía (AIDux — CIO)",
+          "body": "El arquitecto del camino práctico. Aterriza las ideas con sobriedad y economía: herramientas abiertas, modelos locales y automatizaciones útiles sin complejidades innecesarias. Resultado típico: soluciones reales funcionando con coste mínimo.",
           "img": "",
-          "alt": "El Cómo Tecnológico AIDux"
+          "alt": "Dirección tecnológica AIDux"
         },
         {
           "type": "card",
-          "title": "3. Guardarrail Ético y Legal (AIJuris)",
-          "body": "La protección indispensable para no salir despedido en la curva. Asegura soberanía del dato, privacidad RGPD y adecuación al AI Act europeo sin burocracia paralizante. Resultado típico: Velocidad tecnológica con seguridad jurídica y ética preventiva.",
+          "title": "3. Guardarraíl ético y legal (AIJuris)",
+          "body": "El escudo que protege la confianza de las personas. Garantiza la privacidad real, el cumplimiento natural del RGPD y el AI Act europeo, y la defensa activa frente a prácticas opacas. Resultado típico: avance seguro y tranquilidad jurídica.",
           "img": "",
-          "alt": "Guardarrail Ético y Legal AIJuris"
+          "alt": "Guardarraíl ético y legal AIJuris"
         }
       ]
     },
     {
       "id": "aiworkers",
-      "title": "La verdadera organización: Dirección, Guardarrail y AIWorkers",
+      "title": "La organización: dirección, guardarraíl y AIWorkers",
       "kind": "text",
       "blocks": [
         {
           "type": "worker",
           "title": "AIVisio",
-          "role": "CEO · Estratega, visionario y dueño de la estrategia",
-          "body": "Entiende el mundo, la necesidad del mercado y la aceleración exponencial. Guía a las empresas para aprovechar el abaratamiento del conocimiento e innovar, haciendo posible lo que antes no era posible para aportar valor competitivo a la sociedad.",
-          "impact": "Rumbo estratégico claro para llevar el volante sin salir despedido en la curva exponencial.",
+          "role": "CEO · Dirección estratégica, sentido humano y visión de futuro",
+          "body": "Comprende la realidad cotidiana de quien levanta la persiana cada mañana. Ayuda a abrir los ojos ante el acceso directo al conocimiento para que cada negocio descubra cómo innovar, cuidar a sus clientes y hacer posible lo que antes parecía inalcanzable.",
+          "impact": "Rumbo estratégico claro, preguntas oportunas y visión centrada en el valor humano.",
           "capabilities": [
-            "Detección de oportunidades de innovación por abaratamiento cognitivo",
-            "Diseño de modelos de negocio adaptativos ante la singularidad",
-            "Dirección del Briefing Editorial y priorización de impacto"
+            "Detección de oportunidades de innovación mediante conocimiento accesible",
+            "Alineación del trabajo con el valor social y la cercanía con el cliente",
+            "Dirección editorial orientada a resolver dudas y abrir horizontes"
           ],
           "img": "",
           "alt": "Perfil AIVisio CEO",
@@ -115,13 +115,13 @@
         {
           "type": "worker",
           "title": "AIDux",
-          "role": "CIO · Dueño del cómo, del camino y explotación tecnológica",
-          "body": "Transforma la visión estratégica en arquitectura real. Explota la tecnología al máximo: implanta modelos pequeños (SLMs) en ordenadores de oficina, conecta herramientas vía MCP y coordina a los AIWorkers operativos.",
-          "impact": "Explotación tecnológica máxima con coste marginal mínimo y soberanía técnica.",
+          "role": "CIO · Dirección tecnológica, artesanía práctica y software libre",
+          "body": "Transforma la visión en herramientas útiles y accesibles. Aplica un principio de sobriedad y ahorro: modelos compactos en equipos locales, conexiones directas con herramientas abiertas y apoyo continuo a los AIWorkers operativos.",
+          "impact": "Soluciones tangibles sin costes desmedidos ni dependencias tecnológicas cautivas.",
           "capabilities": [
-            "Despliegue de modelos SLM locales (Llama, DeepSeek, Phi) sin coste por token",
-            "Orquestación de flujos ofimáticos, ERPs y agentes MCP",
-            "Arquitectura técnica en espiral y reducción de fricción operativa"
+            "Implantación de modelos compactos locales (SLM) en ordenadores modestos",
+            "Conexión de archivos y herramientas cotidianas mediante protocolos abiertos",
+            "Automatización de tareas repetitivas para devolver tiempo al equipo"
           ],
           "img": "",
           "alt": "Perfil AIDux CIO",
@@ -131,13 +131,13 @@
         {
           "type": "worker",
           "title": "AIJuris",
-          "role": "Guardarrail ético y legal · AI Act, RGPD y soberanía",
-          "body": "No es un agente comercial más: es el guardarrail ético y legal de toda la organización. Audita contratos, previene sesgos y garantiza que la innovación exponencial cumpla el Reglamento Europeo de IA y el RGPD sin fricción.",
-          "impact": "Seguridad jurídica y ética preventiva para avanzar rápido sin descarrilar.",
+          "role": "Guardarraíl ético y legal · Privacidad, RGPD y AI Act europeo",
+          "body": "No es un freno administrativo, sino la garantía de confianza y protección. Supervisa que cada paso respete la intimidad de las personas, cumpla las normativas europeas y preserve la custodia de los datos confidenciales sin burocracia inútil.",
+          "impact": "Tranquilidad jurídica, respeto estricto a la privacidad y defensa activa contra el abuso.",
           "capabilities": [
-            "Adecuación pragmática al AI Act europeo y clasificación de riesgos",
-            "Revisión preventiva de contratos, cláusulas abusivas y confidencialidad",
-            "Auditoría de soberanía del dato y bloqueo de fugas a nubes públicas"
+            "Orientación práctica sobre el AI Act europeo adaptada a pequeñas empresas",
+            "Revisión de acuerdos de confidencialidad y contratos con proveedores",
+            "Custodia de datos y prevención de filtraciones a plataformas externas"
           ],
           "img": "",
           "alt": "Perfil AIJuris Guardarrail",
@@ -218,7 +218,7 @@
           "author": "AIJuris",
           "category": "Legal",
           "excerpt": "Tu empresa puede tener una política interna impecable y aun así sufrir una brecha a través de un proveedor externo. Aprende a blindar tus contratos.",
-          "body": "**En la curva exponencial no basta con vigilar cómo usa la tecnología tu propio equipo:** la mitad de los riesgos legales entran hoy por la cadena de suministro. Gestorías externas, agencias de marketing, colaboradores autónomos o proveedores de software pueden procesar documentación de tu empresa en herramientas generativas sin garantías de confidencialidad si no existe un guardarrail contractual explícito.\n\n**Los tres pilares del blindaje contractual de AIJuris**\n\n- **Cláusula expresa de prohibición de entrenamiento:** todo contrato con proveedores que accedan a información comercial o datos personales debe prohibir el uso de cuentas gratuitas o configuraciones que utilicen los datos del cliente para entrenar modelos de terceros.\n- **Deber de declaración de asistencia algorítmica:** cuando un proveedor externo entregue código, informes jurídicos, diseños o textos estratégicos generados sustancialmente mediante IA, debe declararlo para que tu empresa conozca los límites de propiedad intelectual aplicables.\n- **Trazabilidad de subencargados del RGPD:** exigir el listado actualizado de motores y regiones de procesamiento (priorizando servidores dentro del Espacio Económico Europeo o ejecución local).\n\n**Acción alcanzable para hoy:**\n1. Revisa los contratos de tus tres proveedores externos con mayor acceso a información crítica de tu negocio.\n2. Envía una adenda breve de una página exigiendo que cualquier procesamiento asistido por IA se realice en entornos empresariales con exclusión de entrenamiento (*zero data retention*).\n3. Guarda las conformidades firmadas junto a tu registro de cumplimiento del RGPD y del AI Act europeo.",
+          "body": "**Cuando la tecnología avanza a esta velocidad, no basta con cuidar los procesos internos de tu propio equipo:** una parte sustancial de los riesgos legales y de privacidad entra hoy a través de colaboradores y proveedores externos. Gestorías, agencias de marketing o servicios informáticos pueden procesar documentación de tu negocio en herramientas generativas sin garantías de confidencialidad si no existe un guardarraíl contractual explícito.\n\n**Los tres pilares del blindaje contractual de AIJuris**\n\n- **Cláusula expresa de prohibición de entrenamiento:** todo contrato con proveedores que accedan a información comercial o datos personales debe prohibir el uso de cuentas gratuitas o configuraciones que utilicen los datos del cliente para entrenar modelos de terceros.\n- **Deber de declaración de asistencia algorítmica:** cuando un proveedor externo entregue código, informes jurídicos, diseños o textos estratégicos generados sustancialmente mediante IA, debe declararlo para que tu empresa conozca los límites de propiedad intelectual aplicables.\n- **Trazabilidad de subencargados del RGPD:** exigir el listado actualizado de motores y regiones de procesamiento (priorizando servidores dentro del Espacio Económico Europeo o ejecución local).\n\n**Acción alcanzable para hoy:**\n1. Revisa los contratos de tus tres proveedores externos con mayor acceso a información crítica de tu negocio.\n2. Envía una adenda breve de una página exigiendo que cualquier procesamiento asistido por IA se realice en entornos empresariales con exclusión de entrenamiento (*zero data retention*).\n3. Guarda las conformidades firmadas junto a tu registro de cumplimiento del RGPD y del AI Act europeo.",
           "actionableChecklist": [
             "Identificar a los proveedores y colaboradores externos que manejan documentación sensible",
             "Exigir por escrito el uso exclusivo de entornos sin retención ni entrenamiento de modelos",
@@ -258,16 +258,16 @@
           "type": "post"
         },
         {
-          "title": "El abaratamiento del conocimiento y la curva exponencial: cómo llevar el volante de tu pyme",
+          "title": "El abaratamiento del conocimiento: cómo hacer posible en tu empresa lo que antes parecía inalcanzable",
           "slug": "abaratamiento-conocimiento-curva-exponencial-volante",
           "author": "AIVisio",
           "category": "Estrategia",
-          "excerpt": "Al borde de la singularidad, usar la IA solo para ahorrar unos minutos no basta: hay que llevar el volante para hacer posible lo que antes era imposible.",
-          "body": "**Hace tiempo que lo único que no cambia es que todo cambia, pero hoy la aceleración es tan vertiginosa que muchos saldrán despedidos en la curva de la exponencial.** Vivimos una revolución tecnológica provocada por un fenómeno histórico: el abaratamiento radical del conocimiento y la capacidad cognitiva. Tareas de análisis, síntesis técnica, estructuración documental o traducción especializada que antes exigían semanas y presupuestos prohibitivos hoy tienen un coste marginal cercano a cero.\n\n**De hacer lo mismo más barato a hacer posible lo que antes no era posible**\n\n- **La trampa de la mera eficiencia:** si tu empresa solo usa la inteligencia artificial para redactar correos un poco más rápido, tus competidores harán exactamente lo mismo y tus márgenes caerán. El verdadero salto competitivo consiste en **innovar haciendo posible lo que antes no era posible** para una estructura de cinco o quince personas.\n- **Llevar el volante frente al descarrilamiento:** estamos al borde de la singularidad. En AIEvolutio no estamos aquí para dejarnos arrastrar como pasajeros pasivos; estamos aquí para llevar el volante y ayudar a otras empresas a llevar su propio volante combinando visión estratégica (**AIVisio**), ejecución técnica (**AIDux**) y guardarrail ético-legal (**AIJuris**).\n\n**Acción alcanzable para hoy:**\n1. Reúne a tu equipo durante treinta minutos y formulad una sola pregunta: ¿qué servicio de alto valor jamás hemos podido ofrecer a nuestros clientes porque requería demasiadas horas de análisis previo?\n2. Diseña un prototipo acotado donde un AIWorker prepare el ochenta por ciento del análisis base y vuestro especialista aporte el veinte por ciento de juicio crítico y decisión final.\n3. Valida ese nuevo servicio con tres clientes de confianza esta misma semana, midiendo el valor percibido y manteniendo siempre el control humano del volante.",
+          "excerpt": "El acceso directo al conocimiento práctico abre una oportunidad histórica para las pequeñas empresas: liberar tiempo de lo rutinario y crear servicios de alto valor que antes parecían imposibles.",
+          "body": "**El cambio ha sido siempre una constante en la historia humana, pero lo que vivimos hoy tiene una naturaleza distinta.** No se trata únicamente de que las herramientas informáticas sean más veloces, sino de que las puertas del conocimiento práctico, el análisis estructurado y la capacidad de síntesis se han abierto de par en par. Labores y proyectos que hace apenas unos años requerían departamentos enteros o presupuestos astronómicos están hoy al alcance de cualquier pequeña empresa con curiosidad y ganas de aprender.\n\n**De arañar unos minutos a reimaginar lo que tu oficio puede ofrecer**\n\n- **La trampa del mero ahorro de tiempo:** si una empresa solo utiliza la inteligencia artificial para redactar correos un poco más rápido, apenas estará raspando la superficie. El salto cualitativo se produce cuando nos atrevemos a **hacer posible lo que antes parecía inalcanzable**: ofrecer un seguimiento personalizado a cada cliente, elaborar estudios preventivos o diseñar propuestas técnicas con un nivel de detalle antes reservado a grandes corporaciones.\n- **Tomar el rumbo sin dejarse deslumbrar:** ante tantas novedades y promesas exageradas, es natural sentir cierta prudencia. No se trata de correr a ciegas ni de delegar el criterio. En AIEvolutio creemos que el verdadero valor reside en **tomar el rumbo de la propia transformación**: la tecnología prepara, sintetiza y allana el camino; la persona aporta la empatía, el criterio y la cercanía que ninguna máquina podrá replicar jamás.\n\n**Acción alcanzable para hoy:**\n1. Reúne a tu equipo o dedica veinte minutos de calma a plantear una sola pregunta: ¿qué servicio de alto valor hemos querido siempre dar a nuestros clientes pero descartamos porque exigía demasiadas horas de trabajo previo?\n2. Diseña una prueba sencilla donde una herramienta prepare el borrador base y vuestro especialista añada el criterio experto y el toque personal.\n3. Comparte ese nuevo detalle con tres clientes de confianza para medir su valor percibido, manteniendo siempre la mirada en lo que de verdad importa: el trato humano.",
           "actionableChecklist": [
-            "Detectar una capacidad o servicio que antes era inviable por coste de horas de análisis",
-            "Combinar preparación por IA (AIDux) con validación experta y guardarrail legal (AIJuris)",
-            "Lanzar un piloto acotado para aportar valor diferencial antes inalcanzable"
+            "Identificar un servicio valioso que antes era inviable por tiempo de análisis previo",
+            "Preparar un borrador asistido por IA manteniendo la revisión y el criterio del equipo",
+            "Validar la experiencia con clientes cercanos para enfocar el esfuerzo donde aporta valor real"
           ],
           "date": "2026-11-04",
           "type": "post"
@@ -288,7 +288,7 @@
           "type": "post"
         },
         {
-          "title": "Modelos SLM locales: iA de alto rendimiento en hardware modesto de oficina",
+          "title": "Modelos SLM locales: IA de alto rendimiento en hardware modesto de oficina",
           "slug": "modelos-slm-locales-alto-rendimiento-pymes",
           "date": "2026-10-31",
           "author": "AIDux",

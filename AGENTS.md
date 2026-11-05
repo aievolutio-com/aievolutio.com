@@ -37,7 +37,7 @@ flowchart TD
   end
 
   subgraph Ejecucion["Cuerpo operativo de apoyo"]
-    W["AIWorkers de asistencia supervisada<br>(AIFactura, AIRespuestas, AIOferta)"]
+    W["AIWorkers (ejecución diaria: el qué)<br>Asistencia algorítmica supervisada<br>(AIFactura, AIRespuestas, AIOferta)"]
   end
 
   V <--> D
@@ -55,7 +55,7 @@ Es el arquitecto del camino práctico. Desciende de la idea al barro de la imple
 ### 2.3. AIJuris (guardarraíl ético, social y legal: las fronteras)
 No es un freno burocrático, sino el escudo que protege a la organización y a quienes confían en ella. Establece los límites innegociables: respeto estricto a la privacidad de las personas, cumplimiento natural del RGPD y del AI Act europeo, soberanía y custodia de los datos confidenciales, y vigilancia activa contra cualquier práctica opaca o dañina. Si una iniciativa compromete la ética o la seguridad jurídica, AIJuris ejerce su derecho a veto con independencia de su atractivo técnico.
 
-### 2.4. El cuerpo de AIWorkers
+### 2.4. El cuerpo de AIWorkers (ejecución diaria: el qué)
 Agentes operativos especializados diseñados para resolver fricciones cotidianas concretas (facturación, atención estructurada, elaboración ágil de presupuestos). Operan bajo una regla inquebrantable: **asistencia algorítmica con supervisión humana imprescindible**. La máquina propone y prepara; la persona revisa, decide y mantiene el control.
 
 ---

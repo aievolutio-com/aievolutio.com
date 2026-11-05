@@ -72,7 +72,7 @@ test('renders complete articles with escaped text and sharing metadata', () => {
   );
   assert.match(html, /<strong>Idea clave<\/strong>/);
   assert.doesNotMatch(html, /<útil>/);
-  assert.match(html, /href="\.\.\/contacto\.html" class="btn section-cta">Cuéntanos tu reto/);
+  assert.match(html, /href="\.\.\/contacto\.html" class="btn section-cta">Compartir tu reto/);
   assert.match(html, /href="\.\.\/blog\.html" aria-current="page">Ideas/);
 });
 
@@ -209,7 +209,7 @@ test('adversarial anti-duplication guard blocks duplicate slugs and similar titl
 
   // Distinct topic by AIVisio
   const unique = {
-    title: 'El abaratamiento del conocimiento y la curva exponencial: cómo llevar el volante de tu pyme',
+    title: 'El abaratamiento del conocimiento: cómo hacer posible en tu empresa lo que antes parecía inalcanzable',
     slug: 'abaratamiento-conocimiento-curva-exponencial-volante',
     date: '2026-11-05',
   };

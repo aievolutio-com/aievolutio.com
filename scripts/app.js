@@ -823,44 +823,44 @@
       if (scoreEl) scoreEl.textContent = `${avg}%`;
 
       if (scores.juris < 40) {
-        if (badgeEl) badgeEl.textContent = "Alerta: Sin Guardarrail Legal";
-        if (leadEl) leadEl.textContent = "Intervención: AIJuris + AIVisio";
-        if (stateEl) stateEl.textContent = "Riesgo curva";
+        if (badgeEl) badgeEl.textContent = "Alerta: sin guardarraíl de protección";
+        if (leadEl) leadEl.textContent = "Prioridad: AIJuris (Guardarraíl)";
+        if (stateEl) stateEl.textContent = "Vulnerable";
         if (descEl) {
           descEl.textContent =
-            "Peligro de descarrilamiento normativo o fuga de datos: antes de escalar automatizaciones, necesitas activar el guardarrail de AIJuris (prohibir datos confidenciales en nubes abiertas y cumplir el AI Act) y definir con AIVisio dónde innovar.";
+            "Antes de conectar herramientas, es prioritario proteger la privacidad y los secretos de tu negocio con el guardarraíl de AIJuris: aislar datos sensibles en local, revisar acuerdos con proveedores y garantizar el respeto al RGPD y al AI Act europeo.";
         }
       } else if (scores.visio < 50) {
-        if (badgeEl) badgeEl.textContent = "Falta Rumbo de Innovación";
-        if (leadEl) leadEl.textContent = "Prioridad: AIVisio (CEO)";
-        if (stateEl) stateEl.textContent = "Inercia";
+        if (badgeEl) badgeEl.textContent = "Oportunidad: definir el rumbo";
+        if (leadEl) leadEl.textContent = "Prioridad: AIVisio (Dirección y estrategia)";
+        if (stateEl) stateEl.textContent = "Explorando";
         if (descEl) {
           descEl.textContent =
-            "Tenéis precaución legal, pero solo estáis abaratando tareas menores. El abaratamiento del conocimiento exige usar la estrategia de AIVisio para hacer posible lo que antes no era posible en vuestro sector.";
+            "Contáis con prudencia, pero falta abrir la mirada hacia nuevas oportunidades: AIVisio ayuda a plantear las preguntas adecuadas para descubrir qué servicios diferenciales podéis ofrecer ahora que el conocimiento práctico es accesible a cualquier pequeña empresa.";
         }
       } else if (scores.dux < 50) {
-        if (badgeEl) badgeEl.textContent = "Visión sin Ejecución Técnica";
-        if (leadEl) leadEl.textContent = "Prioridad: AIDux (CIO)";
-        if (stateEl) stateEl.textContent = "Tracción media";
+        if (badgeEl) badgeEl.textContent = "Reto: aterrizar en la práctica técnica";
+        if (leadEl) leadEl.textContent = "Prioridad: AIDux (Dirección tecnológica)";
+        if (stateEl) stateEl.textContent = "En marcha";
         if (descEl) {
           descEl.textContent =
-            "Sabéis adónde ir y cuidáis el marco legal, pero dependéis de copiar y pegar manualmente. Es momento de que AIDux implante modelos SLM locales y AIWorkers conectados a vuestros procesos.";
+            "Tenéis clara la meta y cuidáis la seguridad, pero la operativa diaria se frena en tareas manuales. Es el momento de que AIDux aterrice soluciones sencillas y modelos compactos locales para devolver horas útiles al equipo.";
         }
       } else if (avg < 85) {
-        if (badgeEl) badgeEl.textContent = "Tracción Competitiva Activa";
+        if (badgeEl) badgeEl.textContent = "Progreso: integración equilibrada";
         if (leadEl) leadEl.textContent = "Sinergia: AIVisio · AIDux · AIJuris";
-        if (stateEl) stateEl.textContent = "Copiloto";
+        if (stateEl) stateEl.textContent = "Equilibrado";
         if (descEl) {
           descEl.textContent =
-            "Vuestra organización ya aprovecha la curva exponencial con criterio. El siguiente paso es desplegar conectores MCP locales y convertir ese tiempo recuperado en nuevos servicios de alto valor.";
+            "Vuestra organización avanza con criterio y equilibrio. El siguiente paso consiste en consolidar automatizaciones útiles y transformar el tiempo recuperado en mayor atención humana y cercanía con vuestros clientes.";
         }
       } else {
-        if (badgeEl) badgeEl.textContent = "Control Firme del Volante";
-        if (leadEl) leadEl.textContent = "Organización Exponencial";
-        if (stateEl) stateEl.textContent = "Al volante";
+        if (badgeEl) badgeEl.textContent = "Madurez: rumbo claro y sostenible";
+        if (leadEl) leadEl.textContent = "Equilibrio AIEvolutio";
+        if (stateEl) stateEl.textContent = "Avanzado";
         if (descEl) {
           descEl.textContent =
-            "Estáis preparados para el borde de la singularidad: combináis visión innovadora (AIVisio), explotación tecnológica local (AIDux) y guardarrail ético-legal riguroso (AIJuris).";
+            "Rumbo firme y maduro: combináis visión humana (AIVisio), artesanía técnica sobria (AIDux) y protección ética y legal estricta (AIJuris) para hacer posible lo que antes parecía inalcanzable.";
         }
       }
 

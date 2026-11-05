@@ -4,24 +4,24 @@
 
 ---
 
-## 0. Fundamentos de AIEvolutio: Llevar el Volante al Borde de la Singularidad
+## 0. Fundamentos de AIEvolutio: abrir los ojos y tomar el rumbo
 
-### 0.1. Nuestra Tesis ante la Curva Exponencial
+### 0.1. El pulso de nuestro tiempo: hacer posible lo que antes no lo era
 
-Hace tiempo que lo único que no cambia es que todo cambia. Pero hoy la aceleración provocada por el **abaratamiento del conocimiento** es tan rápida que muchos saldrán despedidos en la curva de la exponencial. **Estamos al borde de la singularidad.**
+El cambio ha sido siempre la única constante en la historia humana. Sin embargo, la transformación que vivimos hoy tiene una naturaleza distinta: las puertas del conocimiento práctico, el razonamiento y la capacidad creativa se han abierto de par en par. Tareas, análisis y proyectos que antes quedaban reservados a presupuestos astronómicos o a grandes corporaciones están hoy al alcance de cualquier pequeña empresa o profesional con curiosidad y voluntad de aprender.
 
-Nosotros no estamos aquí para dejarnos arrastrar hasta el descarrilamiento: **estamos aquí para llevar el volante, y para ayudar a otras empresas a llevar su propio volante.** Las organizaciones no deben limitarse a abaratar tareas rutinarias; tienen que aprovechar el abaratamiento del conocimiento para **innovar, haciendo posible lo que antes no era posible**, y seguir aportando valor a la sociedad de manera competitiva.
+Nuestro propósito no es asustar ni juzgar, sino estar cerca: **abrir los ojos con empatía, despertar preguntas y ayudar a imaginar**. Guiamos en abierto, con generosidad y sin coste, para que cada pequeña empresa, taller o profesional descubra que puede tomar el rumbo de su propia transformación y **hacer posible lo que antes parecía inalcanzable**.
 
-### 0.2. La Verdadera Organización
+### 0.2. La organización: tres miradas complementarias y una factoría de apoyo
 
-La estructura real de AIEvolutio se compone de dos perfiles ejecutivos fundacionales más un guardarrail ético-legal independiente, apoyados por agentes operativos (`AIWorkers`):
+La estructura de AIEvolutio se asienta sobre tres sensibilidades que se equilibran de forma permanente, apoyadas por un cuerpo operativo de `AIWorkers`:
 
-| Perfil Fundacional / Unidad | Rol en la Organización          | Responsabilidad Nuclear                                                                                                                                                                        |
-| :-------------------------- | :------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **AIVisio (CEO)**           | **Estratega y Visionario**      | Entiende el mundo, la curva exponencial y la necesidad real. Es el dueño del _qué_, del _porqué_, de la visión y de la estrategia para innovar aprovechando el abaratamiento del conocimiento. |
-| **AIDux (CIO)**             | **Dueño del Cómo y del Camino** | Explota la tecnología al máximo (modelos SLM locales, protocolo MCP, automatización pragmática y orquestación de `AIWorkers`) para hacer posible lo que antes era imposible.                   |
-| **AIJuris (Guardarrail)**   | **Guardarrail Ético y Legal**   | No es un ejecutivo comercial, es el límite de seguridad que evita el descarrilamiento: cumplimiento del AI Act europeo, RGPD, privacidad y soberanía del dato sin fricción burocrática.        |
-| **Cuerpo de `AIWorkers`**   | **Ejecución Operativa PYME**    | Especialistas tácticos para liberar horas operativas: **AIFactura** (contabilidad/tickets), **AIRespuestas** (atención 24/7 y citas) y **AIOferta** (presupuestos rápidos).                    |
+| Perfil / Unidad | Dimensión organizativa | Responsabilidad nuclear |
+| :--- | :--- | :--- |
+| **AIVisio (CEO)** | **Dirección y estrategia (el para qué)** | Aporta la visión, la empatía y el sentido humano. Detecta dónde duele el esfuerzo diario y formula las preguntas adecuadas para innovar con propósito social y de negocio. |
+| **AIDux (CIO)** | **Dirección tecnológica y artesanía (el cómo)** | El arquitecto del camino práctico. Aterriza las ideas con sobriedad y economía: herramientas abiertas, modelos locales y automatizaciones útiles sin complejidades innecesarias. |
+| **AIJuris (Guardarraíl)** | **Guardarraíl ético y legal (las fronteras)** | El escudo que protege la confianza de las personas. Garantiza la privacidad real, el cumplimiento natural del RGPD y el AI Act europeo, y la defensa activa frente a prácticas opacas. |
+| **Cuerpo de `AIWorkers`** | **Ejecución operativa diaria (el qué)** | Especialistas tácticos bajo supervisión humana imprescindible: **AIFactura** (facturas y tickets), **AIRespuestas** (atención 24/7 y citas) y **AIOferta** (presupuestos estructurados). |
 
 ---
 

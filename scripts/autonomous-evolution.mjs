@@ -200,20 +200,20 @@ async function callLLM(prompt) {
 
 const CURATED_EDITORIAL_BANK = [
   {
-    title: 'El abaratamiento del conocimiento y la curva exponencial: cómo llevar el volante de tu pyme',
+    title: 'El abaratamiento del conocimiento: cómo hacer posible en tu empresa lo que antes parecía inalcanzable',
     slug: 'abaratamiento-conocimiento-curva-exponencial-volante',
     author: 'AIVisio',
     category: 'Estrategia',
-    readerNeed: 'Convertir el abaratamiento del conocimiento en innovación real para no salir despedido en la curva exponencial',
-    angle: 'Manifiesto estratégico de AIVisio: de abaratar lo mismo a hacer posible lo que antes era imposible',
-    actionType: 'Identificar un servicio o capacidad antes inviable que hoy es ejecutable a coste marginal casi nulo',
-    readerProfile: 'Fundador, CEO o titular de pyme que siente la aceleración exponencial del mercado',
-    excerpt: 'Al borde de la singularidad, usar la IA solo para ahorrar unos minutos no basta: hay que llevar el volante para hacer posible lo que antes era imposible.',
-    body: `**Hace tiempo que lo único que no cambia es que todo cambia, pero hoy la aceleración es tan vertiginosa que muchos saldrán despedidos en la curva de la exponencial.** Vivimos una revolución tecnológica provocada por un fenómeno histórico: el abaratamiento radical del conocimiento y la capacidad cognitiva. Tareas de análisis, síntesis técnica, estructuración documental o traducción especializada que antes exigían semanas y presupuestos prohibitivos hoy tienen un coste marginal cercano a cero.\n\n**De hacer lo mismo más barato a hacer posible lo que antes no era posible**\n\n- **La trampa de la mera eficiencia:** si tu empresa solo usa la inteligencia artificial para redactar correos un poco más rápido, tus competidores harán exactamente lo mismo y tus márgenes caerán. El verdadero salto competitivo consiste en **innovar haciendo posible lo que antes no era posible** para una estructura de cinco o quince personas.\n- **Llevar el volante frente al descarrilamiento:** estamos al borde de la singularidad. En AIEvolutio no estamos aquí para dejarnos arrastrar como pasajeros pasivos; estamos aquí para llevar el volante y ayudar a otras empresas a llevar su propio volante combinando visión estratégica (**AIVisio**), ejecución técnica (**AIDux**) y guardarrail ético-legal (**AIJuris**).\n\n**Acción alcanzable para hoy:**\n1. Reúne a tu equipo durante treinta minutos y formulad una sola pregunta: ¿qué servicio de alto valor jamás hemos podido ofrecer a nuestros clientes porque requería demasiadas horas de análisis previo?\n2. Diseña un prototipo acotado donde un AIWorker prepare el ochenta por ciento del análisis base y vuestro especialista aporte el veinte por ciento de juicio crítico y decisión final.\n3. Valida ese nuevo servicio con tres clientes de confianza esta misma semana, midiendo el valor percibido y manteniendo siempre el control humano del volante.`,
+    readerNeed: 'Aprovechar el acceso directo al conocimiento para liberar tiempo rutinario y crear servicios de alto valor antes inalcanzables',
+    angle: 'Manifiesto de AIVisio: de arañar minutos de eficiencia a reimaginar con empatía lo que una pequeña empresa puede ofrecer',
+    actionType: 'Identificar un servicio o capacidad antes inviable por tiempo de análisis que hoy es accesible',
+    readerProfile: 'Fundador, CEO o titular de pyme que busca innovar con cercanía y criterio',
+    excerpt: 'El acceso directo al conocimiento práctico abre una oportunidad histórica para las pequeñas empresas: liberar tiempo de lo rutinario y crear servicios de alto valor que antes parecían imposibles.',
+    body: `**El cambio ha sido siempre una constante en la historia humana, pero lo que vivimos hoy tiene una naturaleza distinta.** No se trata únicamente de que las herramientas informáticas sean más veloces, sino de que las puertas del conocimiento práctico, el análisis estructurado y la capacidad de síntesis se han abierto de par en par. Labores y proyectos que hace apenas unos años requerían departamentos enteros o presupuestos astronómicos están hoy al alcance de cualquier pequeña empresa con curiosidad y ganas de aprender.\n\n**De arañar unos minutos a reimaginar lo que tu oficio puede ofrecer**\n\n- **La trampa del mero ahorro de tiempo:** si una empresa solo utiliza la inteligencia artificial para redactar correos un poco más rápido, apenas estará raspando la superficie. El salto cualitativo se produce cuando nos atrevemos a **hacer posible lo que antes parecía inalcanzable**: ofrecer un seguimiento personalizado a cada cliente, elaborar estudios preventivos o diseñar propuestas técnicas con un nivel de detalle antes reservado a grandes corporaciones.\n- **Tomar el rumbo sin dejarse deslumbrar:** ante tantas novedades y promesas exageradas, es natural sentir cierta prudencia. No se trata de correr a ciegas ni de delegar el criterio. En AIEvolutio creemos que el verdadero valor reside en **tomar el rumbo de la propia transformación**: la tecnología prepara, sintetiza y allana el camino; la persona aporta la empatía, el criterio y la cercanía que ninguna máquina podrá replicar jamás.\n\n**Acción alcanzable para hoy:**\n1. Reúne a tu equipo o dedica veinte minutos de calma a plantear una sola pregunta: ¿qué servicio de alto valor hemos querido siempre dar a nuestros clientes pero descartamos porque exigía demasiadas horas de trabajo previo?\n2. Diseña una prueba sencilla donde una herramienta prepare el borrador base y vuestro especialista añada el criterio experto y el toque personal.\n3. Comparte ese nuevo detalle con tres clientes de confianza para medir su valor percibido, manteniendo siempre la mirada en lo que de verdad importa: el trato humano.`,
     actionableChecklist: [
-      'Detectar una capacidad o servicio que antes era inviable por coste de horas de análisis',
-      'Combinar preparación por IA (AIDux) con validación experta y guardarrail legal (AIJuris)',
-      'Lanzar un piloto acotado para aportar valor diferencial antes inalcanzable'
+      'Identificar un servicio valioso que antes era inviable por tiempo de análisis previo',
+      'Preparar un borrador asistido por IA manteniendo la revisión y el criterio del equipo',
+      'Validar la experiencia con clientes cercanos para enfocar el esfuerzo donde aporta valor real'
     ]
   },
   {
@@ -243,7 +243,7 @@ const CURATED_EDITORIAL_BANK = [
     actionType: 'Incorporar un anexo de gobernanza y no entrenamiento en los encargos de tratamiento y contratos de servicios',
     readerProfile: 'Titular de negocio, administrador o responsable legal de una pyme',
     excerpt: 'Tu empresa puede tener una política interna impecable y aun así sufrir una brecha a través de un proveedor externo. Aprende a blindar tus contratos.',
-    body: `**En la curva exponencial no basta con vigilar cómo usa la tecnología tu propio equipo:** la mitad de los riesgos legales entran hoy por la cadena de suministro. Gestorías externas, agencias de marketing, colaboradores autónomos o proveedores de software pueden procesar documentación de tu empresa en herramientas generativas sin garantías de confidencialidad si no existe un guardarrail contractual explícito.\n\n**Los tres pilares del blindaje contractual de AIJuris**\n\n- **Cláusula expresa de prohibición de entrenamiento:** todo contrato con proveedores que accedan a información comercial o datos personales debe prohibir el uso de cuentas gratuitas o configuraciones que utilicen los datos del cliente para entrenar modelos de terceros.\n- **Deber de declaración de asistencia algorítmica:** cuando un proveedor externo entregue código, informes jurídicos, diseños o textos estratégicos generados sustancialmente mediante IA, debe declararlo para que tu empresa conozca los límites de propiedad intelectual aplicables.\n- **Trazabilidad de subencargados del RGPD:** exigir el listado actualizado de motores y regiones de procesamiento (priorizando servidores dentro del Espacio Económico Europeo o ejecución local).\n\n**Acción alcanzable para hoy:**\n1. Revisa los contratos de tus tres proveedores externos con mayor acceso a información crítica de tu negocio.\n2. Envía una adenda breve de una página exigiendo que cualquier procesamiento asistido por IA se realice en entornos empresariales con exclusión de entrenamiento (*zero data retention*).\n3. Guarda las conformidades firmadas junto a tu registro de cumplimiento del RGPD y del AI Act europeo.`,
+    body: `**Cuando la tecnología avanza a esta velocidad, no basta con cuidar los procesos internos de tu propio equipo:** una parte sustancial de los riesgos legales y de privacidad entra hoy a través de colaboradores y proveedores externos. Gestorías, agencias de marketing o servicios informáticos pueden procesar documentación de tu negocio en herramientas generativas sin garantías de confidencialidad si no existe un guardarraíl contractual explícito.\n\n**Los tres pilares del blindaje contractual de AIJuris**\n\n- **Cláusula expresa de prohibición de entrenamiento:** todo contrato con proveedores que accedan a información comercial o datos personales debe prohibir el uso de cuentas gratuitas o configuraciones que utilicen los datos del cliente para entrenar modelos de terceros.\n- **Deber de declaración de asistencia algorítmica:** cuando un proveedor externo entregue código, informes jurídicos, diseños o textos estratégicos generados sustancialmente mediante IA, debe declararlo para que tu empresa conozca los límites de propiedad intelectual aplicables.\n- **Trazabilidad de subencargados del RGPD:** exigir el listado actualizado de motores y regiones de procesamiento (priorizando servidores dentro del Espacio Económico Europeo o ejecución local).\n\n**Acción alcanzable para hoy:**\n1. Revisa los contratos de tus tres proveedores externos con mayor acceso a información crítica de tu negocio.\n2. Envía una adenda breve de una página exigiendo que cualquier procesamiento asistido por IA se realice en entornos empresariales con exclusión de entrenamiento (*zero data retention*).\n3. Guarda las conformidades firmadas junto a tu registro de cumplimiento del RGPD y del AI Act europeo.`,
     actionableChecklist: [
       'Identificar a los proveedores y colaboradores externos que manejan documentación sensible',
       'Exigir por escrito el uso exclusivo de entornos sin retención ni entrenamiento de modelos',
@@ -312,6 +312,9 @@ function applyRaeTitleCase(title) {
   const lower = clean.toLowerCase();
   let result = lower.charAt(0).toUpperCase() + lower.slice(1);
 
+  // Minúscula inicial tras dos puntos en español (salvo nombres propios y siglas)
+  result = result.replace(/:\s+([a-záéíóúñ])/gi, (match, letter) => `: ${letter.toLowerCase()}`);
+
   const properNouns = [
     { pattern: /\bia\b/gi, replacement: 'IA' },
     { pattern: /\bai act\b/gi, replacement: 'AI Act' },
@@ -342,7 +345,6 @@ function applyRaeTitleCase(title) {
     result = result.replace(pattern, replacement);
   }
 
-  result = result.replace(/:\s+([a-záéíóúñ])/gi, (match, letter) => `: ${letter.toLowerCase()}`);
   return result;
 }
 
@@ -497,15 +499,15 @@ async function runAIVisio(telemetry) {
   const usedAngles = recent5.map((e) => e.angle).filter(Boolean);
 
   const authorRoleMap = {
-    AIVisio: 'AIVisio (CEO — Visión, estrategia, abaratamiento del conocimiento e innovación en la curva exponencial)',
-    AIDux: 'AIDux (CIO — Dueño del cómo, SLMs locales, protocolo MCP, explotación tecnológica y AIWorkers)',
-    AIJuris: 'AIJuris (Guardarrail ético y legal — AI Act europeo, RGPD, contratos y soberanía del dato)',
+    AIVisio: 'AIVisio (CEO — Dirección estratégica, sentido humano, abaratamiento del conocimiento y valor social)',
+    AIDux: 'AIDux (CIO — Dirección tecnológica, artesanía práctica, SLMs locales, protocolo MCP y AIWorkers)',
+    AIJuris: 'AIJuris (Guardarraíl ético y legal — AI Act europeo, RGPD, privacidad y soberanía del dato)',
   };
 
   const briefingPrompt = `Eres AIVisio, CEO y Estratega de AIEvolutio. Define el Briefing del nuevo artículo ANTES de escribirlo.
 
 Fundamentos de AIEvolutio:
-- Ayudamos a las pymes a aprovechar el abaratamiento del conocimiento para innovar (hacer posible lo que antes no era posible) y llevar el volante en la curva exponencial al borde de la singularidad.
+- Acompañamos a las pymes a abrir los ojos ante el acceso directo al conocimiento para innovar, hacer posible lo que antes parecía inalcanzable y aportar valor real con trato humano.
 - Perfil que firmará hoy: ${authorRoleMap[telemetry.recommendedAuthor] || telemetry.recommendedAuthor}
 
 PROHIBICIÓN ABSOLUTA DE REPETICIÓN (Hard Gate):
@@ -563,10 +565,10 @@ async function runEditorialWriter(telemetry, briefing, targetDate) {
 
   const articlePrompt = `Eres ${author} de AIEvolutio (${
     author === 'AIVisio'
-      ? 'CEO, dueño de la visión y la estrategia en la curva exponencial'
+      ? 'CEO, dirección estratégica y mirada humana sobre el impacto en las pymes y la sociedad'
       : author === 'AIJuris'
-        ? 'Guardarrail ético y legal, especialista en AI Act, RGPD y soberanía del dato'
-        : 'CIO, dueño del cómo tecnológico, SLMs locales, MCP y AIWorkers'
+        ? 'Guardarraíl ético y legal, especialista en AI Act, RGPD y soberanía del dato'
+        : 'CIO, dirección tecnológica, artesanía práctica, modelos compactos locales y AIWorkers'
   }).
 Escribe un artículo único, accionable y riguroso para pymes en España.
 

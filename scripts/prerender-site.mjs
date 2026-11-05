@@ -17,6 +17,10 @@ const articleBaseUrl = 'https://aievolutio.com';
 
 export const legacyArticleAliases = new Map([
   [
+    'articulos/articulo-2026-11-04-el-abaratamiento-del-conocimiento-y-la-curva-exponencial-como-llevar-el-volante-de-tu-pyme.html',
+    'articulos/articulo-2026-11-04-el-abaratamiento-del-conocimiento-como-hacer-posible-en-tu-empresa-lo-que-antes-parecia-inalcanzable.html',
+  ],
+  [
     'articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-s.html',
     'articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-sin-friccion.html',
   ],
@@ -477,9 +481,9 @@ ${image}
 </article>
 <footer class="article-footer-cta">
   <div class="article-cta-box">
-    <h3>¿Quieres llevar el volante de este reto en tu empresa?</h3>
-    <p>Exploramos y prototipamos IAWorkers y guardarraíles adaptados a la realidad operativa de tu pyme, con transparencia experimental.</p>
-    <a href="../contacto.html" class="btn section-cta">Cuéntanos tu reto</a>
+    <h3>¿Quieres explorar cómo aplicar esto en tu propio negocio?</h3>
+    <p>Acompañamos y guiamos en abierto para imaginar y probar soluciones adaptadas a tu realidad, con empatía y sin coste.</p>
+    <a href="../contacto.html" class="btn section-cta">Compartir tu reto</a>
   </div>
 </footer>
 </main>
