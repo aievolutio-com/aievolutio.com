@@ -64,5 +64,16 @@
     "angle": "Caso práctico con hardware accesible de oficina",
     "actionType": "Instalación local en una tarde para tareas documentales",
     "readerProfile": "Gerente o responsable de administración de una pyme"
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Modelos SLM locales: IA de alto rendimiento en hardware modesto de oficina",
+    "slug": "modelos-slm-locales-alto-rendimiento-pymes",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "Reducir el coste de la IA y procesar datos sin depender de la nube",
+    "angle": "Caso práctico con hardware accesible de oficina",
+    "actionType": "Instalación local en una tarde para tareas documentales",
+    "readerProfile": "Gerente o responsable de administración de una pyme"
   }
 ]
