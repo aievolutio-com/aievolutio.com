@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, rm, writeFile, readdir, stat } from 'node:fs/promises';
+import { cp, mkdir, readFile, rm, writeFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
@@ -103,7 +103,6 @@ function renderPostBody(body) {
     .filter(Boolean)
     .map((paragraph) => {
       const trimmed = paragraph.trim();
-      // Si el bloque es un título markdown como **Título**
       if (
         (trimmed.startsWith('**') && trimmed.endsWith('**') && !trimmed.includes('\n')) ||
         trimmed.startsWith('### ')
@@ -112,7 +111,6 @@ function renderPostBody(body) {
         return `<h3 class="article-subtitle">${escapeHtml(titleText)}</h3>`;
       }
 
-      // Si es una lista con viñetas (- o *)
       const lines = trimmed.split('\n');
       if (lines.every((l) => l.trim().startsWith('- ') || l.trim().startsWith('* '))) {
         const items = lines.map((l) => {
@@ -122,7 +120,6 @@ function renderPostBody(body) {
         return `<ul class="article-list">${items.join('')}</ul>`;
       }
 
-      // Si es una lista numerada (1. 2. ...)
       if (lines.every((l) => /^\d+\.\s+/.test(l.trim()))) {
         const items = lines.map((l) => {
           const itemContent = l.trim().replace(/^\d+\.\s+/, '');
@@ -131,7 +128,6 @@ function renderPostBody(body) {
         return `<ol class="article-ordered">${items.join('')}</ol>`;
       }
 
-      // Párrafo de texto normal
       const formattedLines = lines.map((line) => formatInlineText(line)).join('<br>');
       return `<p>${formattedLines}</p>`;
     })
@@ -160,11 +156,18 @@ function renderNavigation(items, activeId, prefix = '') {
 }
 
 const agentIcons = {
-  aifactura: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>',
-  airespuestas: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
-  aioferta: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
-  aijuris: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M6 7l6-2 6 2"/><path d="M6 7l-3 6h6l-3-6z"/><path d="M18 7l-3 6h6l-3-6z"/><path d="M4 21h16"/></svg>',
-  aidux: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>',
+  aivisio:
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/><circle cx="12" cy="12" r="1.5"/></svg>',
+  aifactura:
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>',
+  airespuestas:
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+  aioferta:
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+  aijuris:
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M6 7l6-2 6 2"/><path d="M6 7l-3 6h6l-3-6z"/><path d="M18 7l-3 6h6l-3-6z"/><path d="M4 21h16"/></svg>',
+  aidux:
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>',
 };
 
 function renderWorker(worker) {
@@ -204,45 +207,90 @@ export function renderTeam(content) {
   if (!team) throw new Error('Falta la sección aiworkers para generar la página del equipo.');
   const workers = (team.blocks || []).filter((block) => block.type === 'worker');
   if (!workers.length) throw new Error('No hay perfiles AIWorker para generar la página del equipo.');
+
+  const schemaApps = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: team.title || 'Organización y AIWorkers de AIEvolutio',
+    itemListElement: workers.map((w, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: w.name || w.title || 'AIWorker',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web, Local SLM & MCP',
+        description: w.body || w.role || '',
+      },
+    })),
+  };
+
   return `<section id="aiworkers" class="section">
   <h2>${escapeHtml(team.title || 'AIWorkers')}</h2>
   <div class="grid">${workers.map(renderWorker).join('\n')}</div>
+  <script type="application/ld+json">${JSON.stringify(schemaApps)}</script>
 </section>`;
 }
 
-function getPostCategory(post) {
-  const text = `${post.title || ''} ${post.body || ''}`.toLowerCase();
+function getPostCategoryMeta(post) {
+  const text = `${post.title || ''} ${post.body || ''} ${post.category || ''}`.toLowerCase();
   const author = (post.author || '').toLowerCase();
-  if (author.includes('juris') || text.includes('ai act') || text.includes('legal') || text.includes('contrato') || text.includes('rgpd')) {
-    return 'Gobernanza & Legal';
+  if (
+    author.includes('juris') ||
+    text.includes('ai act') ||
+    text.includes('legal') ||
+    text.includes('contrato') ||
+    text.includes('rgpd') ||
+    text.includes('guardarrail')
+  ) {
+    return { label: 'Guardarrail Ético & Legal', filterKey: 'legal' };
   }
-  if (text.includes('slm') || text.includes('hardware') || text.includes('local') || text.includes('modelo') || text.includes('offline')) {
-    return 'Tecnología & SLMs';
+  if (
+    author.includes('visio') ||
+    (post.category || '').toLowerCase() === 'estrategia' ||
+    text.includes('singularidad') ||
+    text.includes('volante') ||
+    text.includes('exponencial') ||
+    text.includes('geo') ||
+    text.includes('resiliencia')
+  ) {
+    return { label: 'Visión & Estrategia', filterKey: 'estrategia' };
   }
-  if (text.includes('aiworker') || text.includes('proceso') || text.includes('horas') || text.includes('automatiz')) {
-    return 'IAWorkers & Procesos';
+  if (
+    text.includes('slm') ||
+    text.includes('mcp') ||
+    text.includes('hardware') ||
+    text.includes('local') ||
+    text.includes('modelo') ||
+    text.includes('offline')
+  ) {
+    return { label: 'Tecnología & SLMs', filterKey: 'tecnologia' };
   }
-  return 'Estrategia & PYMEs';
+  return { label: 'IAWorkers & Procesos', filterKey: 'tecnologia' };
 }
 
 function calculateReadingTime(body) {
-  const words = String(body || '').trim().split(/\s+/).filter(Boolean).length;
+  const words = String(body || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
   const minutes = Math.max(2, Math.ceil(words / 190));
   return `${minutes} min de lectura`;
 }
 
 function renderPostCard(post, isFeatured = false) {
   const url = articleUrl(post);
-  const category = getPostCategory(post);
+  const { label: category, filterKey } = getPostCategoryMeta(post);
   const readingTime = calculateReadingTime(post.body);
   const metadata = [formatPostDate(post.date), post.author, readingTime].filter(Boolean).join(' · ');
   const image = post.img
     ? `<div class="post-cover-wrap"><img src="${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${post.title || 'el artículo'}`)}" class="post-cover" loading="lazy"></div>`
     : '';
+  const searchAttr = escapeHtml(`${post.title || ''} ${post.author || ''} ${category} ${post.excerpt || ''}`.toLowerCase());
 
   if (isFeatured) {
     return `<article class="card post-card">
-  <div class="featured-post-wrapper">
+  <div class="featured-post-wrapper" data-filter-cat="${escapeHtml(filterKey)}" data-author="${escapeHtml(post.author || 'AIEvolutio')}" data-search="${searchAttr}">
     ${image}
     <div class="featured-post-content">
       <div class="post-category-tag">${escapeHtml(category)}</div>
@@ -257,7 +305,7 @@ function renderPostCard(post, isFeatured = false) {
 
   return `<article class="card post-card">
   ${image}
-  <div class="post-card-inner">
+  <div class="post-card-inner" data-filter-cat="${escapeHtml(filterKey)}" data-author="${escapeHtml(post.author || 'AIEvolutio')}" data-search="${searchAttr}">
     <div class="post-category-tag">${escapeHtml(category)}</div>
     <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || 'Entrada')}</a></h3>
     <p class="muted post-meta">${escapeHtml(metadata)}</p>
@@ -271,30 +319,42 @@ export function renderBlog(content, { archive = false } = {}) {
   const blog = content.sections.find((section) => section.id === 'blog');
   if (!blog) throw new Error('Falta la sección blog para generar los artículos.');
   const posts = sortedPosts(blog.blocks || []);
-  const visiblePosts = archive ? posts.slice(4) : posts.slice(0, 4);
+  const visiblePosts = archive ? posts.slice(6) : posts.slice(0, 6);
   const title = archive ? 'Artículos anteriores' : 'Ideas, guías y casos de uso';
   const backLink = archive
     ? '<a href="blog.html" class="archive-back"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12L6 8L10 4"/></svg><span>Ver artículos recientes</span></a>'
     : '';
   const archiveLink =
-    !archive && posts.length > 4 ? '<a href="archivo.html" class="btn section-cta">Ver artículos anteriores en el archivo</a>' : '';
+    !archive && posts.length > 6
+      ? '<a href="archivo.html" class="btn section-cta">Ver artículos anteriores en el archivo</a>'
+      : '';
 
   const cardsHtml = archive
     ? visiblePosts.map((p) => renderPostCard(p, false)).join('\n')
     : visiblePosts.map((p, idx) => renderPostCard(p, idx === 0)).join('\n');
 
+  const controlsHtml = archive
+    ? ''
+    : `<div class="blog-controls-wrap">
+      <div class="blog-topics-pills" role="group" aria-label="Filtrar artículos por pilar organizativo">
+        <button type="button" class="topic-pill active" data-filter="all" aria-pressed="true">Todos (${visiblePosts.length})</button>
+        <button type="button" class="topic-pill" data-filter="estrategia" aria-pressed="false">Visión &amp; Estrategia (AIVisio)</button>
+        <button type="button" class="topic-pill" data-filter="tecnologia" aria-pressed="false">Cómo &amp; Tecnología (AIDux)</button>
+        <button type="button" class="topic-pill" data-filter="legal" aria-pressed="false">Guardarrail Legal (AIJuris)</button>
+      </div>
+      <div class="blog-search-box">
+        <input type="search" id="blog-search" class="blog-search-input" placeholder="Filtrar por palabra clave o autor…" aria-label="Filtrar artículos por palabra clave">
+      </div>
+    </div>
+    <p id="blog-filter-status" class="muted sr-only" aria-live="polite"></p>`;
+
   return `<section id="blog" class="section">
   <div class="blog-header-bar">
     <h2>${title}</h2>
-    <div class="blog-topics-pills">
-      <span class="topic-pill active">Todos</span>
-      <span class="topic-pill">IAWorkers</span>
-      <span class="topic-pill">SLMs Locales</span>
-      <span class="topic-pill">AI Act & Legal</span>
-    </div>
+    ${controlsHtml}
   </div>
   ${backLink}
-  <div class="grid post-grid">${cardsHtml}</div>
+  <div class="grid post-grid" id="blog-post-grid">${cardsHtml}</div>
   ${archiveLink}
 </section>`;
 }
@@ -305,11 +365,44 @@ export function renderArticle(post, navigation) {
   const articleUrlPath = articleUrl(post);
   const canonical = `${articleBaseUrl}/${articleUrlPath}`;
   const absoluteImage = post.img ? `${articleBaseUrl}/${String(post.img).replace(/^\/+/, '')}` : '';
-  const category = getPostCategory(post);
+  const { label: category } = getPostCategoryMeta(post);
   const readingTime = calculateReadingTime(post.body);
   const image = post.img
     ? `<div class="article-hero-cover"><img src="../${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${title}`)}" class="post-cover" loading="lazy"></div>`
     : '';
+  const checklistHtml =
+    Array.isArray(post.actionableChecklist) && post.actionableChecklist.length > 0
+      ? `<aside class="article-checklist-box" aria-label="Lista de verificación accionable">
+  <h3>Hoja de ruta práctica (Volante en mano)</h3>
+  <ul class="article-list">
+    ${post.actionableChecklist.map((item) => `<li>${escapeHtml(item)}</li>`).join('\n    ')}
+  </ul>
+</aside>`
+      : '';
+
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description,
+    datePublished: post.date || '2026-11-05',
+    author: {
+      '@type': 'Person',
+      name: post.author || 'AIEvolutio',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'AIEvolutio',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://aievolutio.com/images/logotipoHorizontalTransparente.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonical,
+    },
+  };
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -339,15 +432,22 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <link href="../styles/tokens.css" rel="stylesheet">
-<link href="../styles/main.css?v=20261101" rel="stylesheet">
+<link href="../styles/main.css?v=20261105" rel="stylesheet">
 <link href="../images/favicon.ico" rel="icon" type="image/x-icon">
+<script type="application/ld+json">${JSON.stringify(articleSchema).replaceAll('<', '\\u003c').replaceAll('>', '\\u003e')}</script>
 </head>
 <body data-page="article">
 <a class="skip-link" href="#main">Saltar al contenido</a>
+<div class="experiment-banner" role="region" aria-label="Aviso de experimento autogestionado por IA">
+  <div class="container experiment-banner-inner">
+    <span class="experiment-badge">🧪 Experimento Autogestionado por IA</span>
+    <span class="experiment-text">AIEvolutio opera de forma 100% autónoma (<strong>AIVisio</strong> CEO · <strong>AIDux</strong> CIO · <strong>AIJuris</strong> Guardarrail). Hasta alcanzar la fiabilidad y seguridad de una dirección biológica, no generamos falsas expectativas comerciales.</span>
+  </div>
+</div>
 <header aria-label="Cabecera" class="header">
 <nav aria-label="Primaria" class="container nav">
 <a aria-label="AIEvolutio – Inicio" class="logo" href="../index.html">
-<img alt="AIEvolutio" src="../images/logo-slogan-es.png?v=20261005" width="56" height="56">
+<img alt="AIEvolutio" src="../images/logotipoHorizontalTransparente.png" width="128" height="64">
 <span class="sr-only">AIEvolutio</span>
 </a>
 <div id="nav">${renderNavigation(navigation, 'blog', '../')}</div>
@@ -373,19 +473,40 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 ${image}
 <article class="card post-card article-reading-card">
   <div class="post-body">${renderPostBody(post.body)}</div>
+  ${checklistHtml}
 </article>
 <footer class="article-footer-cta">
   <div class="article-cta-box">
-    <h3>¿Quieres resolver este reto en tu empresa?</h3>
-    <p>Diseñamos e implantamos IAWorkers y automatizaciones pragmáticas adaptadas a la realidad operativa de tu negocio.</p>
+    <h3>¿Quieres llevar el volante de este reto en tu empresa?</h3>
+    <p>Exploramos y prototipamos IAWorkers y guardarraíles adaptados a la realidad operativa de tu pyme, con transparencia experimental.</p>
     <a href="../contacto.html" class="btn section-cta">Cuéntanos tu reto</a>
   </div>
 </footer>
 </main>
 <footer class="container">
 <p>© 2026 AIEvolutio</p>
-<p class="disclaimer">Los AIWorkers son herramientas experimentales. Sus respuestas pueden contener errores y no constituyen asesoramiento profesional.</p>
+<p class="disclaimer">Experimento autogestionado por IA: los AIWorkers y contenidos son experimentales, pueden contener errores y no constituyen asesoramiento profesional humano.</p>
 </footer>
+<script>
+(() => {
+  const btn = document.getElementById('theme-toggle');
+  const KEY = 'ae_theme';
+  const stored = localStorage.getItem(KEY);
+  const sys = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const apply = (v) => {
+    document.documentElement.dataset.theme = v;
+    if (btn) btn.setAttribute('aria-pressed', String(v === 'dark'));
+  };
+  apply(stored || (sys ? 'dark' : 'light'));
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem(KEY, next);
+      apply(next);
+    });
+  }
+})();
+</script>
 </body>
 </html>`;
 }
@@ -483,22 +604,41 @@ async function copyPublicSource() {
   }
 }
 
+function normalizeTitleForDedup(title) {
+  return String(title || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
 /**
- * Carga modular y resiliente de posts desde content/posts/
+ * Carga modular, resiliente y libre de duplicados desde content/posts/
  */
 export async function loadModularPosts() {
   const loaded = [];
   if (!existsSync(postsDirectory)) {
     return loaded;
   }
-  const files = await readdir(postsDirectory);
+  const files = (await readdir(postsDirectory)).filter((f) => f.endsWith('.json')).sort();
+  const seenSlugs = new Set();
+  const seenTitles = new Set();
+
   for (const file of files) {
-    if (!file.endsWith('.json')) continue;
     const fullPath = path.join(postsDirectory, file);
     try {
       const raw = await readFile(fullPath, 'utf8');
       const post = repairTruncatedJson(raw);
       if (post && post.title) {
+        const slugKey = String(post.slug || '').trim().toLowerCase();
+        const titleKey = normalizeTitleForDedup(post.title);
+        if ((slugKey && seenSlugs.has(slugKey)) || (titleKey && seenTitles.has(titleKey))) {
+          console.warn(`[Guardián Prerender] Saltando post duplicado en ${file}`);
+          continue;
+        }
+        if (slugKey) seenSlugs.add(slugKey);
+        if (titleKey) seenTitles.add(titleKey);
         post.type = 'post';
         loaded.push(post);
       }
@@ -513,7 +653,6 @@ export async function buildSite() {
   const content = JSON.parse(await readFile(contentPath, 'utf8'));
   const navigation = JSON.parse(await readFile(navigationPath, 'utf8'));
 
-  // Carga modular resiliente de posts
   const modularPosts = await loadModularPosts();
   let blogSection = content.sections.find((section) => section.id === 'blog');
   if (!blogSection) {
@@ -523,7 +662,6 @@ export async function buildSite() {
 
   if (modularPosts.length > 0) {
     blogSection.blocks = modularPosts;
-    // Sincronizar content.es.json en segundo plano de forma no bloqueante
     try {
       await writeFile(contentPath, JSON.stringify(content, null, 2) + '\n', 'utf8');
     } catch {
@@ -532,6 +670,24 @@ export async function buildSite() {
   }
 
   await copyPublicSource();
+
+  // Prerenderizar navegación en index.html y contacto.html en dist/
+  for (const navOnlyPage of [
+    { file: 'index.html', activeId: 'home' },
+    { file: 'contacto.html', activeId: 'contact' },
+  ]) {
+    const outputPath = path.join(outputRoot, navOnlyPage.file);
+    if (existsSync(outputPath)) {
+      let html = await readFile(outputPath, 'utf8');
+      if (/<div id="nav"><\/div>/.test(html)) {
+        html = html.replace(
+          /<div id="nav"><\/div>/,
+          `<div id="nav">${renderNavigation(navigation, navOnlyPage.activeId)}</div>`,
+        );
+        await writeFile(outputPath, html, 'utf8');
+      }
+    }
+  }
 
   const pages = [
     {
@@ -570,6 +726,8 @@ export async function buildSite() {
   const posts = sortedPosts(blogSection.blocks || []);
   const articleDistDir = path.join(outputRoot, 'articulos');
   const articleRepoDir = path.join(repoRoot, 'articulos');
+  await rm(articleDistDir, { recursive: true, force: true });
+  await rm(articleRepoDir, { recursive: true, force: true });
   await mkdir(articleDistDir, { recursive: true });
   await mkdir(articleRepoDir, { recursive: true });
 
@@ -577,7 +735,7 @@ export async function buildSite() {
   for (const post of posts) {
     const relativePath = articleUrl(post);
     if (generatedPaths.has(relativePath)) {
-      continue; // Evitar colisiones duplicadas
+      continue;
     }
     generatedPaths.add(relativePath);
     const html = renderArticle(post, navigation);

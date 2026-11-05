@@ -2,14 +2,31 @@ name: AIEvolutio Autonomous Evolution & Deploy
 
 on:
   schedule:
-    - cron: '0 * * * *' # Revisión y jardinería técnica cada hora (contenido: 1 vez al día a las 06:00 UTC)
+    - cron: '0 6 * * *' # Ciclo evolutivo diario (06:00 UTC) con Guardián Adversarial Antiduplicados
   push:
     branches: [ main ]  # Despliegue en cada avance a main
-  workflow_dispatch:    # Disparador manual para evolución bajo demanda
+  workflow_dispatch:    # Disparador manual para forzar ciclos de contenido o técnicos bajo demanda
+    inputs:
+      mode:
+        description: 'Modo de ciclo a forzar (auto, force-content, force-tech, audit-only)'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - force-content
+          - force-tech
+          - audit-only
+      author:
+        description: 'Perfil organizativo para firmar contenido (opcional: AIVisio, AIDux, AIJuris)'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: write
   issues: write
+  models: read
 
 concurrency:
   group: "pages-and-evolution"
@@ -30,31 +47,42 @@ jobs:
         with:
           node-version: '22'
 
-      - name: 3. Ejecutar Ciclo Evolutivo IA (Sólo en Cron o Manual)
+      - name: 3. Ejecutar Ciclo Evolutivo IA (Con Guardián Adversarial)
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
           GA4_CREDENTIALS_JSON: ${{ secrets.GA4_CREDENTIALS_JSON }}
-        run: node scripts/autonomous-evolution.mjs
+          INPUT_MODE: ${{ inputs.mode }}
+          INPUT_AUTHOR: ${{ inputs.author }}
+        run: |
+          ARGS=""
+          if [ "$INPUT_MODE" = "force-content" ]; then ARGS="$ARGS --force-content"; fi
+          if [ "$INPUT_MODE" = "force-tech" ]; then ARGS="$ARGS --force-tech"; fi
+          if [ "$INPUT_MODE" = "audit-only" ]; then ARGS="$ARGS --audit-only"; fi
+          if [ -n "$INPUT_AUTHOR" ]; then ARGS="$ARGS --author=$INPUT_AUTHOR"; fi
+          node scripts/autonomous-evolution.mjs $ARGS
 
-      - name: 4. Guardián de Calidad Autoreparable (No bloqueante)
+      - name: 4. Guardián de Calidad Autoreparable y Antiduplicados
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
           npx --yes prettier --write "**/*.{html,css,js,json,md}" || true
           node scripts/self-heal-check.mjs
 
-      - name: 5. Auto-Commit Directo a Main (Cero Aprobación Humana)
+      - name: 5. Auto-Commit Directo a Main (Solo si hay cambios reales verificados)
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
           git config user.name "AIEvolutio-Engine"
           git config user.email "autonomous@aievolutio.com"
           git add -A
           if ! git diff --staged --quiet; then
-            git commit -m "evo(spiral): actualización autónoma de jardinería y mejora técnica"
+            git commit -m "evo(spiral): evolución verificada por guardián adversarial"
             git fetch origin main
             git rebase -X theirs origin/main || (git rebase --abort && git merge --strategy-option=theirs origin/main -m "evo(merge): reconciliación automática")
             git push origin HEAD:main || true
+          else
+            echo "Sin cambios reales en este ciclo; se omite commit vacío."
           fi
 
       - name: 6. Emitir o Actualizar Parte de Observabilidad (Issue Único Diario)
@@ -65,23 +93,12 @@ jobs:
           if [ -f "docs/daily-digest.md" ]; then
             TODAY=$(date -u +'%Y-%m-%d')
             ISSUE_TITLE="📊 Informe Evolutivo AIEvolutio — $TODAY"
-            # Buscar si ya existe el issue de hoy para actualizarlo en lugar de spamear issues nuevos cada hora
             EXISTING_ISSUE=$(gh issue list --search "$ISSUE_TITLE in:title" --state open --json number --jq '.[0].number' || echo "")
             if [ -n "$EXISTING_ISSUE" ]; then
               gh issue comment "$EXISTING_ISSUE" --body-file "docs/daily-digest.md" || true
             else
               gh issue create --title "$ISSUE_TITLE" --body-file "docs/daily-digest.md" || true
             fi
-            # Cerrar automáticamente issues obsoletos de fallos anteriores al Gran Reseteo
-            for OLD_ID in $(gh issue list --search "[AI Team] in:title" --state open --json number --jq '.[].number' || echo ""); do
-              gh issue close "$OLD_ID" --comment "Resuelto automáticamente tras la Iteración 0 (El Gran Reseteo)." || true
-            done
-            for OLD_ID in $(gh issue list --search "[Website] in:title" --state open --json number --jq '.[].number' || echo ""); do
-              gh issue close "$OLD_ID" --comment "Resuelto automáticamente tras la Iteración 0 (El Gran Reseteo)." || true
-            done
-            for OLD_ID in $(gh issue list --search "[Site review] in:title" --state open --json number --jq '.[].number' || echo ""); do
-              gh issue close "$OLD_ID" --comment "Resuelto automáticamente tras la Iteración 0 (El Gran Reseteo)." || true
-            done
           fi
 
       - name: 7. Compilar Sitio Estático (dist/)

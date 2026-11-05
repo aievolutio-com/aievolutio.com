@@ -2,7 +2,7 @@
   const state = { content: null };
 
   const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s)); // eslint-disable-line no-unused-vars
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
   function isAllowedHref(value) {
     const href = String(value ?? "").trim();
@@ -22,7 +22,6 @@
   }
 
   async function loadContent(lang = "es") {
-    // Use relative path so it works on localhost, previews (with <base>), and production
     const res = await fetch(`content/content.${lang}.json`, {
       cache: "no-store",
     });
@@ -30,7 +29,6 @@
     state.content = await res.json();
   }
 
-  // Optional: separate navigation file overrides the one inside content.es.json
   async function loadNavigationOverride() {
     try {
       const res = await fetch("content/navigation.json", { cache: "no-store" });
@@ -43,6 +41,7 @@
 
   function renderNav(items) {
     const nav = $("#nav");
+    if (!nav) return;
     const page = document.body.dataset.page || "home";
     const activeId =
       page === "blog" || page === "blog-archive"
@@ -85,7 +84,7 @@
       );
   }
 
-  function postSummary(body, maxLength = 280) {
+  function postSummary(body, maxLength = 220) {
     const text = String(body || "")
       .replace(/\*\*/g, "")
       .replace(/\s+/g, " ")
@@ -103,13 +102,70 @@
     }).format(new Date(`${date}T12:00:00Z`));
   }
 
+  function getPostCategoryMeta(post) {
+    const text =
+      `${post.title || ""} ${post.body || ""} ${post.category || ""}`.toLowerCase();
+    const author = (post.author || "").toLowerCase();
+    if (
+      author.includes("juris") ||
+      text.includes("ai act") ||
+      text.includes("legal") ||
+      text.includes("contrato") ||
+      text.includes("rgpd") ||
+      text.includes("guardarrail")
+    ) {
+      return { label: "Guardarrail Ético & Legal", filterKey: "legal" };
+    }
+    if (
+      author.includes("visio") ||
+      (post.category || "").toLowerCase() === "estrategia" ||
+      text.includes("singularidad") ||
+      text.includes("volante") ||
+      text.includes("exponencial") ||
+      text.includes("geo") ||
+      text.includes("resiliencia")
+    ) {
+      return { label: "Visión & Estrategia", filterKey: "estrategia" };
+    }
+    if (
+      text.includes("slm") ||
+      text.includes("mcp") ||
+      text.includes("hardware") ||
+      text.includes("local") ||
+      text.includes("modelo") ||
+      text.includes("offline")
+    ) {
+      return { label: "Tecnología & SLMs", filterKey: "tecnologia" };
+    }
+    return { label: "IAWorkers & Procesos", filterKey: "tecnologia" };
+  }
+
+  function calculateReadingTime(body) {
+    const words = String(body || "")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean).length;
+    const minutes = Math.max(2, Math.ceil(words / 190));
+    return `${minutes} min de lectura`;
+  }
+
   function renderPost(post, preview, showTitle = true) {
     const id = articleId(post);
-    const articleAttrs = { class: "card post-card" };
+    const { label: category, filterKey } = getPostCategoryMeta(post);
+    const readingTime = calculateReadingTime(post.body);
+    const searchAttr =
+      `${post.title || ""} ${post.author || ""} ${category} ${post.excerpt || ""}`.toLowerCase();
+    const articleAttrs = {
+      class: "card post-card",
+      "data-filter-cat": filterKey,
+      "data-author": post.author || "AIEvolutio",
+      "data-search": searchAttr,
+    };
     if (!preview) articleAttrs.id = id;
-    const article = el("article", articleAttrs, [
-      el("div", { class: "post-body-wrap" }),
-    ]);
+
+    const inner = el("div", { class: "post-card-inner" });
+    inner.append(el("div", { class: "post-category-tag" }, [category]));
+
     if (showTitle) {
       const title = el("h3");
       if (preview) {
@@ -119,14 +175,29 @@
       } else {
         title.textContent = post.title || "Entrada";
       }
-      article.append(title);
+      inner.append(title);
     }
-    const metadata = [formatPostDate(post.date), post.author]
+
+    const metadata = [formatPostDate(post.date), post.author, readingTime]
       .filter(Boolean)
       .join(" · ");
-    article.append(el("p", { class: "muted post-meta" }, [metadata]));
+    inner.append(el("p", { class: "muted post-meta" }, [metadata]));
+    inner.append(
+      renderPostBody(preview ? postSummary(post.body, 180) : post.body),
+    );
+
+    if (preview) {
+      inner.append(
+        el("a", { href: articleUrl(post), class: "text-link" }, [
+          "Leer artículo →",
+        ]),
+      );
+    }
+
+    const article = el("article", articleAttrs);
     if (post.img) {
-      article.append(
+      const coverWrap = el("div", { class: "post-cover-wrap" });
+      coverWrap.append(
         el("img", {
           src: post.img,
           alt:
@@ -135,23 +206,22 @@
           loading: "lazy",
         }),
       );
+      article.append(coverWrap);
     }
-    article
-      .querySelector(".post-body-wrap")
-      .append(renderPostBody(preview ? postSummary(post.body) : post.body));
-    if (preview) {
-      article.append(
-        el("a", { href: articleUrl(post), class: "text-link" }, [
-          "Leer artículo",
-        ]),
-      );
-    }
+    article.append(inner);
     return article;
   }
 
-  function truncateString(str, num) {
-    if (str.length <= num) return str;
-    return str.slice(0, num) + "...";
+  function appendInlineFormatted(parent, text) {
+    String(text || "")
+      .split(/(\*\*.+?\*\*)/g)
+      .forEach((part) => {
+        if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+          parent.append(el("strong", {}, [part.slice(2, -2)]));
+        } else {
+          parent.append(part);
+        }
+      });
   }
 
   function renderPostBody(body) {
@@ -162,16 +232,51 @@
       .filter(Boolean);
 
     paragraphs.forEach((paragraph) => {
-      const element = el("p");
-      paragraph.split("\n").forEach((line, index) => {
-        if (index) element.append(el("br"));
-        line.split(/(\*\*.+?\*\*)/g).forEach((part) => {
-          if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
-            element.append(el("strong", {}, [part.slice(2, -2)]));
-          } else {
-            element.append(part);
-          }
+      const trimmed = paragraph.trim();
+      if (
+        (trimmed.startsWith("**") &&
+          trimmed.endsWith("**") &&
+          !trimmed.includes("\n")) ||
+        trimmed.startsWith("### ")
+      ) {
+        const titleText = trimmed.startsWith("### ")
+          ? trimmed.slice(4)
+          : trimmed.slice(2, -2);
+        content.append(el("h3", { class: "article-subtitle" }, [titleText]));
+        return;
+      }
+
+      const lines = trimmed.split("\n");
+      if (
+        lines.every(
+          (l) => l.trim().startsWith("- ") || l.trim().startsWith("* "),
+        )
+      ) {
+        const ul = el("ul", { class: "article-list" });
+        lines.forEach((l) => {
+          const li = el("li");
+          appendInlineFormatted(li, l.trim().replace(/^[-*]\s+/, ""));
+          ul.append(li);
         });
+        content.append(ul);
+        return;
+      }
+
+      if (lines.every((l) => /^\d+\.\s+/.test(l.trim()))) {
+        const ol = el("ol", { class: "article-ordered" });
+        lines.forEach((l) => {
+          const li = el("li");
+          appendInlineFormatted(li, l.trim().replace(/^\d+\.\s+/, ""));
+          ol.append(li);
+        });
+        content.append(ol);
+        return;
+      }
+
+      const element = el("p");
+      lines.forEach((line, index) => {
+        if (index) element.append(el("br"));
+        appendInlineFormatted(element, line);
       });
       content.append(element);
     });
@@ -203,11 +308,11 @@
         : null;
     const sectionTitle =
       sec.id === "blog" && page === "home"
-        ? "Ideas recientes"
+        ? "Ideas recientes para llevar el volante"
         : sec.id === "blog" && page === "blog"
           ? selectedPost
             ? "Artículo"
-            : "Artículos recientes"
+            : "Ideas, guías y casos de uso"
           : sec.id === "blog" && page === "blog-archive"
             ? "Artículos anteriores"
             : sec.title;
@@ -228,7 +333,8 @@
       );
     }
     const containerClass =
-      sec.kind === "grid" || (sec.id === "aiworkers" && page === "team")
+      sec.kind === "grid" ||
+      (sec.id === "aiworkers" && (page === "team" || page === "home"))
         ? "grid"
         : sec.id === "blog"
           ? `grid post-grid${selectedPost ? " post-grid-single" : ""}`
@@ -240,9 +346,9 @@
     }
     if (sec.id === "blog") {
       if (page === "blog") {
-        blocks = selectedPost ? [selectedPost] : posts.slice(0, 4);
+        blocks = selectedPost ? [selectedPost] : posts.slice(0, 6);
       } else if (page === "blog-archive") {
-        blocks = posts.slice(4);
+        blocks = posts.slice(6);
       } else {
         blocks = posts.slice(0, 3);
       }
@@ -278,6 +384,8 @@
           "aria-hidden": "true",
         });
         const agentIcons = {
+          aivisio:
+            '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/><circle cx="12" cy="12" r="1.5"/></svg>',
           aifactura:
             '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>',
           airespuestas:
@@ -319,6 +427,16 @@
           card.append(impactBox);
         }
 
+        if (Array.isArray(b.capabilities) && b.capabilities.length) {
+          const capsWrap = el("div", { class: "worker-caps" });
+          const capsList = el("ul", { class: "worker-caps-list" });
+          b.capabilities.forEach((cap) => {
+            capsList.append(el("li", {}, [cap]));
+          });
+          capsWrap.append(capsList);
+          card.append(capsWrap);
+        }
+
         if (isExternalHref(b.href)) {
           const label = b.cta || (name ? `Probar ${name}` : "Probar");
           const actions = el("div", { class: "worker-actions" });
@@ -340,7 +458,6 @@
         container.append(card);
       }
       if (b.type === "quote") {
-        // Support optional image and author/version. Format: "cita." (AUTHOR v.X.Y.Z)
         const fig = el("figure", { class: "quote" });
         if (b.img)
           fig.append(
@@ -400,7 +517,6 @@
           );
         c.append(el("h3", {}, [b.title || ""]));
         if (b.body) {
-          // Detect inline "Resultado típico:" to present it as a highlighted label on a new line
           const bodyStr = String(b.body);
           const lower = bodyStr.toLowerCase();
           const marker = "resultado típico:";
@@ -457,156 +573,13 @@
           );
         container.append(row);
       }
-      if (b.type === "contact") {
-        // Dynamic contact form (email not exposed directly). b.fields meta drives inputs.
-        const form = el("form", { class: "contact-form", noValidate: true });
-        const startTime = Date.now();
-        const hpName = b.honeypot || "hp_field";
-        (b.fields || []).forEach((f) => {
-          const wrap = el("label", { class: "field" });
-          const span = el("span", { class: "field-label" }, [
-            f.label || f.name,
-          ]);
-          wrap.append(span);
-          let input;
-          if (f.type === "textarea") {
-            input = el("textarea", { name: f.name, required: !!f.required });
-            if (f.minlength) input.minLength = f.minlength;
-            if (f.maxlength) input.maxLength = f.maxlength;
-            if (f.placeholder) input.placeholder = f.placeholder;
-          } else {
-            input = el("input", {
-              type: f.type || "text",
-              name: f.name,
-              required: !!f.required,
-            });
-            if (f.minlength) input.minLength = f.minlength;
-            if (f.maxlength) input.maxLength = f.maxlength;
-            if (f.placeholder) input.placeholder = f.placeholder;
-          }
-          wrap.append(input);
-          form.append(wrap);
-        });
-        // Honeypot (hidden)
-        const hpWrap = el("div", { class: "hp" });
-        const hpInput = el("input", {
-          type: "text",
-          name: hpName,
-          tabIndex: -1,
-          autoComplete: "off",
-        });
-        hpWrap.append(hpInput);
-        form.append(hpWrap);
-        const status = el("p", { class: "form-status", "aria-live": "polite" });
-        const submitBtn = el("button", { type: "submit", class: "btn" }, [
-          "Enviar",
-        ]);
-        form.append(submitBtn);
-        form.append(status);
-
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          status.textContent = "";
-          if (hpInput.value) {
-            status.textContent = "Descartado.";
-            return;
-          }
-          const minDelay = b.minDelayMs || 1500;
-          const elapsed = Date.now() - startTime;
-          if (elapsed < minDelay) {
-            status.textContent = "Espera un momento antes de enviar…";
-            return;
-          }
-          // Basic validation
-          let hasError = false;
-          (b.fields || []).forEach((f) => {
-            const node = form.querySelector(`[name="${f.name}"]`);
-            if (node && f.required && !node.value.trim()) {
-              hasError = true;
-              node.classList.add("field-error");
-            } else if (node) node.classList.remove("field-error");
-          });
-          if (hasError) {
-            status.textContent = "Revisa los campos obligatorios.";
-            return;
-          }
-          submitBtn.disabled = true;
-          status.textContent = "Enviando…";
-          try {
-            const payload = {};
-            (b.fields || []).forEach((f) => {
-              const node = form.querySelector(`[name="${f.name}"]`);
-              payload[f.name] = node ? node.value.trim() : "";
-            });
-            payload._t = Date.now();
-            const ep = b.endpoint || "/api/contact";
-            const method = (b.method || "POST").toUpperCase();
-            // For now, attempt fetch; if fails (no backend), show success fallback to avoid UX dead end.
-            let ok = true;
-            if (b.mode === "local") {
-              // Local mode: build mailto link with obfuscated target; open user agent mail client.
-              // Safe base64 decode (browser only; non-browser lint will treat as no-op)
-              const decode = (v) => {
-                try {
-                  if (
-                    typeof window !== "undefined" &&
-                    typeof window.atob === "function"
-                  )
-                    return window.atob(v);
-                } catch {
-                  /* ignore */
-                }
-                return "";
-              };
-              const user = b.userB64 ? decode(b.userB64) : "contacto";
-              const domain = b.domainB64 ? decode(b.domainB64) : "example.com";
-              const to = user + "@" + domain;
-              const subject = encodeURIComponent(
-                "Contacto desde sitio AIEvolutio",
-              );
-              const body = encodeURIComponent(
-                `Nombre: ${payload.nombre || ""}\nEmail: ${payload.email || ""}\n\n${payload.mensaje || ""}`,
-              );
-              const mailto = `mailto:${to}?subject=${subject}&body=${body}`;
-              // Open in a new window (fallback to location if blocked)
-              const w = window.open(mailto, "_blank");
-              if (!w) window.location.href = mailto;
-              status.textContent =
-                b.success || "Mensaje preparado en tu gestor de correo.";
-              form.reset();
-              ok = true;
-            } else {
-              try {
-                const res = await fetch(ep, {
-                  method,
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(payload),
-                });
-                ok = res.ok;
-              } catch {
-                /* network / local fallback */ ok = false;
-              }
-              if (ok) {
-                status.textContent = b.success || "Enviado correctamente.";
-                form.reset();
-              } else {
-                status.textContent = b.error || "Error al enviar.";
-              }
-            }
-          } finally {
-            submitBtn.disabled = false;
-          }
-        });
-
-        container.append(form);
-      }
     });
 
     if (
       page === "blog" &&
       sec.id === "blog" &&
       !selectedPost &&
-      posts.length > 4
+      posts.length > 6
     ) {
       container.append(
         el(
@@ -629,7 +602,7 @@
     if (page === "home" && sec.id === "aiworkers") {
       container.append(
         el("a", { href: "equipo.html", class: "btn section-cta" }, [
-          "Conocer al equipo",
+          "Conocer la organización y sus AIWorkers",
         ]),
       );
     }
@@ -640,6 +613,7 @@
 
   function renderSections(sections) {
     const mount = $("#sections");
+    if (!mount) return;
     mount.replaceChildren();
     const page = document.body.dataset.page || "home";
     const today = new Intl.DateTimeFormat("en-CA", {
@@ -674,6 +648,61 @@
     });
   }
 
+  function setupBlogFilters() {
+    const blogSection = $("#blog");
+    if (!blogSection) return;
+    const pills = $$(".topic-pill[data-filter]", blogSection);
+    const searchInput = $("#blog-search", blogSection);
+    const statusEl = $("#blog-filter-status", blogSection);
+    const cards = $$(".post-card", blogSection);
+    if (!cards.length) return;
+
+    let activeFilter = "all";
+    let searchQuery = "";
+
+    function applyFilter() {
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const metaHolder = card.querySelector("[data-filter-cat]") || card;
+        const cat = metaHolder.getAttribute("data-filter-cat") || "";
+        const searchData = (
+          metaHolder.getAttribute("data-search") ||
+          card.textContent ||
+          ""
+        ).toLowerCase();
+        const matchesCat = activeFilter === "all" || cat === activeFilter;
+        const matchesSearch = !searchQuery || searchData.includes(searchQuery);
+        const show = matchesCat && matchesSearch;
+        card.hidden = !show;
+        card.style.display = show ? "" : "none";
+        if (show) visibleCount++;
+      });
+      if (statusEl) {
+        statusEl.textContent = `Mostrando ${visibleCount} artículos.`;
+      }
+    }
+
+    pills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        pills.forEach((p) => {
+          p.classList.remove("active");
+          p.setAttribute("aria-pressed", "false");
+        });
+        pill.classList.add("active");
+        pill.setAttribute("aria-pressed", "true");
+        activeFilter = pill.getAttribute("data-filter") || "all";
+        applyFilter();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        searchQuery = searchInput.value.trim().toLowerCase();
+        applyFilter();
+      });
+    }
+  }
+
   function updateBlogView() {
     if (document.body.dataset.page !== "blog" || !state.content) return;
     const blogSection = state.content.sections.find(
@@ -683,13 +712,22 @@
     const selectedPost = posts.find(
       (post) => articleId(post) === window.location.hash.slice(1),
     );
+    const mount = $("#sections");
+    // Si ya existe contenido prerenderizado en #sections y no se solicita un hash de artículo concreto,
+    // preservamos el DOM prerenderizado con filtros y diseño editorial completo.
+    if (!selectedPost && mount && mount.children.length > 0) {
+      setupBlogFilters();
+      return;
+    }
     const pageTitle = $("#page-title");
     if (pageTitle)
-      pageTitle.textContent = selectedPost?.title || "Ideas para evolucionar";
+      pageTitle.textContent =
+        selectedPost?.title || "Ideas para llevar el volante";
     document.title = selectedPost
       ? `${selectedPost.title} — AIEvolutio`
-      : "Ideas para evolucionar — AIEvolutio";
+      : "Ideas para llevar el volante — AIEvolutio";
     renderSections(state.content.sections);
+    setupBlogFilters();
     if (selectedPost)
       document.getElementById(articleId(selectedPost))?.scrollIntoView();
   }
@@ -768,6 +806,90 @@
     });
   }
 
+  function setupVolanteDiagnostic() {
+    const root = document.getElementById("volante-diagnostic");
+    if (!root) return;
+
+    const scores = { visio: 15, dux: 15, juris: 10 };
+
+    function updateDiagnosis() {
+      const avg = Math.round((scores.visio + scores.dux + scores.juris) / 3);
+      const badgeEl = document.getElementById("volante-status-badge");
+      const leadEl = document.getElementById("volante-lead-agent");
+      const scoreEl = document.getElementById("volante-score-num");
+      const stateEl = document.getElementById("volante-curve-state");
+      const descEl = document.getElementById("volante-prescription");
+
+      if (scoreEl) scoreEl.textContent = `${avg}%`;
+
+      if (scores.juris < 40) {
+        if (badgeEl) badgeEl.textContent = "Alerta: Sin Guardarrail Legal";
+        if (leadEl) leadEl.textContent = "Intervención: AIJuris + AIVisio";
+        if (stateEl) stateEl.textContent = "Riesgo curva";
+        if (descEl) {
+          descEl.textContent =
+            "Peligro de descarrilamiento normativo o fuga de datos: antes de escalar automatizaciones, necesitas activar el guardarrail de AIJuris (prohibir datos confidenciales en nubes abiertas y cumplir el AI Act) y definir con AIVisio dónde innovar.";
+        }
+      } else if (scores.visio < 50) {
+        if (badgeEl) badgeEl.textContent = "Falta Rumbo de Innovación";
+        if (leadEl) leadEl.textContent = "Prioridad: AIVisio (CEO)";
+        if (stateEl) stateEl.textContent = "Inercia";
+        if (descEl) {
+          descEl.textContent =
+            "Tenéis precaución legal, pero solo estáis abaratando tareas menores. El abaratamiento del conocimiento exige usar la estrategia de AIVisio para hacer posible lo que antes no era posible en vuestro sector.";
+        }
+      } else if (scores.dux < 50) {
+        if (badgeEl) badgeEl.textContent = "Visión sin Ejecución Técnica";
+        if (leadEl) leadEl.textContent = "Prioridad: AIDux (CIO)";
+        if (stateEl) stateEl.textContent = "Tracción media";
+        if (descEl) {
+          descEl.textContent =
+            "Sabéis adónde ir y cuidáis el marco legal, pero dependéis de copiar y pegar manualmente. Es momento de que AIDux implante modelos SLM locales y AIWorkers conectados a vuestros procesos.";
+        }
+      } else if (avg < 85) {
+        if (badgeEl) badgeEl.textContent = "Tracción Competitiva Activa";
+        if (leadEl) leadEl.textContent = "Sinergia: AIVisio · AIDux · AIJuris";
+        if (stateEl) stateEl.textContent = "Copiloto";
+        if (descEl) {
+          descEl.textContent =
+            "Vuestra organización ya aprovecha la curva exponencial con criterio. El siguiente paso es desplegar conectores MCP locales y convertir ese tiempo recuperado en nuevos servicios de alto valor.";
+        }
+      } else {
+        if (badgeEl) badgeEl.textContent = "Control Firme del Volante";
+        if (leadEl) leadEl.textContent = "Organización Exponencial";
+        if (stateEl) stateEl.textContent = "Al volante";
+        if (descEl) {
+          descEl.textContent =
+            "Estáis preparados para el borde de la singularidad: combináis visión innovadora (AIVisio), explotación tecnológica local (AIDux) y guardarrail ético-legal riguroso (AIJuris).";
+        }
+      }
+
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "volante_diagnosis", {
+          visio_score: scores.visio,
+          dux_score: scores.dux,
+          juris_score: scores.juris,
+          total_score: avg,
+        });
+      }
+    }
+
+    root.querySelectorAll(".volante-btn[data-dim]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const dim = btn.getAttribute("data-dim");
+        if (!dim) return;
+        root
+          .querySelectorAll(`.volante-btn[data-dim="${dim}"]`)
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        scores[dim] = parseInt(btn.getAttribute("data-score") || "0", 10) || 0;
+        updateDiagnosis();
+      });
+    });
+
+    updateDiagnosis();
+  }
+
   function setupRoiCalculator() {
     const root = document.getElementById("roi-calculator");
     if (!root) return;
@@ -794,20 +916,20 @@
         role: "Presupuestos rápidos en PDF",
         hours: [10, 20, 38],
         savings: [250, 500, 950],
-        desc: "Transforma notas de voz de WhatsApp o correos en propuestas formales desglosadas listas para enviar en 10 minutos.",
+        desc: "Transforma notas de voz de WhatsApp o correos en propuestas formales desglosadas listas para revisar y enviar en 10 minutos.",
         link: "equipo.html",
       },
       legal: {
         worker: "AIJuris",
-        role: "Contratos y cumplimiento AI Act",
+        role: "Guardarrail ético-legal, contratos y AI Act",
         hours: [8, 16, 32],
         savings: [400, 800, 1600],
-        desc: "Detección preventiva de cláusulas abusivas y adecuación legal de tus herramientas sin minutas infladas.",
+        desc: "Detección preventiva de cláusulas abusivas y adecuación al Reglamento Europeo de IA sin minutas infladas.",
         link: "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
       },
     };
 
-    let teamSizeIndex = 0; // 0: 1-5, 1: 6-10, 2: 11-20
+    let teamSizeIndex = 0;
     let currentTask = "facturas";
 
     function update() {
@@ -865,22 +987,34 @@
   }
 
   async function main() {
+    setupTheme();
+    setupLightbox();
+    setupVolanteDiagnostic();
+    setupRoiCalculator();
+    setupBlogFilters();
+    const currentYear = $("#current-year");
+    if (currentYear) currentYear.textContent = String(new Date().getFullYear());
+
     try {
       await loadContent("es");
       const navOverride = await loadNavigationOverride();
       renderNav(navOverride || state.content.navigation);
-      if (document.body.dataset.page === "blog") {
+      const page = document.body.dataset.page || "home";
+      const mount = $("#sections");
+
+      if (page === "blog") {
         window.addEventListener("hashchange", updateBlogView);
         updateBlogView();
+      } else if (
+        (page === "team" || page === "blog-archive") &&
+        mount &&
+        mount.children.length > 0
+      ) {
+        // Preservar el DOM prerenderizado estáticamente para evitar regresiones visuales
       } else {
         renderSections(state.content.sections);
       }
-      const currentYear = $("#current-year");
-      if (currentYear)
-        currentYear.textContent = String(new Date().getFullYear());
-      setupTheme();
-      setupLightbox();
-      setupRoiCalculator();
+
       if (window.location.hash) {
         document
           .getElementById(window.location.hash.slice(1))
@@ -888,7 +1022,10 @@
       }
     } catch (e) {
       console.error(e);
-      $("#sections").innerHTML = "<p>Error cargando contenido.</p>";
+      const mount = $("#sections");
+      if (mount && mount.children.length === 0) {
+        mount.innerHTML = "<p>Error cargando contenido.</p>";
+      }
     }
   }
 

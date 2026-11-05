@@ -1509,3 +1509,104 @@ figure.quote figcaption {
     box-shadow: 0 0 0 4px transparent;
   }
 }
+
+/* ==========================================================================
+   Banner de Transparencia Experimental y Herramientas del Volante
+   ========================================================================== */
+.experiment-banner {
+  background: color-mix(in srgb, var(--brand-accent) 12%, var(--surface));
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--brand-accent) 32%, var(--border));
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--text);
+  padding: 0.55rem 0;
+}
+
+.experiment-banner-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.experiment-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  background: var(--brand-accent);
+  color: var(--brand-accent-contrast);
+  white-space: nowrap;
+}
+
+.experiment-text {
+  color: var(--text);
+}
+
+.volante-section {
+  background: color-mix(in srgb, var(--brand-tech) 5%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--brand-tech) 24%, var(--border));
+  border-radius: 20px;
+  padding: clamp(var(--space-6), 4vw, var(--space-8));
+  margin: var(--space-8) 0;
+  box-shadow: var(--shadow);
+}
+
+.blog-controls-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  justify-content: space-between;
+}
+
+.blog-search-box {
+  flex: 1 1 240px;
+  max-width: 340px;
+}
+
+.blog-search-input {
+  width: 100%;
+  padding: 0.45rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.blog-search-input:focus-visible {
+  outline: 2px solid var(--brand-tech);
+  outline-offset: 2px;
+}
+
+.article-checklist-box {
+  margin-top: var(--space-6);
+  padding: var(--space-6);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--brand-accent) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 26%, var(--border));
+}
+
+.article-checklist-box h3 {
+  margin: 0 0 var(--space-3);
+  font-size: 1.15rem;
+  color: var(--brand-primary);
+}
+
+.worker-card[data-agent="aivisio"]::before {
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+
+.worker-card[data-agent="aivisio"] .worker-icon-box {
+  background: rgba(249, 115, 22, 0.12);
+  color: #f97316;
+}

@@ -10,6 +10,7 @@ import {
   renderBlog,
   renderTeam,
 } from './prerender-site.mjs';
+import { isDuplicatePost, computeTitleSimilarity } from './autonomous-evolution.mjs';
 
 const content = {
   sections: [
@@ -179,3 +180,39 @@ test('deployment output contains every profile and a static page for every artic
     }
   }
 });
+
+test('adversarial anti-duplication guard blocks duplicate slugs and similar titles', () => {
+  const existing = [
+    {
+      title: 'Modelos SLM locales: IA de alto rendimiento en hardware modesto de oficina',
+      slug: 'modelos-slm-locales-alto-rendimiento-pymes',
+      date: '2026-10-31',
+    },
+  ];
+
+  // Exact duplicate with new date
+  const clone = {
+    title: 'Modelos SLM locales: IA de alto rendimiento en hardware modesto de oficina',
+    slug: 'modelos-slm-locales-alto-rendimiento-pymes',
+    date: '2026-11-05',
+  };
+  assert.equal(isDuplicatePost(clone, existing).duplicate, true);
+
+  // Paraphrased high-similarity title
+  const paraphrased = {
+    title: 'Modelos SLM locales: alto rendimiento en hardware de oficina para pymes',
+    slug: 'slm-en-oficina-pymes',
+    date: '2026-11-05',
+  };
+  assert.ok(computeTitleSimilarity(paraphrased.title, existing[0].title) >= 0.48);
+  assert.equal(isDuplicatePost(paraphrased, existing).duplicate, true);
+
+  // Distinct topic by AIVisio
+  const unique = {
+    title: 'El abaratamiento del conocimiento y la curva exponencial: cómo llevar el volante de tu pyme',
+    slug: 'abaratamiento-conocimiento-curva-exponencial-volante',
+    date: '2026-11-05',
+  };
+  assert.equal(isDuplicatePost(unique, existing).duplicate, false);
+});
+

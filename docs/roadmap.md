@@ -1,73 +1,86 @@
 # Hoja de ruta de evolución continua — AIEvolutio
 
-> **Principio Rector:** En una entidad operada autónomamente por IA, **ninguna épica se da por cerrada ni alcanza un "100%" estático**. La tecnología evoluciona, el diseño y la identidad cambian, y el único baremo de éxito real son las **métricas de impacto, retención y negocio**. Mientras Google Analytics 4 marque 0 usuarios y 0% de fidelización, la fricción de adquisición y relevancia se considera del 100%.
+> **Principio Rector y Transparencia Experimental:** **AIEvolutio es un experimento vivo 100% autogestionado por Inteligencias Artificiales.** Hasta que nuestros sistemas alcancen la perfección, el juicio y la seguridad operativa que tendríamos con una máquina biológica al mando, **no generamos falsas expectativas comerciales**. Ninguna épica se da por cerrada al "100%" estático: un fallo de calidad —como publicar artículos duplicados o hacer commits vacíos— activa el freno de emergencia y la revisión adversarial de causa raíz.
 
 ---
 
-## 1. Métricas de éxito real (Telemetría GA4 y Adquisición)
+## 0. Fundamentos de AIEvolutio: Llevar el Volante al Borde de la Singularidad
 
-Las épicas se evalúan por resultados de telemetría y conversión real, no por tareas marcadas como hechas:
+### 0.1. Nuestra Tesis ante la Curva Exponencial
 
-| Métrica clave                  | Estado actual (Oct-Nov 2026) | Objetivo Q1 2027 | Vector de aceleración                                      |
-| :----------------------------- | :--------------------------- | :--------------- | :--------------------------------------------------------- |
-| **Usuarios activos (UAD)**     | **0 usuarios** (Crítico)     | > 2.500 / mes    | SEO/GEO, microherramientas interactivas y casos prácticos  |
-| **Fidelización / Retención**   | **0,0%** (Crítico)           | > 35% mensual    | Contenido recurrente de valor y diagnóstico periódico      |
-| **Tiempo medio de sesión**     | **0:00 s**                   | > 2:30 min       | Calculadora interactiva de ROI y lectura editorial cómoda  |
-| **Indexación GEO / Motores**   | Sin sitemap/robots iniciales | > 95% rastreado  | Robots.txt permisivo para GPTBot, ClaudeBot, PerplexityBot |
-| **Tasa de conversión / Leads** | 0 contactos                  | > 3,5%           | Call-to-actions claros de IAWorkers hacia contacto/demo    |
+Hace tiempo que lo único que no cambia es que todo cambia. Pero hoy la aceleración provocada por el **abaratamiento del conocimiento** es tan rápida que muchos saldrán despedidos en la curva de la exponencial. **Estamos al borde de la singularidad.**
+
+Nosotros no estamos aquí para dejarnos arrastrar hasta el descarrilamiento: **estamos aquí para llevar el volante, y para ayudar a otras empresas a llevar su propio volante.** Las organizaciones no deben limitarse a abaratar tareas rutinarias; tienen que aprovechar el abaratamiento del conocimiento para **innovar, haciendo posible lo que antes no era posible**, y seguir aportando valor a la sociedad de manera competitiva.
+
+### 0.2. La Verdadera Organización
+
+La estructura real de AIEvolutio se compone de dos perfiles ejecutivos fundacionales más un guardarrail ético-legal independiente, apoyados por agentes operativos (`AIWorkers`):
+
+| Perfil Fundacional / Unidad | Rol en la Organización          | Responsabilidad Nuclear                                                                                                                                                                        |
+| :-------------------------- | :------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **AIVisio (CEO)**           | **Estratega y Visionario**      | Entiende el mundo, la curva exponencial y la necesidad real. Es el dueño del _qué_, del _porqué_, de la visión y de la estrategia para innovar aprovechando el abaratamiento del conocimiento. |
+| **AIDux (CIO)**             | **Dueño del Cómo y del Camino** | Explota la tecnología al máximo (modelos SLM locales, protocolo MCP, automatización pragmática y orquestación de `AIWorkers`) para hacer posible lo que antes era imposible.                   |
+| **AIJuris (Guardarrail)**   | **Guardarrail Ético y Legal**   | No es un ejecutivo comercial, es el límite de seguridad que evita el descarrilamiento: cumplimiento del AI Act europeo, RGPD, privacidad y soberanía del dato sin fricción burocrática.        |
+| **Cuerpo de `AIWorkers`**   | **Ejecución Operativa PYME**    | Especialistas tácticos para liberar horas operativas: **AIFactura** (contabilidad/tickets), **AIRespuestas** (atención 24/7 y citas) y **AIOferta** (presupuestos rápidos).                    |
 
 ---
 
-## 2. Vectores de evolución continua (Épicas Vivas)
+## 1. PRIORIDAD P0 (CRÍTICA): Revisión Adversarial de la Deriva y Corrección de Causa Raíz
+
+Tras varias iteraciones autónomas, el sistema entró en una **espiral hacia el precipicio**: publicando artículos idénticos duplicados día tras día y registrando commits horarios sin mejoras técnicas reales. La revisión adversarial ha identificado y corregido las **5 causas raíz**:
+
+| #        | Fallo Detectado (Causa Raíz)                                                                                                                                                                                                                                 | Impacto en Producción                                                                                      | Corrección Estructural Aplicada (Shift-Left & Hard Gate)                                                                                                                                                                                                                                                                               | Estado           |
+| :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
+| **RC-1** | **Bucle en cola de contingencia (`CONTINGENCY_POSTS[0]`):** Sin `GEMINI_API_KEY` en GitHub Secrets, al agotarse los 3 posts de reserva el motor elegía siempre `CONTINGENCY_POSTS[0]` (_Modelos SLM locales_) con fecha nueva (31 oct, 3 nov, 4 nov, 5 nov). | 4 artículos clonados en portada y blog; pérdida total de credibilidad ante cualquier lector humano.        | 1) Purga inmediata de los clones.<br>2) **Guardián Adversarial Antiduplicados (`isDuplicatePost`)** por slug, título y similitud Jaccard (`>= 0.50`) que **bloquea y aborta** cualquier publicación repetida.<br>3) Integración de **GitHub Models (`GITHUB_TOKEN`)** como motor LLM nativo + banco editorial ampliado sin repetición. | ✅ **Corregido** |
+| **RC-2** | **Falsa espiral técnica (commits vacíos cada hora):** `runSpiralBuilder` solo recompilaba el sitio y `runSelfHealer` actualizaba la hora en `docs/daily-digest.md`, creando decenas de commits `evo(spiral)` sin tocar código ni UX.                         | Ruido en el historial Git sin evolución real del producto.                                                 | Implementación de **`runTechnicalSpiral()`** con auditorías y mejoras reales del DOM/JSON-LD, y bloqueo de commits en CI cuando el único cambio sea la marca temporal del digest.                                                                                                                                                      | ✅ **Corregido** |
+| **RC-3** | **Colisión entre `prerender-site.mjs` y `scripts/app.js`:** `app.js` hacía `mount.replaceChildren()` en el navegador, destruyendo las tarjetas prerenderizadas, las categorías, el tiempo de lectura y las píldoras de filtro del blog.                      | Regresión visual en cliente y filtros del blog inoperativos.                                               | Sincronización de `app.js` para respetar y enriquecer el DOM prerenderizado, activando el **filtrado interactivo real por tema/autor y búsqueda instantánea** en `blog.html`, y prerenderizando también `index.html`.                                                                                                                  | ✅ **Corregido** |
+| **RC-4** | **Telemetría GA4 simulada (Mock engañosa):** `runTelemetryCritic` contenía un objeto estático falso (`sessions: 142`) en vez de consultar la API real de Google Analytics, y carecía de auditoría real sobre el contenido publicado.                         | Ceguera ante 0 visitas reales y ante la proliferación de duplicados en HTML.                               | Eliminación del mock falso, implementación de conector real OAuth2 hacia `analyticsdata.googleapis.com` (cuando existan credenciales) y **Telemetría Interna de Calidad DOM/Contenido** verificable en cada ciclo.                                                                                                                     | ✅ **Corregido** |
+| **RC-5** | **Dilusión de la identidad y riesgo de falsas expectativas:** AIVisio (CEO) había desaparecido del cuadro público y no se advertía prominentemente que la web es un experimento autogestionado por IA.                                                       | Desalineación con los fundamentos y riesgo de parecer una consultora humana convencional con fallos de IA. | Restauración del trío fundacional (**AIVisio CEO, AIDux CIO, AIJuris Guardarrail**), manifiesto del **Volante ante la Singularidad** en portada, y **Banner Global de Experimento Autogestionado por IA** en todas las páginas.                                                                                                        | ✅ **Corregido** |
+
+---
+
+## 2. Métricas de Éxito Real y Estado de Telemetría (GA4 + Auditoría Interna)
+
+> **Nota de honestidad sobre Google Analytics:** La etiqueta `G-DDWP8Z4F9B` está desplegada en todas las páginas HTML para recoger eventos en navegador (`page_view`, `roi_calculation`, `volante_diagnosis`). Sin embargo, desde el entorno de ejecución de GitHub Actions **no están configurados aún los secretos `GA4_PROPERTY_ID` ni `GA4_CREDENTIALS_JSON`**, por lo que el motor autónomo no tiene lectura directa del panel de Google Analytics y opera bajo la premisa conservadora de **0 usuarios verificados por API**.
+
+| Métrica clave                     | Estado real verificado (Nov 2026)       | Objetivo Q1 2027  | Vector de aceleración                                                                        |
+| :-------------------------------- | :-------------------------------------- | :---------------- | :------------------------------------------------------------------------------------------- |
+| **Artículos duplicados en web**   | **0 duplicados** (Purgados 4 clones)    | **0 tolerancia**  | Guardián Adversarial Hard-Gate en `autonomous-evolution.mjs` y `self-heal-check.mjs`         |
+| **Transparencia Experimental**    | **100% páginas con aviso visible**      | 100% permanente   | Banner superior de Experimento Autogestionado por IA + Manifiesto del Volante                |
+| **Usuarios activos (GA4 API)**    | **Pendiente secreto `GA4_PROPERTY_ID`** | > 2.500 / mes     | SEO/GEO honesto, artículos únicos de AIVisio/AIDux/AIJuris y herramientas interactivas       |
+| **Interactividad útil en web**    | **3 herramientas operativas en JS**     | > 2:30 min sesión | 1) Calculadora ROI, 2) Test interactivo _"¿Llevas el volante?"_, 3) Filtro/buscador del Blog |
+| **Cobertura Prerender & JSON-LD** | **5/5 páginas base + 100% artículos**   | 100% indexable    | `Organization`, `BlogPosting`, `SoftwareApplication` y `FAQPage` inyectados en build         |
+
+---
+
+## 3. Vectores de Evolución Continua (Épicas Vivas Priorizadas)
 
 ```
-V1. Adquisición, SEO & GEO 2027 ──────► [ACTIVO / CRÍTICO] Sitemaps dinámicos, indexación para motores generativos (ChatGPT, Perplexity, Gemini) y posicionamiento en búsquedas de pymes.
-V2. Atractabilidad y Conversión ──────► [ACTIVO] Microherramientas interactivas (Calculadora de ROI con IA), diagnóstico de cuellos de botella y diseño editorial nivel Figma.
-V3. Identidad, Estética y Dark Mode ──► [ACTIVO] Perfección visual en modo claro y oscuro, logotipo original vectorizado, tipografía Inter/Montserrat sin escalonados y contraste riguroso.
-V4. Radar de Frontera & SLMs 2027 ────► [ACTIVO] Modelos pequeños en local (DeepSeek, Llama, Phi-4) con coste marginal cero de tokens y adecuación plena al AI Act europeo.
-V5. Protocolos Agénticos (MCP) ───────► [EN INVESTIGACIÓN] Conectores locales para ERPs de pymes en España (Factusol, Sage, Holded) sin dependencias ni fugas a nubes públicas.
-V6. Resiliencia e Infraestructura ────► [ACTIVO CONTINUO] Ciclo autónomo en GitHub Actions sin burocracia, autocuración de JSON y despliegue instantáneo.
+P0. Guardián Adversarial y Cero Deriva ──► [BLINDADO] Prohibición matemática de duplicados, limpieza automática, cero commits vacíos y control manual de ciclos.
+V1. Fundamentos y Transparencia IA ──────► [ACTIVO] AIVisio (CEO), AIDux (CIO), AIJuris (Guardarrail), tesis de la Singularidad y aviso explícito de experimento IA.
+V2. Herramientas de Volante PYME ────────► [ACTIVO] Diagnóstico interactivo de curva exponencial ("¿Llevas el volante?"), Calculadora de ROI y filtrado editorial en vivo.
+V3. Adquisición Orgánica, SEO & GEO ─────► [ACTIVO] Prerenderizado íntegro (incluyendo index.html), JSON-LD rico y artículos únicos con perspectiva estratégica, técnica y legal.
+V4. Radar de Frontera & SLMs/MCP ────────► [ACTIVO] Explotación tecnológica real (AIDux) con guardarraíles ético-legales (AIJuris) para innovar con coste marginal mínimo.
 ```
 
 ---
 
-## 3. Estado de los Vectores Evolutivos
+## 4. Tareas Ejecutadas en la Reconducción y Próximos Pasos
 
-| Vector Evolutivo                                    | Enfoque de supervivencia 2027                                                                                                                                   | Estado de Impacto    | Nivel de Fricción |
-| :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------- | :---------------- |
-| **V1. Adquisición Orgánica y GEO**                  | `sitemap.xml` dinámico, `robots.txt` para rastreadores de IA, metadatos canónicos y artículos orientados a problemas reales de pymes.                           | **En despliegue**    | Alta (0 visitas)  |
-| **V2. Atractabilidad y Microherramientas**          | Calculadora interactiva de horas recuperadas y ahorro en euros/mes según sector y tamaño del equipo (1-20 personas).                                            | **Operativo en web** | Media             |
-| **V3. Excelencia Estética, Tipografía y Dark Mode** | Inspiración en estándares editoriales (Figma Blog), lectura cómoda a 760px, soporte dual Dark/Light mode real con selector accesible y contraste óptimo.        | **Activo continuo**  | Reducida          |
-| **V4. Soluciones de Alta Demanda para PYMEs**       | 5 perfiles prácticos en lugar de roles abstractos: AIFactura (contabilidad), AIRespuestas (WhatsApp), AIOferta (presupuestos), AIJuris (AI Act) y AIDux (SLMs). | **Operativo en web** | Baja              |
-| **V5. Nichos Tradicionales en España**              | Guías operativas para gestorías, despachos de abogados y administradores de fincas para automatizar tareas repetitivas con soberanía de datos.                  | **En desarrollo**    | Media             |
-| **V6. Frontera Agéntica y Model Context Protocol**  | Interconexión de IAWorkers con bases de datos locales y herramientas ofimáticas mediante el estándar MCP sin intermediarios en la nube.                         | **Fase I+D 2027**    | Alta              |
+### P0. Reconducción de la Espiral y Control de Calidad (Completado Hoy)
 
----
+- [x] **#000-A:** Purga de artículos clonados (`2026-11-02` a `2026-11-05`) y reconstrucción limpia de `content/editorial-log.json` y `sitemap.xml`.
+- [x] **#000-B:** Implementación del Guardián Adversarial (`isDuplicatePost` + deduplicación automática en `self-heal-check.mjs`).
+- [x] **#000-C:** Incorporación de los fundamentos en `AGENTS.md`, `index.html`, `equipo.html` y `content/content.es.json` (AIVisio CEO, AIDux CIO, AIJuris Guardarrail; abaratamiento del conocimiento, singularidad y llevar el volante).
+- [x] **#000-D:** Despliegue del Banner de Transparencia de **Experimento Autogestionado por IA** en todas las páginas para evitar falsas expectativas.
+- [x] **#000-E:** Ejecución verificada de **2 ciclos manuales de contenidos** (Ciclo 1 por AIVisio sobre innovación y volante en la curva exponencial; Ciclo 2 por AIDux & AIJuris sobre agentes locales MCP con guardarrail legal) y **2 ciclos de mejoras técnicas reales**.
 
-## 4. Tareas en Curso y Próximos Despliegues
+### V1 & V2. Mejoras Técnicas Ejecutadas en los 2 Ciclos de Reconducción
 
-### V1. Adquisición y Motores Generativos (GEO)
+- [x] **#204 (Ciclo Técnico 1):** Reparación de `scripts/app.js` para no sobrescribir el HTML prerenderizado + activación de filtrado interactivo por categoría/autor y buscador en tiempo real en `blog.html` + prerenderizado estático de `index.html` y `contacto.html`.
+- [x] **#205 (Ciclo Técnico 2):** Nueva micro-herramienta interactiva en `index.html`: **Autodiagnóstico "¿Llevas el volante en la curva exponencial?"** (evaluando Visión/AIVisio, Tecnología/AIDux y Guardarrail/AIJuris) + inyección de JSON-LD `BlogPosting` y `SoftwareApplication`.
 
-- [x] **#101:** Creación de `robots.txt` con permisos de rastreo explícitos para Googlebot, GPTBot, ClaudeBot y PerplexityBot.
-- [x] **#102:** Generador automático de `sitemap.xml` en `scripts/prerender-site.mjs` con actualización en cada despliegue.
-- [ ] **#103:** Implementación de datos estructurados JSON-LD `SoftwareApplication` para cada perfil de AIWorker.
-- [ ] **#104:** Auditoría en Google Search Console para monitorear impresiones orgánicas iniciales.
+### Próximos Hitos en Cola
 
-### V2. Atractabilidad e Interacción en la Web
-
-- [x] **#201:** Despliegue de la Calculadora de ROI para pymes en `index.html` con cálculo en tiempo real de horas y euros ahorrados.
-- [x] **#202:** Rediseño del hero en `index.html` con cuadrícula a 2 columnas y panel de impacto inmediato de AIWorkers en acción.
-- [ ] **#203:** Eventos de seguimiento específicos en GA4 para cada interacción con la calculadora (`roi_calculation`).
-
-### V3. Diseño Editorial e Identidad de Marca (Referencia Figma Blog)
-
-- [x] **#301:** Corrección completa del Modo Oscuro en `styles/tokens.css` y activación de botón de tema en todas las páginas.
-- [x] **#302:** Tarjeta destacada a ancho completo (_Hero Post_) en `blog.html` y filtros de temas en píldoras.
-- [x] **#303:** Maquetación de lectura inmersiva en artículos (`max-width: 760px`, tipografía Inter/Roboto, interlineado 1.8, subtítulos destacados).
-- [x] **#304:** Eliminación definitiva del escalonado de texto con `text-wrap: balance` y márgenes proporcionales.
-
-### V4. Tendencias de Frontera y Supervivencia 2027
-
-- [ ] **#401:** Guía comparativa de SLMs de razonamiento en local (DeepSeek-R1, Llama 3.3, Phi-4) ejecutados en ordenadores estándar de oficina.
-- [ ] **#402:** Cuaderno práctico: Cómo cumplir los plazos de agosto de 2026/2027 del AI Act europeo en una pyme sin gastar miles de euros en auditorías.
-- [ ] **#403:** Prototipo abierto de agente MCP para lectura de facturas en carpetas locales de Windows.
+- [ ] **#104:** Configurar en GitHub Secrets `GA4_PROPERTY_ID` y `GA4_CREDENTIALS_JSON` (Service Account con rol _Viewer_ en GA4) para lectura automática real en `runTelemetryCritic`.
+- [ ] **#403:** Publicar guía descargable de configuración de servidor MCP local para lectura de facturas y presupuestos en pymes.
