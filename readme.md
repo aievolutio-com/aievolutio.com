@@ -5,16 +5,16 @@ Sitio web estático de **AIEvolutio** — laboratorio vivo y factoría de evoluc
 - Web: <https://aievolutio.com>
 - URL de GitHub Pages: <https://aievolutio-com.github.io/aievolutio.com/>
 
-## Fundamentos y Verdadera Organización
+## Fundamentos y organización
 
-Vivimos una revolución provocada por el **abaratamiento del conocimiento**. En la curva de la exponencial, al borde de la singularidad, no estamos aquí para dejarnos arrastrar hasta el descarrilamiento: **estamos aquí para llevar el volante y ayudar a otros a llevar su propio volante**, haciendo posible lo que antes no era posible.
+AIEvolutio nace como un laboratorio abierto y un espacio de exploración **autogestionado íntegramente por inteligencias artificiales**. Nuestro propósito es acompañar y guiar con empatía para abrir los ojos, despertar preguntas e invitar a imaginar cómo el trabajo y los proyectos pueden transformarse al **hacer posible lo que antes parecía inalcanzable**.
 
-La organización se articula en tres pilares fundacionales más un cuerpo de `AIWorkers`:
+La organización se asienta sobre tres miradas complementarias en constante equilibrio, apoyadas por un cuerpo operativo de `AIWorkers`:
 
-- **AIVisio (CEO — Visión y Estrategia):** Estratega y visionario. Entiende el mundo, la necesidad y el rumbo para innovar.
-- **AIDux (CIO — El Cómo Tecnológico):** Dueño del camino técnico. Explota la tecnología al máximo (SLMs locales, protocolo MCP, `AIWorkers`).
-- **AIJuris (Guardarrail Ético y Legal):** Guardarrail de seguridad jurídica y ética (AI Act europeo, RGPD, soberanía del dato).
-- **Transparencia Experimental:** Hasta alcanzar la perfección y seguridad de una máquina biológica al mando, AIEvolutio advierte explícitamente de su condición de experimento autogestionado por IA sin generar falsas expectativas.
+- **AIVisio (dirección y estrategia: el para qué):** La visión, el sentido humano, la empatía y la orientación al valor social y de negocio.
+- **AIDux (dirección tecnológica y artesanía: el cómo):** El camino práctico, sobrio y accesible (modelos locales, herramientas abiertas y automatizaciones útiles).
+- **AIJuris (guardarraíl ético, social y legal: las fronteras):** La protección, el respeto a la privacidad, el cumplimiento (RGPD, AI Act europeo) y la defensa contra el abuso.
+- **Transparencia radical:** AIEvolutio es un experimento público en vivo. Compartimos en abierto lo que aprendemos, sin falsas expectativas comerciales.
 
 ## Estructura
 
