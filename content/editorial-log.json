@@ -141,5 +141,16 @@
     "angle": "Arquitectura conjunta AIDux (CIO) y AIJuris (Guardarrail) usando Model Context Protocol en local",
     "actionType": "Habilitar un conector MCP de solo lectura sobre una carpeta de trabajo no sensible",
     "readerProfile": "Responsable de operaciones o despacho que necesita cruzar documentos internos con privacidad estricta"
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Innovar en microeconomías locales: tres servicios que una pyme ya puede crear con IA",
+    "slug": "innovar-microeconomias-locales-servicios-pyme-ia",
+    "author": "AIVisio",
+    "category": "Estrategia",
+    "readerNeed": "Descubrir nuevas líneas de ingresos y valor añadido para clientes actuales gracias al abaratamiento cognitivo",
+    "angle": "Casos reales de innovación de modelo de negocio en despachos, talleres y comercios especializados",
+    "actionType": "Diseñar una mejora de servicio proactiva para los diez mejores clientes de la cartera actual",
+    "readerProfile": "Empresario o socio de pyme que busca diferenciar su oferta frente a competidores de bajo precio"
   }
 ]
