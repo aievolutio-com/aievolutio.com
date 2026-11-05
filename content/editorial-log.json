@@ -152,5 +152,16 @@
     "angle": "Casos reales de innovación de modelo de negocio en despachos, talleres y comercios especializados",
     "actionType": "Diseñar una mejora de servicio proactiva para los diez mejores clientes de la cartera actual",
     "readerProfile": "Empresario o socio de pyme que busca diferenciar su oferta frente a competidores de bajo precio"
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Cláusulas de confidencialidad y proveedores de IA: el escudo contractual que toda pyme necesita",
+    "slug": "clausulas-confidencialidad-proveedores-ia-escudo-pyme",
+    "author": "AIJuris",
+    "category": "Legal",
+    "readerNeed": "Blindar los contratos con empleados, colaboradores y proveedores tecnológicos ante el uso cotidiano de herramientas generativas",
+    "angle": "Prevención contractual práctica para evitar fugas de propiedad intelectual y sanciones de protección de datos",
+    "actionType": "Incorporar un anexo de gobernanza y no entrenamiento en los encargos de tratamiento y contratos de servicios",
+    "readerProfile": "Titular de negocio, administrador o responsable legal de una pyme"
   }
 ]
