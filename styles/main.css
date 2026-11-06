@@ -1105,8 +1105,12 @@ figure img {
   box-shadow: var(--shadow);
 }
 figure.quote {
+  display: block;
+  margin: var(--space-4) 0;
+}
+figure.quote:has(img) {
   display: grid;
-  grid-template-columns: 144px auto;
+  grid-template-columns: 144px 1fr;
   gap: var(--space-6);
   align-items: center;
 }
@@ -1122,33 +1126,105 @@ figure.quote img {
 
 /* Lightbox affordance */
 figure.quote .quote-text {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem;
-  min-width: 0;
+  display: block;
 }
 figure.quote blockquote {
-  margin: 0;
-  font-size: 1.1rem;
+  margin: 0 0 var(--space-2);
+  font-size: 1.15rem;
   font-style: italic;
-  display: inline;
+  line-height: 1.6;
+  color: var(--text);
 }
 figure.quote figcaption {
   margin: 0;
   color: var(--muted);
-  font-size: 0.9rem;
-  display: inline;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 @media (width <= 480px) {
-  figure.quote {
-    grid-template-columns: 96px auto;
+  figure.quote:has(img) {
+    grid-template-columns: 96px 1fr;
     gap: var(--space-4);
   }
   figure.quote img {
     width: 96px;
     height: 96px;
+  }
+}
+
+/* Layout editorial balanceado para la sección de fundamentos (Vision) */
+.vision-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.vision-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.vision-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0;
+}
+
+.vision-quote-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--brand-accent);
+  border-radius: var(--radius);
+  padding: var(--space-6);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: relative;
+}
+
+.vision-quote-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--brand-accent);
+}
+
+.vision-quote-badge svg {
+  flex-shrink: 0;
+}
+
+.vision-quote-card blockquote {
+  margin: 0;
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.vision-quote-card figcaption {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (width <= 860px) {
+  .vision-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
 }
 

@@ -332,6 +332,40 @@
         ]),
       );
     }
+    if (sec.id === "vision") {
+      const visionGrid = el("div", { class: "vision-grid" });
+      const textCol = el("div", { class: "vision-text" });
+      const paragraphs = (sec.blocks || []).filter((b) => b.type === "p");
+      const quoteBlock = (sec.blocks || []).find((b) => b.type === "quote");
+
+      paragraphs.forEach((p) => {
+        textCol.append(el("p", {}, [p.body]));
+      });
+      visionGrid.append(textCol);
+
+      if (quoteBlock) {
+        const card = el("figure", { class: "vision-quote-card" });
+        const badge = el("div", { class: "vision-quote-badge" });
+        badge.innerHTML =
+          '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg><span>AIVisio · Dirección y estrategia</span>';
+        card.append(badge);
+
+        const text = String(quoteBlock.body || "").trim();
+        const hasDot = /[.!?]$/.test(text);
+        const quoted =
+          '"' + text.replace(/^"|"$/g, "") + (hasDot ? "" : ".") + '"';
+        card.append(el("blockquote", {}, [quoted]));
+
+        if (quoteBlock.author) {
+          card.append(el("figcaption", {}, [quoteBlock.author]));
+        }
+        visionGrid.append(card);
+      }
+
+      section.append(visionGrid);
+      return section;
+    }
+
     const containerClass =
       sec.kind === "grid" ||
       (sec.id === "aiworkers" && (page === "team" || page === "home"))
