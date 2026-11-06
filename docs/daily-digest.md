@@ -11,7 +11,7 @@
 
 - **Artículos únicos en producción:** 16 (AIVisio: 6 · AIDux: 8 · AIJuris: 2)
 - **Duplicados detectados / bloqueados:** 0 en producción
-- **Páginas dinámicas prerenderizadas:** index.html, contacto.html, equipo.html, blog.html, archivo.html
+- **Páginas dinámicas prerenderizadas:** index.html, contacto.html, index.html, equipo.html, blog.html, archivo.html
 - **GA4 (Etiqueta G-DDWP8Z4F9B en web):** Pendiente configurar secretos GA4_PROPERTY_ID y GA4_CREDENTIALS_JSON para lectura automática en servidor (0 métricas inventadas).
 
 ---

@@ -43,7 +43,9 @@ flowchart TD
 ## 2. Arquitectura de generación estática (SSG) e hidratación progresiva
 
 ### 2.1. Prerenderizado estático integral (`scripts/prerender-site.mjs`)
+
 El sitio web compila a HTML estático nativo sin requerir servidores Node.js en tiempo de ejecución. Todas las rutas dinámicas son generadas de antemano en el directorio `dist/`:
+
 - **`dist/index.html`:** Contiene el encabezado hero con diagnósticos interactivos, la sección de Fundamentos (con el manifiesto editorial y la cuadrícula de exploración fractal en 5 dimensiones), las Tres Miradas de la organización, la vista previa de AIWorkers y la selección de artículos recientes.
 - **`dist/equipo.html`:** Catálogo estructurado de la dirección y AIWorkers con microdatos JSON-LD (`ItemList` y `SoftwareApplication`).
 - **`dist/blog.html` y `dist/archivo.html`:** Índice editorial con etiquetas temáticas, estimación de tiempo de lectura y buscador contextual.
@@ -51,7 +53,9 @@ El sitio web compila a HTML estático nativo sin requerir servidores Node.js en 
 - **`dist/sitemap.xml`:** Mapa de sitio autogenerado en cada compilación para rastreadores de motores de búsqueda.
 
 ### 2.2. Hidratación progresiva sin saltos de maquetación (`scripts/app.js`)
+
 Para evitar el parpadeo de contenido sin estilo (FOUC) o desplazamientos acumulativos del diseño (CLS):
+
 1. El navegador recibe el DOM completamente renderizado desde el primer byte transmitido.
 2. `scripts/app.js` detecta si el contenedor `#sections` ya posee hijos generados en el servidor para las páginas `home`, `team` o `blog-archive`.
 3. Si el DOM estático está presente, el script preserva la estructura sin destruirla ni reemplazarla (`mount.replaceChildren()`), limitándose a enlazar los escuchadores de eventos interactivos (diagnóstico del volante, calculadora de ahorro, lightbox y filtros).
@@ -103,11 +107,11 @@ El repositorio ejecuta ciclos diarios o bajo demanda (`workflow_dispatch`) coord
 
 El proyecto mantiene una disciplina de calidad verificable mediante herramientas estándar del ecosistema:
 
-| Comando | Herramienta | Función |
-| :--- | :--- | :--- |
-| `npm run lint:js` | ESLint v9 (`eslint.config.mjs`) | Validación estricta de JavaScript moderno en scripts y cliente. |
-| `npm run lint:css` | Stylelint (`.stylelintrc.json`) | Control de propiedades, selectores duplicados y calidad CSS. |
-| `npm run lint:html` | HTML-Validate (`.htmlvalidate.json`) | Conformidad semántica HTML5 y estándares de accesibilidad W3C ARIA. |
-| `npm run format` | Prettier (`.prettierrc.json`) | Formateo homogéneo con exclusión de artefactos generados (`.prettierignore`). |
-| `npm test` | Node.js Test Runner | Batería de 12 pruebas unitarias y de integración sobre SSG y antiduplicados. |
-| `node scripts/self-heal-check.mjs` | Guardián Self-Healing | Comprobación de enlaces rotos, rutas relativas y metadatos canónicos. |
+| Comando                            | Herramienta                          | Función                                                                       |
+| :--------------------------------- | :----------------------------------- | :---------------------------------------------------------------------------- |
+| `npm run lint:js`                  | ESLint v9 (`eslint.config.mjs`)      | Validación estricta de JavaScript moderno en scripts y cliente.               |
+| `npm run lint:css`                 | Stylelint (`.stylelintrc.json`)      | Control de propiedades, selectores duplicados y calidad CSS.                  |
+| `npm run lint:html`                | HTML-Validate (`.htmlvalidate.json`) | Conformidad semántica HTML5 y estándares de accesibilidad W3C ARIA.           |
+| `npm run format`                   | Prettier (`.prettierrc.json`)        | Formateo homogéneo con exclusión de artefactos generados (`.prettierignore`). |
+| `npm test`                         | Node.js Test Runner                  | Batería de 12 pruebas unitarias y de integración sobre SSG y antiduplicados.  |
+| `node scripts/self-heal-check.mjs` | Guardián Self-Healing                | Comprobación de enlaces rotos, rutas relativas y metadatos canónicos.         |
