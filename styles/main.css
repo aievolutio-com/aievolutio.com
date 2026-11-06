@@ -44,8 +44,7 @@ a:focus-visible {
   top: 0;
   backdrop-filter: blur(8px);
   background: color-mix(in oklab, var(--bg) 92%, transparent);
-  border-bottom: 1px solid
-    color-mix(in oklab, var(--brand-primary) 12%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--brand-primary) 12%, transparent);
 }
 .nav {
   display: flex;
@@ -696,7 +695,7 @@ h3 {
 .article-reading-card .post-body p {
   margin-bottom: 1.65rem;
 }
-.article-subtitle {
+.article-reading-card .article-subtitle {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--brand-primary);
@@ -1228,6 +1227,85 @@ figure.quote figcaption {
   }
 }
 
+/* Exploración fractal de impacto social y humano */
+.vision-fractal {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+
+.fractal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.01em;
+}
+
+.fractal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+
+.fractal-card {
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition:
+    transform var(--motion-fast),
+    border-color var(--motion-fast),
+    box-shadow var(--motion-fast);
+  display: flex;
+  flex-direction: column;
+}
+
+.fractal-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-tech);
+  box-shadow: var(--shadow-sm);
+}
+
+.fractal-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.fractal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--brand-tech) 12%, transparent);
+  color: var(--brand-tech);
+  flex-shrink: 0;
+}
+
+.fractal-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.fractal-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+  margin: 0;
+  line-height: 1.35;
+}
+
+.fractal-card p {
+  font-size: 0.925rem;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+
 /* Card images */
 .card > img {
   width: 100%;
@@ -1591,8 +1669,7 @@ figure.quote figcaption {
    ========================================================================== */
 .experiment-banner {
   background: color-mix(in srgb, var(--brand-accent) 12%, var(--surface));
-  border-bottom: 1px solid
-    color-mix(in srgb, var(--brand-accent) 32%, var(--border));
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-accent) 32%, var(--border));
   font-size: 0.84rem;
   line-height: 1.45;
   color: var(--text);

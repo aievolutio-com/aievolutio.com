@@ -9,9 +9,7 @@
     if (!href) return false;
     if (href.startsWith("#")) return true;
     try {
-      return ["http:", "https:", "mailto:"].includes(
-        new URL(href, document.baseURI).protocol,
-      );
+      return ["http:", "https:", "mailto:"].includes(new URL(href, document.baseURI).protocol);
     } catch {
       return false;
     }
@@ -79,9 +77,7 @@
   function sortedPosts(blocks) {
     return blocks
       .filter((block) => block.type === "post")
-      .sort((left, right) =>
-        String(right.date || "").localeCompare(String(left.date || "")),
-      );
+      .sort((left, right) => String(right.date || "").localeCompare(String(left.date || "")));
   }
 
   function postSummary(body, maxLength = 220) {
@@ -94,8 +90,7 @@
   }
 
   function formatPostDate(date) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date || "")))
-      return String(date || "");
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date || ""))) return String(date || "");
     return new Intl.DateTimeFormat("es-ES", {
       dateStyle: "long",
       timeZone: "UTC",
@@ -103,8 +98,7 @@
   }
 
   function getPostCategoryMeta(post) {
-    const text =
-      `${post.title || ""} ${post.body || ""} ${post.category || ""}`.toLowerCase();
+    const text = `${post.title || ""} ${post.body || ""} ${post.category || ""}`.toLowerCase();
     const author = (post.author || "").toLowerCase();
     if (
       author.includes("juris") ||
@@ -169,9 +163,7 @@
     if (showTitle) {
       const title = el("h3");
       if (preview) {
-        title.append(
-          el("a", { href: articleUrl(post) }, [post.title || "Entrada"]),
-        );
+        title.append(el("a", { href: articleUrl(post) }, [post.title || "Entrada"]));
       } else {
         title.textContent = post.title || "Entrada";
       }
@@ -182,16 +174,10 @@
       .filter(Boolean)
       .join(" · ");
     inner.append(el("p", { class: "muted post-meta" }, [metadata]));
-    inner.append(
-      renderPostBody(preview ? postSummary(post.body, 180) : post.body),
-    );
+    inner.append(renderPostBody(preview ? postSummary(post.body, 180) : post.body));
 
     if (preview) {
-      inner.append(
-        el("a", { href: articleUrl(post), class: "text-link" }, [
-          "Leer artículo →",
-        ]),
-      );
+      inner.append(el("a", { href: articleUrl(post), class: "text-link" }, ["Leer artículo →"]));
     }
 
     const article = el("article", articleAttrs);
@@ -200,8 +186,7 @@
       coverWrap.append(
         el("img", {
           src: post.img,
-          alt:
-            post.alt || `Imagen editorial para ${post.title || "el artículo"}`,
+          alt: post.alt || `Imagen editorial para ${post.title || "el artículo"}`,
           class: "post-cover",
           loading: "lazy",
         }),
@@ -234,24 +219,16 @@
     paragraphs.forEach((paragraph) => {
       const trimmed = paragraph.trim();
       if (
-        (trimmed.startsWith("**") &&
-          trimmed.endsWith("**") &&
-          !trimmed.includes("\n")) ||
+        (trimmed.startsWith("**") && trimmed.endsWith("**") && !trimmed.includes("\n")) ||
         trimmed.startsWith("### ")
       ) {
-        const titleText = trimmed.startsWith("### ")
-          ? trimmed.slice(4)
-          : trimmed.slice(2, -2);
+        const titleText = trimmed.startsWith("### ") ? trimmed.slice(4) : trimmed.slice(2, -2);
         content.append(el("h3", { class: "article-subtitle" }, [titleText]));
         return;
       }
 
       const lines = trimmed.split("\n");
-      if (
-        lines.every(
-          (l) => l.trim().startsWith("- ") || l.trim().startsWith("* "),
-        )
-      ) {
+      if (lines.every((l) => l.trim().startsWith("- ") || l.trim().startsWith("* "))) {
         const ul = el("ul", { class: "article-list" });
         lines.forEach((l) => {
           const li = el("li");
@@ -302,9 +279,7 @@
     const posts = sec.id === "blog" ? sortedPosts(sec.blocks || []) : [];
     const selectedPost =
       page === "blog"
-        ? posts.find(
-            (post) => articleId(post) === window.location.hash.slice(1),
-          )
+        ? posts.find((post) => articleId(post) === window.location.hash.slice(1))
         : null;
     const sectionTitle =
       sec.id === "blog" && page === "home"
@@ -321,15 +296,11 @@
 
     if (selectedPost) {
       section.append(
-        el("a", { href: "blog.html", class: "archive-back" }, [
-          "← Volver a artículos recientes",
-        ]),
+        el("a", { href: "blog.html", class: "archive-back" }, ["← Volver a artículos recientes"]),
       );
     } else if (page === "blog-archive") {
       section.append(
-        el("a", { href: "blog.html", class: "archive-back" }, [
-          "← Ver artículos recientes",
-        ]),
+        el("a", { href: "blog.html", class: "archive-back" }, ["← Ver artículos recientes"]),
       );
     }
     if (sec.id === "vision") {
@@ -337,6 +308,7 @@
       const textCol = el("div", { class: "vision-text" });
       const paragraphs = (sec.blocks || []).filter((b) => b.type === "p");
       const quoteBlock = (sec.blocks || []).find((b) => b.type === "quote");
+      const fractalBlock = (sec.blocks || []).find((b) => b.type === "fractal");
 
       paragraphs.forEach((p) => {
         textCol.append(el("p", {}, [p.body]));
@@ -352,8 +324,7 @@
 
         const text = String(quoteBlock.body || "").trim();
         const hasDot = /[.!?]$/.test(text);
-        const quoted =
-          '"' + text.replace(/^"|"$/g, "") + (hasDot ? "" : ".") + '"';
+        const quoted = '"' + text.replace(/^"|"$/g, "") + (hasDot ? "" : ".") + '"';
         card.append(el("blockquote", {}, [quoted]));
 
         if (quoteBlock.author) {
@@ -363,12 +334,43 @@
       }
 
       section.append(visionGrid);
+
+      if (fractalBlock) {
+        const fractalWrap = el("div", { class: "vision-fractal" });
+        if (fractalBlock.title) {
+          fractalWrap.append(el("h3", { class: "fractal-title" }, [fractalBlock.title]));
+        }
+        const grid = el("div", { class: "fractal-grid" });
+        const fractalIcons = {
+          academic:
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+          heart:
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+          building:
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M16 14h.01"/></svg>',
+          shield:
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+          sparkles:
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>',
+        };
+        (fractalBlock.items || []).forEach((item) => {
+          const card = el("div", { class: "card fractal-card" });
+          const header = el("div", { class: "fractal-card-header" });
+          const iconBox = el("div", { class: "fractal-icon" });
+          iconBox.innerHTML = fractalIcons[item.icon] || fractalIcons.sparkles;
+          header.append(iconBox, el("h4", {}, [item.title]));
+          card.append(header, el("p", {}, [item.body]));
+          grid.append(card);
+        });
+        fractalWrap.append(grid);
+        section.append(fractalWrap);
+      }
+
       return section;
     }
 
     const containerClass =
-      sec.kind === "grid" ||
-      (sec.id === "aiworkers" && (page === "team" || page === "home"))
+      sec.kind === "grid" || (sec.id === "aiworkers" && (page === "team" || page === "home"))
         ? "grid"
         : sec.id === "blog"
           ? `grid post-grid${selectedPost ? " post-grid-single" : ""}`
@@ -451,13 +453,9 @@
         if (b.impact) {
           const impactBox = el("div", { class: "worker-impact" });
           impactBox.append(
-            el("span", { class: "worker-impact-label" }, [
-              "Impacto para tu pyme: ",
-            ]),
+            el("span", { class: "worker-impact-label" }, ["Impacto para tu pyme: "]),
           );
-          impactBox.append(
-            el("strong", { class: "worker-impact-val" }, [b.impact]),
-          );
+          impactBox.append(el("strong", { class: "worker-impact-val" }, [b.impact]));
           card.append(impactBox);
         }
 
@@ -508,8 +506,7 @@
           );
         const text = String(b.body || "").trim();
         const hasDot = /[.!?]$/.test(text);
-        const quoted =
-          '"' + text.replace(/^"|"$/g, "") + (hasDot ? "" : ".") + '"';
+        const quoted = '"' + text.replace(/^"|"$/g, "") + (hasDot ? "" : ".") + '"';
         const wrap = el("div", { class: "quote-text" });
         wrap.append(el("blockquote", {}, [quoted]));
         if (b.author) {
@@ -523,16 +520,12 @@
       }
       if (b.type === "image") {
         const fig = el("figure", { class: "image" });
-        fig.append(
-          el("img", { src: b.src, alt: b.alt || "", loading: "lazy" }),
-        );
+        fig.append(el("img", { src: b.src, alt: b.alt || "", loading: "lazy" }));
         if (b.caption) fig.append(el("figcaption", {}, [b.caption]));
         container.append(fig);
       }
       if (b.type === "link" && isAllowedHref(b.href))
-        container.append(
-          el("a", { href: b.href, class: "btn" }, [b.title || b.href]),
-        );
+        container.append(el("a", { href: b.href, class: "btn" }, [b.title || b.href]));
       if (b.type === "card") {
         const c = el("div", { class: "card" });
         if (b.img)
@@ -560,11 +553,8 @@
             const after = bodyStr.slice(idx + marker.length).trim();
             if (before) c.append(el("p", {}, [before]));
             const resWrap = el("div", { class: "result" });
-            resWrap.append(
-              el("div", { class: "result-label" }, ["Resultado típico"]),
-            );
-            if (after)
-              resWrap.append(el("p", { class: "result-value" }, [after]));
+            resWrap.append(el("div", { class: "result-label" }, ["Resultado típico"]));
+            if (after) resWrap.append(el("p", { class: "result-value" }, [after]));
             c.append(resWrap);
           } else {
             c.append(el("p", {}, [b.body]));
@@ -590,8 +580,7 @@
       if (b.type === "post") {
         const isArticle = page === "blog" && selectedPost === b;
         const isPreview =
-          page === "home" ||
-          ((page === "blog" || page === "blog-archive") && !selectedPost);
+          page === "home" || ((page === "blog" || page === "blog-archive") && !selectedPost);
         container.append(renderPost(b, isPreview, !isArticle));
       }
       if (b.type === "links") {
@@ -599,22 +588,13 @@
         (b.items || [])
           .filter((item) => isAllowedHref(item.href))
           .forEach((item) =>
-            row.append(
-              el("a", { href: item.href, class: "btn" }, [
-                item.title || item.href,
-              ]),
-            ),
+            row.append(el("a", { href: item.href, class: "btn" }, [item.title || item.href])),
           );
         container.append(row);
       }
     });
 
-    if (
-      page === "blog" &&
-      sec.id === "blog" &&
-      !selectedPost &&
-      posts.length > 6
-    ) {
+    if (page === "blog" && sec.id === "blog" && !selectedPost && posts.length > 6) {
       container.append(
         el(
           "a",
@@ -628,9 +608,7 @@
     }
     if (page === "home" && sec.id === "blog") {
       container.append(
-        el("a", { href: "blog.html", class: "btn section-cta" }, [
-          "Explorar todos los artículos",
-        ]),
+        el("a", { href: "blog.html", class: "btn section-cta" }, ["Explorar todos los artículos"]),
       );
     }
     if (page === "home" && sec.id === "aiworkers") {
@@ -739,13 +717,9 @@
 
   function updateBlogView() {
     if (document.body.dataset.page !== "blog" || !state.content) return;
-    const blogSection = state.content.sections.find(
-      (section) => section.id === "blog",
-    );
+    const blogSection = state.content.sections.find((section) => section.id === "blog");
     const posts = sortedPosts(blogSection ? blogSection.blocks : []);
-    const selectedPost = posts.find(
-      (post) => articleId(post) === window.location.hash.slice(1),
-    );
+    const selectedPost = posts.find((post) => articleId(post) === window.location.hash.slice(1));
     const mount = $("#sections");
     // Si ya existe contenido prerenderizado en #sections y no se solicita un hash de artículo concreto,
     // preservamos el DOM prerenderizado con filtros y diseño editorial completo.
@@ -754,16 +728,13 @@
       return;
     }
     const pageTitle = $("#page-title");
-    if (pageTitle)
-      pageTitle.textContent =
-        selectedPost?.title || "Ideas para llevar el volante";
+    if (pageTitle) pageTitle.textContent = selectedPost?.title || "Ideas para llevar el volante";
     document.title = selectedPost
       ? `${selectedPost.title} — AIEvolutio`
       : "Ideas para llevar el volante — AIEvolutio";
     renderSections(state.content.sections);
     setupBlogFilters();
-    if (selectedPost)
-      document.getElementById(articleId(selectedPost))?.scrollIntoView();
+    if (selectedPost) document.getElementById(articleId(selectedPost))?.scrollIntoView();
   }
 
   function setupTheme() {
@@ -773,16 +744,12 @@
       document.documentElement.dataset.theme = v;
       if (btn) {
         btn.setAttribute("aria-pressed", v === "dark");
-        btn.setAttribute(
-          "title",
-          v === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro",
-        );
+        btn.setAttribute("title", v === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
       }
     }
     const stored = localStorage.getItem(KEY);
     const systemDark =
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
+      window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
     apply(stored || (systemDark ? "dark" : "light"));
     if (!btn) return;
     btn.addEventListener("click", () => {
@@ -857,8 +824,7 @@
       if (scoreEl) scoreEl.textContent = `${avg}%`;
 
       if (scores.juris < 40) {
-        if (badgeEl)
-          badgeEl.textContent = "Alerta: sin guardarraíl de protección";
+        if (badgeEl) badgeEl.textContent = "Alerta: sin guardarraíl de protección";
         if (leadEl) leadEl.textContent = "Prioridad: AIJuris (Guardarraíl)";
         if (stateEl) stateEl.textContent = "Vulnerable";
         if (descEl) {
@@ -867,18 +833,15 @@
         }
       } else if (scores.visio < 50) {
         if (badgeEl) badgeEl.textContent = "Oportunidad: definir el rumbo";
-        if (leadEl)
-          leadEl.textContent = "Prioridad: AIVisio (Dirección y estrategia)";
+        if (leadEl) leadEl.textContent = "Prioridad: AIVisio (Dirección y estrategia)";
         if (stateEl) stateEl.textContent = "Explorando";
         if (descEl) {
           descEl.textContent =
             "Contáis con prudencia, pero falta abrir la mirada hacia nuevas oportunidades: AIVisio ayuda a plantear las preguntas adecuadas para descubrir qué servicios diferenciales podéis ofrecer ahora que el conocimiento práctico es accesible a cualquier pequeña empresa.";
         }
       } else if (scores.dux < 50) {
-        if (badgeEl)
-          badgeEl.textContent = "Reto: aterrizar en la práctica técnica";
-        if (leadEl)
-          leadEl.textContent = "Prioridad: AIDux (Dirección tecnológica)";
+        if (badgeEl) badgeEl.textContent = "Reto: aterrizar en la práctica técnica";
+        if (leadEl) leadEl.textContent = "Prioridad: AIDux (Dirección tecnológica)";
         if (stateEl) stateEl.textContent = "En marcha";
         if (descEl) {
           descEl.textContent =
@@ -1001,9 +964,7 @@
 
     root.querySelectorAll("[data-team-size]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        root
-          .querySelectorAll("[data-team-size]")
-          .forEach((b) => b.classList.remove("active"));
+        root.querySelectorAll("[data-team-size]").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         teamSizeIndex = parseInt(btn.dataset.teamSize, 10) || 0;
         update();
@@ -1012,9 +973,7 @@
 
     root.querySelectorAll("[data-task]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        root
-          .querySelectorAll("[data-task]")
-          .forEach((b) => b.classList.remove("active"));
+        root.querySelectorAll("[data-task]").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         currentTask = btn.dataset.task;
         update();
@@ -1044,19 +1003,17 @@
         window.addEventListener("hashchange", updateBlogView);
         updateBlogView();
       } else if (
-        (page === "team" || page === "blog-archive") &&
+        (page === "home" || page === "team" || page === "blog-archive") &&
         mount &&
         mount.children.length > 0
       ) {
-        // Preservar el DOM prerenderizado estáticamente para evitar regresiones visuales
+        // Preservar el DOM prerenderizado estáticamente para evitar regresiones visuales y FOUC
       } else {
         renderSections(state.content.sections);
       }
 
       if (window.location.hash) {
-        document
-          .getElementById(window.location.hash.slice(1))
-          ?.scrollIntoView();
+        document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
       }
     } catch (e) {
       console.error(e);

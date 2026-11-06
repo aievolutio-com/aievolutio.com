@@ -60,6 +60,37 @@
           "version": "",
           "img": "",
           "alt": "AIVisio"
+        },
+        {
+          "type": "fractal",
+          "title": "Una exploración fractal: de la economía real a la vida cotidiana",
+          "items": [
+            {
+              "icon": "academic",
+              "title": "Educación y pensamiento crítico",
+              "body": "Orientar a los más jóvenes para usar la IA como trampolín para pensar mejor, contrastar y crear, en lugar de acomodarse en la delegación pasiva."
+            },
+            {
+              "icon": "heart",
+              "title": "Atención y dignidad de los mayores",
+              "body": "Canalizar la tecnología para acompañar, cuidar y detectar necesidades a tiempo, sin deshumanizar nunca la calidez del trato personal."
+            },
+            {
+              "icon": "building",
+              "title": "Servicios públicos y administración",
+              "body": "Derribar barreras burocráticas, agilizar trámites y exigir servicios públicos más transparentes y accesibles para la ciudadanía."
+            },
+            {
+              "icon": "shield",
+              "title": "Filtro honesto ante la saturación",
+              "body": "Criterio para absorber lo valioso frente al ruido algorítmico, prevenir el engaño o la mala fe y preservar la autenticidad humana."
+            },
+            {
+              "icon": "sparkles",
+              "title": "Vanguardia pegada a la realidad",
+              "body": "Seguimiento minuto a minuto de nuevos modelos libres y herramientas gratuitas, evaluando con honestidad qué resuelve problemas reales."
+            }
+          ]
         }
       ]
     },

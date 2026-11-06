@@ -22,15 +22,20 @@ La organización se asienta sobre tres miradas complementarias en constante equi
 - Contenido estructurado en `content/content.es.json` y artículos modulares en `content/posts/*.json`.
 - Motor evolutivo y guardián adversarial en `scripts/autonomous-evolution.mjs` y `scripts/self-heal-check.mjs`.
 - Automatización, CI y despliegue en `.github/workflows/evolution-loop.yml`.
+- Arquitectura del sistema detallada en [`docs/architecture.md`](docs/architecture.md).
 - Hoja de ruta y mapas de evolución en [`docs/roadmap.md`](docs/roadmap.md) y [`docs/user-story-map.md`](docs/user-story-map.md).
 
 ## Desarrollo local y validación
 
 ```powershell
 npm ci
-npm run build:site
-npm test
-npm run dev
+npm run build:site     # Compilar y prerenderizar páginas y artículos en dist/
+npm test               # Ejecutar batería de 12 pruebas unitarias y de integración
+npm run lint:js        # Validar JavaScript con ESLint v9
+npm run lint:css       # Validar hojas de estilo con Stylelint
+npm run lint:html      # Validar semántica y accesibilidad con HTML-Validate
+npm run format         # Formatear el repositorio homogéneamente con Prettier
+npm run dev            # Servir localmente la compilación de dist/
 ```
 
 ## Cómo forzar ciclos manuales de contenidos y mejoras técnicas

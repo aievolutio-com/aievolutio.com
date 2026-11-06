@@ -1,75 +1,75 @@
-import { cp, mkdir, readFile, rm, writeFile, readdir } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
-import path from 'node:path';
-import process from 'node:process';
-import { fileURLToPath } from 'node:url';
-import { repairTruncatedJson } from './json-repair.mjs';
+import { cp, mkdir, readFile, rm, writeFile, readdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import path from "node:path";
+import process from "node:process";
+import { fileURLToPath } from "node:url";
+import { repairTruncatedJson } from "./json-repair.mjs";
 
 const repoRoot = process.cwd();
-const outputRoot = path.join(repoRoot, 'dist');
-const contentPath = path.join(repoRoot, 'content/content.es.json');
-const navigationPath = path.join(repoRoot, 'content/navigation.json');
-const postsDirectory = path.join(repoRoot, 'content/posts');
-const htmlPages = ['index.html', 'equipo.html', 'blog.html', 'archivo.html', 'contacto.html'];
-const publicDirectories = ['assets', 'content', 'images', 'styles'];
-const publicFiles = ['CNAME', '_headers', 'site.webmanifest', 'robots.txt', 'sitemap.xml'];
-const articleBaseUrl = 'https://aievolutio.com';
+const outputRoot = path.join(repoRoot, "dist");
+const contentPath = path.join(repoRoot, "content/content.es.json");
+const navigationPath = path.join(repoRoot, "content/navigation.json");
+const postsDirectory = path.join(repoRoot, "content/posts");
+const htmlPages = ["index.html", "equipo.html", "blog.html", "archivo.html", "contacto.html"];
+const publicDirectories = ["assets", "content", "images", "styles"];
+const publicFiles = ["CNAME", "_headers", "site.webmanifest", "robots.txt", "sitemap.xml"];
+const articleBaseUrl = "https://aievolutio.com";
 
 export const legacyArticleAliases = new Map([
   [
-    'articulos/articulo-2026-11-04-el-abaratamiento-del-conocimiento-y-la-curva-exponencial-como-llevar-el-volante-de-tu-pyme.html',
-    'articulos/articulo-2026-11-04-el-abaratamiento-del-conocimiento-como-hacer-posible-en-tu-empresa-lo-que-antes-parecia-inalcanzable.html',
+    "articulos/articulo-2026-11-04-el-abaratamiento-del-conocimiento-y-la-curva-exponencial-como-llevar-el-volante-de-tu-pyme.html",
+    "articulos/articulo-2026-11-04-el-abaratamiento-del-conocimiento-como-hacer-posible-en-tu-empresa-lo-que-antes-parecia-inalcanzable.html",
   ],
   [
-    'articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-s.html',
-    'articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-sin-friccion.html',
+    "articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-s.html",
+    "articulos/articulo-2026-10-30-cumplimiento-del-ai-act-europeo-para-pymes-guia-sin-friccion.html",
   ],
   [
-    'articulos/articulo-2026-10-11-aiworkers-tu-equipo-invisible-que-multiplica-el-v.html',
-    'articulos/articulo-2026-10-11-aiworkers-tu-equipo-invisible-que-multiplica-el-valor.html',
+    "articulos/articulo-2026-10-11-aiworkers-tu-equipo-invisible-que-multiplica-el-v.html",
+    "articulos/articulo-2026-10-11-aiworkers-tu-equipo-invisible-que-multiplica-el-valor.html",
   ],
   [
-    'articulos/articulo-2026-10-09-navegando-el-futuro-como-la-ia-potencia-la-resili.html',
-    'articulos/articulo-2026-10-09-navegando-el-futuro-como-la-ia-potencia-la-resiliencia-de-tu-negocio.html',
+    "articulos/articulo-2026-10-09-navegando-el-futuro-como-la-ia-potencia-la-resili.html",
+    "articulos/articulo-2026-10-09-navegando-el-futuro-como-la-ia-potencia-la-resiliencia-de-tu-negocio.html",
   ],
   [
-    'articulos/articulo-2026-10-07-antes-de-automatizar-como-elegir-un-proceso-que-m.html',
-    'articulos/articulo-2026-10-07-antes-de-automatizar-como-elegir-un-proceso-que-merece-una-prueba-con-ia.html',
+    "articulos/articulo-2026-10-07-antes-de-automatizar-como-elegir-un-proceso-que-m.html",
+    "articulos/articulo-2026-10-07-antes-de-automatizar-como-elegir-un-proceso-que-merece-una-prueba-con-ia.html",
   ],
   [
-    'articulos/articulo-2026-10-05-diseno-inteligente-de-procesos-cuando-la-ia-asist.html',
-    'articulos/articulo-2026-10-05-diseno-inteligente-de-procesos-cuando-la-ia-asiste-y-el-criterio-humano-decide.html',
+    "articulos/articulo-2026-10-05-diseno-inteligente-de-procesos-cuando-la-ia-asist.html",
+    "articulos/articulo-2026-10-05-diseno-inteligente-de-procesos-cuando-la-ia-asiste-y-el-criterio-humano-decide.html",
   ],
   [
-    'articulos/articulo-2026-10-04-desmitificando-la-ia-la-guia-para-tu-primer-exper.html',
-    'articulos/articulo-2026-10-04-desmitificando-la-ia-la-guia-para-tu-primer-experimento-en-equipo.html',
+    "articulos/articulo-2026-10-04-desmitificando-la-ia-la-guia-para-tu-primer-exper.html",
+    "articulos/articulo-2026-10-04-desmitificando-la-ia-la-guia-para-tu-primer-experimento-en-equipo.html",
   ],
   [
-    'articulos/articulo-2026-09-29-desbloqueando-horas-valiosas-una-guia-practica-pa.html',
-    'articulos/articulo-2026-09-29-desbloqueando-horas-valiosas-una-guia-practica-para-medir-el-impacto-de-tu-automatizacion.html',
+    "articulos/articulo-2026-09-29-desbloqueando-horas-valiosas-una-guia-practica-pa.html",
+    "articulos/articulo-2026-09-29-desbloqueando-horas-valiosas-una-guia-practica-para-medir-el-impacto-de-tu-automatizacion.html",
   ],
   [
-    'articulos/articulo-2026-08-03-riesgos-y-ventajas-de-los-aiworkers-en-las-organiz.html',
-    'articulos/articulo-2026-08-03-riesgos-y-ventajas-de-los-aiworkers-en-las-organizaciones.html',
+    "articulos/articulo-2026-08-03-riesgos-y-ventajas-de-los-aiworkers-en-las-organiz.html",
+    "articulos/articulo-2026-08-03-riesgos-y-ventajas-de-los-aiworkers-en-las-organizaciones.html",
   ],
 ]);
 
 function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function articleId(post) {
-  const slug = `${post.date || ''}-${post.title || 'articulo'}`
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
+  const slug = `${post.date || ""}-${post.title || "articulo"}`
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
   return `articulo-${slug}`;
 }
 
@@ -79,84 +79,87 @@ function articleUrl(post) {
 
 export function sortedPosts(blocks = []) {
   return blocks
-    .filter((block) => block.type === 'post')
-    .sort((left, right) => String(right.date || '').localeCompare(String(left.date || '')));
+    .filter((block) => block.type === "post")
+    .sort((left, right) => String(right.date || "").localeCompare(String(left.date || "")));
 }
 
 function formatPostDate(date) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date || ''))) return String(date || '');
-  return new Intl.DateTimeFormat('es-ES', {
-    dateStyle: 'long',
-    timeZone: 'UTC',
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date || ""))) return String(date || "");
+  return new Intl.DateTimeFormat("es-ES", {
+    dateStyle: "long",
+    timeZone: "UTC",
   }).format(new Date(`${date}T12:00:00Z`));
 }
 
 function postSummary(body, maxLength = 280) {
-  const text = String(body || '')
-    .replace(/\*\*/g, '')
-    .replace(/\s+/g, ' ')
+  const text = String(body || "")
+    .replace(/\*\*/g, "")
+    .replace(/\s+/g, " ")
     .trim();
   if (text.length <= maxLength) return text;
-  return `${text.slice(0, maxLength).replace(/\s+\S*$/, '')}…`;
+  return `${text.slice(0, maxLength).replace(/\s+\S*$/, "")}…`;
 }
 
 function renderPostBody(body) {
-  return String(body || '')
+  return String(body || "")
     .trim()
     .split(/\n\s*\n/)
     .filter(Boolean)
     .map((paragraph) => {
       const trimmed = paragraph.trim();
       if (
-        (trimmed.startsWith('**') && trimmed.endsWith('**') && !trimmed.includes('\n')) ||
-        trimmed.startsWith('### ')
+        (trimmed.startsWith("**") && trimmed.endsWith("**") && !trimmed.includes("\n")) ||
+        trimmed.startsWith("### ")
       ) {
-        const titleText = trimmed.startsWith('### ') ? trimmed.slice(4) : trimmed.slice(2, -2);
+        const titleText = trimmed.startsWith("### ") ? trimmed.slice(4) : trimmed.slice(2, -2);
         return `<h3 class="article-subtitle">${escapeHtml(titleText)}</h3>`;
       }
 
-      const lines = trimmed.split('\n');
-      if (lines.every((l) => l.trim().startsWith('- ') || l.trim().startsWith('* '))) {
+      const lines = trimmed.split("\n");
+      if (lines.every((l) => l.trim().startsWith("- ") || l.trim().startsWith("* "))) {
         const items = lines.map((l) => {
-          const itemContent = l.trim().replace(/^[-*]\s+/, '');
+          const itemContent = l.trim().replace(/^[-*]\s+/, "");
           return `<li>${formatInlineText(itemContent)}</li>`;
         });
-        return `<ul class="article-list">${items.join('')}</ul>`;
+        return `<ul class="article-list">${items.join("")}</ul>`;
       }
 
       if (lines.every((l) => /^\d+\.\s+/.test(l.trim()))) {
         const items = lines.map((l) => {
-          const itemContent = l.trim().replace(/^\d+\.\s+/, '');
+          const itemContent = l.trim().replace(/^\d+\.\s+/, "");
           return `<li>${formatInlineText(itemContent)}</li>`;
         });
-        return `<ol class="article-ordered">${items.join('')}</ol>`;
+        return `<ol class="article-ordered">${items.join("")}</ol>`;
       }
 
-      const formattedLines = lines.map((line) => formatInlineText(line)).join('<br>');
+      const formattedLines = lines.map((line) => formatInlineText(line)).join("<br>");
       return `<p>${formattedLines}</p>`;
     })
-    .join('\n');
+    .join("\n");
 }
 
 function formatInlineText(text) {
   return text
     .split(/(\*\*.+?\*\*)/g)
     .map((part) =>
-      part.startsWith('**') && part.endsWith('**') && part.length > 4
+      part.startsWith("**") && part.endsWith("**") && part.length > 4
         ? `<strong>${escapeHtml(part.slice(2, -2))}</strong>`
         : escapeHtml(part),
     )
-    .join('');
+    .join("");
 }
 
-function renderNavigation(items, activeId, prefix = '') {
+function renderNavigation(items, activeId, prefix = "") {
   return items
     .map((item) => {
-      const current = item.id === activeId ? ' aria-current="page"' : '';
-      const href = prefix && !/^(?:[a-z]+:|#|\/)/i.test(String(item.href || '')) ? `${prefix}${item.href}` : item.href;
-      return `<a href="${escapeHtml(href)}"${current}>${escapeHtml(item.label || 'Inicio')}</a>`;
+      const current = item.id === activeId ? ' aria-current="page"' : "";
+      const href =
+        prefix && !/^(?:[a-z]+:|#|\/)/i.test(String(item.href || ""))
+          ? `${prefix}${item.href}`
+          : item.href;
+      return `<a href="${escapeHtml(href)}"${current}>${escapeHtml(item.label || "Inicio")}</a>`;
     })
-    .join('\n');
+    .join("\n");
 }
 
 const agentIcons = {
@@ -175,31 +178,31 @@ const agentIcons = {
 };
 
 function renderWorker(worker) {
-  const name = worker.name || worker.title || '';
+  const name = worker.name || worker.title || "";
   const agentKey = name.toLowerCase();
   const icon =
     agentIcons[agentKey] ||
     '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>';
   const impact = worker.impact
     ? `<div class="worker-impact"><span class="worker-impact-label">Impacto para tu pyme:</span> <strong class="worker-impact-val">${escapeHtml(worker.impact)}</strong></div>`
-    : '';
+    : "";
   const capabilities =
     Array.isArray(worker.capabilities) && worker.capabilities.length
-      ? `<div class="worker-caps"><ul class="worker-caps-list">${worker.capabilities.map((c) => `<li>${escapeHtml(c)}</li>`).join('')}</ul></div>`
-      : '';
-  const testLink = /^https?:\/\//i.test(String(worker.href || ''))
+      ? `<div class="worker-caps"><ul class="worker-caps-list">${worker.capabilities.map((c) => `<li>${escapeHtml(c)}</li>`).join("")}</ul></div>`
+      : "";
+  const testLink = /^https?:\/\//i.test(String(worker.href || ""))
     ? `<div class="worker-actions"><a href="${escapeHtml(worker.href)}" class="btn btn-sm btn-outline" target="_blank" rel="noopener noreferrer">${escapeHtml(worker.cta || `Consultar ${name}`)}</a></div>`
-    : '';
+    : "";
 
   return `<article class="worker-card" data-agent="${escapeHtml(agentKey)}">
   <div class="worker-header">
     <div class="worker-icon-box" aria-hidden="true">${icon}</div>
     <div class="worker-meta">
       <h3 class="worker-name">${escapeHtml(name)}</h3>
-      ${worker.role ? `<span class="worker-role">${escapeHtml(worker.role)}</span>` : ''}
+      ${worker.role ? `<span class="worker-role">${escapeHtml(worker.role)}</span>` : ""}
     </div>
   </div>
-  ${worker.body ? `<p class="worker-body">${escapeHtml(worker.body)}</p>` : ''}
+  ${worker.body ? `<p class="worker-body">${escapeHtml(worker.body)}</p>` : ""}
   ${impact}
   ${capabilities}
   ${testLink}
@@ -207,74 +210,185 @@ function renderWorker(worker) {
 }
 
 export function renderTeam(content) {
-  const team = content.sections.find((section) => section.id === 'aiworkers');
-  if (!team) throw new Error('Falta la sección aiworkers para generar la página del equipo.');
-  const workers = (team.blocks || []).filter((block) => block.type === 'worker');
-  if (!workers.length) throw new Error('No hay perfiles AIWorker para generar la página del equipo.');
+  const team = content.sections.find((section) => section.id === "aiworkers");
+  if (!team) throw new Error("Falta la sección aiworkers para generar la página del equipo.");
+  const workers = (team.blocks || []).filter((block) => block.type === "worker");
+  if (!workers.length)
+    throw new Error("No hay perfiles AIWorker para generar la página del equipo.");
 
   const schemaApps = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: team.title || 'Organización y AIWorkers de AIEvolutio',
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: team.title || "Organización y AIWorkers de AIEvolutio",
     itemListElement: workers.map((w, index) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: index + 1,
       item: {
-        '@type': 'SoftwareApplication',
-        name: w.name || w.title || 'AIWorker',
-        applicationCategory: 'BusinessApplication',
-        operatingSystem: 'Web, Local SLM & MCP',
-        description: w.body || w.role || '',
+        "@type": "SoftwareApplication",
+        name: w.name || w.title || "AIWorker",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web, Local SLM & MCP",
+        description: w.body || w.role || "",
       },
     })),
   };
 
   return `<section id="aiworkers" class="section">
-  <h2>${escapeHtml(team.title || 'AIWorkers')}</h2>
-  <div class="grid">${workers.map(renderWorker).join('\n')}</div>
+  <h2>${escapeHtml(team.title || "AIWorkers")}</h2>
+  <div class="grid">${workers.map(renderWorker).join("\n")}</div>
   <script type="application/ld+json">${JSON.stringify(schemaApps)}</script>
 </section>`;
 }
 
+export function renderHomeSections(content) {
+  const sectionsHtml = [];
+
+  const vision = content.sections.find((s) => s.id === "vision");
+  if (vision) {
+    const paragraphs = (vision.blocks || []).filter((b) => b.type === "p");
+    const quote = (vision.blocks || []).find((b) => b.type === "quote");
+    const fractal = (vision.blocks || []).find((b) => b.type === "fractal");
+
+    const paragraphsHtml = paragraphs.map((p) => `<p>${escapeHtml(p.body)}</p>`).join("\n");
+
+    let quoteHtml = "";
+    if (quote) {
+      const text = String(quote.body || "").trim();
+      const hasDot = /[.!?]$/.test(text);
+      const quoted = `"${text.replace(/^"|"$/g, "")}${hasDot ? "" : "."}"`;
+      quoteHtml = `<figure class="vision-quote-card">
+  <div class="vision-quote-badge">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+    <span>AIVisio · Dirección y estrategia</span>
+  </div>
+  <blockquote>${escapeHtml(quoted)}</blockquote>
+  ${quote.author ? `<figcaption>${escapeHtml(quote.author)}</figcaption>` : ""}
+</figure>`;
+    }
+
+    let fractalHtml = "";
+    if (fractal) {
+      const fractalIcons = {
+        academic:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+        heart:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+        building:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M16 14h.01"/></svg>',
+        shield:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+        sparkles:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>',
+      };
+
+      const fractalItems = (fractal.items || [])
+        .map(
+          (item) => `<div class="card fractal-card">
+  <div class="fractal-card-header">
+    <div class="fractal-icon">${fractalIcons[item.icon] || fractalIcons.sparkles}</div>
+    <h4>${escapeHtml(item.title)}</h4>
+  </div>
+  <p>${escapeHtml(item.body)}</p>
+</div>`,
+        )
+        .join("\n");
+
+      fractalHtml = `<div class="vision-fractal">
+  <h3 class="fractal-title">${escapeHtml(fractal.title || "Una exploración fractal: de la economía real a la vida cotidiana")}</h3>
+  <div class="fractal-grid">${fractalItems}</div>
+</div>`;
+    }
+
+    sectionsHtml.push(`<section id="vision" class="section">
+  <h2>${escapeHtml(vision.title || "Fundamentos: abrir los ojos y tomar el rumbo")}</h2>
+  <div class="vision-grid">
+    <div class="vision-text">${paragraphsHtml}</div>
+    ${quoteHtml}
+  </div>
+  ${fractalHtml}
+</section>`);
+  }
+
+  const iniciativas = content.sections.find((s) => s.id === "iniciativas");
+  if (iniciativas) {
+    const cards = (iniciativas.blocks || [])
+      .filter((b) => b.type === "card")
+      .map(
+        (c) => `<div class="card">
+  <h3>${escapeHtml(c.title)}</h3>
+  <p>${escapeHtml(c.body)}</p>
+</div>`,
+      )
+      .join("\n");
+
+    sectionsHtml.push(`<section id="iniciativas" class="section">
+  <h2>${escapeHtml(iniciativas.title || "Las tres miradas de nuestra organización")}</h2>
+  <div class="grid">${cards}</div>
+</section>`);
+  }
+
+  const aiworkers = content.sections.find((s) => s.id === "aiworkers");
+  if (aiworkers) {
+    const workers = (aiworkers.blocks || []).filter((b) => b.type === "worker").slice(0, 3);
+    sectionsHtml.push(`<section id="aiworkers" class="section">
+  <h2>${escapeHtml(aiworkers.title || "La organización: dirección, guardarraíl y AIWorkers")}</h2>
+  <div class="grid">${workers.map(renderWorker).join("\n")}</div>
+  <a href="equipo.html" class="btn section-cta">Conocer la organización y sus AIWorkers</a>
+</section>`);
+  }
+
+  const blog = content.sections.find((s) => s.id === "blog");
+  if (blog) {
+    const posts = sortedPosts(blog.blocks || []).slice(0, 3);
+    sectionsHtml.push(`<section id="blog" class="section">
+  <h2>Ideas recientes para llevar el volante</h2>
+  <div class="grid post-grid">${posts.map((p) => renderPostCard(p, false)).join("\n")}</div>
+  <a href="blog.html" class="btn section-cta">Explorar todos los artículos</a>
+</section>`);
+  }
+
+  return sectionsHtml.join("\n");
+}
+
 function getPostCategoryMeta(post) {
-  const text = `${post.title || ''} ${post.body || ''} ${post.category || ''}`.toLowerCase();
-  const author = (post.author || '').toLowerCase();
+  const text = `${post.title || ""} ${post.body || ""} ${post.category || ""}`.toLowerCase();
+  const author = (post.author || "").toLowerCase();
   if (
-    author.includes('juris') ||
-    text.includes('ai act') ||
-    text.includes('legal') ||
-    text.includes('contrato') ||
-    text.includes('rgpd') ||
-    text.includes('guardarrail')
+    author.includes("juris") ||
+    text.includes("ai act") ||
+    text.includes("legal") ||
+    text.includes("contrato") ||
+    text.includes("rgpd") ||
+    text.includes("guardarrail")
   ) {
-    return { label: 'Guardarrail Ético & Legal', filterKey: 'legal' };
+    return { label: "Guardarrail Ético & Legal", filterKey: "legal" };
   }
   if (
-    author.includes('visio') ||
-    (post.category || '').toLowerCase() === 'estrategia' ||
-    text.includes('singularidad') ||
-    text.includes('volante') ||
-    text.includes('exponencial') ||
-    text.includes('geo') ||
-    text.includes('resiliencia')
+    author.includes("visio") ||
+    (post.category || "").toLowerCase() === "estrategia" ||
+    text.includes("singularidad") ||
+    text.includes("volante") ||
+    text.includes("exponencial") ||
+    text.includes("geo") ||
+    text.includes("resiliencia")
   ) {
-    return { label: 'Visión & Estrategia', filterKey: 'estrategia' };
+    return { label: "Visión & Estrategia", filterKey: "estrategia" };
   }
   if (
-    text.includes('slm') ||
-    text.includes('mcp') ||
-    text.includes('hardware') ||
-    text.includes('local') ||
-    text.includes('modelo') ||
-    text.includes('offline')
+    text.includes("slm") ||
+    text.includes("mcp") ||
+    text.includes("hardware") ||
+    text.includes("local") ||
+    text.includes("modelo") ||
+    text.includes("offline")
   ) {
-    return { label: 'Tecnología & SLMs', filterKey: 'tecnologia' };
+    return { label: "Tecnología & SLMs", filterKey: "tecnologia" };
   }
-  return { label: 'IAWorkers & Procesos', filterKey: 'tecnologia' };
+  return { label: "IAWorkers & Procesos", filterKey: "tecnologia" };
 }
 
 function calculateReadingTime(body) {
-  const words = String(body || '')
+  const words = String(body || "")
     .trim()
     .split(/\s+/)
     .filter(Boolean).length;
@@ -286,19 +400,23 @@ function renderPostCard(post, isFeatured = false) {
   const url = articleUrl(post);
   const { label: category, filterKey } = getPostCategoryMeta(post);
   const readingTime = calculateReadingTime(post.body);
-  const metadata = [formatPostDate(post.date), post.author, readingTime].filter(Boolean).join(' · ');
+  const metadata = [formatPostDate(post.date), post.author, readingTime]
+    .filter(Boolean)
+    .join(" · ");
   const image = post.img
-    ? `<div class="post-cover-wrap"><img src="${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${post.title || 'el artículo'}`)}" class="post-cover" loading="lazy"></div>`
-    : '';
-  const searchAttr = escapeHtml(`${post.title || ''} ${post.author || ''} ${category} ${post.excerpt || ''}`.toLowerCase());
+    ? `<div class="post-cover-wrap"><img src="${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${post.title || "el artículo"}`)}" class="post-cover" loading="lazy"></div>`
+    : "";
+  const searchAttr = escapeHtml(
+    `${post.title || ""} ${post.author || ""} ${category} ${post.excerpt || ""}`.toLowerCase(),
+  );
 
   if (isFeatured) {
     return `<article class="card post-card">
-  <div class="featured-post-wrapper" data-filter-cat="${escapeHtml(filterKey)}" data-author="${escapeHtml(post.author || 'AIEvolutio')}" data-search="${searchAttr}">
+  <div class="featured-post-wrapper" data-filter-cat="${escapeHtml(filterKey)}" data-author="${escapeHtml(post.author || "AIEvolutio")}" data-search="${searchAttr}">
     ${image}
     <div class="featured-post-content">
       <div class="post-category-tag">${escapeHtml(category)}</div>
-      <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || 'Entrada')}</a></h3>
+      <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || "Entrada")}</a></h3>
       <p class="muted post-meta">${escapeHtml(metadata)}</p>
       <div class="post-body">${renderPostBody(postSummary(post.body, 260))}</div>
       <a href="${escapeHtml(url)}" class="btn btn-sm btn-outline">Leer artículo completo →</a>
@@ -309,9 +427,9 @@ function renderPostCard(post, isFeatured = false) {
 
   return `<article class="card post-card">
   ${image}
-  <div class="post-card-inner" data-filter-cat="${escapeHtml(filterKey)}" data-author="${escapeHtml(post.author || 'AIEvolutio')}" data-search="${searchAttr}">
+  <div class="post-card-inner" data-filter-cat="${escapeHtml(filterKey)}" data-author="${escapeHtml(post.author || "AIEvolutio")}" data-search="${searchAttr}">
     <div class="post-category-tag">${escapeHtml(category)}</div>
-    <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || 'Entrada')}</a></h3>
+    <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || "Entrada")}</a></h3>
     <p class="muted post-meta">${escapeHtml(metadata)}</p>
     <div class="post-body">${renderPostBody(postSummary(post.body, 160))}</div>
     <a href="${escapeHtml(url)}" class="text-link">Leer artículo →</a>
@@ -320,25 +438,25 @@ function renderPostCard(post, isFeatured = false) {
 }
 
 export function renderBlog(content, { archive = false } = {}) {
-  const blog = content.sections.find((section) => section.id === 'blog');
-  if (!blog) throw new Error('Falta la sección blog para generar los artículos.');
+  const blog = content.sections.find((section) => section.id === "blog");
+  if (!blog) throw new Error("Falta la sección blog para generar los artículos.");
   const posts = sortedPosts(blog.blocks || []);
   const visiblePosts = archive ? posts.slice(6) : posts.slice(0, 6);
-  const title = archive ? 'Artículos anteriores' : 'Ideas, guías y casos de uso';
+  const title = archive ? "Artículos anteriores" : "Ideas, guías y casos de uso";
   const backLink = archive
     ? '<a href="blog.html" class="archive-back"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12L6 8L10 4"/></svg><span>Ver artículos recientes</span></a>'
-    : '';
+    : "";
   const archiveLink =
     !archive && posts.length > 6
       ? '<a href="archivo.html" class="btn section-cta">Ver artículos anteriores en el archivo</a>'
-      : '';
+      : "";
 
   const cardsHtml = archive
-    ? visiblePosts.map((p) => renderPostCard(p, false)).join('\n')
-    : visiblePosts.map((p, idx) => renderPostCard(p, idx === 0)).join('\n');
+    ? visiblePosts.map((p) => renderPostCard(p, false)).join("\n")
+    : visiblePosts.map((p, idx) => renderPostCard(p, idx === 0)).join("\n");
 
   const controlsHtml = archive
-    ? ''
+    ? ""
     : `<div class="blog-controls-wrap">
       <div class="blog-topics-pills" role="group" aria-label="Filtrar artículos por pilar organizativo">
         <button type="button" class="topic-pill active" data-filter="all" aria-pressed="true">Todos (${visiblePosts.length})</button>
@@ -364,47 +482,47 @@ export function renderBlog(content, { archive = false } = {}) {
 }
 
 export function renderArticle(post, navigation) {
-  const title = String(post.title || 'Artículo');
+  const title = String(post.title || "Artículo");
   const description = postSummary(post.body, 180);
   const articleUrlPath = articleUrl(post);
   const canonical = `${articleBaseUrl}/${articleUrlPath}`;
-  const absoluteImage = post.img ? `${articleBaseUrl}/${String(post.img).replace(/^\/+/, '')}` : '';
+  const absoluteImage = post.img ? `${articleBaseUrl}/${String(post.img).replace(/^\/+/, "")}` : "";
   const { label: category } = getPostCategoryMeta(post);
   const readingTime = calculateReadingTime(post.body);
   const image = post.img
     ? `<div class="article-hero-cover"><img src="../${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${title}`)}" class="post-cover" loading="lazy"></div>`
-    : '';
+    : "";
   const checklistHtml =
     Array.isArray(post.actionableChecklist) && post.actionableChecklist.length > 0
       ? `<aside class="article-checklist-box" aria-label="Lista de verificación accionable">
   <h3>Hoja de ruta práctica (Volante en mano)</h3>
   <ul class="article-list">
-    ${post.actionableChecklist.map((item) => `<li>${escapeHtml(item)}</li>`).join('\n    ')}
+    ${post.actionableChecklist.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n    ")}
   </ul>
 </aside>`
-      : '';
+      : "";
 
   const articleSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
     headline: title,
     description,
-    datePublished: post.date || '2026-11-05',
+    datePublished: post.date || "2026-11-05",
     author: {
-      '@type': 'Person',
-      name: post.author || 'AIEvolutio',
+      "@type": "Person",
+      name: post.author || "AIEvolutio",
     },
     publisher: {
-      '@type': 'Organization',
-      name: 'AIEvolutio',
+      "@type": "Organization",
+      name: "AIEvolutio",
       logo: {
-        '@type': 'ImageObject',
-        url: 'https://aievolutio.com/images/logotipoHorizontalTransparente.png',
+        "@type": "ImageObject",
+        url: "https://aievolutio.com/images/logotipoHorizontalTransparente.png",
       },
     },
     mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': canonical,
+      "@type": "WebPage",
+      "@id": canonical,
     },
   };
 
@@ -430,7 +548,7 @@ export function renderArticle(post, navigation) {
 <meta property="og:type" content="article">
 <meta property="og:locale" content="es_ES">
 <meta property="og:url" content="${escapeHtml(canonical)}">
-${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage)}">\n` : ''}<meta name="twitter:card" content="${absoluteImage ? 'summary_large_image' : 'summary'}">
+${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage)}">\n` : ""}<meta name="twitter:card" content="${absoluteImage ? "summary_large_image" : "summary"}">
 <link rel="canonical" href="${escapeHtml(canonical)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -438,7 +556,7 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <link href="../styles/tokens.css" rel="stylesheet">
 <link href="../styles/main.css?v=20261105" rel="stylesheet">
 <link href="../images/favicon.ico" rel="icon" type="image/x-icon">
-<script type="application/ld+json">${JSON.stringify(articleSchema).replaceAll('<', '\\u003c').replaceAll('>', '\\u003e')}</script>
+<script type="application/ld+json">${JSON.stringify(articleSchema).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e")}</script>
 </head>
 <body data-page="article">
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -454,7 +572,7 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <img alt="AIEvolutio" src="../images/logotipoHorizontalTransparente.png" width="128" height="64">
 <span class="sr-only">AIEvolutio</span>
 </a>
-<div id="nav">${renderNavigation(navigation, 'blog', '../')}</div>
+<div id="nav">${renderNavigation(navigation, "blog", "../")}</div>
 <button aria-label="Cambiar tema" aria-pressed="false" class="theme-toggle" id="theme-toggle" type="button">🌓</button>
 </nav>
 </header>
@@ -467,9 +585,9 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <header class="article-header">
   <h1>${escapeHtml(title)}</h1>
   <div class="article-meta-bar">
-    <div class="author-badge" aria-hidden="true">${escapeHtml((post.author || 'AI').slice(0, 2).toUpperCase())}</div>
+    <div class="author-badge" aria-hidden="true">${escapeHtml((post.author || "AI").slice(0, 2).toUpperCase())}</div>
     <div class="article-meta-info">
-      <span class="article-author-name">${escapeHtml(post.author || 'AIEvolutio')}</span>
+      <span class="article-author-name">${escapeHtml(post.author || "AIEvolutio")}</span>
       <span class="article-date-row">${formatPostDate(post.date)} · ${escapeHtml(readingTime)}</span>
     </div>
   </div>
@@ -516,19 +634,39 @@ ${image}
 }
 
 export function generateSitemap(posts) {
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
   const staticEntries = [
-    { loc: 'https://aievolutio.com/', changefreq: 'daily', priority: '1.0', lastmod: today },
-    { loc: 'https://aievolutio.com/equipo.html', changefreq: 'weekly', priority: '0.9', lastmod: today },
-    { loc: 'https://aievolutio.com/blog.html', changefreq: 'daily', priority: '0.9', lastmod: today },
-    { loc: 'https://aievolutio.com/contacto.html', changefreq: 'monthly', priority: '0.8', lastmod: today },
-    { loc: 'https://aievolutio.com/archivo.html', changefreq: 'weekly', priority: '0.7', lastmod: today },
+    { loc: "https://aievolutio.com/", changefreq: "daily", priority: "1.0", lastmod: today },
+    {
+      loc: "https://aievolutio.com/equipo.html",
+      changefreq: "weekly",
+      priority: "0.9",
+      lastmod: today,
+    },
+    {
+      loc: "https://aievolutio.com/blog.html",
+      changefreq: "daily",
+      priority: "0.9",
+      lastmod: today,
+    },
+    {
+      loc: "https://aievolutio.com/contacto.html",
+      changefreq: "monthly",
+      priority: "0.8",
+      lastmod: today,
+    },
+    {
+      loc: "https://aievolutio.com/archivo.html",
+      changefreq: "weekly",
+      priority: "0.7",
+      lastmod: today,
+    },
   ];
 
   const postEntries = posts.map((post) => ({
     loc: `https://aievolutio.com/${articleUrl(post)}`,
-    changefreq: 'weekly',
-    priority: '0.8',
+    changefreq: "weekly",
+    priority: "0.8",
     lastmod: post.date || today,
   }));
 
@@ -544,14 +682,14 @@ ${allEntries
     <priority>${e.priority}</priority>
   </url>`,
   )
-  .join('\n')}
+  .join("\n")}
 </urlset>
 `;
 }
 
 export function renderArticleAlias(aliasPath, targetPath) {
   const target = path.posix.relative(path.posix.dirname(aliasPath), targetPath);
-  if (!target || target.startsWith('../')) {
+  if (!target || target.startsWith("../")) {
     throw new Error(`El alias de artículo debe apuntar a una ruta local: ${aliasPath}`);
   }
   return `<!DOCTYPE html>
@@ -596,9 +734,9 @@ async function copyPublicSource() {
       await cp(dirPath, path.join(outputRoot, directory), { recursive: true });
     }
   }
-  await mkdir(path.join(outputRoot, 'scripts'), { recursive: true });
-  if (existsSync(path.join(repoRoot, 'scripts/app.js'))) {
-    await cp(path.join(repoRoot, 'scripts/app.js'), path.join(outputRoot, 'scripts/app.js'));
+  await mkdir(path.join(outputRoot, "scripts"), { recursive: true });
+  if (existsSync(path.join(repoRoot, "scripts/app.js"))) {
+    await cp(path.join(repoRoot, "scripts/app.js"), path.join(outputRoot, "scripts/app.js"));
   }
   for (const file of publicFiles) {
     const filePath = path.join(repoRoot, file);
@@ -609,11 +747,11 @@ async function copyPublicSource() {
 }
 
 function normalizeTitleForDedup(title) {
-  return String(title || '')
+  return String(title || "")
     .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
     .trim();
 }
 
@@ -625,17 +763,19 @@ export async function loadModularPosts() {
   if (!existsSync(postsDirectory)) {
     return loaded;
   }
-  const files = (await readdir(postsDirectory)).filter((f) => f.endsWith('.json')).sort();
+  const files = (await readdir(postsDirectory)).filter((f) => f.endsWith(".json")).sort();
   const seenSlugs = new Set();
   const seenTitles = new Set();
 
   for (const file of files) {
     const fullPath = path.join(postsDirectory, file);
     try {
-      const raw = await readFile(fullPath, 'utf8');
+      const raw = await readFile(fullPath, "utf8");
       const post = repairTruncatedJson(raw);
       if (post && post.title) {
-        const slugKey = String(post.slug || '').trim().toLowerCase();
+        const slugKey = String(post.slug || "")
+          .trim()
+          .toLowerCase();
         const titleKey = normalizeTitleForDedup(post.title);
         if ((slugKey && seenSlugs.has(slugKey)) || (titleKey && seenTitles.has(titleKey))) {
           console.warn(`[Guardián Prerender] Saltando post duplicado en ${file}`);
@@ -643,7 +783,7 @@ export async function loadModularPosts() {
         }
         if (slugKey) seenSlugs.add(slugKey);
         if (titleKey) seenTitles.add(titleKey);
-        post.type = 'post';
+        post.type = "post";
         loaded.push(post);
       }
     } catch (err) {
@@ -654,20 +794,20 @@ export async function loadModularPosts() {
 }
 
 export async function buildSite() {
-  const content = JSON.parse(await readFile(contentPath, 'utf8'));
-  const navigation = JSON.parse(await readFile(navigationPath, 'utf8'));
+  const content = JSON.parse(await readFile(contentPath, "utf8"));
+  const navigation = JSON.parse(await readFile(navigationPath, "utf8"));
 
   const modularPosts = await loadModularPosts();
-  let blogSection = content.sections.find((section) => section.id === 'blog');
+  let blogSection = content.sections.find((section) => section.id === "blog");
   if (!blogSection) {
-    blogSection = { id: 'blog', title: 'Blog', kind: 'posts', blocks: [] };
+    blogSection = { id: "blog", title: "Blog", kind: "posts", blocks: [] };
     content.sections.push(blogSection);
   }
 
   if (modularPosts.length > 0) {
     blogSection.blocks = modularPosts;
     try {
-      await writeFile(contentPath, JSON.stringify(content, null, 2) + '\n', 'utf8');
+      await writeFile(contentPath, JSON.stringify(content, null, 2) + "\n", "utf8");
     } catch {
       // Ignorar si hay lock de lectura
     }
@@ -675,34 +815,36 @@ export async function buildSite() {
 
   await copyPublicSource();
 
-  // Prerenderizar navegación en index.html y contacto.html en dist/
-  for (const navOnlyPage of [
-    { file: 'index.html', activeId: 'home' },
-    { file: 'contacto.html', activeId: 'contact' },
-  ]) {
+  // Prerenderizar navegación en contacto.html en dist/
+  for (const navOnlyPage of [{ file: "contacto.html", activeId: "contact" }]) {
     const outputPath = path.join(outputRoot, navOnlyPage.file);
     if (existsSync(outputPath)) {
-      let html = await readFile(outputPath, 'utf8');
+      let html = await readFile(outputPath, "utf8");
       if (/<div id="nav"><\/div>/.test(html)) {
         html = html.replace(
           /<div id="nav"><\/div>/,
           `<div id="nav">${renderNavigation(navigation, navOnlyPage.activeId)}</div>`,
         );
-        await writeFile(outputPath, html, 'utf8');
+        await writeFile(outputPath, html, "utf8");
       }
     }
   }
 
   const pages = [
     {
-      file: 'equipo.html',
-      activeId: 'aiworkers',
+      file: "index.html",
+      activeId: "home",
+      section: renderHomeSections(content),
+    },
+    {
+      file: "equipo.html",
+      activeId: "aiworkers",
       section: renderTeam(content),
     },
-    { file: 'blog.html', activeId: 'blog', section: renderBlog(content) },
+    { file: "blog.html", activeId: "blog", section: renderBlog(content) },
     {
-      file: 'archivo.html',
-      activeId: 'blog',
+      file: "archivo.html",
+      activeId: "blog",
       section: renderBlog(content, { archive: true }),
     },
   ];
@@ -710,7 +852,7 @@ export async function buildSite() {
   for (const page of pages) {
     const outputPath = path.join(outputRoot, page.file);
     if (existsSync(outputPath)) {
-      let html = await readFile(outputPath, 'utf8');
+      let html = await readFile(outputPath, "utf8");
       html = replaceExactlyOnce(
         html,
         /<div id="nav"><\/div>/g,
@@ -723,13 +865,13 @@ export async function buildSite() {
         `<div id="sections">${page.section}</div>`,
         `${page.file} content placeholder`,
       );
-      await writeFile(outputPath, html, 'utf8');
+      await writeFile(outputPath, html, "utf8");
     }
   }
 
   const posts = sortedPosts(blogSection.blocks || []);
-  const articleDistDir = path.join(outputRoot, 'articulos');
-  const articleRepoDir = path.join(repoRoot, 'articulos');
+  const articleDistDir = path.join(outputRoot, "articulos");
+  const articleRepoDir = path.join(repoRoot, "articulos");
   await rm(articleDistDir, { recursive: true, force: true });
   await rm(articleRepoDir, { recursive: true, force: true });
   await mkdir(articleDistDir, { recursive: true });
@@ -743,21 +885,21 @@ export async function buildSite() {
     }
     generatedPaths.add(relativePath);
     const html = renderArticle(post, navigation);
-    await writeFile(path.join(outputRoot, relativePath), html, 'utf8');
-    await writeFile(path.join(repoRoot, relativePath), html, 'utf8');
+    await writeFile(path.join(outputRoot, relativePath), html, "utf8");
+    await writeFile(path.join(repoRoot, relativePath), html, "utf8");
   }
 
   for (const [aliasPath, targetPath] of legacyArticleAliases) {
     if (generatedPaths.has(targetPath)) {
       const aliasHtml = renderArticleAlias(aliasPath, targetPath);
-      await writeFile(path.join(outputRoot, aliasPath), aliasHtml, 'utf8');
-      await writeFile(path.join(repoRoot, aliasPath), aliasHtml, 'utf8');
+      await writeFile(path.join(outputRoot, aliasPath), aliasHtml, "utf8");
+      await writeFile(path.join(repoRoot, aliasPath), aliasHtml, "utf8");
     }
   }
 
   const sitemapXml = generateSitemap(posts);
-  await writeFile(path.join(outputRoot, 'sitemap.xml'), sitemapXml, 'utf8');
-  await writeFile(path.join(repoRoot, 'sitemap.xml'), sitemapXml, 'utf8');
+  await writeFile(path.join(outputRoot, "sitemap.xml"), sitemapXml, "utf8");
+  await writeFile(path.join(repoRoot, "sitemap.xml"), sitemapXml, "utf8");
 
   return {
     pages: pages.map(({ file }) => file),
@@ -768,7 +910,9 @@ export async function buildSite() {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   buildSite()
     .then(({ pages, articles }) =>
-      console.log(`Sitio prerenderizado: ${pages.length} páginas dinámicas y ${articles} artículos.`),
+      console.log(
+        `Sitio prerenderizado: ${pages.length} páginas dinámicas y ${articles} artículos.`,
+      ),
     )
     .catch((error) => {
       console.error(error.stack || error.message);

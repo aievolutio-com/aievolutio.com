@@ -2,13 +2,7 @@
   "ci": {
     "collect": {
       "staticDistDir": "dist",
-      "url": [
-        "/",
-        "/equipo.html",
-        "/blog.html",
-        "/archivo.html",
-        "/contacto.html"
-      ]
+      "url": ["/", "/equipo.html", "/blog.html", "/archivo.html", "/contacto.html"]
     },
     "assert": {
       "assertions": {

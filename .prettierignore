@@ -1,0 +1,7 @@
+dist/**
+node_modules/**
+package-lock.json
+.git/**
+.system_generated/**
+.gemini/**
+sitemap.xml

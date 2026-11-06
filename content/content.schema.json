@@ -35,17 +35,7 @@
           "title": { "type": "string" },
           "kind": {
             "type": "string",
-            "enum": [
-              "hero",
-              "text",
-              "grid",
-              "cta",
-              "timeline",
-              "people",
-              "posts",
-              "events",
-              "faq"
-            ]
+            "enum": ["hero", "text", "grid", "cta", "timeline", "people", "posts", "events", "faq"]
           },
           "blocks": {
             "type": "array",

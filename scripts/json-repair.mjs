@@ -5,8 +5,8 @@
  */
 
 export function repairTruncatedJson(rawText) {
-  if (!rawText || typeof rawText !== 'string') {
-    throw new Error('Input text must be a non-empty string');
+  if (!rawText || typeof rawText !== "string") {
+    throw new Error("Input text must be a non-empty string");
   }
 
   // 1. Eliminar bloques de código markdown si existen
@@ -14,15 +14,21 @@ export function repairTruncatedJson(rawText) {
   const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
   if (jsonMatch) {
     text = jsonMatch[1].trim();
-  } else if (text.startsWith('```json')) {
-    text = text.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
-  } else if (text.startsWith('```')) {
-    text = text.replace(/^```\s*/, '').replace(/```$/, '').trim();
+  } else if (text.startsWith("```json")) {
+    text = text
+      .replace(/^```json\s*/i, "")
+      .replace(/```$/, "")
+      .trim();
+  } else if (text.startsWith("```")) {
+    text = text
+      .replace(/^```\s*/, "")
+      .replace(/```$/, "")
+      .trim();
   }
 
   // 2. Extraer desde la primera '{' o '['
-  const firstBrace = text.indexOf('{');
-  const firstBracket = text.indexOf('[');
+  const firstBrace = text.indexOf("{");
+  const firstBracket = text.indexOf("[");
   let startIdx = 0;
   if (firstBrace !== -1 && firstBracket !== -1) {
     startIdx = Math.min(firstBrace, firstBracket);
@@ -46,7 +52,7 @@ export function repairTruncatedJson(rawText) {
   let inString = false;
   let escape = false;
   const stack = [];
-  let cleanText = '';
+  let cleanText = "";
 
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
@@ -55,18 +61,18 @@ export function repairTruncatedJson(rawText) {
       if (escape) {
         escape = false;
         cleanText += char;
-      } else if (char === '\\') {
+      } else if (char === "\\") {
         escape = true;
         cleanText += char;
       } else if (char === '"') {
         inString = false;
         cleanText += char;
-      } else if (char === '\n') {
-        cleanText += '\\n';
-      } else if (char === '\r') {
-        cleanText += '\\r';
-      } else if (char === '\t') {
-        cleanText += '\\t';
+      } else if (char === "\n") {
+        cleanText += "\\n";
+      } else if (char === "\r") {
+        cleanText += "\\r";
+      } else if (char === "\t") {
+        cleanText += "\\t";
       } else {
         cleanText += char;
       }
@@ -74,10 +80,10 @@ export function repairTruncatedJson(rawText) {
       if (char === '"') {
         inString = true;
         cleanText += char;
-      } else if (char === '{' || char === '[') {
-        stack.push(char === '{' ? '}' : ']');
+      } else if (char === "{" || char === "[") {
+        stack.push(char === "{" ? "}" : "]");
         cleanText += char;
-      } else if (char === '}' || char === ']') {
+      } else if (char === "}" || char === "]") {
         if (stack.length && stack[stack.length - 1] === char) {
           stack.pop();
         }
@@ -95,8 +101,8 @@ export function repairTruncatedJson(rawText) {
   }
 
   // 5. Eliminar comas huérfanas antes de cierres o al final
-  cleanText = cleanText.replace(/,\s*([}\]])/g, '$1');
-  cleanText = cleanText.replace(/,\s*$/, '');
+  cleanText = cleanText.replace(/,\s*([}\]])/g, "$1");
+  cleanText = cleanText.replace(/,\s*$/, "");
 
   // 6. Cerrar todos los bloques pendientes en el stack
   while (stack.length > 0) {
@@ -111,7 +117,7 @@ export function repairTruncatedJson(rawText) {
     // 8. Si aún falla por comas o tokens a medio escribir al final (ej: "prop": val...)
     // recortar hacia atrás hasta la última coma o cierre válido
     let trimmed = cleanText;
-    const lastComma = trimmed.lastIndexOf(',');
+    const lastComma = trimmed.lastIndexOf(",");
     if (lastComma > 0) {
       const candidate = trimmed.slice(0, lastComma);
       // recalcular cierres necesarios para candidate
@@ -122,16 +128,16 @@ export function repairTruncatedJson(rawText) {
         const c = candidate[i];
         if (inS2) {
           if (esc2) esc2 = false;
-          else if (c === '\\') esc2 = true;
+          else if (c === "\\") esc2 = true;
           else if (c === '"') inS2 = false;
         } else {
           if (c === '"') inS2 = true;
-          else if (c === '{') s2.push('}');
-          else if (c === '[') s2.push(']');
-          else if (c === '}' || c === ']') s2.pop();
+          else if (c === "{") s2.push("}");
+          else if (c === "[") s2.push("]");
+          else if (c === "}" || c === "]") s2.pop();
         }
       }
-      let fixedCandidate = candidate + s2.reverse().join('');
+      let fixedCandidate = candidate + s2.reverse().join("");
       try {
         return JSON.parse(fixedCandidate);
       } catch (e3) {
@@ -167,4 +173,3 @@ export function extractFieldsFallback(text) {
 
   return result;
 }
-

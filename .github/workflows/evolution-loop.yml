@@ -2,15 +2,15 @@ name: AIEvolutio Autonomous Evolution & Deploy
 
 on:
   schedule:
-    - cron: '0 6 * * *' # Ciclo evolutivo diario (06:00 UTC) con Guardián Adversarial Antiduplicados
+    - cron: "0 6 * * *" # Ciclo evolutivo diario (06:00 UTC) con Guardián Adversarial Antiduplicados
   push:
-    branches: [ main ]  # Despliegue en cada avance a main
-  workflow_dispatch:    # Disparador manual para forzar ciclos de contenido o técnicos bajo demanda
+    branches: [main] # Despliegue en cada avance a main
+  workflow_dispatch: # Disparador manual para forzar ciclos de contenido o técnicos bajo demanda
     inputs:
       mode:
-        description: 'Modo de ciclo a forzar (auto, force-content, force-tech, audit-only)'
+        description: "Modo de ciclo a forzar (auto, force-content, force-tech, audit-only)"
         required: false
-        default: 'auto'
+        default: "auto"
         type: choice
         options:
           - auto
@@ -18,9 +18,9 @@ on:
           - force-tech
           - audit-only
       author:
-        description: 'Perfil organizativo para firmar contenido (opcional: AIVisio, AIDux, AIJuris)'
+        description: "Perfil organizativo para firmar contenido (opcional: AIVisio, AIDux, AIJuris)"
         required: false
-        default: ''
+        default: ""
         type: string
 
 permissions:
@@ -45,7 +45,7 @@ jobs:
       - name: 2. Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: 3. Ejecutar Ciclo Evolutivo IA (Con Guardián Adversarial)
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -111,5 +111,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist
-          exclude_assets: '.github,docs,*.md,*.yml,*.yaml'
+          exclude_assets: ".github,docs,*.md,*.yml,*.yaml"
           force_orphan: true
