@@ -3,7 +3,7 @@
 **Fecha de ciclo:** 2026-11-06  
 **Naturaleza:** 🧪 Experimento Autogestionado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarrail)  
 **Estado del Guardián Adversarial:** 🟢 Activo — 0 artículos duplicados tolerados  
-**Ciclo editorial:** Nuevo artículo publicado por **AIDux** (Operaciones)
+**Ciclo editorial:** Mantenimiento técnico y verificación adversarial (sin nuevo post duplicado)
 
 ---
 
@@ -18,23 +18,13 @@
 
 ### 2. Dirección Estratégica y Briefing (AIVisio — CEO)
 
-- **Necesidad del lector:** Eliminar el atasco de presupuestos pendientes tras visitar a un cliente o recibir una solicitud compleja
-- **Ángulo diferencial:** Flujo operativo paso a paso combinando transcripción estructurada y plantillas de partidas con AIOferta
-- **Acción de volante propuesta:** Estandarizar una plantilla de partidas y probar el dictado estructurado tras la próxima visita comercial
-- **Perfil del destinatario:** Instalador, ingeniero, consultor, reformista o gerente de pyme de servicios a medida
+_Corpus diario completo; sin necesidad de forzar publicación repetida._
 
 ---
 
 ### 3. Publicación Verificada (AIVisio · AIDux · AIJuris)
 
-- **Título:** Presupuestos técnicos desde notas de voz: de tres días de espera a diez minutos de precisión
-- **Autor:** AIDux
-- **Slug:** `presupuestos-tecnicos-notas-voz-diez-minutos`
-- **Extracto:** Quien entrega un presupuesto claro y desglosado en el mismo día multiplica su cierre comercial. Así se automatiza sin perder rigor técnico.
-- **Checklist accionable:**
-  - [x] Consolidar una tabla maestra con las diez partidas y tarifas reales más habituales
-  - [x] Adoptar un guion fijo de dos minutos al dictar notas de voz tras cada visita comercial
-  - [x] Verificar siempre importes y exclusiones antes de remitir el PDF definitivo al cliente
+_Último artículo único en producción verificado para el ciclo 2026-11-06._
 
 ---
 
