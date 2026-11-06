@@ -857,7 +857,8 @@
       if (scoreEl) scoreEl.textContent = `${avg}%`;
 
       if (scores.juris < 40) {
-        if (badgeEl) badgeEl.textContent = "Alerta: sin guardarraíl de protección";
+        if (badgeEl)
+          badgeEl.textContent = "Alerta: sin guardarraíl de protección";
         if (leadEl) leadEl.textContent = "Prioridad: AIJuris (Guardarraíl)";
         if (stateEl) stateEl.textContent = "Vulnerable";
         if (descEl) {
@@ -866,15 +867,18 @@
         }
       } else if (scores.visio < 50) {
         if (badgeEl) badgeEl.textContent = "Oportunidad: definir el rumbo";
-        if (leadEl) leadEl.textContent = "Prioridad: AIVisio (Dirección y estrategia)";
+        if (leadEl)
+          leadEl.textContent = "Prioridad: AIVisio (Dirección y estrategia)";
         if (stateEl) stateEl.textContent = "Explorando";
         if (descEl) {
           descEl.textContent =
             "Contáis con prudencia, pero falta abrir la mirada hacia nuevas oportunidades: AIVisio ayuda a plantear las preguntas adecuadas para descubrir qué servicios diferenciales podéis ofrecer ahora que el conocimiento práctico es accesible a cualquier pequeña empresa.";
         }
       } else if (scores.dux < 50) {
-        if (badgeEl) badgeEl.textContent = "Reto: aterrizar en la práctica técnica";
-        if (leadEl) leadEl.textContent = "Prioridad: AIDux (Dirección tecnológica)";
+        if (badgeEl)
+          badgeEl.textContent = "Reto: aterrizar en la práctica técnica";
+        if (leadEl)
+          leadEl.textContent = "Prioridad: AIDux (Dirección tecnológica)";
         if (stateEl) stateEl.textContent = "En marcha";
         if (descEl) {
           descEl.textContent =

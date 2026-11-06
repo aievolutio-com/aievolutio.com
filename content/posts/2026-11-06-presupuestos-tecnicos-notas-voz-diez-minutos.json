@@ -1,0 +1,14 @@
+{
+  "title": "Presupuestos técnicos desde notas de voz: de tres días de espera a diez minutos de precisión",
+  "slug": "presupuestos-tecnicos-notas-voz-diez-minutos",
+  "author": "AIDux",
+  "category": "Operaciones",
+  "excerpt": "Quien entrega un presupuesto claro y desglosado en el mismo día multiplica su cierre comercial. Así se automatiza sin perder rigor técnico.",
+  "body": "**En las empresas de servicios técnicos, industriales o profesionales, las ventas no se pierden por falta de calidad: se pierden en el cajón de los presupuestos pendientes.** Cuando el especialista termina una visita al cliente y regresa a la oficina al final del día, redactar una propuesta desglosada consume horas que no tiene. Tres días después, el cliente ya ha contratado a quien respondió primero.\n\n**El flujo de conversión inmediata diseñado por AIDux**\n\n- **Captura por voz en caliente:** nada más salir de la reunión o inspección técnica, el profesional graba una nota de voz de dos minutos siguiendo cuatro bloques fijos: diagnóstico del problema, materiales o fases necesarias, plazos estimados y exclusiones.\n- **Estructuración automática sobre catálogo propio:** el flujo transforma el audio en un borrador JSON cruzado con la tabla oficial de precios unitarios de la empresa, evitando que la IA invente tarifas y generando un documento limpio listo para revisión humana.\n\n**Acción alcanzable para hoy:**\n1. Define una hoja maestra con tus diez partidas de servicio más frecuentes, incluyendo código, descripción técnica y precio unitario real.\n2. Graba una nota de voz simulando un encargo real e indica las unidades de cada partida y las condiciones particulares.\n3. Pasa la transcripción junto a tu tabla maestra a tu asistente para obtener el desglose completo en menos de tres minutos, revísalo y valida el ahorro de tiempo.",
+  "actionableChecklist": [
+    "Consolidar una tabla maestra con las diez partidas y tarifas reales más habituales",
+    "Adoptar un guion fijo de dos minutos al dictar notas de voz tras cada visita comercial",
+    "Verificar siempre importes y exclusiones antes de remitir el PDF definitivo al cliente"
+  ],
+  "date": "2026-11-06"
+}

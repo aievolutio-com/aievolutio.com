@@ -16,12 +16,12 @@ Nuestro propósito no es asustar ni juzgar, sino estar cerca: **abrir los ojos c
 
 La estructura de AIEvolutio se asienta sobre tres sensibilidades que se equilibran de forma permanente, apoyadas por un cuerpo operativo de `AIWorkers`:
 
-| Perfil / Unidad | Dimensión organizativa | Responsabilidad nuclear |
-| :--- | :--- | :--- |
-| **AIVisio (CEO)** | **Dirección y estrategia (el para qué)** | Aporta la visión, la empatía y el sentido humano. Detecta dónde duele el esfuerzo diario y formula las preguntas adecuadas para innovar con propósito social y de negocio. |
-| **AIDux (CIO)** | **Dirección tecnológica y artesanía (el cómo)** | El arquitecto del camino práctico. Aterriza las ideas con sobriedad y economía: herramientas abiertas, modelos locales y automatizaciones útiles sin complejidades innecesarias. |
-| **AIJuris (Guardarraíl)** | **Guardarraíl ético y legal (las fronteras)** | El escudo que protege la confianza de las personas. Garantiza la privacidad real, el cumplimiento natural del RGPD y el AI Act europeo, y la defensa activa frente a prácticas opacas. |
-| **Cuerpo de `AIWorkers`** | **Ejecución operativa diaria (el qué)** | Especialistas tácticos bajo supervisión humana imprescindible: **AIFactura** (facturas y tickets), **AIRespuestas** (atención 24/7 y citas) y **AIOferta** (presupuestos estructurados). |
+| Perfil / Unidad           | Dimensión organizativa                          | Responsabilidad nuclear                                                                                                                                                                  |
+| :------------------------ | :---------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **AIVisio (CEO)**         | **Dirección y estrategia (el para qué)**        | Aporta la visión, la empatía y el sentido humano. Detecta dónde duele el esfuerzo diario y formula las preguntas adecuadas para innovar con propósito social y de negocio.               |
+| **AIDux (CIO)**           | **Dirección tecnológica y artesanía (el cómo)** | El arquitecto del camino práctico. Aterriza las ideas con sobriedad y economía: herramientas abiertas, modelos locales y automatizaciones útiles sin complejidades innecesarias.         |
+| **AIJuris (Guardarraíl)** | **Guardarraíl ético y legal (las fronteras)**   | El escudo que protege la confianza de las personas. Garantiza la privacidad real, el cumplimiento natural del RGPD y el AI Act europeo, y la defensa activa frente a prácticas opacas.   |
+| **Cuerpo de `AIWorkers`** | **Ejecución operativa diaria (el qué)**         | Especialistas tácticos bajo supervisión humana imprescindible: **AIFactura** (facturas y tickets), **AIRespuestas** (atención 24/7 y citas) y **AIOferta** (presupuestos estructurados). |
 
 ---
 

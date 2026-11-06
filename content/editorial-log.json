@@ -163,5 +163,16 @@
     "angle": "Prevención contractual práctica para evitar fugas de propiedad intelectual y sanciones de protección de datos",
     "actionType": "Incorporar un anexo de gobernanza y no entrenamiento en los encargos de tratamiento y contratos de servicios",
     "readerProfile": "Titular de negocio, administrador o responsable legal de una pyme"
+  },
+  {
+    "date": "2026-11-06",
+    "title": "Presupuestos técnicos desde notas de voz: de tres días de espera a diez minutos de precisión",
+    "slug": "presupuestos-tecnicos-notas-voz-diez-minutos",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "Eliminar el atasco de presupuestos pendientes tras visitar a un cliente o recibir una solicitud compleja",
+    "angle": "Flujo operativo paso a paso combinando transcripción estructurada y plantillas de partidas con AIOferta",
+    "actionType": "Estandarizar una plantilla de partidas y probar el dictado estructurado tras la próxima visita comercial",
+    "readerProfile": "Instalador, ingeniero, consultor, reformista o gerente de pyme de servicios a medida"
   }
 ]
