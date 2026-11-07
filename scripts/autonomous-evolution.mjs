@@ -182,35 +182,40 @@ export function requireEditorialCandidate(candidate) {
 
 // ─── GEMINI LLM HELPER ──────────────────────────────────────────────────────
 
-async function callGemini(apiKey, prompt) {
-  const models = ["gemini-2.5-flash", "gemini-2.0-flash"];
-  for (const model of models) {
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-    try {
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.65,
-            maxOutputTokens: 1000,
-            responseMimeType: "application/json",
-          },
-        }),
-      });
-      if (!res.ok) {
-        console.warn(`[Gemini API] ${model} respondió con estado HTTP ${res.status}.`);
-        continue;
-      }
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
-      if (text) return text;
-    } catch (err) {
-      console.warn(`[Gemini API] No se pudo consultar ${model}: ${err.message}`);
+export async function callGemini(apiKey, prompt, fetchImpl = fetch) {
+  const model = "gemini-3.5-flash-lite";
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  try {
+    const res = await fetchImpl(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.65,
+          maxOutputTokens: 1000,
+          responseMimeType: "application/json",
+        },
+      }),
+    });
+    if (!res.ok) {
+      console.warn(`[Gemini API] ${model} respondió con estado HTTP ${res.status}.`);
+      return null;
     }
+
+    const data = await res.json();
+    const candidate = data.candidates?.[0];
+    const text = candidate?.content?.parts?.[0]?.text ?? null;
+    if (!text) {
+      console.warn(
+        `[Gemini API] ${model} no devolvió texto (motivo=${candidate?.finishReason || data.promptFeedback?.blockReason || "sin candidato"}).`,
+      );
+    }
+    return text;
+  } catch (err) {
+    console.warn(`[Gemini API] No se pudo consultar ${model}: ${err.message}`);
+    return null;
   }
-  return null;
 }
 
 async function callLLM(prompt) {

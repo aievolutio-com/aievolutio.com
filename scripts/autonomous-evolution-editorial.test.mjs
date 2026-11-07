@@ -1,6 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { requireEditorialCandidate, validateEditorialBriefing } from "./autonomous-evolution.mjs";
+import {
+  callGemini,
+  requireEditorialCandidate,
+  validateEditorialBriefing,
+} from "./autonomous-evolution.mjs";
 
 test("vetoes a briefing with a title already in the published corpus", () => {
   const briefing = {
@@ -72,4 +76,31 @@ test("allows a prevalidated briefing on a distinct topic", () => {
 
 test("fails the cycle instead of claiming success when no original article is available", () => {
   assert.throws(() => requireEditorialCandidate(null), /artículo inédito que supere el preflight/);
+});
+
+test("uses the current low-cost Gemini API model", async () => {
+  let requestUrl;
+  const generatedText = '{"readerNeed":"Proteger el descanso"}';
+
+  const result = await callGemini("test-key", "briefing", async (url) => {
+    requestUrl = url;
+    return {
+      ok: true,
+      json: async () => ({
+        candidates: [{ content: { parts: [{ text: generatedText }] } }],
+      }),
+    };
+  });
+
+  assert.match(requestUrl, /models\/gemini-3\.5-flash-lite:generateContent/);
+  assert.equal(result, generatedText);
+});
+
+test("returns null when the Gemini API rejects the request", async () => {
+  const result = await callGemini("test-key", "briefing", async () => ({
+    ok: false,
+    status: 404,
+  }));
+
+  assert.equal(result, null);
 });
