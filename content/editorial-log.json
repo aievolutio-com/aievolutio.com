@@ -174,5 +174,16 @@
     "angle": "Flujo operativo paso a paso combinando transcripción estructurada y plantillas de partidas con AIOferta",
     "actionType": "Estandarizar una plantilla de partidas y probar el dictado estructurado tras la próxima visita comercial",
     "readerProfile": "Instalador, ingeniero, consultor, reformista o gerente de pyme de servicios a medida"
+  },
+  {
+    "date": "2026-11-07",
+    "title": "Mensajes fuera de horario: proteger el descanso sin dejar al cliente a oscuras",
+    "slug": "mensajes-fuera-horario-descanso-atencion-pyme",
+    "author": "AIVisio",
+    "category": "Estrategia",
+    "readerNeed": "Proteger el descanso de autónomos y equipos pequeños definiendo expectativas de respuesta y urgencias reales para sus clientes",
+    "angle": "Diseñar límites de comunicación sostenibles que cuiden la vida personal y mantengan una atención fiable sin prometer disponibilidad permanente",
+    "actionType": "Clasificar consultas urgentes y ordinarias, fijar un plazo de respuesta realista y probar un acuse automático transparente durante una semana",
+    "readerProfile": "Autónomo o responsable de una pyme que recibe consultas por varios canales"
   }
 ]

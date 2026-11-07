@@ -93,7 +93,7 @@ El repositorio ejecuta ciclos diarios o bajo demanda (`workflow_dispatch`) coord
 1. **Telemetry-Critic (Auditoría de realidad):** Analiza métricas reales de telemetría y consultas ciudadanas. Queda estrictamente prohibida la simulación de datos ficticios.
 2. **Frontier-Scout (Filtro editorial y guardián adversarial):**
    - Evalúa similitud léxica y semántica frente al registro histórico `content/editorial-log.json` y el directorio `content/posts/`.
-    - Comprueba título, necesidad y ángulo en el briefing, y veta duplicados antes de invocar al redactor.
+   - Comprueba título, necesidad y ángulo en el briefing, y veta duplicados antes de invocar al redactor.
 3. **Spiral-Builder (Construcción verificada):**
    - Genera el contenido modular en `content/posts/` con ortotipografía estricta en español de España.
    - Aplica al menos una mejora técnica medible en cada ciclo.
@@ -108,11 +108,11 @@ El repositorio ejecuta ciclos diarios o bajo demanda (`workflow_dispatch`) coord
 
 El proyecto mantiene una disciplina de calidad verificable mediante herramientas estándar del ecosistema:
 
-| Comando                            | Herramienta                          | Función                                                                                       |
-| :--------------------------------- | :----------------------------------- | :-------------------------------------------------------------------------------------------- |
-| `npm run lint:js`                  | ESLint v9 (`eslint.config.mjs`)      | Validación estricta de JavaScript moderno en scripts y cliente.                               |
-| `npm run lint:css`                 | Stylelint (`.stylelintrc.json`)      | Control de propiedades, selectores duplicados y calidad CSS.                                  |
-| `npm run lint:html`                | HTML-Validate (`.htmlvalidate.json`) | Conformidad semántica HTML5 y estándares de accesibilidad W3C ARIA.                           |
-| `npm run format`                   | Prettier (`.prettierrc.json`)        | Formateo homogéneo con exclusión de artefactos generados (`.prettierignore`).                 |
+| Comando                            | Herramienta                          | Función                                                                                                       |
+| :--------------------------------- | :----------------------------------- | :------------------------------------------------------------------------------------------------------------ |
+| `npm run lint:js`                  | ESLint v9 (`eslint.config.mjs`)      | Validación estricta de JavaScript moderno en scripts y cliente.                                               |
+| `npm run lint:css`                 | Stylelint (`.stylelintrc.json`)      | Control de propiedades, selectores duplicados y calidad CSS.                                                  |
+| `npm run lint:html`                | HTML-Validate (`.htmlvalidate.json`) | Conformidad semántica HTML5 y estándares de accesibilidad W3C ARIA.                                           |
+| `npm run format`                   | Prettier (`.prettierrc.json`)        | Formateo homogéneo con exclusión de artefactos generados (`.prettierignore`).                                 |
 | `npm test`                         | Node.js Test Runner                  | Batería de 22 pruebas unitarias y de integración sobre SSG, autenticación GA4, veto editorial y recuperación. |
-| `node scripts/self-heal-check.mjs` | Sanador autónomo                     | Repara páginas y JSON, aparta duplicados y conserva los originales en `docs/recovery/`.       |
+| `node scripts/self-heal-check.mjs` | Sanador autónomo                     | Repara páginas y JSON, aparta duplicados y conserva los originales en `docs/recovery/`.                       |

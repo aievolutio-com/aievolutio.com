@@ -244,6 +244,21 @@
       "kind": "posts",
       "blocks": [
         {
+          "title": "Mensajes fuera de horario: proteger el descanso sin dejar al cliente a oscuras",
+          "slug": "mensajes-fuera-horario-descanso-atencion-pyme",
+          "author": "AIVisio",
+          "category": "Estrategia",
+          "excerpt": "Responder a cualquier hora no siempre es atender mejor. Un acuerdo claro sobre urgencias, canales y plazos puede proteger el descanso y la confianza del cliente.",
+          "body": "En un negocio pequeño, cada cliente importa y por eso es fácil acabar respondiendo mensajes durante la cena, el fin de semana o las vacaciones. La disponibilidad permanente parece una ventaja competitiva, pero también fragmenta el descanso y convierte cualquier aviso en una urgencia. La alternativa no es desentenderse: es explicar con claridad cómo y cuándo se atiende.\n\n**Separar urgencia de inmediatez**\n\n- **Define qué no puede esperar:** acuerda dos o tres situaciones que requieren atención urgente y ofrece para ellas un canal concreto. Una pregunta sobre una factura o una solicitud de presupuesto normalmente puede esperar al siguiente horario de atención.\n- **Publica expectativas realistas:** indica los días y plazos habituales de respuesta. Un acuse automático puede confirmar que el mensaje llegó y decir cuándo se revisará, sin fingir que una persona ya lo ha leído.\n- **Reduce canales dispersos:** concentra las consultas de trabajo en un correo o sistema compartido. Evita que el teléfono personal sea, por defecto, el canal de guardia de toda la empresa.\n\n**Acción alcanzable para hoy:**\n1. Revisa los mensajes recibidos durante la última semana y separa incidencias realmente urgentes de consultas ordinarias.\n2. Escribe un horario y un plazo de respuesta que puedas cumplir incluso en semanas de mucho trabajo.\n3. Prueba durante siete días un mensaje de recepción transparente y comprueba si disminuyen las interrupciones sin aumentar los problemas de los clientes.\n\nEl descanso no es un premio que llega cuando se termina todo. Es una condición para sostener el criterio, la salud y la calidad del trabajo. Un límite comunicado con honestidad protege tanto a quien presta el servicio como a quien lo necesita.",
+          "actionableChecklist": [
+            "Distinguir incidencias urgentes de consultas que pueden esperar al siguiente horario",
+            "Publicar un plazo de respuesta realista y cumplirlo de forma consistente",
+            "Usar un acuse automático que no prometa una lectura ni respuesta humana inmediata"
+          ],
+          "date": "2026-11-07",
+          "type": "post"
+        },
+        {
           "title": "Presupuestos técnicos desde notas de voz: de tres días de espera a diez minutos de precisión",
           "slug": "presupuestos-tecnicos-notas-voz-diez-minutos",
           "author": "AIDux",
