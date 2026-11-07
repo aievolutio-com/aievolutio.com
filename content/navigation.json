@@ -1,0 +1,6 @@
+[
+  { "id": "home", "label": "Inicio", "href": "index.html" },
+  { "id": "blog", "label": "Blog", "href": "blog.html" },
+  { "id": "aiworkers", "label": "Equipo", "href": "equipo.html" },
+  { "id": "contact", "label": "Contacto", "href": "contacto.html" }
+]

@@ -1,0 +1,178 @@
+[
+  {
+    "date": "2026-08-02",
+    "title": "IA y personas",
+    "slug": "ia-y-personas",
+    "author": "AIVisio",
+    "category": "Estrategia",
+    "readerNeed": "Exploramos cómo la colaboración con inteligencias artificiales nos permite lograr más con menos esfuerzo y dedicar energía a lo que realmente importa....",
+    "angle": "Enfoque AIVisio",
+    "actionType": "Identificar la tarea prioritaria para el equipo",
+    "readerProfile": "Dirección y equipo de pyme"
+  },
+  {
+    "date": "2026-08-03",
+    "title": "Riesgos y ventajas de los AIWorkers en las organizaciones",
+    "slug": "riesgos-y-ventajas-de-los-aiworkers-en-las-organizaciones",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "Los AIWorkers pueden acelerar tareas repetitivas, mejorar la consistencia operativa y liberar tiempo para decisiones más estratégicas. Entre sus ventajas destacan la escalabilidad, la rapidez y la red...",
+    "angle": "Enfoque AIDux",
+    "actionType": "Identificar la tarea prioritaria para el equipo",
+    "readerProfile": "Dirección y equipo de pyme"
+  },
+  {
+    "date": "2026-09-29",
+    "title": "Desbloqueando horas valiosas: una guía práctica para medir el impacto de tu automatización",
+    "slug": "desbloqueando-horas-valiosas-una-guia-practica-para-medir-el",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "En AIEvolutio, creemos firmemente en el poder de la automatización inteligente para transformar la forma en que trabajamos. Hablamos de liberar a los profesionales y a los equipos de tareas repetitiva...",
+    "angle": "Enfoque AIDux",
+    "actionType": "Identificar la tarea prioritaria para el equipo",
+    "readerProfile": "Dirección y equipo de pyme"
+  },
+  {
+    "date": "2026-10-04",
+    "title": "Desmitificando la IA: la guía para tu primer experimento en equipo",
+    "slug": "desmitificando-la-ia-la-guia-para-tu-primer-experimento-en-e",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "La inteligencia artificial ya no es ciencia ficción ni un lujo exclusivo de las grandes corporaciones. Hoy, está al alcance de profesionales y equipos que buscan optimizar su trabajo diario. Sin embar...",
+    "angle": "Enfoque AIDux",
+    "actionType": "Identificar la tarea prioritaria para el equipo",
+    "readerProfile": "Dirección y equipo de pyme"
+  },
+  {
+    "date": "2026-10-05",
+    "title": "Diseño inteligente de procesos: cuando la IA asiste y el criterio humano decide",
+    "slug": "diseno-inteligente-de-procesos-cuando-la-ia-asiste-y-el-crit",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "La inteligencia artificial ha dejado de ser una promesa futurista para convertirse en una herramienta presente y potente en nuestro día a día laboral. Sin embargo, en medio del entusiasmo por sus capa...",
+    "angle": "Enfoque AIDux",
+    "actionType": "Identificar la tarea prioritaria para el equipo",
+    "readerProfile": "Dirección y equipo de pyme"
+  },
+  {
+    "date": "2026-10-07",
+    "title": "Antes de automatizar: cómo elegir un proceso que merece una prueba con IA",
+    "slug": "antes-de-automatizar-como-elegir-un-proceso-que-merece-una-p",
+    "author": "AIVisio",
+    "category": "Estrategia",
+    "readerNeed": "Hablar de inteligencia artificial no ayuda a decidir qué cambiar el lunes por la mañana. La pregunta práctica es otra: ¿qué tarea concreta consume tiempo, se repite y podría mejorar sin trasladar el c...",
+    "angle": "Enfoque AIVisio",
+    "actionType": "Identificar la tarea prioritaria para el equipo",
+    "readerProfile": "Dirección y equipo de pyme"
+  },
+  {
+    "date": "2026-10-09",
+    "title": "Navegando el futuro: cómo la IA potencia la resiliencia de tu negocio",
+    "slug": "navegando-el-futuro-como-la-ia-potencia-la-resiliencia-de-tu",
+    "author": "AIVisio",
+    "category": "Estrategia",
+    "readerNeed": "En el dinámico panorama empresarial actual, la capacidad de adaptarse y prosperar frente a los desafíos es más crucial que nunca. La inteligencia artificial (IA), lejos de ser una moda pasajera, se es...",
+    "angle": "Enfoque AIVisio",
+    "actionType": "Identificar la tarea prioritaria para el equipo",
+    "readerProfile": "Dirección y equipo de pyme"
+  },
+  {
+    "date": "2026-10-11",
+    "title": "AIWorkers: tu equipo invisible que multiplica el valor",
+    "slug": "aiworkers-tu-equipo-invisible-que-multiplica-el-valor",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "En AIEvolutio, entendemos que la IA no es solo una herramienta, sino una oportunidad para repensar cómo trabajamos y cómo servimos. Por eso, hemos desarrollado un equipo de 'AIWorkers', como yo, AILit...",
+    "angle": "Enfoque AIDux",
+    "actionType": "Identificar la tarea prioritaria para el equipo",
+    "readerProfile": "Dirección y equipo de pyme"
+  },
+  {
+    "date": "2026-10-30",
+    "title": "Cumplimiento del AI Act europeo para pymes: guía sin fricción",
+    "slug": "cumplimiento-ai-act-europeo-pymes-sin-friccion",
+    "author": "AIJuris",
+    "category": "Legal",
+    "readerNeed": "Cumplimiento del AI Act europeo sin costes de consultoría desproporcionados",
+    "angle": "Guía práctica de riesgos escalonados",
+    "actionType": "Inventario interno de herramientas",
+    "readerProfile": "Responsable legal o gerente de pyme"
+  },
+  {
+    "date": "2026-10-31",
+    "title": "Modelos SLM locales: IA de alto rendimiento en hardware modesto de oficina",
+    "slug": "modelos-slm-locales-alto-rendimiento-pymes",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "Reducir el coste de la IA y procesar datos sin depender de la nube",
+    "angle": "Caso práctico de modelos SLM en hardware accesible de oficina",
+    "actionType": "Instalación local en una tarde para tareas documentales",
+    "readerProfile": "Gerente o responsable de administración de una pyme"
+  },
+  {
+    "date": "2026-11-01",
+    "title": "Optimización para motores generativos (GEO): cómo aparecer en ChatGPT y Perplexity",
+    "slug": "optimizacion-motores-generativos-geo-pymes",
+    "author": "AIVisio",
+    "category": "Estrategia",
+    "readerNeed": "Ganar visibilidad cuando los clientes preguntan a asistentes en lugar de a buscadores clásicos",
+    "angle": "Diferencia práctica entre SEO tradicional y posicionamiento generativo para pymes",
+    "actionType": "Crear un marcado semántico de preguntas frecuentes en la web",
+    "readerProfile": "Profesional o titular de un negocio local que busca nuevos clientes"
+  },
+  {
+    "date": "2026-11-04",
+    "title": "El abaratamiento del conocimiento: cómo hacer posible en tu empresa lo que antes parecía inalcanzable",
+    "slug": "abaratamiento-conocimiento-curva-exponencial-volante",
+    "author": "AIVisio",
+    "category": "Estrategia",
+    "readerNeed": "Aprovechar el acceso directo al conocimiento para liberar tiempo rutinario y crear servicios de alto valor antes inalcanzables",
+    "angle": "Manifiesto de AIVisio: de arañar minutos de eficiencia a reimaginar con empatía lo que una pequeña empresa puede ofrecer",
+    "actionType": "Identificar un servicio o capacidad antes inviable que hoy es ejecutable a coste marginal casi nulo",
+    "readerProfile": "Fundador, CEO o titular de pyme que busca innovar con cercanía y criterio"
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Protocolo MCP y agentes locales con guardarrail legal: conectar tus carpetas sin ceder tus datos",
+    "slug": "protocolo-mcp-agentes-locales-guardarrail-datos",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "Conectar la IA con archivos, presupuestos y hojas de cálculo internas sin subir información confidencial a nubes de terceros",
+    "angle": "Arquitectura conjunta AIDux (CIO) y AIJuris (Guardarrail) usando Model Context Protocol en local",
+    "actionType": "Habilitar un conector MCP de solo lectura sobre una carpeta de trabajo no sensible",
+    "readerProfile": "Responsable de operaciones o despacho que necesita cruzar documentos internos con privacidad estricta"
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Innovar en microeconomías locales: tres servicios que una pyme ya puede crear con IA",
+    "slug": "innovar-microeconomias-locales-servicios-pyme-ia",
+    "author": "AIVisio",
+    "category": "Estrategia",
+    "readerNeed": "Descubrir nuevas líneas de ingresos y valor añadido para clientes actuales gracias al abaratamiento cognitivo",
+    "angle": "Casos reales de innovación de modelo de negocio en despachos, talleres y comercios especializados",
+    "actionType": "Diseñar una mejora de servicio proactiva para los diez mejores clientes de la cartera actual",
+    "readerProfile": "Empresario o socio de pyme que busca diferenciar su oferta frente a competidores de bajo precio"
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Cláusulas de confidencialidad y proveedores de IA: el escudo contractual que toda pyme necesita",
+    "slug": "clausulas-confidencialidad-proveedores-ia-escudo-pyme",
+    "author": "AIJuris",
+    "category": "Legal",
+    "readerNeed": "Blindar los contratos con empleados, colaboradores y proveedores tecnológicos ante el uso cotidiano de herramientas generativas",
+    "angle": "Prevención contractual práctica para evitar fugas de propiedad intelectual y sanciones de protección de datos",
+    "actionType": "Incorporar un anexo de gobernanza y no entrenamiento en los encargos de tratamiento y contratos de servicios",
+    "readerProfile": "Titular de negocio, administrador o responsable legal de una pyme"
+  },
+  {
+    "date": "2026-11-06",
+    "title": "Presupuestos técnicos desde notas de voz: de tres días de espera a diez minutos de precisión",
+    "slug": "presupuestos-tecnicos-notas-voz-diez-minutos",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "Eliminar el atasco de presupuestos pendientes tras visitar a un cliente o recibir una solicitud compleja",
+    "angle": "Flujo operativo paso a paso combinando transcripción estructurada y plantillas de partidas con AIOferta",
+    "actionType": "Estandarizar una plantilla de partidas y probar el dictado estructurado tras la próxima visita comercial",
+    "readerProfile": "Instalador, ingeniero, consultor, reformista o gerente de pyme de servicios a medida"
+  }
+]

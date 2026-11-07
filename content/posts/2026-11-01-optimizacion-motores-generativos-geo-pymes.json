@@ -1,0 +1,14 @@
+{
+  "title": "Optimización para motores generativos (GEO): cómo aparecer en ChatGPT y Perplexity",
+  "slug": "optimizacion-motores-generativos-geo-pymes",
+  "author": "AIVisio",
+  "category": "Estrategia",
+  "excerpt": "El buscador convencional pierde terreno. Aprende a estructurar tus datos para que los asistentes recomienden tus servicios.",
+  "body": "**Cuando un cliente necesita un asesor fiscal o un abogado en su ciudad,** ya no revisa únicamente los diez enlaces azules de Google: consulta a ChatGPT, Perplexity o Gemini. Y estos motores seleccionan sus fuentes con criterios muy distintos a los del posicionamiento clásico.\n\n**Qué valoran los motores generativos al recomendar un servicio**\n\n- **Datos estructurados sin ambigüedad:** esquemas como `LocalBusiness`, `FAQPage` y `Service` permiten que los modelos extraigan tarifas, coberturas y especialidades de forma inequívoca.\n- **Respuestas directas y concisas:** redactadas con rigor factual y sin relleno publicitario; los asistentes premian la exactitud.\n- **Consistencia de datos:** el horario, el ámbito de actuación y las condiciones deben coincidir en todo el sitio web.\n\n**Acción alcanzable para hoy:**\n1. Selecciona la pregunta más repetida que te hacen los clientes antes de contratarte.\n2. Redacta una respuesta transparente de no más de ochenta palabras con información verificable.\n3. Incorpora el esquema semántico `FAQPage` en tu página principal para que los asistentes lo indexen directamente.",
+  "actionableChecklist": [
+    "Identificar las cinco consultas comerciales más habituales de los clientes",
+    "Redactar respuestas directas con datos comprobables y sin florituras",
+    "Añadir datos estructurados Schema.org a las páginas principales de servicio"
+  ],
+  "date": "2026-11-01"
+}

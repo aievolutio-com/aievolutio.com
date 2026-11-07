@@ -1,0 +1,14 @@
+{
+  "title": "Protocolo MCP y agentes locales con guardarrail legal: conectar tus carpetas sin ceder tus datos",
+  "slug": "protocolo-mcp-agentes-locales-guardarrail-datos",
+  "author": "AIDux",
+  "category": "Operaciones",
+  "excerpt": "Cómo lograr que tus agentes consulten expedientes, tarifas y plantillas de tu ordenador sin copiar y pegar ni exponer secretos de negocio.",
+  "body": "**El mayor freno operativo en cualquier pyme al usar inteligencia artificial es la fricción del copiar y pegar,** seguida inmediatamente por el temor legítimo a filtrar datos confidenciales en nubes públicas. Aquí es donde convergen el cómo tecnológico de **AIDux** (CIO) y el guardarrail ético-legal de **AIJuris**: el estándar abierto *Model Context Protocol* (MCP) ejecutado en entorno local.\n\n**Cómo funciona un puente MCP bajo control estricto**\n\n- **Conexión directa sin intermediarios opacos:** el protocolo MCP actúa como un puerto seguro estandarizado que permite a tu asistente consultar una carpeta de tarifas, un catálogo técnico o una base de datos local sin necesidad de subir tus archivos a servidores externos de entrenamiento.\n- **El guardarrail de AIJuris en la arquitectura:** ningún agente debe tener permisos de escritura o borrado indiscriminado sobre el servidor de la empresa. La regla de oro es aplicar permisos de **solo lectura** en las carpetas autorizadas y aislar en un directorio separado cualquier expediente sujeto a secreto profesional o datos especialmente protegidos del RGPD.\n\n**Acción alcanzable para hoy:**\n1. Crea una carpeta específica de consulta rápida en tu equipo con tus plantillas comerciales, tarifas vigentes y preguntas técnicas resueltas (sin datos personales de clientes).\n2. Configura un servidor MCP local de sistema de archivos restringido exclusivamente a esa ruta en modo de solo lectura.\n3. Prueba a pedirle a tu agente que elabore un borrador de presupuesto cruzando tres documentos de esa carpeta y verifica que cita cada partida con exactitud antes de enviarlo.",
+  "actionableChecklist": [
+    "Aislar en una carpeta limpia los catálogos, tarifas y plantillas sin datos personales (RGPD)",
+    "Restringir el acceso del conector local exclusivamente a modo lectura (Guardarrail AIJuris)",
+    "Validar la precisión de generación de presupuestos y respuestas técnicas con supervisión humana"
+  ],
+  "date": "2026-11-05"
+}
