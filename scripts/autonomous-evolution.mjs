@@ -416,6 +416,10 @@ function getTodayString(overrideDate = null) {
   return new Date().toISOString().split("T")[0];
 }
 
+export function getRenderedPageList(pages = []) {
+  return [...new Set(["index.html", "contacto.html", ...pages])];
+}
+
 // ─── TELEMETRÍA GA4 REAL (SIN MOCKS FALSOS) ──────────────────────────────────
 
 export async function fetchRealGa4Metrics(propertyId, accessToken, fetchImpl = fetch) {
@@ -827,7 +831,7 @@ async function runSelfHealer(telemetry, post, spiralResult, briefing) {
 ### 1. Telemetría Real y Salud del Corpus (Telemetry-Critic)
 - **Artículos únicos en producción:** ${spiralResult.buildResult.articles} (${authorsSummary})
 - **Duplicados detectados / bloqueados:** 0 en producción
-- **Páginas dinámicas prerenderizadas:** index.html, contacto.html, ${spiralResult.buildResult.pages.join(", ")}
+- **Páginas dinámicas prerenderizadas:** ${getRenderedPageList(spiralResult.buildResult.pages).join(", ")}
 - **GA4 (${process.env.GA4_PROPERTY_ID ? "API Conectada" : "Etiqueta G-DDWP8Z4F9B en web"}):** ${
     telemetry.ga4
       ? `Usuarios activos (7d): ${telemetry.ga4.activeUsers} | Sesiones: ${telemetry.ga4.sessions} | Duración media: ${telemetry.ga4.avgDurationSec}s`

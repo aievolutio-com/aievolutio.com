@@ -11,7 +11,7 @@
 
 - **Artículos únicos en producción:** 16 (AIVisio: 6 · AIDux: 8 · AIJuris: 2)
 - **Duplicados detectados / bloqueados:** 0 en producción
-- **Páginas dinámicas prerenderizadas:** index.html, contacto.html, index.html, equipo.html, blog.html, archivo.html
+- **Páginas dinámicas prerenderizadas:** index.html, contacto.html, equipo.html, blog.html, archivo.html
 - **GA4 (API Conectada):** Usuarios activos (7d): 6 | Sesiones: 45 | Duración media: 443s
 
 ---

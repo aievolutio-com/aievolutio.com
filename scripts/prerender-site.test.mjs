@@ -10,7 +10,11 @@ import {
   renderBlog,
   renderTeam,
 } from "./prerender-site.mjs";
-import { isDuplicatePost, computeTitleSimilarity } from "./autonomous-evolution.mjs";
+import {
+  computeTitleSimilarity,
+  getRenderedPageList,
+  isDuplicatePost,
+} from "./autonomous-evolution.mjs";
 
 const content = {
   sections: [
@@ -255,4 +259,11 @@ test("adversarial anti-duplication guard blocks duplicate slugs and similar titl
     date: "2026-11-05",
   };
   assert.equal(isDuplicatePost(unique, existing).duplicate, false);
+});
+
+test("rendered page summary lists each dynamic page once", () => {
+  assert.deepEqual(
+    getRenderedPageList(["index.html", "equipo.html", "blog.html", "archivo.html"]),
+    ["index.html", "contacto.html", "equipo.html", "blog.html", "archivo.html"],
+  );
 });
