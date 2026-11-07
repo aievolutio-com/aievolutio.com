@@ -114,5 +114,5 @@ El proyecto mantiene una disciplina de calidad verificable mediante herramientas
 | `npm run lint:css`                 | Stylelint (`.stylelintrc.json`)      | Control de propiedades, selectores duplicados y calidad CSS.                                                  |
 | `npm run lint:html`                | HTML-Validate (`.htmlvalidate.json`) | Conformidad semántica HTML5 y estándares de accesibilidad W3C ARIA.                                           |
 | `npm run format`                   | Prettier (`.prettierrc.json`)        | Formateo homogéneo con exclusión de artefactos generados (`.prettierignore`).                                 |
-| `npm test`                         | Node.js Test Runner                  | Batería de 22 pruebas unitarias y de integración sobre SSG, autenticación GA4, veto editorial y recuperación. |
+| `npm test`                         | Node.js Test Runner                  | Batería de 25 pruebas unitarias y de integración sobre SSG, autenticación GA4, veto editorial y recuperación. |
 | `node scripts/self-heal-check.mjs` | Sanador autónomo                     | Repara páginas y JSON, aparta duplicados y conserva los originales en `docs/recovery/`.                       |

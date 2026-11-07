@@ -180,6 +180,14 @@ export function requireEditorialCandidate(candidate) {
   return candidate;
 }
 
+export function validateArticleBodyLength(body) {
+  const wordCount = String(body || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+  return { valid: wordCount >= 240 && wordCount <= 290, wordCount };
+}
+
 // ─── GEMINI LLM HELPER ──────────────────────────────────────────────────────
 
 export async function callGemini(apiKey, prompt, fetchImpl = fetch) {
@@ -631,7 +639,7 @@ Responde SOLO con JSON válido:
         },
         telemetry.existingPosts,
         telemetry.editorialLog,
-      ).allowed,
+      ).allowed && validateArticleBodyLength(candidate.body).valid,
   );
   const candidateFromBank =
     availableCandidates.find((candidate) => candidate.author === telemetry.recommendedAuthor) ||
@@ -713,7 +721,7 @@ Normas RAE y formato:
     }
 
     if (parsed && parsed.title && parsed.body) {
-      const wordCount = parsed.body.split(/\s+/).length;
+      const { valid: validLength, wordCount } = validateArticleBodyLength(parsed.body);
       const normalizedTitle = applyRaeTitleCase(parsed.title);
       const candidate = {
         title: normalizedTitle,
@@ -738,31 +746,32 @@ Normas RAE y formato:
       };
 
       const dupCheck = isDuplicatePost(candidate, telemetry.existingPosts);
-      if (wordCount >= 100 && !dupCheck.duplicate) {
+      if (validLength && !dupCheck.duplicate) {
         console.log(
           `✅ [Comité Editorial] Artículo inédito verificado: "${candidate.title}" (${wordCount} palabras)`,
         );
         return candidate;
       }
-      console.warn(
-        `⚠️ [Guardián Adversarial] Candidato LLM descartado: ${dupCheck.reason || "body demasiado corto"}`,
-      );
+      const rejectionReason = dupCheck.duplicate
+        ? dupCheck.reason
+        : `body de ${wordCount} palabras; se exigen entre 240 y 290`;
+      console.warn(`⚠️ [Guardián Adversarial] Candidato LLM descartado: ${rejectionReason}`);
     }
   }
 
   // Fallback seguro al banco curado: SOLO selecciona artículos que pasen isDuplicatePost
-  const availableCandidates = CURATED_EDITORIAL_BANK.filter(
-    (candidate) =>
-      validateEditorialBriefing(
-        {
-          suggestedTitle: candidate.title,
-          readerNeed: candidate.readerNeed,
-          angle: candidate.angle,
-        },
-        telemetry.existingPosts,
-        telemetry.editorialLog,
-      ).allowed,
-  );
+  const availableCandidates = CURATED_EDITORIAL_BANK.filter((candidate) => {
+    const briefingCheck = validateEditorialBriefing(
+      {
+        suggestedTitle: candidate.title,
+        readerNeed: candidate.readerNeed,
+        angle: candidate.angle,
+      },
+      telemetry.existingPosts,
+      telemetry.editorialLog,
+    );
+    return briefingCheck.allowed && validateArticleBodyLength(candidate.body).valid;
+  });
   const curatedCandidate =
     availableCandidates.find((candidate) => candidate.slug === briefing.curatedSlug) ||
     availableCandidates.find((candidate) => candidate.author === author) ||

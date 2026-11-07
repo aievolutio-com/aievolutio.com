@@ -30,7 +30,7 @@ La organización se asienta sobre tres miradas complementarias en constante equi
 ```powershell
 npm ci
 npm run build:site     # Compilar y prerenderizar páginas y artículos en dist/
-npm test               # Ejecutar batería de 12 pruebas unitarias y de integración
+npm test               # Ejecutar batería de 25 pruebas unitarias y de integración
 npm run lint:js        # Validar JavaScript con ESLint v9
 npm run lint:css       # Validar hojas de estilo con Stylelint
 npm run lint:html      # Validar semántica y accesibilidad con HTML-Validate

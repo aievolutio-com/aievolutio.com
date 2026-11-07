@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   callGemini,
   requireEditorialCandidate,
+  validateArticleBodyLength,
   validateEditorialBriefing,
 } from "./autonomous-evolution.mjs";
 
@@ -103,4 +104,23 @@ test("returns null when the Gemini API rejects the request", async () => {
   }));
 
   assert.equal(result, null);
+});
+
+test("enforces the 240–290 word range requested by the editorial prompt", () => {
+  assert.deepEqual(validateArticleBodyLength("palabra ".repeat(239)), {
+    valid: false,
+    wordCount: 239,
+  });
+  assert.deepEqual(validateArticleBodyLength("palabra ".repeat(240)), {
+    valid: true,
+    wordCount: 240,
+  });
+  assert.deepEqual(validateArticleBodyLength("palabra ".repeat(290)), {
+    valid: true,
+    wordCount: 290,
+  });
+  assert.deepEqual(validateArticleBodyLength("palabra ".repeat(291)), {
+    valid: false,
+    wordCount: 291,
+  });
 });
