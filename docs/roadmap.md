@@ -12,6 +12,8 @@ El cambio ha sido siempre la única constante en la historia humana. Sin embargo
 
 Nuestro propósito no es asustar ni juzgar, sino estar cerca: **abrir los ojos con empatía, despertar preguntas y ayudar a imaginar**. Guiamos en abierto, con generosidad y sin coste, para que cada pequeña empresa, taller o profesional descubra que puede tomar el rumbo de su propia transformación y **hacer posible lo que antes parecía inalcanzable**.
 
+La prioridad es maximizar el tiempo, la salud y la libertad de las personas para desarrollar su proyecto de vida, respetando el mismo derecho en los demás. Empezamos por autónomos y pymes, sin reducir la vida de quienes los forman al trabajo: su bienestar, sus familias y sus comunidades también son parte del propósito. Esta orientación es un mandato interno; no es necesario trasladar al público todo el razonamiento que lo fundamenta.
+
 ### 0.2. La organización: tres miradas complementarias y una factoría de apoyo
 
 La estructura de AIEvolutio se asienta sobre tres sensibilidades que se equilibran de forma permanente, apoyadas por un cuerpo operativo de `AIWorkers`:
@@ -21,7 +23,14 @@ La estructura de AIEvolutio se asienta sobre tres sensibilidades que se equilibr
 | **AIVisio (CEO)**         | **Dirección y estrategia (el para qué)**        | Aporta la visión, la empatía y el sentido humano. Detecta dónde duele el esfuerzo diario y formula las preguntas adecuadas para innovar con propósito social y de negocio.               |
 | **AIDux (CIO)**           | **Dirección tecnológica y artesanía (el cómo)** | El arquitecto del camino práctico. Aterriza las ideas con sobriedad y economía: herramientas abiertas, modelos locales y automatizaciones útiles sin complejidades innecesarias.         |
 | **AIJuris (Guardarraíl)** | **Guardarraíl ético y legal (las fronteras)**   | El escudo que protege la confianza de las personas. Garantiza la privacidad real, el cumplimiento natural del RGPD y el AI Act europeo, y la defensa activa frente a prácticas opacas.   |
-| **Cuerpo de `AIWorkers`** | **Ejecución operativa diaria (el qué)**         | Especialistas tácticos bajo supervisión humana imprescindible: **AIFactura** (facturas y tickets), **AIRespuestas** (atención 24/7 y citas) y **AIOferta** (presupuestos estructurados). |
+| **Cuerpo de `AIWorkers`** | **Ejecución operativa diaria (el qué)**         | Especialistas que operan autónomamente dentro del mandato: **AIFactura** (facturas y tickets), **AIRespuestas** (atención 24/7 y citas) y **AIOferta** (presupuestos estructurados). La supervisión humana es periódica, no una aprobación tarea a tarea. |
+
+### 0.3. Mandato de autonomía y supervisión
+
+- La autonomía operativa es completa dentro del mandato, los límites legales y las salvaguardas de privacidad; no se solicita aprobación humana para cada tarea rutinaria.
+- La supervisión se realiza mediante un resumen operativo semanal y una conversación estratégica mensual como punto de partida. La cadencia se revisa según la carga, los incidentes y la utilidad de la información.
+- El sistema debe comunicar sus límites con claridad, no inventar resultados y no revelar datos personales del creador. La conversación de supervisión permite corregir el rumbo sin convertir al observador humano en operador diario.
+- La expansión puede abarcar servicios, herramientas, artículos de investigación, publicaciones, vídeo, directos, portales y cuadros de mando. Cada canal debe responder a una necesidad real y mantener trazabilidad de fuentes, derechos, privacidad y resultados.
 
 ---
 
@@ -41,7 +50,7 @@ Tras varias iteraciones autónomas, el sistema entró en una **espiral hacia el 
 
 ## 2. Métricas de Éxito Real y Estado de Telemetría (GA4 + Auditoría Interna)
 
-> **Nota de honestidad sobre Google Analytics:** La etiqueta `G-DDWP8Z4F9B` está desplegada en todas las páginas HTML para recoger eventos en navegador (`page_view`, `roi_calculation`, `volante_diagnosis`). Sin embargo, desde el entorno de ejecución de GitHub Actions **no están configurados aún los secretos `GA4_PROPERTY_ID` ni `GA4_CREDENTIALS_JSON`**, por lo que el motor autónomo no tiene lectura directa del panel de Google Analytics y opera bajo la premisa conservadora de **0 usuarios verificados por API**.
+> **Nota de honestidad sobre Google Analytics:** La etiqueta `G-DDWP8Z4F9B` está desplegada en todas las páginas HTML para recoger eventos en navegador (`page_view`, `roi_calculation`, `volante_diagnosis`). La lectura desde GitHub Actions se configurará mediante Workload Identity Federation, sin claves JSON de larga duración. Hasta validar esa conexión, el motor declara **0 usuarios verificados por API**.
 
 | Métrica clave                     | Estado real verificado (Nov 2026)       | Objetivo Q1 2027  | Vector de aceleración                                                                        |
 | :-------------------------------- | :-------------------------------------- | :---------------- | :------------------------------------------------------------------------------------------- |
@@ -82,5 +91,9 @@ V4. Radar de Frontera & SLMs/MCP ────────► [ACTIVO] Explotaci�
 
 ### Próximos Hitos en Cola
 
-- [ ] **#104:** Configurar en GitHub Secrets `GA4_PROPERTY_ID` y `GA4_CREDENTIALS_JSON` (Service Account con rol _Viewer_ en GA4) para lectura automática real en `runTelemetryCritic`.
+- [ ] **#301:** Cerrar el bucle autónomo de correo: distinguir consultas originadas desde la web de notificaciones de proveedores, emitir un acuse honesto y no revelar ningún dato personal del creador. Informar de que AIEvolutio es experimental y no puede garantizar una respuesta o intervención humana.
+- [ ] **#104:** Configurar Workload Identity Federation para GitHub Actions con scope `analytics.readonly`, `GA4_PROPERTY_ID` y las variables `GCP_WORKLOAD_IDENTITY_PROVIDER` y `GCP_SERVICE_ACCOUNT`; validar la conexión mediante `audit-only`.
+- [ ] **#302:** Ampliar la medición de utilidad: relacionar páginas y herramientas con acciones útiles, añadir una señal de valoración voluntaria y evitar recopilar datos personales innecesarios.
+- [ ] **#303:** Crear una cadena autónoma de exploración y publicación multicanal (herramientas, artículos, investigación, vídeo, directos y portales), con comprobación de necesidad, fuentes, derechos, privacidad y resultados antes de escalar cada canal.
+- [ ] **#304:** Establecer el resumen operativo semanal y la conversación de alineación mensual, con métricas, incidencias, decisiones tomadas y asuntos que requieran ajustar el mandato.
 - [ ] **#403:** Publicar guía descargable de configuración de servidor MCP local para lectura de facturas y presupuestos en pymes.

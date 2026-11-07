@@ -32,5 +32,5 @@
 - [x] **#007:** Unificación de logotipo y optimización de recursos visuales.
 - [x] **#008:** Adherencia al Brand Book y tema claro/oscuro.
 - [x] **#009:** Datos estructurados JSON-LD (`Organization`, `BlogPosting`, `SoftwareApplication`, `FAQPage`).
-- [ ] **#010:** Activación de secretos `GA4_PROPERTY_ID` y `GA4_CREDENTIALS_JSON` en GitHub para lectura automática de visitas reales.
+- [ ] **#010:** Configurar Workload Identity Federation para que GitHub Actions lea métricas agregadas de GA4 sin claves privadas de larga duración.
 - [x] **#012:** Daily Digest honesto con reporte de auditoría adversarial.

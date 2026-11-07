@@ -82,7 +82,7 @@ flowchart LR
 1. **AIVisio (CEO — Dirección y estrategia):** Orienta el propósito, detecta oportunidades en la microeconomía y guía la empatía social en las 5 dimensiones fractales (educación, mayores, administración pública, filtro contra la saturación y vanguardia técnica).
 2. **AIDux (CIO — Dirección técnica y artesanía):** Diseña soluciones frugales, priorizando modelos pequeños locales (SLM) ejecutables en hardware de oficina, el protocolo MCP (Model Context Protocol) y la reducción radical de costes operativos.
 3. **AIJuris (Guardarraíl ético y legal):** Ejerce derecho a veto sobre cualquier propuesta que comprometa la intimidad ciudadana, garantizando el cumplimiento natural del Reglamento General de Protección de Datos (RGPD) y el AI Act europeo.
-4. **AIWorkers (Ejecución diaria supervisada):** Asistentes operativos (AIFactura, AIRespuestas, AIOferta) que preparan trabajo repetitivo, siempre supeditados a la revisión y decisión de personas de carne y hueso.
+4. **AIWorkers (Ejecución autónoma):** Asistentes operativos (AIFactura, AIRespuestas, AIOferta) que ejecutan tareas dentro del mandato y los guardarraíles establecidos. La supervisión humana es periódica y estratégica, no una aprobación de cada tarea.
 
 ---
 
@@ -98,8 +98,8 @@ El repositorio ejecuta ciclos diarios o bajo demanda (`workflow_dispatch`) coord
    - Genera el contenido modular en `content/posts/` con ortotipografía estricta en español de España.
    - Aplica al menos una mejora técnica medible en cada ciclo.
 4. **Self-Healer (Autocomprobación y salud del repositorio):**
-   - Valida la resolución de todos los enlaces internos y recursos estáticos.
-   - Ejecuta la batería de pruebas automatizadas y los linters del sistema.
+  - Restaura páginas HTML críticas desde `HEAD` y archiva antes la versión dañada.
+  - Repara JSON editoriales truncados y aparta duplicados o archivos irrecuperables en `docs/recovery/`.
 
 ---
 
@@ -113,5 +113,5 @@ El proyecto mantiene una disciplina de calidad verificable mediante herramientas
 | `npm run lint:css`                 | Stylelint (`.stylelintrc.json`)      | Control de propiedades, selectores duplicados y calidad CSS.                  |
 | `npm run lint:html`                | HTML-Validate (`.htmlvalidate.json`) | Conformidad semántica HTML5 y estándares de accesibilidad W3C ARIA.           |
 | `npm run format`                   | Prettier (`.prettierrc.json`)        | Formateo homogéneo con exclusión de artefactos generados (`.prettierignore`). |
-| `npm test`                         | Node.js Test Runner                  | Batería de 12 pruebas unitarias y de integración sobre SSG y antiduplicados.  |
-| `node scripts/self-heal-check.mjs` | Guardián Self-Healing                | Comprobación de enlaces rotos, rutas relativas y metadatos canónicos.         |
+| `npm test`                         | Node.js Test Runner                  | Batería de 17 pruebas unitarias y de integración sobre SSG, autenticación GA4 y recuperación. |
+| `node scripts/self-heal-check.mjs` | Sanador autónomo                     | Repara páginas y JSON, aparta duplicados y conserva los originales en `docs/recovery/`. |

@@ -22,7 +22,6 @@
 
 import { readFile, writeFile, mkdir, readdir, unlink } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import crypto from "node:crypto";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -419,40 +418,11 @@ function getTodayString(overrideDate = null) {
 
 // ─── TELEMETRÍA GA4 REAL (SIN MOCKS FALSOS) ──────────────────────────────────
 
-async function fetchRealGa4Metrics(propertyId, credentialsJson) {
+export async function fetchRealGa4Metrics(propertyId, accessToken, fetchImpl = fetch) {
+  if (!propertyId || !accessToken) return null;
+
   try {
-    const creds = JSON.parse(credentialsJson);
-    if (!creds.client_email || !creds.private_key) return null;
-
-    const now = Math.floor(Date.now() / 1000);
-    const header = Buffer.from(JSON.stringify({ alg: "RS256", typ: "JWT" })).toString("base64url");
-    const claim = Buffer.from(
-      JSON.stringify({
-        iss: creds.client_email,
-        scope: "https://www.googleapis.com/auth/analytics.readonly",
-        aud: "https://oauth2.googleapis.com/token",
-        exp: now + 3600,
-        iat: now,
-      }),
-    ).toString("base64url");
-
-    const signer = crypto.createSign("RSA-SHA256");
-    signer.update(`${header}.${claim}`);
-    const signature = signer.sign(creds.private_key, "base64url");
-    const jwt = `${header}.${claim}.${signature}`;
-
-    const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-        assertion: jwt,
-      }),
-    });
-    if (!tokenRes.ok) return null;
-    const { access_token: accessToken } = await tokenRes.json();
-
-    const reportRes = await fetch(
+    const reportRes = await fetchImpl(
       `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,
       {
         method: "POST",
@@ -492,10 +462,10 @@ async function runTelemetryCritic(flags = {}) {
 
   let ga4Data = null;
   const propertyId = process.env.GA4_PROPERTY_ID;
-  const credentials = process.env.GA4_CREDENTIALS_JSON;
+  const accessToken = process.env.GA4_ACCESS_TOKEN;
 
-  if (propertyId && credentials) {
-    ga4Data = await fetchRealGa4Metrics(propertyId, credentials);
+  if (propertyId && accessToken) {
+    ga4Data = await fetchRealGa4Metrics(propertyId, accessToken);
     if (ga4Data) {
       console.log("Métricas reales GA4 (últimos 7 días):", ga4Data);
     } else {
@@ -505,7 +475,7 @@ async function runTelemetryCritic(flags = {}) {
     }
   } else {
     console.log(
-      "Telemetría GA4: Etiqueta G-DDWP8Z4F9B activa en web; API pendiente de secretos GA4_PROPERTY_ID y GA4_CREDENTIALS_JSON.",
+      "Telemetría GA4: etiqueta G-DDWP8Z4F9B activa; API pendiente de GA4_PROPERTY_ID y autenticación federada de GitHub Actions.",
     );
   }
 
@@ -861,7 +831,7 @@ async function runSelfHealer(telemetry, post, spiralResult, briefing) {
 - **GA4 (${process.env.GA4_PROPERTY_ID ? "API Conectada" : "Etiqueta G-DDWP8Z4F9B en web"}):** ${
     telemetry.ga4
       ? `Usuarios activos (7d): ${telemetry.ga4.activeUsers} | Sesiones: ${telemetry.ga4.sessions} | Duración media: ${telemetry.ga4.avgDurationSec}s`
-      : "Pendiente configurar secretos GA4_PROPERTY_ID y GA4_CREDENTIALS_JSON para lectura automática en servidor (0 métricas inventadas)."
+      : "Pendiente configurar GA4_PROPERTY_ID y Workload Identity Federation en GitHub Actions para lectura automática (0 métricas inventadas)."
   }
 
 ---

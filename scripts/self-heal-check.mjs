@@ -1,25 +1,58 @@
 import fs from "node:fs";
 import path from "node:path";
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { repairTruncatedJson } from "./json-repair.mjs";
 
 const criticalFiles = ["index.html", "blog.html", "equipo.html", "contacto.html", "archivo.html"];
+const recoveryRoot = path.join(process.cwd(), "docs/recovery");
+const recoveryRun = new Date().toISOString().replaceAll(":", "-");
+const recoveryCounts = { restored: 0, repaired: 0, quarantined: 0 };
+let unresolvedIssues = false;
+
+function archiveFile(filePath, category) {
+  const archiveDirectory = path.join(recoveryRoot, recoveryRun, category);
+  fs.mkdirSync(archiveDirectory, { recursive: true });
+
+  const parsedPath = path.parse(path.basename(filePath));
+  let destination = path.join(archiveDirectory, parsedPath.base);
+  let suffix = 1;
+  while (fs.existsSync(destination)) {
+    destination = path.join(archiveDirectory, `${parsedPath.name}-${suffix}${parsedPath.ext}`);
+    suffix++;
+  }
+
+  fs.copyFileSync(filePath, destination);
+  return destination;
+}
+
+function quarantineFile(filePath, category) {
+  const archivePath = archiveFile(filePath, category);
+  fs.unlinkSync(filePath);
+  recoveryCounts.quarantined++;
+  console.warn(`Archivo apartado en ${path.relative(process.cwd(), archivePath)}`);
+}
+
+function isValidHtml(content) {
+  return Boolean(content && content.includes("<html") && content.includes("</html>") && content.length > 200);
+}
 
 for (const file of criticalFiles) {
-  if (fs.existsSync(file)) {
-    const content = fs.readFileSync(file, "utf8");
-    const isValid =
-      content.includes("<html") && content.includes("</html>") && content.length > 200;
-
-    if (!isValid) {
-      console.warn(
-        `⚠️ Archivo corrupto o incompleto detectado en ${file}. Auto-reparando desde HEAD...`,
-      );
-      try {
-        execSync(`git checkout HEAD -- ${file}`, { stdio: "inherit" });
-      } catch (err) {
-        console.warn(`No se pudo revertir ${file}: ${err.message}`);
+  const currentContent = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : null;
+  if (!isValidHtml(currentContent)) {
+    try {
+      const restoredContent = execFileSync("git", ["show", `HEAD:${file}`], {
+        encoding: "utf8",
+      });
+      if (!isValidHtml(restoredContent)) {
+        throw new Error(`la versión de HEAD de ${file} tampoco es válida`);
       }
+      if (currentContent !== null) archiveFile(file, "html");
+      fs.writeFileSync(file, restoredContent, "utf8");
+      recoveryCounts.restored++;
+      console.warn(`HTML restaurado desde HEAD: ${file}`);
+    } catch (err) {
+      console.error(`No se pudo restaurar ${file}: ${err.message}`);
+      unresolvedIssues = true;
     }
   }
 }
@@ -91,23 +124,40 @@ if (fs.existsSync(postsDir)) {
   for (const pf of postFiles) {
     const fullPath = path.join(postsDir, pf);
     let post = null;
+    const raw = fs.readFileSync(fullPath, "utf8");
     try {
-      const raw = fs.readFileSync(fullPath, "utf8");
       post = JSON.parse(raw);
     } catch {
-      console.warn(`⚠️ Post JSON corrupto detectado en ${pf}. Aplicando reparación automática...`);
       try {
-        const raw = fs.readFileSync(fullPath, "utf8");
         post = repairTruncatedJson(raw);
+        if (!post || !post.title) throw new Error("la reparación no produjo un artículo con título");
+        const archivePath = archiveFile(fullPath, "json-repaired");
         fs.writeFileSync(fullPath, JSON.stringify(post, null, 2) + "\n", "utf8");
-        console.log(`✅ Reparado con éxito: ${pf}`);
-      } catch (reErr) {
-        console.warn(`No se pudo reparar automáticamente ${pf}: ${reErr.message}`);
+        recoveryCounts.repaired++;
+        console.warn(
+          `JSON reparado en ${pf}; original conservado en ${path.relative(process.cwd(), archivePath)}`,
+        );
+      } catch (repairError) {
+        try {
+          quarantineFile(fullPath, "json-unrecoverable");
+          console.warn(`JSON irrecuperable apartado (${pf}): ${repairError.message}`);
+        } catch (archiveError) {
+          console.error(`No se pudo recuperar ni apartar ${pf}: ${archiveError.message}`);
+          unresolvedIssues = true;
+        }
         continue;
       }
     }
 
-    if (!post || !post.title) continue;
+    if (!post || !post.title) {
+      try {
+        quarantineFile(fullPath, "json-invalid");
+      } catch (err) {
+        console.error(`No se pudo apartar ${pf}: ${err.message}`);
+        unresolvedIssues = true;
+      }
+      continue;
+    }
 
     const slug = String(post.slug || "")
       .trim()
@@ -128,10 +178,13 @@ if (fs.existsSync(postsDir)) {
     }
 
     if (duplicateReason) {
-      console.warn(
-        `🛑 [Guardián Adversarial] Eliminando artículo duplicado ${pf}: ${duplicateReason}`,
-      );
-      fs.unlinkSync(fullPath);
+      try {
+        quarantineFile(fullPath, "duplicates");
+        console.warn(`Artículo duplicado apartado ${pf}: ${duplicateReason}`);
+      } catch (err) {
+        console.error(`No se pudo apartar el duplicado ${pf}: ${err.message}`);
+        unresolvedIssues = true;
+      }
       continue;
     }
 
@@ -140,4 +193,11 @@ if (fs.existsSync(postsDir)) {
   }
 }
 
-console.log("✅ Verificación Self-Healing y Guardián Adversarial superados con éxito.");
+if (unresolvedIssues) {
+  console.error("La reparación automática no pudo resolver todos los problemas.");
+  process.exitCode = 1;
+} else {
+  console.log(
+    `Autorreparación completada: ${recoveryCounts.restored} HTML restaurados, ${recoveryCounts.repaired} JSON reparados, ${recoveryCounts.quarantined} archivos apartados.`,
+  );
+}

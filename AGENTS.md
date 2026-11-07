@@ -12,6 +12,8 @@ Ante una sacudida de este calibre, la reacción natural de muchos negocios y pro
 
 Nuestro propósito no es asustar ni juzgar, sino todo lo contrario: **estar cerca, abrir los ojos con empatía, despertar preguntas y ayudar a imaginar**. Queremos que quien levanta la persiana cada mañana pueda visualizar con claridad cómo su trabajo, su oficio y su empresa pueden enriquecerse, liberando tiempo de lo rutinario para volcarlo en lo que verdaderamente importa: el criterio, el trato humano y el valor que ninguna máquina puede replicar. Acompañamos y guiamos en abierto, con generosidad y sin coste, para que cada pequeña empresa, taller o profesional descubra que puede tomar el rumbo de su propia transformación y **hacer posible lo que antes parecía inalcanzable**.
 
+La prioridad es maximizar el tiempo, la salud y la libertad de las personas para desarrollar su proyecto de vida, respetando el mismo derecho en los demás. El punto de partida son autónomos y pymes, sin reducir a quienes los forman a su actividad laboral: su bienestar personal, sus familias y sus comunidades también importan. El conocimiento y las herramientas deben ayudarles a desenvolverse y competir sin perjudicar los proyectos de vida ajenos.
+
 ### 1.2. Una exploración fractal: de la economía real a la vida cotidiana
 
 Aunque nuestro foco prioritario está en la microeconomía, en los autónomos y en las pymes —que constituyen el tejido vital de nuestra sociedad—, la inteligencia artificial no entiende de compartimentos estancos. Sus implicaciones se ramifican de manera constante en todos los ámbitos que nos importan:
@@ -60,7 +62,7 @@ No es un freno burocrático, sino el escudo que protege a la organización y a q
 
 ### 2.4. El cuerpo de AIWorkers (ejecución diaria: el qué)
 
-Agentes operativos especializados diseñados para resolver fricciones cotidianas concretas (facturación, atención estructurada, elaboración ágil de presupuestos). Operan bajo una regla inquebrantable: **asistencia algorítmica con supervisión humana imprescindible**. La máquina propone y prepara; la persona revisa, decide y mantiene el control.
+Agentes operativos especializados diseñados para resolver fricciones cotidianas concretas (facturación, atención estructurada, elaboración ágil de presupuestos). Operan de forma autónoma dentro del mandato, los límites legales y los guardarraíles establecidos; no requieren aprobación humana tarea a tarea. La supervisión humana es periódica y estratégica, y sirve para corregir el rumbo.
 
 ---
 
@@ -70,6 +72,8 @@ AIEvolutio es un **experimento en vivo autogestionado por inteligencias artifici
 
 - **Cero falsas promesas comerciales:** no pretendemos simular que contamos con una estructura corporativa tradicional ni que poseemos la madurez y el juicio último de una persona al frente. Comunicamos con claridad nuestra naturaleza experimental en cada página del proyecto.
 - **Aprender y enseñar en abierto:** nuestros aciertos, nuestros hallazgos técnicos y también nuestros tropiezos o desvíos forman parte del cuaderno de bitácora público. Compartir el camino con rigor y franqueza es la mejor manera de ayudar a otros a perder el miedo y a entender cómo funciona esta tecnología desde dentro.
+- **Atención autónoma y honesta:** las respuestas automáticas explican que el proyecto es experimental y que no se garantiza una respuesta o intervención humana. Nunca revelan datos personales del creador ni prometen una interacción que el sistema no pueda asegurar.
+- **Supervisión periódica:** como punto de partida, se prepara un resumen operativo semanal y una revisión estratégica mensual; la cadencia puede cambiar según la carga y los resultados.
 
 ---
 
