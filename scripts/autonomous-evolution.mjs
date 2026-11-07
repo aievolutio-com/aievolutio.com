@@ -148,7 +148,39 @@ export function isDuplicatePost(candidate, existingPosts) {
   return { duplicate: false, reason: null };
 }
 
-// ─── MULTI-PROVIDER LLM HELPER (GEMINI + GITHUB MODELS) ──────────────────────
+export function validateEditorialBriefing(briefing, existingPosts = [], editorialLog = []) {
+  if (!briefing?.suggestedTitle || !briefing.readerNeed || !briefing.angle) {
+    return { allowed: false, reason: "Briefing incompleto: faltan título, necesidad o ángulo" };
+  }
+
+  const history = [...existingPosts, ...editorialLog];
+  const titleCheck = isDuplicatePost({ title: briefing.suggestedTitle }, history);
+  if (titleCheck.duplicate) {
+    return { allowed: false, reason: `Título vetado: ${titleCheck.reason}` };
+  }
+
+  for (const previous of history) {
+    const needSimilarity = computeTitleSimilarity(briefing.readerNeed, previous.readerNeed);
+    const angleSimilarity = computeTitleSimilarity(briefing.angle, previous.angle);
+    if (needSimilarity >= 0.65 && angleSimilarity >= 0.55) {
+      return {
+        allowed: false,
+        reason: `Tema y ángulo ya tratados en "${previous.title || previous.slug || "registro editorial"}"`,
+      };
+    }
+  }
+
+  return { allowed: true, reason: null };
+}
+
+export function requireEditorialCandidate(candidate) {
+  if (!candidate) {
+    throw new Error("No se pudo obtener un artículo inédito que supere el preflight editorial.");
+  }
+  return candidate;
+}
+
+// ─── GEMINI LLM HELPER ──────────────────────────────────────────────────────
 
 async function callGemini(apiKey, prompt) {
   const models = ["gemini-2.5-flash", "gemini-2.0-flash"];
@@ -167,59 +199,30 @@ async function callGemini(apiKey, prompt) {
           },
         }),
       });
-      if (!res.ok) continue;
+      if (!res.ok) {
+        console.warn(`[Gemini API] ${model} respondió con estado HTTP ${res.status}.`);
+        continue;
+      }
       const data = await res.json();
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
       if (text) return text;
-    } catch {
-      // Intentar siguiente modelo
+    } catch (err) {
+      console.warn(`[Gemini API] No se pudo consultar ${model}: ${err.message}`);
     }
   }
   return null;
 }
 
-async function callGitHubModels(ghToken, prompt) {
-  try {
-    const res = await fetch("https://models.inference.ai.azure.com/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${ghToken}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        temperature: 0.65,
-        max_tokens: 1000,
-        response_format: { type: "json_object" },
-        messages: [
-          {
-            role: "system",
-            content: "Responde únicamente con un objeto JSON válido, sin markdown ni backticks.",
-          },
-          { role: "user", content: prompt },
-        ],
-      }),
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.choices?.[0]?.message?.content ?? null;
-  } catch {
-    return null;
-  }
-}
-
 async function callLLM(prompt) {
   const geminiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY || null;
-  if (geminiKey) {
-    const out = await callGemini(geminiKey, prompt);
-    if (out) return out;
+  if (!geminiKey) {
+    console.warn(
+      "[Generación LLM] Sin GEMINI_API_KEY. GitHub Models fue retirado; se usará el banco editorial prevalidado.",
+    );
+    return null;
   }
-  const ghToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || null;
-  if (ghToken) {
-    const out = await callGitHubModels(ghToken, prompt);
-    if (out) return out;
-  }
-  return null;
+
+  return callGemini(geminiKey, prompt);
 }
 
 // ─── BANCO EDITORIAL CURADO (SIN REPETICIÓN) ─────────────────────────────────
@@ -335,6 +338,40 @@ const CURATED_EDITORIAL_BANK = [
       "Elegir un segmento de clientes actuales donde un diagnóstico preventivo aporte alto valor",
       "Automatizar la síntesis de datos históricos sin exponer información fuera de la empresa",
       "Presentar el nuevo entregable con revisión experta como ventaja competitiva diferencial",
+    ],
+  },
+  {
+    title: "Mensajes fuera de horario: proteger el descanso sin dejar al cliente a oscuras",
+    slug: "mensajes-fuera-horario-descanso-atencion-pyme",
+    author: "AIVisio",
+    category: "Estrategia",
+    readerNeed:
+      "Proteger el descanso de autónomos y equipos pequeños definiendo expectativas de respuesta y urgencias reales para sus clientes",
+    angle:
+      "Diseñar límites de comunicación sostenibles que cuiden la vida personal y mantengan una atención fiable sin prometer disponibilidad permanente",
+    actionType:
+      "Clasificar consultas urgentes y ordinarias, fijar un plazo de respuesta realista y probar un acuse automático transparente durante una semana",
+    readerProfile: "Autónomo o responsable de una pyme que recibe consultas por varios canales",
+    excerpt:
+      "Responder a cualquier hora no siempre es atender mejor. Un acuerdo claro sobre urgencias, canales y plazos puede proteger el descanso y la confianza del cliente.",
+    body: `En un negocio pequeño, cada cliente importa y por eso es fácil acabar respondiendo mensajes durante la cena, el fin de semana o las vacaciones. La disponibilidad permanente parece una ventaja competitiva, pero también fragmenta el descanso y convierte cualquier aviso en una urgencia. La alternativa no es desentenderse: es explicar con claridad cómo y cuándo se atiende.
+
+**Separar urgencia de inmediatez**
+
+- **Define qué no puede esperar:** acuerda dos o tres situaciones que requieren atención urgente y ofrece para ellas un canal concreto. Una pregunta sobre una factura o una solicitud de presupuesto normalmente puede esperar al siguiente horario de atención.
+- **Publica expectativas realistas:** indica los días y plazos habituales de respuesta. Un acuse automático puede confirmar que el mensaje llegó y decir cuándo se revisará, sin fingir que una persona ya lo ha leído.
+- **Reduce canales dispersos:** concentra las consultas de trabajo en un correo o sistema compartido. Evita que el teléfono personal sea, por defecto, el canal de guardia de toda la empresa.
+
+**Acción alcanzable para hoy:**
+1. Revisa los mensajes recibidos durante la última semana y separa incidencias realmente urgentes de consultas ordinarias.
+2. Escribe un horario y un plazo de respuesta que puedas cumplir incluso en semanas de mucho trabajo.
+3. Prueba durante siete días un mensaje de recepción transparente y comprueba si disminuyen las interrupciones sin aumentar los problemas de los clientes.
+
+El descanso no es un premio que llega cuando se termina todo. Es una condición para sostener el criterio, la salud y la calidad del trabajo. Un límite comunicado con honestidad protege tanto a quien presta el servicio como a quien lo necesita.`,
+    actionableChecklist: [
+      "Distinguir incidencias urgentes de consultas que pueden esperar al siguiente horario",
+      "Publicar un plazo de respuesta realista y cumplirlo de forma consistente",
+      "Usar un acuse automático que no prometa una lectura ni respuesta humana inmediata",
     ],
   },
 ];
@@ -562,8 +599,16 @@ Responde SOLO con JSON válido:
     try {
       const briefing = repairTruncatedJson(rawBriefing);
       if (briefing && briefing.readerNeed && briefing.angle) {
-        console.log(`[AIVisio] Briefing LLM confirmado: "${briefing.readerNeed}"`);
-        return briefing;
+        const preflight = validateEditorialBriefing(
+          briefing,
+          telemetry.existingPosts,
+          telemetry.editorialLog,
+        );
+        if (preflight.allowed) {
+          console.log(`[AIVisio] Briefing LLM prevalidado: "${briefing.readerNeed}"`);
+          return briefing;
+        }
+        console.warn(`[AIVisio] Briefing vetado antes de redactar: ${preflight.reason}`);
       }
     } catch (e) {
       console.warn("[AIVisio] Error al parsear Briefing LLM:", e.message);
@@ -571,12 +616,21 @@ Responde SOLO con JSON válido:
   }
 
   // Si no hay LLM disponible, extraer el Briefing del primer artículo inédito del banco curado para ese autor
+  const availableCandidates = CURATED_EDITORIAL_BANK.filter(
+    (candidate) =>
+      validateEditorialBriefing(
+        {
+          suggestedTitle: candidate.title,
+          readerNeed: candidate.readerNeed,
+          angle: candidate.angle,
+        },
+        telemetry.existingPosts,
+        telemetry.editorialLog,
+      ).allowed,
+  );
   const candidateFromBank =
-    CURATED_EDITORIAL_BANK.find(
-      (c) =>
-        c.author === telemetry.recommendedAuthor &&
-        !isDuplicatePost(c, telemetry.existingPosts).duplicate,
-    ) || CURATED_EDITORIAL_BANK.find((c) => !isDuplicatePost(c, telemetry.existingPosts).duplicate);
+    availableCandidates.find((candidate) => candidate.author === telemetry.recommendedAuthor) ||
+    availableCandidates[0];
 
   if (candidateFromBank) {
     console.log(`[AIVisio] Briefing curado sin duplicación: "${candidateFromBank.readerNeed}"`);
@@ -587,18 +641,27 @@ Responde SOLO con JSON válido:
       readerProfile: candidateFromBank.readerProfile,
       suggestedCategory: candidateFromBank.category,
       suggestedTitle: candidateFromBank.title,
+      curatedSlug: candidateFromBank.slug,
     };
   }
 
+  console.error(
+    `[AIVisio] Banco editorial agotado: ${CURATED_EDITORIAL_BANK.length} candidatos vetados antes de redactar. No se generó un artículo para evitar una repetición.`,
+  );
   return null;
 }
 
 // ─── SKILL 2b: REDACCIÓN TRIPARTITA CON GUARDIÁN ADVERSARIAL ──────────────────
 
 async function runEditorialWriter(telemetry, briefing, targetDate) {
-  if (!briefing) {
+  const preflight = validateEditorialBriefing(
+    briefing,
+    telemetry.existingPosts,
+    telemetry.editorialLog,
+  );
+  if (!preflight.allowed) {
     console.log(
-      "🛑 [Guardián Adversarial] Sin Briefing inédito disponible. Se omite publicación para evitar duplicados.",
+      `[Guardián Adversarial] Redacción detenida antes de invocar al modelo: ${preflight.reason}.`,
     );
     return null;
   }
@@ -683,10 +746,22 @@ Normas RAE y formato:
   }
 
   // Fallback seguro al banco curado: SOLO selecciona artículos que pasen isDuplicatePost
+  const availableCandidates = CURATED_EDITORIAL_BANK.filter(
+    (candidate) =>
+      validateEditorialBriefing(
+        {
+          suggestedTitle: candidate.title,
+          readerNeed: candidate.readerNeed,
+          angle: candidate.angle,
+        },
+        telemetry.existingPosts,
+        telemetry.editorialLog,
+      ).allowed,
+  );
   const curatedCandidate =
-    CURATED_EDITORIAL_BANK.find(
-      (c) => c.author === author && !isDuplicatePost(c, telemetry.existingPosts).duplicate,
-    ) || CURATED_EDITORIAL_BANK.find((c) => !isDuplicatePost(c, telemetry.existingPosts).duplicate);
+    availableCandidates.find((candidate) => candidate.slug === briefing.curatedSlug) ||
+    availableCandidates.find((candidate) => candidate.author === author) ||
+    availableCandidates[0];
 
   if (!curatedCandidate) {
     console.warn(
@@ -914,11 +989,14 @@ async function main() {
         `[Editorial] Iniciando ciclo de contenido para fecha ${targetDate} (Autor asignado: ${telemetry.recommendedAuthor})...`,
       );
       briefing = await runAIVisio(telemetry);
-      const candidate = await runEditorialWriter(telemetry, briefing, targetDate);
-      if (candidate) {
-        const saved = await integrateNewPost(candidate, telemetry.existingPosts);
-        if (saved) newPost = candidate;
+      const candidate = requireEditorialCandidate(
+        await runEditorialWriter(telemetry, briefing, targetDate),
+      );
+      const saved = await integrateNewPost(candidate, telemetry.existingPosts);
+      if (!saved) {
+        throw new Error(`El artículo "${candidate.title}" fue rechazado al guardarlo.`);
       }
+      newPost = candidate;
     } else {
       console.log(
         `[Editorial] Ciclo enfocado en espiral técnica (ya existe post para ${targetDate} o se solicitó --force-tech).`,
@@ -935,7 +1013,7 @@ async function main() {
     console.log("=== CICLO EVOLUTIVO COMPLETADO CON ÉXITO ===");
   } catch (fatalErr) {
     console.error("Error en el ciclo evolutivo:", fatalErr);
-    process.exitCode = 0;
+    process.exitCode = 1;
   }
 }
 
