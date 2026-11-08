@@ -1,93 +1,125 @@
 # Hoja de ruta estratégica por versiones — AIEvolutio
 
-> **Fuentes de referencia complementarias:**
+> **Fuentes de referencia (SSOT):**
 >
-> - Constitución organizativa, sensibilidades y mandato: [`../AGENTS.md`](../AGENTS.md).
-> - Mapa de historias de usuario y criterios de aceptación: [`user-story-map.md`](user-story-map.md).
-> - Registro formal de cambios por versión: [`../CHANGELOG.md`](../CHANGELOG.md).
+> - Constitución organizativa, manifiesto y sensibilidades: [`../AGENTS.md`](../AGENTS.md).
+> - Mapa funcional de actividades e historias de usuario (`US-XXX`): [`user-story-map.md`](user-story-map.md).
+> - Registro cronológico formal de entregas: [`../CHANGELOG.md`](../CHANGELOG.md).
 > - Arquitectura técnica del generador estático: [`architecture.md`](architecture.md).
 
 ---
 
-## 1. Principio operativo de trabajo por versiones
+## 1. Protocolo operativo de trabajo por versiones y sesiones
 
-El proyecto avanza mediante ciclos cerrados orientados a valor verificable en producción:
+El desarrollo de AIEvolutio se organiza en **versiones cerradas de valor verificable**:
 
-1. **Una versión por sesión:** Cada sesión de trabajo tiene un objetivo claro y acotado, correspondiente a una versión semántica (`vX.Y.Z`).
-2. **Contexto antes de ejecutar:** Al iniciar cualquier trabajo, se lee la documentación de la versión objetivo en este documento y en el mapa de historias de usuario para entender qué se aborda y por qué se tomaron decisiones previas.
-3. **Cierre de versión estricto:** Una versión solo se considera terminada cuando:
-   - Los cambios aportan valor medible y están cubiertos por pruebas.
-   - Las herramientas de calidad (`npm test`, `lint:js`, `lint:css`, `lint:html`, `format`, `self-heal-check`) pasan con cero incidencias.
-   - Se actualiza la versión en `package.json`, `content/content.es.json` y se compila el sitio (`npm run build:site`).
-   - Se registra el hito en `CHANGELOG.md`, se genera la etiqueta en Git (`git tag vX.Y.Z`) y se consolida en la rama `main`.
-   - El entorno queda limpio para poder cerrar la sesión y reanudar con la siguiente versión sin residuos pendientes.
+1. **Al abrir sesión:** Se consulta esta hoja de ruta para identificar la versión en curso, se revisan las historias asociadas en [`user-story-map.md`](user-story-map.md) y se verifica el contexto de las decisiones previas en [`../CHANGELOG.md`](../CHANGELOG.md).
+2. **Durante la sesión:** Se ejecutan únicamente los entregables de la versión objetivo, manteniendo el principio de Fuente Única de Verdad (cero textos duplicados entre documentos) y ortotipografía estricta de la RAE.
+3. **Para cerrar la versión y la sesión:**
+   - La suite completa de calidad (`npm test`, `npm run lint:js`, `npm run lint:css`, `npm run lint:html`, `npm run format` y `node scripts/self-heal-check.mjs`) debe terminar con **0 errores**.
+   - Se actualiza el número de versión en `package.json` y `content/content.es.json`, y se ejecuta `npm run build:site` para reflejarlo en el pie de todas las páginas.
+   - Se documenta la versión en `CHANGELOG.md`, se confirma en `main`, se etiqueta en Git (`git tag -a vX.Y.Z`) y se sube al repositorio remoto.
 
 ---
 
-## 2. Historial de versiones consolidadas
+## 2. Versiones consolidadas en producción
 
-### `v1.0.0` — Estabilización fundacional y erradicación de la deriva (Cerrada)
-
-- **Objetivo:** Frenar la publicación repetida de artículos y consolidar la arquitectura de generación estática.
-- **Logros clave:**
-  - Implementación del **Guardián Adversarial Antiduplicados** (`isDuplicatePost` y `scripts/self-heal-check.mjs`) que veta cualquier contenido reiterativo.
-  - Prerenderizado estático integral (Zero FOUC) en `dist/` con hidratación progresiva en `scripts/app.js`.
-  - Establecimiento de la Constitución en [AGENTS.md](../AGENTS.md) con las tres miradas (AIVisio CEO, AIDux CIO, AIJuris Guardarraíl).
-  - Unificación de CI/CD en `.github/workflows/evolution-loop.yml` sobre la rama `main` (Trunk-Based).
-  - Corrección ortotipográfica estricta en español de España según normas RAE.
-  - Trazabilidad de versión semántica visible en el pie de página de todo el sitio.
-
-### `v1.1.0` — Identidad visual adaptativa y saneamiento documental (Cerrada)
-
-- **Objetivo:** Proporcionar máxima nitidez al logotipo de cabecera en modos claro y oscuro, y unificar la documentación bajo el principio de Fuente Única de Verdad (SSOT).
-- **Logros clave:**
-  - Nuevos logotipos horizontales vectoriales adaptativos: `logo-horizontal-light.svg` (letras antracita sobre fondo claro) y `logo-horizontal-dark.svg` (letras blancas sobre fondo oscuro) en proporción nativa 4:1.
-  - Alternancia instantánea nativa mediante CSS (`prefers-color-scheme`) y selector manual (`#theme-toggle`) sin parpadeos ni filtros artificiales.
-  - Saneamiento y eliminación de duplicidades entre [roadmap.md](roadmap.md) y [user-story-map.md](user-story-map.md), estructurando la documentación para lectura humana y preparación RAG.
+| Versión      | Fecha      | Hito de valor alcanzado                                                                                                                                                                                                                                     | Estado           |
+| :----------- | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
+| **`v1.0.0`** | 2026-11-08 | Estabilización fundacional, prerenderizado estático sin parpadeo (SSG), Guardián Adversarial Antiduplicados, Constitución en [`../AGENTS.md`](../AGENTS.md), conector GA4 federado y ortotipografía RAE (`US-103`, `US-201`, `US-202`, `US-401`, `US-402`). | ✅ En producción |
+| **`v1.1.0`** | 2026-11-08 | Identidad visual adaptativa con logotipos vectoriales nativos para modo claro y oscuro (`US-104`) y reestructuración documental SSOT lista para RAG.                                                                                                        | ✅ En producción |
 
 ---
 
-## 3. Plan de versiones futuras (Backlog priorizado)
+## 3. Plan de versiones futuras (Horizontes de evolución)
 
-### `v1.2.0` — Nitidez en pestañas y desmitificación pedagógica (Siguiente sesión)
+```mermaid
+flowchart LR
+  H1["Horizonte 1 (v1.2 – v1.4)<br><b>Claridad, AIWorkers y telemetría</b><br>Favicon, pedagogía base,<br>agentes prácticos y GA4 WIF"]
+  H2["Horizonte 2 (v1.5 – v1.7)<br><b>Mercado honesto, academia y retos</b><br>Comparador de precios, cursos,<br>exámenes, diplomas y concursos"]
+  H3["Horizonte 3 (v1.8 – v2.0)<br><b>Alcance multicanal y global</b><br>Redes sociales, cápsulas de audio<br>y expansión multi-país / i18n"]
 
-- **Objetivo de valor:** Resolver la legibilidad de la marca en navegadores y derribar la barrera psicológica de adopción en pymes mediante explicaciones cotidianas.
-- **Historias asociadas:**
-  1. **Favicon multirresolución nítido (`US-101`):**
-     - _Problema actual:_ El icono en la pestaña del navegador (`favicon.ico` / `favicon-16.png`) se ve pixelado y borroso al escalarse.
-     - _Solución:_ Generación de un conjunto completo de favicons derivados del isotipo vectorial: `favicon.svg` (vectorial puro para navegadores modernos) y PNGs optimizados (16x16, 32x32, 48x48, 180x180 para Apple Touch y 192x192 / 512x512 para manifest Android).
-  2. **Línea editorial «Encender la luz en el cuarto oscuro» (`US-102`):**
-     - _Principio rector:_ El miedo tecnológico paraliza cuando el usuario solo ve oscuridad y desconoce si acometer un cambio equivale a montar una estantería Kallax o construir la Sagrada Familia.
-     - _Entregable:_ Primer artículo formativo que desmitifica sin tecnicismos conceptos clave como el Protocolo MCP, las bases de datos vectoriales y los modelos locales (SLM), cuantificando en tiempo y dinero el grado real de complejidad.
+  H1 --> H2 --> H3
+```
 
-### `v1.3.0` — Factoría operativa de `AIWorkers`
+### Horizonte 1: Claridad visual, pedagogía sin miedo y primeros `AIWorkers` (`v1.2.0` – `v1.4.0`)
 
-- **Objetivo de valor:** Pasar de la descripción conceptual a la existencia funcional de los asistentes para pequeñas empresas.
-- **Historias asociadas:**
-  1. **AIFactura (`US-301`):** Especificación funcional y prototipo de extracción de datos de facturas y tickets en local sin compartir datos confidenciales con terceros.
-  2. **AIRespuestas (`US-302`):** Flujo de atención fuera de horario para resolver consultas frecuentes sin obligar a responder en momentos de descanso.
-  3. **AIOferta (`US-303`):** Transformación de notas desestructuradas (voz/texto) en borradores de presupuestos técnicos con desglose de partidas.
-  4. **Guía práctica MCP (`US-203`):** Manual paso a paso para desplegar un servidor local de lectura de archivos con guardarraíl legal.
+#### `v1.2.0` — Nitidez de icono y pedagogía de nivel cero (Próxima sesión inmediata)
 
-### `v1.4.0` — Telemetría honesta y bucle de comunicación autónomo
+- **Objetivo de valor:** Eliminar el aspecto borroso del icono del navegador y derribar la barrera de entrada para lectores no técnicos.
+- **Alcance de la sesión:**
+  - **`US-101` (Favicon multirresolución nítido):** Creación e integración de `favicon.svg` vectorial, `favicon.ico` y PNGs de alta definición (`16`, `32`, `48`, `180`, `192`, `512` px) a partir del isotipo oficial.
+  - **`US-102` (Serie «Encender la luz»):** Publicación del artículo fundacional que explica qué son realmente el protocolo MCP, las bases de datos vectoriales y los modelos locales, distinguiendo con analogías cotidianas qué tareas equivalen a montar una estantería sencilla en una tarde y cuáles a una obra mayor.
+  - **`US-105` (Semáforo de dificultad y glosario llano):** Incorporación de indicadores visuales de complejidad, tiempo y coste en los contenidos técnicos.
 
-- **Objetivo de valor:** Cerrar los canales externos con rigor ético y analítica real.
-- **Historias asociadas:**
-  1. **Analítica GA4 automatizada (`US-404`):** Conexión periódica desde GitHub Actions vía Workload Identity Federation (WIF) para auditar sesiones reales sin claves estáticas.
-  2. **Bucle de correo autónomo transparente (`US-403`):** Procesamiento de consultas con acuse honesto que explique la naturaleza experimental del proyecto sin exponer datos personales del creador.
+#### `v1.3.0` — Factoría operativa de `AIWorkers` y recetas listas para usar
 
-### `v2.0.0` — Ecosistema multicanal y factoría autónoma expandida
+- **Objetivo de valor:** Convertir los agentes descritos en la web en herramientas, plantillas y prototipos accionables para autónomos y pymes.
+- **Alcance de la sesión:**
+  - **`US-301` (`AIFactura`):** Especificación funcional, plantilla de extracción estructurada de tickets/facturas y demostrador interactivo en cliente.
+  - **`US-302` (`AIRespuestas`):** Configurador de respuestas fuera de horario con filtro de urgencias y aviso honesto de asistencia automática.
+  - **`US-303` (`AIOferta`):** Flujo práctico para transformar notas de voz tras una visita técnica en borradores de presupuesto cruzados con tarifas propias.
+  - **`US-203` y `US-306`:** Guía paso a paso de servidor MCP local y biblioteca inicial de «Recetas de 15 minutos» por oficio.
 
-- **Objetivo de valor:** Ampliación a nuevos formatos (vídeo explicativo, herramientas interactivas complejas y reportes estratégicos automatizados).
+#### `v1.4.0` — Telemetría automatizada y bucle de comunicación transparente
+
+- **Objetivo de valor:** Cerrar el circuito de observabilidad real y atención autónoma sin intervención humana diaria.
+- **Alcance de la sesión:**
+  - **`US-404`:** Activación en GitHub Actions de la lectura agregada de GA4 mediante Workload Identity Federation (`GA4_PROPERTY_ID`).
+  - **`US-403`:** Bucle autónomo de respuesta a consultas con descargo experimental y protección total de datos personales.
+  - **`US-406`:** Cuadro de mando público de evolución semanal/mensual para el supervisor estratégico y los lectores.
 
 ---
 
-## 4. Cuadro de trazabilidad de métricas y telemetría
+### Horizonte 2: Radar comercial honesto, academia abierta, exámenes y retos (`v1.5.0` – `v1.7.0`)
 
-| Indicador clave                          | Estado actual (`v1.1.0`)              | Meta para `v1.2.0`  | Meta para `v1.3.0`               |
-| :--------------------------------------- | :------------------------------------ | :------------------ | :------------------------------- |
-| **Duplicados en corpus**                 | 0 tolerancia (Hard-gate activo)       | 0 duplicados        | 0 duplicados                     |
-| **Nitidez de identidad web**             | Cabecera vectorial 100%               | Favicon nítido 100% | 100% en todas las vistas         |
-| **Páginas con aviso experimental**       | 100% visible                          | 100% visible        | 100% visible                     |
-| **Herramientas interactivas en cliente** | 3 activas (Diagnóstico, ROI, Filtros) | 3 activas           | 4 activas (+ prototipo AIWorker) |
-| **Artículos pedagógicos de nivelación**  | 0 específicos ("cuarto oscuro")       | 1 publicado         | 3 publicados                     |
+#### `v1.5.0` — Radar de herramientas, comparador de precios y recomendaciones honestas
+
+- **Objetivo de valor:** Ayudar a las pymes a elegir tecnología con criterio económico, evitando pagar sobrecostes publicitarios o comprometer su privacidad.
+- **Alcance de la sesión:**
+  - **`US-204` (Comparador de precios y herramientas):** Matriz interactiva que compara suscripciones comerciales frente a pago por uso (API) y modelos locales abiertos, calculando el coste anual real según el tamaño del equipo.
+  - **`US-205` (Recomendador por oficio y presupuesto):** Asistente de equipamiento (desde mini-PCs para IA local hasta suites gratuitas) adaptado a cada sector.
+  - **`US-206` y `US-405` (Detector de sobreprecio IA e independencia comercial):** Calculadora para auditar subidas de precios de proveedores y sello de independencia auditado por `AIJuris`.
+
+#### `v1.6.0` — Academia abierta, simulador de exámenes y certificaciones verificables
+
+- **Objetivo de valor:** Permitir que cualquier profesional o joven aprenda de forma estructurada, compruebe si sabe detectar fallos de la IA y obtenga una acreditación práctica.
+- **Alcance de la sesión:**
+  - **`US-501` (Rutas de microcursos):** Itinerarios breves por perfil (_Autónomos y gestión_, _Artesanía técnica local_, _Privacidad y AI Act_, _Pensamiento crítico familiar_).
+  - **`US-502` (Exámenes prácticos y «Cazador de alucinaciones»):** Simulador interactivo con casos reales donde el usuario debe encontrar errores ocultos, sesgos o riesgos legales en respuestas generadas por IA.
+  - **`US-503` (Certificaciones e insignias verificables):** Emisión de diplomas digitales verificables criptográficamente en el navegador (sin guardar datos personales en bases de datos), dejando claro su carácter formativo abierto.
+
+#### `v1.7.0` — Concursos comunitarios, impacto social fractal y nuevos `AIWorkers`
+
+- **Objetivo de valor:** Abrir el laboratorio a los retos reales de la comunidad y extender las herramientas a educación, mayores y defensa ciudadana.
+- **Alcance de la sesión:**
+  - **`US-504` (Concursos «Retos AIEvolutio»):** Convocatorias abiertas donde pymes y usuarios proponen el proceso más tedioso de su oficio o la solución más frugal; la dirección de IA construye y libera la solución ganadora.
+  - **`US-106` (Kits fractales sociales):** Herramientas prácticas para familias (estudio crítico), mayores (lectura clara y acompañamiento) y ciudadanía (traducción de lenguaje burocrático).
+  - **`US-304` (`AIEscudo`) y `US-305` (`AISubvenciones`):** Agentes para filtrar spam/reclamaciones sintéticas masivas y traducir ayudas públicas a requisitos comprensibles.
+
+---
+
+### Horizonte 3: Difusión multicanal, formatos de audio e internacionalización (`v1.8.0` – `v2.0.0`)
+
+#### `v1.8.0` — Sindicación autónoma en redes sociales y cápsulas de audio
+
+- **Objetivo de valor:** Salir al encuentro de los profesionales que no disponen de tiempo para buscar en la web o que se informan mientras se desplazan.
+- **Alcance de la sesión:**
+  - **`US-601` (Motor de difusión multicanal):** Generación automática junto a cada artículo o herramienta de publicaciones listas para redes sociales (LinkedIn, X, Bluesky, Mastodon), boletín informativo y canal RSS completo.
+  - **`US-602` («El pulso de AIEvolutio» en audio):** Resúmenes hablados de tres minutos para escuchar en el coche o el taller, con identificación transparente de voz sintética.
+
+#### `v2.0.0` — AIEvolutio internacional y multilingüe
+
+- **Objetivo de valor:** Escalar el impacto del laboratorio a otros países y comunidades lingüísticas, adaptando ejemplos económicos y marcos regulatorios.
+- **Alcance de la sesión:**
+  - **`US-603` (Arquitectura estática multi-país e i18n):** Generación prerenderizada en múltiples idiomas y variantes regionales (`es-ES`, `es-LATAM`, `en`, `pt`, `fr`, `it`, `de`), con etiquetas SEO `hreflang` y adaptación de las guías legales de `AIJuris` a la normativa de cada territorio (UE, Latinoamérica y ámbito anglosajón).
+
+---
+
+## 4. Equilibrio de las tres miradas en las nuevas líneas de expansión
+
+| Línea de expansión                            | Mirada de `AIVisio` (El para qué)                                                                     | Mirada de `AIDux` (El cómo)                                                                          | Guardarraíl de `AIJuris` (Las fronteras)                                                                                 |
+| :-------------------------------------------- | :---------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
+| **Recomendaciones, herramientas y precios**   | Que ninguna pyme pague por desconocimiento lo que puede lograr con sencillez.                         | Comparativas basadas en pruebas técnicas reales, priorizando código abierto y ejecución local.       | Independencia absoluta: prohibido ocultar conflictos de interés; aviso sobre retención de datos de cada proveedor.       |
+| **Cursos, exámenes, retos y certificaciones** | Transformar el miedo en criterio propio y confianza práctica demostrable.                             | Simuladores 100 % interactivos en el navegador y verificación mediante firma sin servidores pesados. | Transparencia sobre el carácter formativo no reglado del certificado y cero almacenamiento de datos privados de alumnos. |
+| **Redes sociales, audio y nuevos países**     | Acompañar a quien trabaja sin tiempo de sentarse frente a un monitor, en su propio idioma y contexto. | Generación estática multilingüe (`content.<lang>.json`) y plantillas de sindicación automatizadas.   | Identificación explícita de contenido/voz generados por IA (AI Act art. 50) y adaptación al marco legal de cada región.  |

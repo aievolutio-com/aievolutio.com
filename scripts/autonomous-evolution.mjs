@@ -387,6 +387,108 @@ El descanso no es un premio que llega cuando se termina todo. Es una condición 
       "Usar un acuse automático que no prometa una lectura ni respuesta humana inmediata",
     ],
   },
+  {
+    title:
+      "Diccionario sin miedo para tu negocio: qué son MCP, las bases vectoriales y los modelos locales explicados con objetos cotidianos",
+    slug: "diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales",
+    author: "AIDux",
+    category: "Operaciones",
+    readerNeed:
+      "Comprender sin tecnicismos qué significan los conceptos clave de la IA actual y distinguir qué soluciones son sencillas de aplicar en una tarde",
+    angle:
+      "Traducción llana con analogías cotidianas para calibrar si una herramienta equivale a montar una estantería sencilla o a levantar una obra mayor",
+    actionType:
+      "Clasificar tres términos técnicos habituales según su dificultad real y probar primero una herramienta gratuita de instalación directa",
+    readerProfile:
+      "Autónomo, comerciante o responsable de pyme sin formación informática que quiere entender antes de decidir",
+    excerpt:
+      "Muchos nombres técnicos parecen diseñados para intimidar. Explicamos con ejemplos de todos los días qué hay detrás de cada término y cuánto cuesta de verdad ponerlo en marcha.",
+    body: `**Cuando escuchas términos como protocolo MCP, base de datos vectorial o modelo local compacto, es muy fácil pensar que te están proponiendo construir una gran catedral desde los cimientos.** Sin embargo, en la práctica cotidiana de una pequeña empresa, la mayoría de estas piezas se parecen mucho más a montar una estantería sencilla de salón en una tarde con cuatro tornillos. El obstáculo rara vez es la herramienta en sí, sino la costumbre del sector tecnológico de bautizar ideas simples con palabras intimidantes.
+
+**Tres conceptos habituales traducidos al lenguaje de tu taller o despacho**
+
+- **Modelo local compacto (SLM):** imagina un ayudante de redacción y análisis que trabaja dentro de tu propio ordenador sin necesitar internet. Hoy se instala con programas gratuitos en diez minutos, exactamente igual que cualquier aplicación de oficina, sin pagar cuotas mensuales.
+- **Protocolo MCP (el enchufe universal):** equivale a una toma de corriente estándar. Antes había que fabricar cables a medida para que un asistente leyera una carpeta de tarifas; ahora basta con conectar ese enchufe e indicar qué cajón tiene permiso para consultar.
+- **Base de datos vectorial (el archivador por ideas):** en lugar de buscar documentos solo por una palabra exacta, ordena tus presupuestos y manuales antiguos por significado. Para una pyme es una estantería ligera; solo se vuelve una obra compleja cuando se manejan millones de archivos.
+
+**Acción alcanzable para hoy:**
+1. Anota las tres palabras tecnológicas que más dudas te hayan generado últimamente al leer sobre inteligencia artificial.
+2. Pregúntate en cada caso: ¿esto se instala en una tarde sin coste o exige contratar un proyecto a medida?
+3. Empieza siempre por las piezas de nivel estantería que resuelvan un atasco real de tu semana.`,
+    actionableChecklist: [
+      "Traducir cada término técnico a una función cotidiana antes de comprar o instalar nada",
+      "Distinguir qué herramientas se prueban gratis en una tarde y cuáles requieren soporte experto",
+      "Empezar por soluciones sencillas de impacto inmediato en lugar de proyectos complejos",
+    ],
+  },
+  {
+    title:
+      "El sobreprecio de la etiqueta inteligente: cómo distinguir herramientas que valen cada euro de simples subidas de cuota",
+    slug: "sobreprecio-etiqueta-inteligente-evaluar-precios-herramientas-pyme",
+    author: "AIVisio",
+    category: "Estrategia",
+    readerNeed:
+      "Evaluar con criterio económico las subidas de precios en programas empresariales que añaden funciones de IA y comparar alternativas reales",
+    angle:
+      "Guía de compra honesta de AIVisio para evitar pagar suplementos mensuales desproporcionados por funciones que apenas se usan",
+    actionType:
+      "Auditar las suscripciones actuales del negocio y medir el coste por uso real antes de aceptar un cambio de tarifa",
+    readerProfile:
+      "Titular de pyme o autónomo que quiere controlar sus gastos fijos tecnológicos con criterio",
+    excerpt:
+      "Muchos programas habituales han encarecido sus cuotas mensuales solo por añadir un botón nuevo. Aprende a calcular si ese recargo compensa o si puedes resolverlo gratis.",
+    body: `**Muchos proveedores de programas de facturación, gestión documental o diseño están aplicando subidas del treinta o cuarenta por ciento en sus cuotas mensuales por el simple hecho de añadir un botón de inteligencia artificial.** Para un autónomo o una pequeña empresa, acumular cinco o seis suplementos de este tipo al año supone miles de euros en funciones accesorias que a menudo apenas se utilizan o que resuelven problemas que el negocio ni siquiera tenía.
+
+**Cómo separar el valor real del recargo publicitario en tu negocio**
+
+- **Calcula el coste por uso efectivo:** si pagas veinte euros adicionales al mes por cada puesto de trabajo solo para resumir cuatro correos a la semana, cada resumen te está saliendo más caro que redactarlo a mano. Esas mismas consultas suelen costar pocos céntimos cuando se realizan sin intermediarios.
+- **Comprueba primero la alternativa abierta o gratuita:** antes de pasar al plan superior de tu programa de siempre, revisa si una herramienta libre o un asistente ejecutado en tu propio ordenador cubre exactamente esa necesidad sin atarte a una permanencia anual.
+- **Exige un ahorro medible en tiempo o en errores:** una suscripción solo merece la pena cuando libera horas reales de tareas tediosas o evita fallos costosos que tu equipo ya había sufrido antes.
+
+**Acción alcanzable para hoy:**
+1. Reúne las facturas de todos los programas y suscripciones digitales que paga tu empresa cada mes.
+2. Marca aquellos proveedores que hayan subido tarifas recientemente bajo el argumento de incluir nuevas funciones automáticas.
+3. Mide durante dos semanas cuántas veces utiliza tu equipo esa función concreta y pasa al plan básico todo lo que no aporte un retorno claro.`,
+    actionableChecklist: [
+      "Revisar el listado completo de suscripciones de software y detectar recargos recientes",
+      "Dividir el coste mensual del suplemento entre el número de usos reales en el equipo",
+      "Priorizar herramientas abiertas o de pago por uso real frente a cuotas fijas infladas",
+    ],
+  },
+  {
+    title:
+      "Reclamaciones y mensajes generados en masa por máquinas: cómo proteger la atención de tu negocio sin perder el trato humano",
+    slug: "reclamaciones-mensajes-masa-maquinas-proteger-atencion-pyme",
+    author: "AIJuris",
+    category: "Legal",
+    readerNeed:
+      "Defender el tiempo y la seguridad jurídica de la pyme frente a escritos, quejas o solicitudes generadas artificialmente en masa",
+    angle:
+      "Protocolo de verificación previa y filtrado ético-legal de AIJuris para separar el ruido sintético de los clientes reales",
+    actionType:
+      "Establecer una verificación rápida de expediente o factura antes de tramitar reclamaciones extensas de origen dudoso",
+    readerProfile:
+      "Responsable de atención al cliente, comercio o despacho profesional expuesto a un alto volumen de mensajes",
+    excerpt:
+      "Cuando cualquiera puede generar escritos largos de aspecto formal en segundos, tu negocio necesita un filtro sencillo para proteger su tiempo y cuidar de verdad a sus clientes reales.",
+    body: `**Vivimos una paradoja evidente en el día a día comercial: la misma tecnología que ayuda a una pequeña empresa a trabajar mejor permite también que terceros generen reclamaciones, solicitudes falsas de presupuesto y escritos intimidatorios en masa sin apenas esfuerzo.** Cuando un negocio pequeño recibe decenas de mensajes extensos y aparentemente formales redactados por máquinas, corre el riesgo de agotar su jornada contestando al ruido y desatender al cliente real que sí tiene un problema legítimo.
+
+**El protocolo de verificación y defensa diseñado por AIJuris**
+
+- **Comprobación inmediata de vínculo real:** ante un escrito largo lleno de citas legales genéricas, el primer paso nunca es debatir sus párrafos, sino verificar en treinta segundos si existe una factura, un pedido o un contrato real asociado a esa persona en tu registro.
+- **Puerta de entrada con datos concretos:** pedir el número de ticket o fecha de servicio en el formulario de contacto detiene de raíz los envíos automáticos masivos sin poner trabas al cliente auténtico que busca ayuda.
+- **Respuesta tasada y resguardo documental:** cuando una queja carece de datos identificativos de compra, basta un acuse breve y cortés solicitando esa referencia, guardando copia fechada para blindar la posición jurídica de la empresa.
+
+**Acción alcanzable para hoy:**
+1. Añade en tu canal de incidencias una pregunta sencilla sobre el número de factura, presupuesto o fecha aproximada del servicio.
+2. Prepara una respuesta educada de tres líneas para pedir esa referencia antes de invertir horas en contestar textos genéricos.
+3. Dedica todo el tiempo ahorrado a llamar por teléfono y atender con cercanía a los clientes verificados de tu negocio.`,
+    actionableChecklist: [
+      "Verificar siempre la existencia de una operación o factura real antes de analizar escritos largos",
+      "Solicitar un dato concreto del servicio en el canal de entrada para frenar envíos automáticos",
+      "Conservar registro fechado de cada solicitud de acreditación y priorizar el trato humano al cliente real",
+    ],
+  },
 ];
 
 // ─── EDITORIAL LOG ────────────────────────────────────────────────────────────
@@ -597,6 +699,7 @@ async function runAIVisio(telemetry) {
 
 Fundamentos de AIEvolutio:
 - Acompañamos a las pymes a abrir los ojos ante el acceso directo al conocimiento para innovar, hacer posible lo que antes parecía inalcanzable y aportar valor real con trato humano.
+- Claridad pedagógica: ningún lector no técnico debe quedarse con dudas sobre si una propuesta equivale a montar una estantería sencilla en una tarde o a una obra de ingeniería compleja; desmitificamos la tecnología, evaluamos herramientas y precios con honestidad y exploramos su impacto en empresas, educación, mayores y ciudadanía.
 - Perfil que firmará hoy: ${authorRoleMap[telemetry.recommendedAuthor] || telemetry.recommendedAuthor}
 
 PROHIBICIÓN ABSOLUTA DE REPETICIÓN (Hard Gate):
@@ -702,11 +805,12 @@ ${briefing.suggestedTitle ? `- Título sugerido: ${briefing.suggestedTitle}` : "
 PROHIBIDO REPETIR CUALQUIERA DE ESTOS TÍTULOS EXISTENTES:
 ${JSON.stringify(telemetry.allExistingTitles)}
 
-Normas RAE y formato:
+Normas RAE, claridad pedagógica y formato:
 1. Título en sentence case según la RAE (solo primera letra y siglas como IA, AI Act, RGPD, SLM, MCP, AIVisio, AIDux, AIJuris en mayúscula; "pyme"/"pymes" en minúscula).
-2. body: 240-290 palabras. Párrafo inicial potente + subtítulo en negrita + viñetas con negritas + bloque "**Acción alcanzable para hoy:**" con 3 pasos numerados.
-3. actionableChecklist: exactamente 3 pasos concretos.
-4. Responde SOLO con JSON válido:
+2. Claridad sin jerga opaca: si mencionas cualquier término técnico (como MCP, base de datos vectorial, modelo local SLM, API o tokens), explícalo al instante con una analogía cotidiana para que una persona no técnica distinga si aplicarlo equivale a montar una estantería sencilla en una tarde o a una obra compleja.
+3. body: 240-290 palabras. Párrafo inicial potente + subtítulo en negrita + viñetas con negritas + bloque "**Acción alcanzable para hoy:**" con 3 pasos numerados.
+4. actionableChecklist: exactamente 3 pasos concretos.
+5. Responde SOLO con JSON válido:
 {"title":"...","slug":"...","category":"...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."]}`;
 
   const rawArticle = await callLLM(articlePrompt);

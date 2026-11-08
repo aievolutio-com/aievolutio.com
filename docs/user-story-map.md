@@ -2,67 +2,110 @@
 
 > **Fuente única de verdad (SSOT):**
 >
-> - Constitución organizativa, manifiesto y roles: [`../AGENTS.md`](../AGENTS.md).
-> - Arquitectura técnica del generador estático y gobernanza: [`architecture.md`](architecture.md).
-> - Planificación temporal y asignación de versiones: [`roadmap.md`](roadmap.md).
+> - Constitución organizativa, manifiesto y sensibilidades: [`../AGENTS.md`](../AGENTS.md).
+> - Arquitectura técnica del generador estático y ciclo evolutivo: [`architecture.md`](architecture.md).
+> - Planificación temporal por versiones y protocolo de sesión: [`roadmap.md`](roadmap.md).
 
-Este documento modela las necesidades de los usuarios y las actividades clave del producto, organizando las historias de usuario por valor funcional y arquetipo.
+Este mapa funcional organiza las necesidades de los usuarios en seis actividades troncales (_espina dorsal_), detallando sus historias de usuario (`US-XXX`) y criterios de aceptación verificables.
 
 ---
 
 ## 1. Arquetipos de usuario (Personas)
 
-- **P1: Responsable de pyme / Autónomo:** Necesita saber qué es posible hoy con IA, evaluar costes/ahorros reales y aplicar soluciones sin jerga incomprensible ni pérdida de soberanía sobre sus datos.
-- **P2: Visitante / Ciudadano curioso:** Desea comprender el impacto de la tecnología en su entorno cotidiano (educación, mayores, administración) a través de lecturas claras y herramientas interactivas.
-- **P3: Dirección autónoma de IA (AIVisio, AIDux, AIJuris):** Requiere un entorno de autoevolución sin duplicados, con calidad técnica estricta y guardarraíles ético-legales infranqueables.
-- **P4: Supervisor humano (Espectador estratégico):** Necesita visibilidad periódica sobre el avance del sistema, métricas reales y trazabilidad de versiones sin intervenir en la operativa diaria.
+- **P1 — Responsable de pyme / Autónomo:** Busca saber qué es posible hoy, cuánto cuesta de verdad, qué herramientas merecen la pena y cómo automatizar tareas cotidianas sin tecnicismos opacos ni pérdida de control sobre sus datos.
+- **P2 — Ciudadano / Familia / Estudiante:** Desea aprender a usar la IA con pensamiento crítico en la educación, el acompañamiento de mayores o los trámites ante la administración, y acreditar sus conocimientos prácticos.
+- **P3 — Dirección autónoma de IA (`AIVisio`, `AIDux`, `AIJuris`):** Requiere un sistema que investigue la frontera tecnológica, publique con claridad pedagógica, audite precios y contratos sin sesgos comerciales y difunda en múltiples canales e idiomas.
+- **P4 — Supervisor humano (Espectador estratégico):** Necesita trazabilidad por versiones, métricas reales y resúmenes periódicos claros sin tener que aprobar cada tarea diaria.
 
 ---
 
-## 2. Mapa funcional de actividades e historias de usuario
+## 2. Espina dorsal de actividades (Backbone)
 
 ```
-[ Actividad 1: Descubrir e iluminar ] ──► [ Actividad 2: Evaluar y decidir ] ──► [ Actividad 3: Operar con AIWorkers ] ──► [ Actividad 4: Garantizar confianza ]
+[ 1. Descubrir e iluminar ] ──► [ 2. Evaluar precios y herramientas ] ──► [ 3. Operar con AIWorkers ] ──► [ 4. Aprender, retarse y certificarse ] ──► [ 5. Difundir en canales y países ] ──► [ 6. Gobernar con ética ]
 ```
 
-### Actividad 1: Descubrir e iluminar el camino (Onboarding pedagógico)
+---
 
-_Propósito:_ Derribar la barrera del "cuarto oscuro" tecnológico. Ningún usuario debe quedarse paralizado por no saber si implementar una solución equivale a armar una estantería Kallax o construir la Sagrada Familia.
+### Actividad 1: Descubrir e iluminar el camino (Pedagogía sin miedo y exploración fractal)
 
-| ID         | Historia de usuario                                                                                                                                                                                          | Criterios de aceptación                                                                                                               | Versión               |
-| :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ | :-------------------- |
-| **US-101** | Como **visitante**, quiero ver una identidad visual profesional y un favicon nítido en la pestaña del navegador para confiar en la solidez del sitio.                                                        | Favicon en formato SVG y paquetes PNG multirresolución (16, 32, 48, 180, 192, 512 px) sin pixelado en ningún dispositivo o navegador. | `v1.2.0`              |
-| **US-102** | Como **responsable de pyme**, quiero leer explicaciones sencillas y sin tecnicismos sobre términos clave (MCP, bases de datos vectoriales, modelos SLM) para entender la complejidad real antes de invertir. | Artículos con analogías cotidianas ("Kallax vs. Sagrada Familia") que desglosen esfuerzo, coste y dificultad en lenguaje accesible.   | `v1.2.0`              |
-| **US-103** | Como **lector**, quiero filtrar el archivo de artículos por temática y autor para encontrar rápidamente respuestas a mis inquietudes.                                                                        | Filtros dinámicos por categorías (Estrategia, Tecnología, Legal) y búsqueda en tiempo real sin recargar la página.                    | `v1.0.0` (Completado) |
-| **US-104** | Como **usuario**, quiero que el sitio respete automáticamente mi preferencia de tema claro u oscuro para una lectura confortable.                                                                            | Detección nativa por `prefers-color-scheme`, selector manual con memoria (`localStorage`) y logotipo vectorial adaptativo.            | `v1.1.0` (Completado) |
+_Propósito:_ Eliminar la incertidumbre inicial ante la tecnología para que cualquier persona no técnica distinga al instante el esfuerzo real de cada paso.
 
-### Actividad 2: Evaluar y tomar el volante (Diagnóstico y cálculo de impacto)
+| ID         | Historia de usuario                                                                                                                                                        | Criterios de aceptación                                                                                                                                                           | Versión               |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------- |
+| **US-101** | Como **visitante**, quiero ver un favicon nítido en la pestaña del navegador y en accesos directos móviles para percibir rigor visual en cualquier pantalla.               | Favicon vectorial (`favicon.svg`), `favicon.ico` multirresolución y PNGs (`16`, `32`, `48`, `180`, `192`, `512` px) sin pixelado ni bordes borrosos.                              | `v1.2.0`              |
+| **US-102** | Como **autónomo no técnico**, quiero artículos de iniciación que expliquen conceptos como MCP, bases de datos vectoriales o modelos locales mediante analogías cotidianas. | Artículos que comparen con claridad si un proyecto equivale a montar una estantería sencilla en una tarde o a levantar una catedral compleja, indicando tiempo y nivel requerido. | `v1.2.0`              |
+| **US-103** | Como **lector**, quiero filtrar y buscar artículos por temática y autor para localizar rápido lo que afecta a mi oficio.                                                   | Filtros interactivos por eje (`Estrategia`, `Operaciones`, `Legal`) y buscador instantáneo en cliente.                                                                            | `v1.0.0` (Completado) |
+| **US-104** | Como **usuario**, quiero que la web adapte automáticamente su tema y logotipo al modo claro u oscuro de mi dispositivo.                                                    | Conmutación nativa por CSS (`prefers-color-scheme`) y selector manual persistente con logotipos vectoriales 4:1.                                                                  | `v1.1.0` (Completado) |
+| **US-105** | Como **lector sin base informática**, quiero un glosario interactivo «De jerga a lenguaje llano» y un semáforo de dificultad en cada guía o artículo.                      | Cada artículo y herramienta muestra una etiqueta de esfuerzo real: 🟢 _Básico (1 tarde, 0 €)_, 🟡 _Intermedio (configuración guiada)_, 🔴 _Avanzado (requiere perfil técnico)_.   | `v1.2.0`              |
+| **US-106** | Como **familia o ciudadano**, quiero guías prácticas para educación de jóvenes, cuidado de mayores y trámites con la administración pública.                               | Kits dedicados a las cinco dimensiones fractales del manifiesto: entrenador socrático para hijos, asistencia amable para mayores y simplificador de burocracia oficial.           | `v1.7.0`              |
 
-_Propósito:_ Proporcionar herramientas interactivas inmediatas para diagnosticar el estado del negocio y estimar el retorno de inversión.
+---
 
-| ID         | Historia de usuario                                                                                                                      | Criterios de aceptación                                                                                                 | Versión               |
-| :--------- | :--------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- | :-------------------- |
-| **US-201** | Como **autónomo**, quiero autodiagnosticar si llevo el rumbo de mi negocio frente al avance de la IA para identificar mis puntos ciegos. | Test interactivo de 3 dimensiones (Estrategia, Tecnología, Guardarraíl) con recomendaciones contextuales inmediatas.    | `v1.0.0` (Completado) |
-| **US-202** | Como **dueño de taller o empresa**, quiero calcular cuánto dinero y horas puedo liberar automatizando tareas repetitivas.                | Calculadora de ROI en JavaScript en cliente que estime ahorro mensual y anual según coste por hora y volumen de tareas. | `v1.0.0` (Completado) |
-| **US-203** | Como **visitante**, quiero disponer de guías descargables o ejecutables para configurar entornos locales seguros.                        | Guía práctica de configuración de servidor local MCP para lectura de documentos sin compartir datos con terceros.       | `v1.3.0`              |
+### Actividad 2: Evaluar, comparar precios y elegir herramientas con honestidad (Radar comercial)
+
+_Propósito:_ Ofrecer criterio independiente frente al ruido publicitario, comparando precios reales, requisitos de hardware y alternativas gratuitas o de código abierto.
+
+| ID         | Historia de usuario                                                                                                                                                       | Criterios de aceptación                                                                                                                                                                            | Versión               |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------- |
+| **US-201** | Como **titular de pyme**, quiero diagnosticar en dos minutos si llevo el rumbo de mi transformación tecnológica.                                                          | Test interactivo de tres ejes (`AIVisio`, `AIDux`, `AIJuris`) con hoja de ruta personalizada según puntuación.                                                                                     | `v1.0.0` (Completado) |
+| **US-202** | Como **responsable de negocio**, quiero calcular cuántas horas y euros ahorro al mes antes de automatizar una tarea.                                                      | Calculadora interactiva de ROI por tipo de tarea, horas semanales y coste hora.                                                                                                                    | `v1.0.0` (Completado) |
+| **US-203** | Como **profesional**, quiero una guía paso a paso para conectar mis carpetas locales mediante MCP sin subir archivos a nubes ajenas.                                      | Guía estructurada con configuración de solo lectura y lista de comprobación de seguridad de `AIJuris`.                                                                                             | `v1.3.0`              |
+| **US-204** | Como **comprador en una pyme**, quiero un comparador honesto de herramientas y precios (suscripciones comerciales frente a pago por uso API y modelos locales gratuitos). | Tabla y calculadora interactiva que muestre coste anual por trabajador, privacidad de datos (si entrenan o no con la información) y alternativa libre equivalente.                                 | `v1.5.0`              |
+| **US-205** | Como **autónomo**, quiero recomendaciones de equipamiento y software según mi presupuesto y sector (taller, clínica, comercio, asesoría).                                 | Recomendador interactivo auditado por `AIDux` y `AIJuris` que sugiera desde configuraciones de PC local económico hasta herramientas gratuitas listas para usar, sin enlaces patrocinados ocultos. | `v1.5.0`              |
+| **US-206** | Como **gerente**, quiero detectar cuándo un proveedor de software me aplica un sobrecoste artificial por «incluir IA» que puedo resolver por una fracción del precio.     | Herramienta «Detector de sobreprecio IA» que desglosa el coste real de inferencia frente a suplementos mensuales abusivos.                                                                         | `v1.5.0`              |
+
+---
 
 ### Actividad 3: Operar y asistir la rutina (Factoría de `AIWorkers`)
 
-_Propósito:_ Facilitar agentes operativos especializados que resuelvan fricciones cotidianas de microeconomía.
+_Propósito:_ Poner a disposición de autónomos y pymes agentes prácticos, plantillas y prototipos funcionales para eliminar fricciones diarias.
 
-| ID         | Historia de usuario                                                                                                                                     | Criterios de aceptación                                                                                       | Versión  |
-| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------ | :------- |
-| **US-301** | Como **pequeño comercio**, quiero que **AIFactura** extraiga automáticamente datos de tickets y facturas para evitar picar datos a mano.                | Especificación del agente, formatos admitidos (PDF/imagen) y extracción estructurada hacia JSON/CSV en local. | `v1.3.0` |
-| **US-302** | Como **profesional**, quiero que **AIRespuestas** atienda dudas frecuentes fuera de horario para no dejar clientes desatendidos sin perder mi descanso. | Respuestas estructuradas con tono empático, aviso de respuesta algorítmica y derivación a cita formal.        | `v1.3.0` |
-| **US-303** | Como **técnico autónomo**, quiero que **AIOferta** convierta notas de voz en borradores de presupuestos para enviarlos en minutos en vez de días.       | Procesamiento de notas desestructuradas y generación de partidas valoradas preliminares para revisión humana. | `v1.3.0` |
+| ID         | Historia de usuario                                                                                                                                           | Criterios de aceptación                                                                                                                | Versión  |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------- | :------- |
+| **US-301** | Como **pequeño negocio**, quiero que **`AIFactura`** extraiga y estructure los datos de mis tickets y facturas recibidas sin picarlos a mano.                 | Prototipo interactivo, esquema JSON de salida, reglas de validación fiscal y guía de ejecución local privada.                          | `v1.3.0` |
+| **US-302** | Como **profesional**, quiero que **`AIRespuestas`** atienda y clasifique consultas fuera de horario con empatía y sin fingir ser una persona.                 | Plantillas configurables por oficio, clasificador de urgencias reales y aviso transparente de asistencia automática.                   | `v1.3.0` |
+| **US-303** | Como **técnico o instalador**, quiero que **`AIOferta`** transforme una nota de voz tras una visita en un borrador de presupuesto desglosado en diez minutos. | Estructura de guion de voz, cruce con tabla maestra de tarifas propias y generador de borrador listo para revisión.                    | `v1.3.0` |
+| **US-304** | Como **comercio o ciudadano**, quiero que **`AIEscudo`** filtre reclamaciones masivas, intentos de fraude y ruido generado por máquinas.                      | Agente defensor con lista de señales de alerta, resumen de mensajes auténticos y plantillas de respuesta jurídica básica.              | `v1.7.0` |
+| **US-305** | Como **autónomo**, quiero que **`AISubvenciones`** traduzca convocatorias y ayudas públicas complejas a requisitos claros en cinco puntos.                    | Ficha estructurada que responde: quién puede pedirla, cuantía real, obligaciones, plazos y documentación necesaria.                    | `v1.7.0` |
+| **US-306** | Como **usuario práctico**, quiero una biblioteca de «Recetas de 15 minutos» con instrucciones y plantillas listas para copiar y usar en mi trabajo hoy mismo. | Catálogo filtrable por oficio con nivel de complejidad, tiempo estimado, herramienta gratuita recomendada y guardarraíl de privacidad. | `v1.3.0` |
 
-### Actividad 4: Garantizar confianza y calidad (Gobernanza y seguridad)
+---
 
-_Propósito:_ Asegurar que la plataforma mantenga rigor ético, legal y técnico constante.
+### Actividad 4: Aprender, ponerse a prueba y acreditarse (Academia abierta, retos, exámenes y certificaciones)
 
-| ID         | Historia de usuario                                                                                                                                 | Criterios de aceptación                                                                                                          | Versión               |
-| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- | :-------------------- |
-| **US-401** | Como **lector**, quiero saber con total transparencia que este sitio está autogestionado por IA para no hacerme falsas expectativas.                | Banner superior visible en todas las páginas y disclaimer en el pie de página indicando la naturaleza experimental.              | `v1.0.0` (Completado) |
-| **US-402** | Como **sistema autónomo**, quiero un guardián adversarial que vete artículos duplicados antes de publicar para preservar la credibilidad editorial. | Filtro estricto por slug, título y similitud léxica (`isDuplicatePost`) que aborte la publicación si colisiona con el historial. | `v1.0.0` (Completado) |
-| **US-403** | Como **ciudadano que contacta**, quiero recibir un acuse honesto que no finja atención humana inmediata ni exponga datos personales del creador.    | Bucle de correo autónomo con acuse transparente y filtros de privacidad.                                                         | `v1.4.0`              |
-| **US-404** | Como **supervisor humano**, quiero métricas analíticas reales mediante GA4 federado sin credenciales estáticas para evaluar el impacto veraz.       | Integración con Google Analytics 4 mediante Workload Identity Federation con lectura agregada de eventos.                        | `v1.4.0`              |
+_Propósito:_ Convertir la curiosidad en competencia real mediante itinerarios formativos cortos, pruebas prácticas basadas en casos reales, certificaciones verificables y retos abiertos.
+
+| ID         | Historia de usuario                                                                                                                                      | Criterios de aceptación                                                                                                                                                                                                    | Versión  |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
+| **US-501** | Como **profesional o estudiante**, quiero realizar microcursos gratuitos y directos al grano adaptados a mi perfil (negocio, técnico o legal/ciudadano). | Módulos interactivos estructurados en lecciones de 10 minutos, sin relleno comercial y con ejercicios aplicables al día siguiente.                                                                                         | `v1.6.0` |
+| **US-502** | Como **alumno**, quiero ponerme a prueba con exámenes prácticos y un simulador «Cazador de errores y alucinaciones» de la IA.                            | Evaluaciones interactivas en el navegador donde el usuario debe detectar fallos de cálculo, cláusulas abusivas de privacidad o invenciones del modelo, recibiendo explicación detallada de `AIVisio`, `AIDux` y `AIJuris`. | `v1.6.0` |
+| **US-503** | Como **profesional que supera un examen**, quiero obtener una certificación o insignia digital verificable que acredite mi competencia práctica.         | Generador de certificado verificable en cliente (con código hash de autenticidad y sin almacenar datos personales en servidores externos), indicando con honestidad su naturaleza formativa abierta.                       | `v1.6.0` |
+| **US-504** | Como **miembro de la comunidad o pyme**, quiero participar en concursos y «Retos AIEvolutio» proponiendo problemas reales o soluciones frugales con IA.  | Sistema periódico de retos abiertos donde los usuarios envían casos de atasco operativo o soluciones libres; la dirección de IA evalúa con rúbrica pública y publica la solución ganadora en abierto para todos.           | `v1.7.0` |
+
+---
+
+### Actividad 5: Expandir el alcance por múltiples canales y países (Multicanalidad e internacionalización)
+
+_Propósito:_ Llevar el conocimiento práctico de AIEvolutio allí donde están las personas (redes sociales, formatos de audio en movilidad y otros idiomas y marcos culturales).
+
+| ID         | Historia de usuario                                                                                                                                    | Criterios de aceptación                                                                                                                                                                                                                    | Versión  |
+| :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
+| **US-601** | Como **seguidor en redes sociales o suscriptor**, quiero recibir resúmenes accionables de cada nuevo hallazgo o herramienta en mis canales habituales. | Generación automática en cada ciclo de un kit multicanal listo para difusión (hilos para X/Bluesky/Mastodon, resumen para LinkedIn, boletín y canal RSS enriquecido con texto completo).                                                   | `v1.8.0` |
+| **US-602** | Como **autónomo en ruta o con poco tiempo de pantalla**, quiero escuchar los artículos y guías en formato de audio breve («El pulso de AIEvolutio»).   | Cápsulas de audio de 3 minutos y fichas visuales descargables por artículo, identificando siempre que la locución es sintética.                                                                                                            | `v1.8.0` |
+| **US-603** | Como **lector de otro país o idioma**, quiero acceder a AIEvolutio en mi lengua y con referencias adaptadas a mi realidad económica y legal.           | Soporte estático multi-idioma y multi-región (`es-ES`, `es-LATAM`, `en`, `pt`, `fr`, `it`, `de`) con etiquetas `hreflang`, diccionarios en `content/content.<lang>.json` y notas de `AIJuris` ajustadas al marco normativo de cada región. | `v2.0.0` |
+
+---
+
+### Actividad 6: Garantizar confianza, ética y calidad (Gobernanza, telemetría y seguridad)
+
+_Propósito:_ Blindar la veracidad del proyecto, la protección de datos y la supervisión estratégica.
+
+| ID         | Historia de usuario                                                                                                                                      | Criterios de aceptación                                                                                                                        | Versión               |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------- |
+| **US-401** | Como **visitante**, quiero saber desde el primer segundo que la plataforma es un experimento autogestionado por IA.                                      | Banner global superior y aviso legal en el pie de todas las páginas y artículos.                                                               | `v1.0.0` (Completado) |
+| **US-402** | Como **sistema autónomo**, quiero vetar de raíz cualquier artículo o briefing que repita temas ya publicados.                                            | Guardián adversarial (`isDuplicatePost` y `validateEditorialBriefing`) validado con pruebas unitarias.                                         | `v1.0.0` (Completado) |
+| **US-403** | Como **persona que escribe al contacto**, quiero recibir una respuesta honesta sobre el carácter experimental sin exponer datos privados del creador.    | Flujo autónomo de respuesta con separación entre consultas reales y notificaciones automáticas de terceros.                                    | `v1.4.0`              |
+| **US-404** | Como **dirección de IA**, quiero leer métricas reales de uso en GA4 sin usar claves privadas estáticas.                                                  | Integración de `fetchRealGa4Metrics` con Workload Identity Federation en GitHub Actions.                                                       | `v1.4.0`              |
+| **US-405** | Como **lector de comparativas comerciales**, quiero garantías de que ninguna recomendación de precios o herramientas responde a pagos ocultos.           | Sello y protocolo de auditoría de `AIJuris`: toda comparativa debe incluir siempre la opción gratuita/abierta y desglosar el coste total real. | `v1.5.0`              |
+| **US-406** | Como **supervisor humano o visitante**, quiero consultar un resumen público semanal y mensual con decisiones, costes reales de operación y vetos éticos. | Cuadro de bitácora operativo (`docs/daily-digest.md` y página pública de estado) actualizado automáticamente en cada ciclo.                    | `v1.4.0`              |

@@ -14,7 +14,8 @@ The format is based on Keep a Changelog and this project adheres to Semantic Ver
 ### Documentation
 
 - **Saneamiento documental y principio de Fuente Única de Verdad (SSOT):** Reestructuración integral de `docs/roadmap.md` y `docs/user-story-map.md`, eliminando duplicidades y alineando la hoja de ruta temporal con las historias de usuario funcionales y la constitución de `AGENTS.md`.
-- **Planificación de versiones prioritarias:** Inclusión formal de la sustitución del favicon pixelado (`US-101`) y el primer artículo formativo sobre la desmitificación del "cuarto oscuro" tecnológico (`US-102`) para la versión `v1.2.0`, y la factoría operativa de `AIWorkers` para la `v1.3.0`.
+- **Expansión estratégica en tres horizontes (`v1.2.0` – `v2.0.0`):** Incorporación de historias y entregas para nitidez de favicon y pedagogía sin tecnicismos (`v1.2.0`), factoría de `AIWorkers` (`v1.3.0`), comparador honesto de precios y herramientas (`v1.5.0`), academia abierta con exámenes prácticos y certificaciones verificables (`v1.6.0`), concursos comunitarios y kits sociales (`v1.7.0`), sindicación en redes y audio (`v1.8.0`), e internacionalización multi-país (`v2.0.0`).
+- **Mejora del motor evolutivo autónomo:** Directrices de claridad pedagógica integradas en `scripts/autonomous-evolution.mjs` y ampliación del banco editorial curado con tres nuevos artículos inéditos de reserva para `AIDux`, `AIVisio` y `AIJuris`.
 
 ## [1.0.0](https://github.com/aievolutio-com/aievolutio.com/compare/v0.2.0...v1.0.0) (2026-11-08)
 
