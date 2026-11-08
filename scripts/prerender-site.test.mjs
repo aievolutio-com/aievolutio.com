@@ -136,8 +136,8 @@ test("deployment output contains every profile and a static page for every artic
   );
   assert.ok(indexHtml.includes('<section id="blog"'), "index.html includes static blog section");
   assert.ok(
-    indexHtml.includes('<span class="site-version">v1.0.0</span>'),
-    "index.html includes site-version v1.0.0",
+    indexHtml.includes(`<span class="site-version">v${source.meta.version}</span>`),
+    `index.html includes site-version v${source.meta.version}`,
   );
   const posts = source.sections
     .find((section) => section.id === "blog")

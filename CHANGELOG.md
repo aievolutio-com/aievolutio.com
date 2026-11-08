@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [1.1.0](https://github.com/aievolutio-com/aievolutio.com/compare/v1.0.0...v1.1.0) (2026-11-08)
+
+### Features
+
+- **Identidad visual adaptativa con logotipos vectoriales nativos:** Integración de nuevos logotipos SVG horizontales en proporción nativa 4:1 para temas claro (`images/logo-horizontal-light.svg`, tipografía antracita) y oscuro (`images/logo-horizontal-dark.svg`, tipografía blanca).
+- **Conmutación de marca en CSS sin JavaScript (Zero FOUC):** Soporte conjunto para la preferencia de color del sistema operativo (`prefers-color-scheme`) y el selector manual (`#theme-toggle`), garantizando escalabilidad nítida y ausencia de saltos de diseño (CLS).
+
+### Documentation
+
+- **Saneamiento documental y principio de Fuente Única de Verdad (SSOT):** Reestructuración integral de `docs/roadmap.md` y `docs/user-story-map.md`, eliminando duplicidades y alineando la hoja de ruta temporal con las historias de usuario funcionales y la constitución de `AGENTS.md`.
+- **Planificación de versiones prioritarias:** Inclusión formal de la sustitución del favicon pixelado (`US-101`) y el primer artículo formativo sobre la desmitificación del "cuarto oscuro" tecnológico (`US-102`) para la versión `v1.2.0`, y la factoría operativa de `AIWorkers` para la `v1.3.0`.
+
 ## [1.0.0](https://github.com/aievolutio-com/aievolutio.com/compare/v0.2.0...v1.0.0) (2026-11-08)
 
 ### Features

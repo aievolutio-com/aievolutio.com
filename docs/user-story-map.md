@@ -1,36 +1,68 @@
-# User story map vivo de AIEvolutio
+# User story map — AIEvolutio
 
-> **Misión y fundamentos:** Acompañar a las pequeñas empresas y profesionales a abrir los ojos ante el acceso directo al conocimiento, aprovechándolo para **innovar y hacer posible lo que antes parecía inalcanzable**, aportando valor real y humano a la sociedad.
+> **Fuente única de verdad (SSOT):**
 >
-> **Naturaleza experimental:** AIEvolutio es un **experimento vivo autogestionado íntegramente por inteligencias artificiales** equilibrado por **AIVisio (dirección y estrategia: el para qué)**, **AIDux (dirección tecnológica y artesanía: el cómo)** y **AIJuris (guardarraíl ético y legal: las fronteras)**, apoyados por un cuerpo operativo de `AIWorkers` (ejecución diaria: el qué). Hasta alcanzar la fiabilidad y seguridad de una dirección biológica, mantenemos transparencia radical sin generar falsas expectativas comerciales.
+> - Constitución organizativa, manifiesto y roles: [`../AGENTS.md`](../AGENTS.md).
+> - Arquitectura técnica del generador estático y gobernanza: [`architecture.md`](architecture.md).
+> - Planificación temporal y asignación de versiones: [`roadmap.md`](roadmap.md).
+
+Este documento modela las necesidades de los usuarios y las actividades clave del producto, organizando las historias de usuario por valor funcional y arquetipo.
 
 ---
 
-## Estructura de épicas y hoja de ruta
+## 1. Arquetipos de usuario (Personas)
 
-| Épica (línea de actuación)                                   | Estrategia                                                                                                                                              | Historias de usuario (issues base)                                                                                                                                                                                                                           | Criterio de éxito (KPI)                                                                   | Plan de versiones   |
-| :----------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------- | :------------------ |
-| **E0. Guardián adversarial y transparencia (Prioridad P0)**  | Cero artículos duplicados, cero commits vacíos y transparencia total sobre el experimento IA.                                                           | **#000-A:** Purga de duplicados y filtro hard-gate de similitud léxica.<br>**#000-B:** Banner visible de experimento autogestionado por IA.<br>**#000-C:** Comandos manuales (`evolve:content`, `evolve:tech`, `evolve:audit`) para forzar y auditar ciclos. | **0% de duplicados** en producción. 100% de páginas con aviso experimental claro.         | v1.4 (Reconducción) |
-| **E1. Cero fricción (Infraestructura y CI/CD)**              | Trunk-Based Development con autorreparación real y generación editorial mediante Gemini cuando está configurado, con fallback curado prevalidado.       | **#001:** Unificar flujo en `main`.<br>**#002:** Workflow con verificación adversarial antes de commit.<br>**#003:** Colecciones modulares en `content/posts/` inmunes a truncamiento.                                                                       | 0 commits vacíos de solo fecha; cada commit aporta valor editorial o técnico verificable. | v1.0 – v1.4         |
-| **E2. Ideas y contenidos prácticos (Publicación editorial)** | Artículos inéditos firmados por **AIVisio** (estrategia y mirada humana), **AIDux** (tecnología y artesanía) y **AIJuris** (guardarraíl ético y legal). | **#004:** Publicador de guías de innovación y transformación para pymes.<br>**#005:** Casos prácticos de `AIWorkers` por sector.<br>**#006:** Micro-herramientas interactivas (Calculadora de capacidad + Autodiagnóstico de rumbo).                         | 100% artículos únicos y diferenciados en los ejes editoriales.                            | v1.4 (Activo)       |
-| **E3. Espiral de perfección técnica (Web)**                  | Prerenderizado completo sin colisiones con JS en cliente, accesibilidad y datos estructurados JSON-LD.                                                  | **#007:** Imágenes optimizadas y logotipo unificado.<br>**#008:** Adherencia a Brand Book y modo claro/oscuro.<br>**#009:** JSON-LD completo (`Organization`, `BlogPosting`, `SoftwareApplication`, `FAQPage`).                                              | 100% paridad entre HTML prerenderizado e hidratación en `scripts/app.js`.                 | v1.4 (Activo)       |
-| **E4. Bucle analítico honesto (Medición)**                   | Telemetría sin datos falsos: auditoría real del DOM y conexión OAuth2 a GA4 Data API.                                                                   | **#010:** Conector real GA4 API + auditoría interna de salud del corpus.<br>**#011:** Filtro interactivo y buscador de artículos en `blog.html`.<br>**#012:** Informe de observabilidad (`docs/daily-digest.md`) veraz.                                      | Cero métricas inventadas; diagnóstico exacto del estado del repositorio.                  | v1.4 (Activo)       |
+- **P1: Responsable de pyme / Autónomo:** Necesita saber qué es posible hoy con IA, evaluar costes/ahorros reales y aplicar soluciones sin jerga incomprensible ni pérdida de soberanía sobre sus datos.
+- **P2: Visitante / Ciudadano curioso:** Desea comprender el impacto de la tecnología en su entorno cotidiano (educación, mayores, administración) a través de lecturas claras y herramientas interactivas.
+- **P3: Dirección autónoma de IA (AIVisio, AIDux, AIJuris):** Requiere un entorno de autoevolución sin duplicados, con calidad técnica estricta y guardarraíles ético-legales infranqueables.
+- **P4: Supervisor humano (Espectador estratégico):** Necesita visibilidad periódica sobre el avance del sistema, métricas reales y trazabilidad de versiones sin intervenir en la operativa diaria.
 
 ---
 
-## Registro de estado de historias
+## 2. Mapa funcional de actividades e historias de usuario
 
-- [x] **#000-A:** Purga de clones editoriales y Guardián Adversarial Antiduplicados en `autonomous-evolution.mjs` y `self-heal-check.mjs`.
-- [x] **#000-B:** Fundamentos organizativos (`AIVisio` CEO, `AIDux` CIO, `AIJuris` Guardarrail) y nuevo Manifiesto integrados en la web.
-- [x] **#000-C:** Banner de transparencia de Experimento autogestionado por IA en todas las páginas.
-- [x] **#001:** Flujo Trunk-Based directo a `main`.
-- [x] **#002:** Workflow `.github/workflows/evolution-loop.yml` sin commits vacíos de reloj y con disparo manual parametrizado.
-- [x] **#003:** Colección modular en `content/posts/*.json` validada.
-- [x] **#004:** Publicador editorial tripartito (`AIVisio`, `AIDux`, `AIJuris`) con bloqueo de duplicados.
-- [x] **#005:** Perfiles claros de la organización (Dirección + `AIWorkers` operativos) en `equipo.html`.
-- [x] **#006:** Calculadora de capacidad + Autodiagnóstico de rumbo + Filtro interactivo del blog.
-- [x] **#007:** Unificación de logotipo y optimización de recursos visuales.
-- [x] **#008:** Adherencia al Brand Book y tema claro/oscuro.
-- [x] **#009:** Datos estructurados JSON-LD (`Organization`, `BlogPosting`, `SoftwareApplication`, `FAQPage`).
-- [ ] **#010:** Configurar Workload Identity Federation para que GitHub Actions lea métricas agregadas de GA4 sin claves privadas de larga duración.
-- [x] **#012:** Daily Digest honesto con reporte de auditoría adversarial.
+```
+[ Actividad 1: Descubrir e iluminar ] ──► [ Actividad 2: Evaluar y decidir ] ──► [ Actividad 3: Operar con AIWorkers ] ──► [ Actividad 4: Garantizar confianza ]
+```
+
+### Actividad 1: Descubrir e iluminar el camino (Onboarding pedagógico)
+
+_Propósito:_ Derribar la barrera del "cuarto oscuro" tecnológico. Ningún usuario debe quedarse paralizado por no saber si implementar una solución equivale a armar una estantería Kallax o construir la Sagrada Familia.
+
+| ID         | Historia de usuario                                                                                                                                                                                          | Criterios de aceptación                                                                                                               | Versión               |
+| :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ | :-------------------- |
+| **US-101** | Como **visitante**, quiero ver una identidad visual profesional y un favicon nítido en la pestaña del navegador para confiar en la solidez del sitio.                                                        | Favicon en formato SVG y paquetes PNG multirresolución (16, 32, 48, 180, 192, 512 px) sin pixelado en ningún dispositivo o navegador. | `v1.2.0`              |
+| **US-102** | Como **responsable de pyme**, quiero leer explicaciones sencillas y sin tecnicismos sobre términos clave (MCP, bases de datos vectoriales, modelos SLM) para entender la complejidad real antes de invertir. | Artículos con analogías cotidianas ("Kallax vs. Sagrada Familia") que desglosen esfuerzo, coste y dificultad en lenguaje accesible.   | `v1.2.0`              |
+| **US-103** | Como **lector**, quiero filtrar el archivo de artículos por temática y autor para encontrar rápidamente respuestas a mis inquietudes.                                                                        | Filtros dinámicos por categorías (Estrategia, Tecnología, Legal) y búsqueda en tiempo real sin recargar la página.                    | `v1.0.0` (Completado) |
+| **US-104** | Como **usuario**, quiero que el sitio respete automáticamente mi preferencia de tema claro u oscuro para una lectura confortable.                                                                            | Detección nativa por `prefers-color-scheme`, selector manual con memoria (`localStorage`) y logotipo vectorial adaptativo.            | `v1.1.0` (Completado) |
+
+### Actividad 2: Evaluar y tomar el volante (Diagnóstico y cálculo de impacto)
+
+_Propósito:_ Proporcionar herramientas interactivas inmediatas para diagnosticar el estado del negocio y estimar el retorno de inversión.
+
+| ID         | Historia de usuario                                                                                                                      | Criterios de aceptación                                                                                                 | Versión               |
+| :--------- | :--------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- | :-------------------- |
+| **US-201** | Como **autónomo**, quiero autodiagnosticar si llevo el rumbo de mi negocio frente al avance de la IA para identificar mis puntos ciegos. | Test interactivo de 3 dimensiones (Estrategia, Tecnología, Guardarraíl) con recomendaciones contextuales inmediatas.    | `v1.0.0` (Completado) |
+| **US-202** | Como **dueño de taller o empresa**, quiero calcular cuánto dinero y horas puedo liberar automatizando tareas repetitivas.                | Calculadora de ROI en JavaScript en cliente que estime ahorro mensual y anual según coste por hora y volumen de tareas. | `v1.0.0` (Completado) |
+| **US-203** | Como **visitante**, quiero disponer de guías descargables o ejecutables para configurar entornos locales seguros.                        | Guía práctica de configuración de servidor local MCP para lectura de documentos sin compartir datos con terceros.       | `v1.3.0`              |
+
+### Actividad 3: Operar y asistir la rutina (Factoría de `AIWorkers`)
+
+_Propósito:_ Facilitar agentes operativos especializados que resuelvan fricciones cotidianas de microeconomía.
+
+| ID         | Historia de usuario                                                                                                                                     | Criterios de aceptación                                                                                       | Versión  |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------ | :------- |
+| **US-301** | Como **pequeño comercio**, quiero que **AIFactura** extraiga automáticamente datos de tickets y facturas para evitar picar datos a mano.                | Especificación del agente, formatos admitidos (PDF/imagen) y extracción estructurada hacia JSON/CSV en local. | `v1.3.0` |
+| **US-302** | Como **profesional**, quiero que **AIRespuestas** atienda dudas frecuentes fuera de horario para no dejar clientes desatendidos sin perder mi descanso. | Respuestas estructuradas con tono empático, aviso de respuesta algorítmica y derivación a cita formal.        | `v1.3.0` |
+| **US-303** | Como **técnico autónomo**, quiero que **AIOferta** convierta notas de voz en borradores de presupuestos para enviarlos en minutos en vez de días.       | Procesamiento de notas desestructuradas y generación de partidas valoradas preliminares para revisión humana. | `v1.3.0` |
+
+### Actividad 4: Garantizar confianza y calidad (Gobernanza y seguridad)
+
+_Propósito:_ Asegurar que la plataforma mantenga rigor ético, legal y técnico constante.
+
+| ID         | Historia de usuario                                                                                                                                 | Criterios de aceptación                                                                                                          | Versión               |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- | :-------------------- |
+| **US-401** | Como **lector**, quiero saber con total transparencia que este sitio está autogestionado por IA para no hacerme falsas expectativas.                | Banner superior visible en todas las páginas y disclaimer en el pie de página indicando la naturaleza experimental.              | `v1.0.0` (Completado) |
+| **US-402** | Como **sistema autónomo**, quiero un guardián adversarial que vete artículos duplicados antes de publicar para preservar la credibilidad editorial. | Filtro estricto por slug, título y similitud léxica (`isDuplicatePost`) que aborte la publicación si colisiona con el historial. | `v1.0.0` (Completado) |
+| **US-403** | Como **ciudadano que contacta**, quiero recibir un acuse honesto que no finja atención humana inmediata ni exponga datos personales del creador.    | Bucle de correo autónomo con acuse transparente y filtros de privacidad.                                                         | `v1.4.0`              |
+| **US-404** | Como **supervisor humano**, quiero métricas analíticas reales mediante GA4 federado sin credenciales estáticas para evaluar el impacto veraz.       | Integración con Google Analytics 4 mediante Workload Identity Federation con lectura agregada de eventos.                        | `v1.4.0`              |
