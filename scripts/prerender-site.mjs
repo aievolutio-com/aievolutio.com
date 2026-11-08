@@ -526,7 +526,7 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
       name: "AIEvolutio",
       logo: {
         "@type": "ImageObject",
-        url: "https://aievolutio.com/images/logotipoHorizontalTransparente.png",
+        url: "https://aievolutio.com/images/logo-horizontal-light.svg",
       },
     },
     mainEntityOfPage: {
@@ -578,7 +578,8 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <header aria-label="Cabecera" class="header">
 <nav aria-label="Primaria" class="container nav">
 <a aria-label="AIEvolutio – Inicio" class="logo" href="../index.html">
-<img alt="AIEvolutio" src="../images/logotipoHorizontalTransparente.png" width="128" height="64">
+<img class="logo-light" alt="AIEvolutio" src="../images/logo-horizontal-light.svg" width="256" height="64">
+<img class="logo-dark" alt="AIEvolutio" src="../images/logo-horizontal-dark.svg" width="256" height="64">
 <span class="sr-only">AIEvolutio</span>
 </a>
 <div id="nav">${renderNavigation(navigation, "blog", "../")}</div>

@@ -66,6 +66,12 @@ a:focus-visible {
   object-fit: contain;
   display: block;
 }
+.logo .logo-dark {
+  display: none;
+}
+.logo .logo-light {
+  display: block;
+}
 .hero {
   position: relative;
   isolation: isolate;
@@ -1040,15 +1046,19 @@ footer .disclaimer {
   transform: scale(1.05);
 }
 
-/* Dark mode logo and contrast enhancements */
-:root[data-theme="dark"] .logo img {
-  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75))
-    drop-shadow(0 0 12px rgba(56, 189, 248, 0.25));
+/* Dark mode logo switching and enhancements */
+:root[data-theme="dark"] .logo .logo-dark {
+  display: block;
+}
+:root[data-theme="dark"] .logo .logo-light {
+  display: none;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .logo img {
-    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75))
-      drop-shadow(0 0 12px rgba(56, 189, 248, 0.25));
+  :root:not([data-theme="light"]) .logo .logo-dark {
+    display: block;
+  }
+  :root:not([data-theme="light"]) .logo .logo-light {
+    display: none;
   }
 }
 
