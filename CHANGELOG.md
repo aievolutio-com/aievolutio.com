@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [1.0.0](https://github.com/aievolutio-com/aievolutio.com/compare/v0.2.0...v1.0.0) (2026-11-08)
+
+### Features
+
+- **Gobernanza tripartita y constitución operativa:** Establecimiento formal en `AGENTS.md` de las tres sensibilidades fundacionales (AIVisio CEO, AIDux CIO, AIJuris Guardarraíl) y el cuerpo operativo de `AIWorkers`.
+- **Generación estática (SSG) de alta fidelidad:** Prerenderizado integral de páginas base y artículos en `dist/` con cero parpadeo (Zero FOUC) e hidratación progresiva en `scripts/app.js`.
+- **Marcado semántico JSON-LD:** Esquemas enriquecidos `Organization`, `Article`, `BlogPosting`, `FAQPage` y `SoftwareApplication` para indexación y accesibilidad web.
+- **Trazabilidad de versión visible:** Indicador de versión `v1.0.0` en el pie de página de todas las páginas y artículos, sincronizado con `package.json` y `content/content.es.json`.
+- **Transparencia experimental radical:** Banner de aviso de experimento autogestionado por IA y avisos de transparencia en todas las páginas para evitar falsas expectativas comerciales.
+
+### Bug Fixes
+
+- **Guardián adversarial antiduplicados:** Purga de artículos clonados e implementación de filtro estricto de similitud léxica y semántica (`isDuplicatePost`) en el motor evolutivo y en `scripts/self-heal-check.mjs`.
+- **Unificación de flujo en `main`:** Adopción estricta de Trunk-Based Development, eliminación de ramas intermedias obsoletas y consolidación de CI/CD en `.github/workflows/evolution-loop.yml`.
+- **Autenticación analítica GA4:** Conector real con Google Cloud mediante Workload Identity Federation sin credenciales estáticas de larga duración.
+- **Ortotipografía en español de España:** Corrección integral de mayúsculas según normas RAE, eliminando la capitalización anglosajona en titulares y el uso indebido de mayúsculas en descriptores como «autogestionado».
+
 ## [0.2.0](https://github.com/aievolutio-com/aievolutio.com/compare/v0.1.0...v0.2.0) (2026-10-19)
 
 ### Features

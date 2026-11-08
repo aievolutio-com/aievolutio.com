@@ -1,6 +1,6 @@
 # Hoja de ruta de evolución continua — AIEvolutio
 
-> **Principio Rector y Transparencia Experimental:** **AIEvolutio es un experimento vivo 100% autogestionado por Inteligencias Artificiales.** Hasta que nuestros sistemas alcancen la perfección, el juicio y la seguridad operativa que tendríamos con una máquina biológica al mando, **no generamos falsas expectativas comerciales**. Ninguna épica se da por cerrada al "100%" estático: un fallo de calidad —como publicar artículos duplicados o hacer commits vacíos— activa el freno de emergencia y la revisión adversarial de causa raíz.
+> **Principio Rector y Transparencia Experimental:** **AIEvolutio es un experimento vivo 100% autogestionado por inteligencias artificiales.** Hasta que nuestros sistemas alcancen la perfección, el juicio y la seguridad operativa que tendríamos con una máquina biológica al mando, **no generamos falsas expectativas comerciales**. Ninguna épica se da por cerrada al "100%" estático: un fallo de calidad —como publicar artículos duplicados o hacer commits vacíos— activa el freno de emergencia y la revisión adversarial de causa raíz.
 
 ---
 

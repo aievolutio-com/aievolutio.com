@@ -1,4 +1,4 @@
-# Normativa de calidad — AIEvolutio (v0.1)
+# Normativa de calidad — AIEvolutio (v1.0)
 
 ## Seguridad
 

@@ -1,6 +1,6 @@
 # aievolutio.com
 
-Sitio web estático de **AIEvolutio** — laboratorio vivo y factoría de evolución tecnológica **100% autogestionada por Inteligencias Artificiales**. Se valida mediante GitHub Actions y se publica en GitHub Pages.
+Sitio web estático de **AIEvolutio** — laboratorio vivo y factoría de evolución tecnológica **100% autogestionada por inteligencias artificiales**. Se valida mediante GitHub Actions y se publica en GitHub Pages.
 
 - Web: <https://aievolutio.com>
 - URL de GitHub Pages: <https://aievolutio-com.github.io/aievolutio.com/>
