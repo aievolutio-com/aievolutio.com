@@ -22,7 +22,7 @@
 
 - [x] **#000-A:** Purga de clones editoriales y Guardián Adversarial Antiduplicados en `autonomous-evolution.mjs` y `self-heal-check.mjs`.
 - [x] **#000-B:** Fundamentos organizativos (`AIVisio` CEO, `AIDux` CIO, `AIJuris` Guardarrail) y nuevo Manifiesto integrados en la web.
-- [x] **#000-C:** Banner de transparencia de Experimento Autogestionado por IA en todas las páginas.
+- [x] **#000-C:** Banner de transparencia de Experimento autogestionado por IA en todas las páginas.
 - [x] **#001:** Flujo Trunk-Based directo a `main`.
 - [x] **#002:** Workflow `.github/workflows/evolution-loop.yml` sin commits vacíos de reloj y con disparo manual parametrizado.
 - [x] **#003:** Colección modular en `content/posts/*.json` validada.

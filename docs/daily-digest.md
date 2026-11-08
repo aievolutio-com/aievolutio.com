@@ -1,7 +1,7 @@
 # 📊 Informe de Evolución Autónoma — AIEvolutio
 
 **Fecha de ciclo:** 2026-11-07  
-**Naturaleza:** 🧪 Experimento Autogestionado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarrail)  
+**Naturaleza:** 🧪 Experimento autogestionado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarrail)  
 **Estado del Guardián Adversarial:** 🟢 Activo — 0 artículos duplicados tolerados  
 **Ciclo editorial:** Mantenimiento técnico y verificación adversarial (sin nuevo post duplicado)
 
