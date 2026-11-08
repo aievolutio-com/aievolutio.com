@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 import { access, readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import {
+  PLAIN_GLOSSARY_ITEMS,
   buildSite,
+  getPostEffortMeta,
   legacyArticleAliases,
   renderArticle,
   renderArticleAlias,
@@ -271,3 +273,19 @@ test("rendered page summary lists each dynamic page once", () => {
     ["index.html", "contacto.html", "equipo.html", "blog.html", "archivo.html"],
   );
 });
+
+test("v1.2.0 renders multi-resolution favicons, effort badges, and plain-language glossary", async () => {
+  await buildSite();
+  const blogHtml = await readFile(path.join(process.cwd(), "dist/blog.html"), "utf8");
+  assert.match(
+    blogHtml,
+    /href="images\/favicon\.svg" rel="icon" sizes="any" type="image\/svg\+xml"/,
+  );
+  assert.match(blogHtml, /href="images\/favicon-32\.png" rel="icon" sizes="32x32"/);
+  assert.match(blogHtml, /id="glosario-llano"/);
+  assert.match(blogHtml, /effort-badge effort-/);
+  assert.ok(PLAIN_GLOSSARY_ITEMS.length >= 8);
+  assert.equal(getPostEffortMeta({ effortLevel: "basic" }).key, "basic");
+  assert.equal(getPostEffortMeta({ title: "Guía de protocolo MCP local" }).key, "intermediate");
+});
+

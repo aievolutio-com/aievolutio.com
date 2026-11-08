@@ -389,7 +389,7 @@ El descanso no es un premio que llega cuando se termina todo. Es una condición 
   },
   {
     title:
-      "Diccionario sin miedo para tu negocio: qué son MCP, las bases vectoriales y los modelos locales explicados con objetos cotidianos",
+      "Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales",
     slug: "diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales",
     author: "AIDux",
     category: "Operaciones",
@@ -402,23 +402,59 @@ El descanso no es un premio que llega cuando se termina todo. Es una condición 
     readerProfile:
       "Autónomo, comerciante o responsable de pyme sin formación informática que quiere entender antes de decidir",
     excerpt:
-      "Muchos nombres técnicos parecen diseñados para intimidar. Explicamos con ejemplos de todos los días qué hay detrás de cada término y cuánto cuesta de verdad ponerlo en marcha.",
-    body: `**Cuando escuchas términos como protocolo MCP, base de datos vectorial o modelo local compacto, es muy fácil pensar que te están proponiendo construir una gran catedral desde los cimientos.** Sin embargo, en la práctica cotidiana de una pequeña empresa, la mayoría de estas piezas se parecen mucho más a montar una estantería sencilla de salón en una tarde con cuatro tornillos. El obstáculo rara vez es la herramienta en sí, sino la costumbre del sector tecnológico de bautizar ideas simples con palabras intimidantes.
+      "Nadie cruza una puerta si detrás todo parece oscuro y complicado. Traducimos a lenguaje de taller y oficina tres conceptos habituales para distinguir qué se monta en una tarde y qué requiere obra mayor.",
+    body: `Cuando un profesional escucha términos como protocolo MCP, base de datos vectorial o modelo compacto local, la duda más razonable es saber si le están proponiendo montar una estantería sencilla en una tarde o levantar una obra de ingeniería inabordable. Poner luz en el vocabulario es el primer paso para decidir con tranquilidad.
 
-**Tres conceptos habituales traducidos al lenguaje de tu taller o despacho**
+**Tres conceptos explicados con objetos cotidianos**
 
-- **Modelo local compacto (SLM):** imagina un ayudante de redacción y análisis que trabaja dentro de tu propio ordenador sin necesitar internet. Hoy se instala con programas gratuitos en diez minutos, exactamente igual que cualquier aplicación de oficina, sin pagar cuotas mensuales.
-- **Protocolo MCP (el enchufe universal):** equivale a una toma de corriente estándar. Antes había que fabricar cables a medida para que un asistente leyera una carpeta de tarifas; ahora basta con conectar ese enchufe e indicar qué cajón tiene permiso para consultar.
-- **Base de datos vectorial (el archivador por ideas):** en lugar de buscar documentos solo por una palabra exacta, ordena tus presupuestos y manuales antiguos por significado. Para una pyme es una estantería ligera; solo se vuelve una obra compleja cuando se manejan millones de archivos.
+- **Modelo local compacto (como tener un oficial en el taller sin internet):** es un programa que instalas en tu propio ordenador para redactar, resumir o clasificar textos sin enviar un solo papel fuera de la empresa. Instalarlo equivale a montar un mueble básico siguiendo cuatro pasos en media hora.
+- **Protocolo MCP (el enchufe universal):** antes cada lámpara necesitaba un empalme distinto; hoy usamos un enchufe estándar. MCP es simplemente un conector que permite al modelo leer una carpeta concreta de tu ordenador o tu calendario sin copiar y pegar archivos a mano. Configurar uno básico lleva una tarde.
+- **Base de datos vectorial (el archivador por ideas, no por palabras exactas):** un buscador clásico solo encuentra la palabra «factura» si escribes esas letras; un archivo vectorial encuentra también «recibo de luz» o «cobro pendiente» porque agrupa los textos por su significado. Crearla desde cero sí es una obra mayor, pero existen programas gratuitos que la preparan automáticamente al arrastrar tus carpetas.
 
 **Acción alcanzable para hoy:**
-1. Anota las tres palabras tecnológicas que más dudas te hayan generado últimamente al leer sobre inteligencia artificial.
-2. Pregúntate en cada caso: ¿esto se instala en una tarde sin coste o exige contratar un proyecto a medida?
-3. Empieza siempre por las piezas de nivel estantería que resuelvan un atasco real de tu semana.`,
+1. Identifica una tarea donde hoy pierdas tiempo copiando textos entre tus carpetas y el navegador.
+2. Empieza siempre por el escalón de estantería sencilla: prueba un programa local gratuito antes de plantearte integraciones complejas.
+3. Exige a cualquier proveedor tecnológico que te explique sus propuestas sin siglas opacas y detallando cuántas horas reales requiere su puesta en marcha.
+
+La tecnología útil no necesita esconderse detrás de palabras difíciles. Cuando comprendes el esfuerzo real de cada pieza, desaparece el bloqueo inicial y recuperas el mando de tu taller o despacho.`,
     actionableChecklist: [
-      "Traducir cada término técnico a una función cotidiana antes de comprar o instalar nada",
-      "Distinguir qué herramientas se prueban gratis en una tarde y cuáles requieren soporte experto",
-      "Empezar por soluciones sencillas de impacto inmediato en lugar de proyectos complejos",
+      "Distinguir qué herramientas se instalan en media hora (estantería sencilla) y cuáles requieren soporte técnico",
+      "Usar la analogía del enchufe estándar (MCP) y del archivador por ideas (base vectorial) para evaluar necesidades reales",
+      "Descartar presupuestos tecnológicos que utilicen jerga incomprensible sin desglosar tiempos de aprendizaje",
+    ],
+  },
+  {
+    title:
+      "Tu carpeta de tarifas como manual abierto: cómo lograr que tu asistente consulte tus precios reales sin inventar cifras",
+    slug: "carpeta-tarifas-manual-abierto-rag-local-sin-inventar-cifras",
+    author: "AIDux",
+    category: "Operaciones",
+    readerNeed:
+      "Evitar que los asistentes inventen precios o condiciones al redactar respuestas comerciales apoyándose únicamente en documentos propios verificados",
+    angle:
+      "Guía de bricolaje sencillo de AIDux para organizar un único documento maestro de tarifas y garantías legible por modelos locales",
+    actionType:
+      "Consolidar tarifas y condiciones vigentes en un archivo de texto limpio y exigir al asistente que cite el apartado exacto antes de responder",
+    readerProfile:
+      "Responsable de taller, instalador o despacho que elabora presupuestos y responde dudas de precios a diario",
+    excerpt:
+      "Cuando un asistente responde de memoria, corre el riesgo de inventar precios o plazos. Aprende a prepararle un manual abierto en una tarde para que solo utilice tus datos reales.",
+    body: `**Uno de los temores más lógicos en cualquier negocio es que un asistente automático responda a un cliente con un precio antiguo o una garantía que no existe.** Esto ocurre cuando pedimos a la máquina que conteste de memoria en lugar de obligarla a consultar primero nuestro catálogo vigente. En jerga informática a este método se le llama generación con recuperación de documentos, pero en la vida diaria no es más que responder un examen con el libro abierto encima de la mesa.
+
+**Cómo preparar el libro abierto de tu negocio en menos de una hora**
+
+- **Un único archivo limpio vale más que cien carpetas dispersas:** si tus precios están repartidos entre hojas de cálculo antiguas, correos sueltos y folletos en imagen, tanto tu equipo como el asistente cometerán errores. Reunir las tarifas y condiciones actuales en un solo documento claro equivale a ordenar el banco de trabajo antes de empezar.
+- **La regla de oro de citar la fuente:** al conectar ese documento a tu programa local, incluye siempre una instrucción firme: si un dato no aparece literalmente en el manual de tarifas, el asistente debe indicar que requiere consulta humana en lugar de adivinar.
+- **Actualización en un solo punto:** cada vez que cambie el coste de un material o un plazo de entrega, basta con editar ese archivo maestro para que todas las respuestas futuras queden al día al instante.
+
+**Acción alcanzable para hoy:**
+1. Crea un documento sencillo con las veinte preguntas de precios, plazos y garantías que más se repiten en tu negocio.
+2. Elimina de esa carpeta cualquier versión de años anteriores que pueda causar confusión.
+3. Haz tres pruebas pidiendo presupuestos de casos reales y comprueba que el borrador cita siempre tu documento vigente.`,
+    actionableChecklist: [
+      "Unificar tarifas, plazos y garantías vigentes en un único documento limpio y fechable",
+      "Retirar versiones antiguas de catálogos de la carpeta de consulta activa",
+      "Exigir siempre que el borrador indique de qué línea del documento ha tomado cada importe",
     ],
   },
   {

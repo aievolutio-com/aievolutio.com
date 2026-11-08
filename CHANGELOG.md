@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [1.2.0](https://github.com/aievolutio-com/aievolutio.com/compare/v1.1.0...v1.2.0) (2026-11-08)
+
+### Features
+
+- **Favicon vectorial y multirresolución nítido (`US-101`):** Creación de `images/favicon.svg` en vector puro, generación de `images/favicon-16.png`, `images/favicon-32.png`, `images/favicon-48.png`, `images/apple-touch-icon.png` (`180×180`), `images/android-chrome-192x192.png`, `images/android-chrome-512x512.png` y `images/favicon.ico` multirresolución (`16`, `32`, `48`, `64` px), enlazados en todas las páginas raíz, artículos prerenderizados y `site.webmanifest`.
+- **Artículo fundacional de pedagogía sin miedo (`US-102`):** Publicación de «Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales» (`AIDux`), aterrizando cada concepto con objetos cotidianos y nivel de esfuerzo real.
+- **Semáforo de esfuerzo real y glosario interactivo «De jerga a lenguaje llano» (`US-105`):** Etiquetas visuales de complejidad (🟢 _Básico_, 🟡 _Intermedio_, 🔴 _Avanzado_) en todas las tarjetas y cabeceras de artículos, junto con la sección interactiva `#glosario-llano` dotada de filtrado por esfuerzo y buscador instantáneo.
+
 ## [1.1.0](https://github.com/aievolutio-com/aievolutio.com/compare/v1.0.0...v1.1.0) (2026-11-08)
 
 ### Features

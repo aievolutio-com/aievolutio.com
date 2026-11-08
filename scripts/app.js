@@ -134,6 +134,40 @@
     return { label: "IAWorkers & Procesos", filterKey: "tecnologia" };
   }
 
+  function getPostEffortMeta(post) {
+    const explicit = String(post.effortLevel || "").toLowerCase();
+    const slugAndTitle = `${post.slug || ""} ${post.title || ""}`.toLowerCase();
+    if (explicit === "basic" || slugAndTitle.includes("diccionario-sin-miedo")) {
+      return {
+        key: "basic",
+        shortBadge: "🟢 Básico (1 tarde · 0 €)",
+      };
+    }
+    if (explicit === "advanced") {
+      return {
+        key: "advanced",
+        shortBadge: "🔴 Avanzado (perfil técnico)",
+      };
+    }
+    const bodyText = `${slugAndTitle} ${post.body || ""}`.toLowerCase();
+    if (
+      explicit === "intermediate" ||
+      bodyText.includes("mcp") ||
+      bodyText.includes("slm") ||
+      bodyText.includes("business intelligence") ||
+      bodyText.includes("notas de voz")
+    ) {
+      return {
+        key: "intermediate",
+        shortBadge: "🟡 Intermedio (guiado · 0 €)",
+      };
+    }
+    return {
+      key: "basic",
+      shortBadge: "🟢 Básico (1 tarde · 0 €)",
+    };
+  }
+
   function calculateReadingTime(body) {
     const words = String(body || "")
       .trim()
@@ -146,19 +180,24 @@
   function renderPost(post, preview, showTitle = true) {
     const id = articleId(post);
     const { label: category, filterKey } = getPostCategoryMeta(post);
+    const effort = getPostEffortMeta(post);
     const readingTime = calculateReadingTime(post.body);
     const searchAttr =
-      `${post.title || ""} ${post.author || ""} ${category} ${post.excerpt || ""}`.toLowerCase();
+      `${post.title || ""} ${post.author || ""} ${category} ${effort.shortBadge} ${post.excerpt || ""}`.toLowerCase();
     const articleAttrs = {
       class: "card post-card",
       "data-filter-cat": filterKey,
+      "data-effort": effort.key,
       "data-author": post.author || "AIEvolutio",
       "data-search": searchAttr,
     };
     if (!preview) articleAttrs.id = id;
 
     const inner = el("div", { class: "post-card-inner" });
-    inner.append(el("div", { class: "post-category-tag" }, [category]));
+    const tagsRow = el("div", { class: "post-tags-row" });
+    tagsRow.append(el("div", { class: "post-category-tag" }, [category]));
+    tagsRow.append(el("span", { class: `effort-badge effort-${effort.key}` }, [effort.shortBadge]));
+    inner.append(tagsRow);
 
     if (showTitle) {
       const title = el("h3");
@@ -715,6 +754,60 @@
     }
   }
 
+  function setupGlossaryFilters() {
+    const glossarySection = $("#glosario-llano");
+    if (!glossarySection) return;
+    const pills = $$(".glossary-pill[data-effort-filter]", glossarySection);
+    const searchInput = $("#glossary-search", glossarySection);
+    const statusEl = $("#glossary-filter-status", glossarySection);
+    const cards = $$(".glossary-card", glossarySection);
+    if (!cards.length) return;
+
+    let activeEffort = "all";
+    let searchQuery = "";
+
+    function applyFilter() {
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const effort = card.getAttribute("data-effort") || "";
+        const searchData = (
+          card.getAttribute("data-glossary-search") ||
+          card.textContent ||
+          ""
+        ).toLowerCase();
+        const matchesEffort = activeEffort === "all" || effort === activeEffort;
+        const matchesSearch = !searchQuery || searchData.includes(searchQuery);
+        const show = matchesEffort && matchesSearch;
+        card.hidden = !show;
+        card.style.display = show ? "" : "none";
+        if (show) visibleCount++;
+      });
+      if (statusEl) {
+        statusEl.textContent = `Mostrando ${visibleCount} conceptos del glosario.`;
+      }
+    }
+
+    pills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        pills.forEach((p) => {
+          p.classList.remove("active");
+          p.setAttribute("aria-pressed", "false");
+        });
+        pill.classList.add("active");
+        pill.setAttribute("aria-pressed", "true");
+        activeEffort = pill.getAttribute("data-effort-filter") || "all";
+        applyFilter();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        searchQuery = searchInput.value.trim().toLowerCase();
+        applyFilter();
+      });
+    }
+  }
+
   function updateBlogView() {
     if (document.body.dataset.page !== "blog" || !state.content) return;
     const blogSection = state.content.sections.find((section) => section.id === "blog");
@@ -725,6 +818,7 @@
     // preservamos el DOM prerenderizado con filtros y diseño editorial completo.
     if (!selectedPost && mount && mount.children.length > 0) {
       setupBlogFilters();
+      setupGlossaryFilters();
       return;
     }
     const pageTitle = $("#page-title");
@@ -734,6 +828,7 @@
       : "Ideas para llevar el volante — AIEvolutio";
     renderSections(state.content.sections);
     setupBlogFilters();
+    setupGlossaryFilters();
     if (selectedPost) document.getElementById(articleId(selectedPost))?.scrollIntoView();
   }
 
@@ -989,6 +1084,7 @@
     setupVolanteDiagnostic();
     setupRoiCalculator();
     setupBlogFilters();
+    setupGlossaryFilters();
     const currentYear = $("#current-year");
     if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 

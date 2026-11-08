@@ -5,7 +5,7 @@
     "language": "es",
     "copyright": "© AIEvolutio",
     "license": "CC BY-SA 4.0",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "navigation": [
     {
@@ -244,6 +244,22 @@
       "title": "Blog",
       "kind": "posts",
       "blocks": [
+        {
+          "title": "Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales",
+          "slug": "diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales",
+          "author": "AIDux",
+          "category": "Operaciones",
+          "effortLevel": "basic",
+          "excerpt": "Nadie cruza una puerta si detrás todo parece oscuro y complicado. Traducimos a lenguaje de taller y oficina tres conceptos habituales para distinguir qué se monta en una tarde y qué requiere obra mayor.",
+          "body": "Cuando un profesional escucha términos como protocolo MCP, base de datos vectorial o modelo compacto local, la duda más razonable es saber si le están proponiendo montar una estantería sencilla en una tarde o levantar una obra de ingeniería inabordable. Poner luz en el vocabulario es el primer paso para decidir con tranquilidad.\n\n**Tres conceptos explicados con objetos cotidianos**\n\n- **Modelo local compacto (como tener un oficial en el taller sin internet):** es un programa que instalas en tu propio ordenador para redactar, resumir o clasificar textos sin enviar un solo papel fuera de la empresa. Instalarlo equivale a montar un mueble básico siguiendo cuatro pasos en media hora.\n- **Protocolo MCP (el enchufe universal):** antes cada lámpara necesitaba un empalme distinto; hoy usamos un enchufe estándar. MCP es simplemente un conector que permite al modelo leer una carpeta concreta de tu ordenador o tu calendario sin copiar y pegar archivos a mano. Configurar uno básico lleva una tarde.\n- **Base de datos vectorial (el archivador por ideas, no por palabras exactas):** un buscador clásico solo encuentra la palabra «factura» si escribes esas letras; un archivo vectorial encuentra también «recibo de luz» o «cobro pendiente» porque agrupa los textos por su significado. Crearla desde cero sí es una obra mayor, pero existen programas gratuitos que la preparan automáticamente al arrastrar tus carpetas.\n\n**Acción alcanzable para hoy:**\n1. Identifica una tarea donde hoy pierdas tiempo copiando textos entre tus carpetas y el navegador.\n2. Empieza siempre por el escalón de estantería sencilla: prueba un programa local gratuito antes de plantearte integraciones complejas.\n3. Exige a cualquier proveedor tecnológico que te explique sus propuestas sin siglas opacas y detallando cuántas horas reales requiere su puesta en marcha.\n\nLa tecnología útil no necesita esconderse detrás de palabras difíciles. Cuando comprendes el esfuerzo real de cada pieza, desaparece el bloqueo inicial y recuperas el mando de tu taller o despacho.",
+          "actionableChecklist": [
+            "Distinguir qué herramientas se instalan en media hora (estantería sencilla) y cuáles requieren soporte técnico",
+            "Usar la analogía del enchufe estándar (MCP) y del archivador por ideas (base vectorial) para evaluar necesidades reales",
+            "Descartar presupuestos tecnológicos que utilicen jerga incomprensible sin desglosar tiempos de aprendizaje"
+          ],
+          "date": "2026-11-08",
+          "type": "post"
+        },
         {
           "title": "Business intelligence conversacional en la pyme: consulta tus datos como si hablaras con un experto",
           "slug": "business-intelligence-conversacional-en-la-pyme-consulta-tus",

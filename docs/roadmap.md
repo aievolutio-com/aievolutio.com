@@ -28,6 +28,7 @@ El desarrollo de AIEvolutio se organiza en **versiones cerradas de valor verific
 | :----------- | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
 | **`v1.0.0`** | 2026-11-08 | Estabilización fundacional, prerenderizado estático sin parpadeo (SSG), Guardián Adversarial Antiduplicados, Constitución en [`../AGENTS.md`](../AGENTS.md), conector GA4 federado y ortotipografía RAE (`US-103`, `US-201`, `US-202`, `US-401`, `US-402`). | ✅ En producción |
 | **`v1.1.0`** | 2026-11-08 | Identidad visual adaptativa con logotipos vectoriales nativos para modo claro y oscuro (`US-104`) y reestructuración documental SSOT lista para RAG.                                                                                                        | ✅ En producción |
+| **`v1.2.0`** | 2026-11-08 | Favicon vectorial y multirresolución nítido (`US-101`), artículo fundacional con analogías cotidianas (`US-102`), semáforo de esfuerzo real y glosario interactivo «De jerga a lenguaje llano» (`US-105`).                                                  | ✅ En producción |
 
 ---
 
@@ -44,15 +45,15 @@ flowchart LR
 
 ### Horizonte 1: Claridad visual, pedagogía sin miedo y primeros `AIWorkers` (`v1.2.0` – `v1.4.0`)
 
-#### `v1.2.0` — Nitidez de icono y pedagogía de nivel cero (Próxima sesión inmediata)
+#### `v1.2.0` — Nitidez de icono y pedagogía de nivel cero (Completada en producción)
 
 - **Objetivo de valor:** Eliminar el aspecto borroso del icono del navegador y derribar la barrera de entrada para lectores no técnicos.
-- **Alcance de la sesión:**
-  - **`US-101` (Favicon multirresolución nítido):** Creación e integración de `favicon.svg` vectorial, `favicon.ico` y PNGs de alta definición (`16`, `32`, `48`, `180`, `192`, `512` px) a partir del isotipo oficial.
-  - **`US-102` (Serie «Encender la luz»):** Publicación del artículo fundacional que explica qué son realmente el protocolo MCP, las bases de datos vectoriales y los modelos locales, distinguiendo con analogías cotidianas qué tareas equivalen a montar una estantería sencilla en una tarde y cuáles a una obra mayor.
-  - **`US-105` (Semáforo de dificultad y glosario llano):** Incorporación de indicadores visuales de complejidad, tiempo y coste en los contenidos técnicos.
+- **Alcance entregado:**
+  - **`US-101` (Favicon multirresolución nítido):** Creación e integración de `favicon.svg` vectorial, `favicon.ico` (`16`, `32`, `48`, `64` px) y PNGs de alta definición (`16`, `32`, `48`, `180`, `192`, `512` px) a partir del isotipo oficial en todas las plantillas y artículos.
+  - **`US-102` (Serie «Encender la luz»):** Publicación del artículo fundacional «Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales».
+  - **`US-105` (Semáforo de dificultad y glosario llano):** Incorporación del semáforo de esfuerzo real (🟢 _Básico_, 🟡 _Intermedio_, 🔴 _Avanzado_) en tarjetas y artículos, más el glosario interactivo con buscador y filtros en `blog.html`.
 
-#### `v1.3.0` — Factoría operativa de `AIWorkers` y recetas listas para usar
+#### `v1.3.0` — Factoría operativa de `AIWorkers` y recetas listas para usar (Próxima sesión inmediata)
 
 - **Objetivo de valor:** Convertir los agentes descritos en la web en herramientas, plantillas y prototipos accionables para autónomos y pymes.
 - **Alcance de la sesión:**

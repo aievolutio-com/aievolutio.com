@@ -352,7 +352,10 @@ export function renderHomeSections(content) {
     sectionsHtml.push(`<section id="blog" class="section">
   <h2>Ideas recientes para llevar el volante</h2>
   <div class="grid post-grid">${posts.map((p) => renderPostCard(p, false)).join("\n")}</div>
-  <a href="blog.html" class="btn section-cta">Explorar todos los artículos</a>
+  <div class="section-cta-row">
+    <a href="blog.html" class="btn section-cta">Explorar todos los artículos</a>
+    <a href="blog.html#glosario-llano" class="btn btn-outline section-cta">Diccionario sin miedo (glosario llano)</a>
+  </div>
 </section>`);
   }
 
@@ -396,6 +399,164 @@ function getPostCategoryMeta(post) {
   return { label: "IAWorkers & Procesos", filterKey: "tecnologia" };
 }
 
+export function getPostEffortMeta(post) {
+  const explicit = String(post.effortLevel || "").toLowerCase();
+  const slugAndTitle = `${post.slug || ""} ${post.title || ""}`.toLowerCase();
+  if (explicit === "basic" || slugAndTitle.includes("diccionario-sin-miedo")) {
+    return {
+      key: "basic",
+      shortBadge: "🟢 Básico (1 tarde · 0 €)",
+      badge: "🟢 Esfuerzo básico · Estantería sencilla (15–60 min · 0 €)",
+    };
+  }
+  if (explicit === "advanced") {
+    return {
+      key: "advanced",
+      shortBadge: "🔴 Avanzado (perfil técnico)",
+      badge: "🔴 Esfuerzo avanzado · Obra técnica (requiere perfil técnico)",
+    };
+  }
+  const bodyText = `${slugAndTitle} ${post.body || ""}`.toLowerCase();
+  if (
+    explicit === "intermediate" ||
+    bodyText.includes("mcp") ||
+    bodyText.includes("slm") ||
+    bodyText.includes("business intelligence") ||
+    bodyText.includes("notas de voz")
+  ) {
+    return {
+      key: "intermediate",
+      shortBadge: "🟡 Intermedio (guiado · 0 €)",
+      badge: "🟡 Esfuerzo intermedio · Bricolaje guiado (1 tarde · 0 €)",
+    };
+  }
+  return {
+    key: "basic",
+    shortBadge: "🟢 Básico (1 tarde · 0 €)",
+    badge: "🟢 Esfuerzo básico · Estantería sencilla (15–60 min · 0 €)",
+  };
+}
+
+export const PLAIN_GLOSSARY_ITEMS = [
+  {
+    id: "modelo-local-slm",
+    term: "Modelo local compacto (SLM)",
+    effortKey: "basic",
+    effortLabel: "🟢 Estantería sencilla · 30 min · 0 €",
+    analogy:
+      "Como tener un oficial de confianza trabajando dentro de tu taller con la puerta cerrada y sin necesidad de internet.",
+    mondayUse:
+      "Permite redactar correos, resumir informes o clasificar tickets en tu propio ordenador sin enviar datos de clientes a nubes externas.",
+  },
+  {
+    id: "protocolo-mcp",
+    term: "Protocolo MCP (Model Context Protocol)",
+    effortKey: "intermediate",
+    effortLabel: "🟡 Bricolaje guiado · 1 tarde · 0 €",
+    analogy:
+      "Un enchufe universal, como el cable USB de una impresora: conecta al asistente con una carpeta o calendario de tu equipo sin hacer empalmes a medida.",
+    mondayUse:
+      "Evita perder tiempo copiando y pegando tarifas, albaranes o agendas a mano cada vez que haces una consulta.",
+  },
+  {
+    id: "base-datos-vectorial",
+    term: "Base de datos vectorial",
+    effortKey: "advanced",
+    effortLabel: "🔴 Obra técnica (o 🟡 guiada con programa local)",
+    analogy:
+      "Un archivador que ordena los papeles por ideas y parentesco en vez de por letras exactas: si buscas «goteo», encuentra también «fuga de agua».",
+    mondayUse:
+      "Localiza en segundos qué presupuesto o solución diste hace años ante una avería parecida entre cientos de documentos antiguos.",
+  },
+  {
+    id: "rag-consulta-manual",
+    term: "RAG (generación con documentos propios)",
+    effortKey: "intermediate",
+    effortLabel: "🟡 Bricolaje guiado · 1 tarde · 0 €",
+    analogy:
+      "Exigir que el asistente responda con tu manual abierto encima de la mesa en lugar de contestar de memoria.",
+    mondayUse:
+      "Impide que la máquina invente precios, condiciones de garantía o normativas que no existen en tu negocio.",
+  },
+  {
+    id: "alucinacion-algoritmica",
+    term: "Alucinación algorítmica",
+    effortKey: "basic",
+    effortLabel: "🟢 Hábito inmediato · 0 min · 0 €",
+    analogy:
+      "Cuando una máquina responde con tono seguro un dato inventado porque rellena huecos por probabilidad estadística.",
+    mondayUse:
+      "Recuerda por qué ningún presupuesto, contrato o respuesta delicada debe enviarse sin revisión y criterio humano.",
+  },
+  {
+    id: "token-ficha-lectura",
+    term: "Token (unidad de lectura y cobro)",
+    effortKey: "basic",
+    effortLabel: "🟢 Concepto inmediato · 5 min · 0 €",
+    analogy:
+      "El cuentakilómetros de los modelos de lenguaje: cada 1.000 palabras equivalen aproximadamente a unos 1.300 tokens.",
+    mondayUse:
+      "Ayuda a comprobar cuándo pagar unos céntimos por uso real sale mucho más barato que pagar suscripciones mensuales fijas por empleado.",
+  },
+  {
+    id: "api-ventanilla",
+    term: "API (interfaz de conexión entre programas)",
+    effortKey: "intermediate",
+    effortLabel: "🟡 Bricolaje guiado · 1 tarde · Pago por uso",
+    analogy:
+      "Una ventanilla directa de recados entre tu hoja de cálculo y el modelo para enviar datos y recoger respuestas sin cambiar de pantalla.",
+    mondayUse:
+      "Automatiza tareas repetitivas (como clasificar pedidos o extraer importes) por pocos céntimos al mes.",
+  },
+  {
+    id: "ai-act-reglamento-europeo",
+    term: "AI Act y RGPD (guardarraíl legal europeo)",
+    effortKey: "basic",
+    effortLabel: "🟢 Lista de comprobación · 1 hora · 0 €",
+    analogy:
+      "El código de circulación europeo que obliga a señalizar cuándo habla una máquina y prohíbe usos que dañen los derechos de las personas.",
+    mondayUse:
+      "Protege la reputación de tu pyme avisando con honestidad en las respuestas automáticas y custodiando los datos confidenciales.",
+  },
+];
+
+export function renderGlossary() {
+  const cardsHtml = PLAIN_GLOSSARY_ITEMS.map((item) => {
+    const searchAttr = escapeHtml(
+      `${item.term} ${item.analogy} ${item.mondayUse} ${item.effortLabel}`.toLowerCase(),
+    );
+    return `<article class="card glossary-card" data-effort="${escapeHtml(item.effortKey)}" data-glossary-search="${searchAttr}">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-${escapeHtml(item.effortKey)}">${escapeHtml(item.effortLabel)}</span>
+  </div>
+  <h3>${escapeHtml(item.term)}</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> ${escapeHtml(item.analogy)}</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> ${escapeHtml(item.mondayUse)}</p>
+</article>`;
+  }).join("\n");
+
+  return `<section id="glosario-llano" class="section glossary-section" aria-labelledby="glosario-title">
+  <div class="blog-header-bar">
+    <span class="post-category-tag">Pedagogía sin miedo · Nivel cero</span>
+    <h2 id="glosario-title">De jerga tecnológica a lenguaje llano: ¿estantería sencilla u obra mayor?</h2>
+    <p class="muted glossary-lead">Antes de dar cualquier paso, comprueba qué significa cada concepto en la vida real, para qué sirve en tu oficio y cuánto esfuerzo exige de verdad.</p>
+    <div class="blog-controls-wrap">
+      <div class="blog-topics-pills" role="group" aria-label="Filtrar glosario por nivel de esfuerzo">
+        <button type="button" class="topic-pill glossary-pill active" data-effort-filter="all" aria-pressed="true">Todos (${PLAIN_GLOSSARY_ITEMS.length})</button>
+        <button type="button" class="topic-pill glossary-pill" data-effort-filter="basic" aria-pressed="false">🟢 Estantería sencilla (0 €)</button>
+        <button type="button" class="topic-pill glossary-pill" data-effort-filter="intermediate" aria-pressed="false">🟡 Bricolaje guiado</button>
+        <button type="button" class="topic-pill glossary-pill" data-effort-filter="advanced" aria-pressed="false">🔴 Obra técnica</button>
+      </div>
+      <div class="blog-search-box">
+        <input type="search" id="glossary-search" class="blog-search-input" placeholder="Buscar concepto (ej. MCP, vectorial, token, local)…" aria-label="Buscar concepto en el glosario">
+      </div>
+    </div>
+    <p id="glossary-filter-status" class="muted sr-only" aria-live="polite"></p>
+  </div>
+  <div class="grid glossary-grid" id="glossary-grid">${cardsHtml}</div>
+</section>`;
+}
+
 function calculateReadingTime(body) {
   const words = String(body || "")
     .trim()
@@ -408,6 +569,7 @@ function calculateReadingTime(body) {
 function renderPostCard(post, isFeatured = false) {
   const url = articleUrl(post);
   const { label: category, filterKey } = getPostCategoryMeta(post);
+  const effort = getPostEffortMeta(post);
   const readingTime = calculateReadingTime(post.body);
   const metadata = [formatPostDate(post.date), post.author, readingTime]
     .filter(Boolean)
@@ -416,15 +578,18 @@ function renderPostCard(post, isFeatured = false) {
     ? `<div class="post-cover-wrap"><img src="${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${post.title || "el artículo"}`)}" class="post-cover" loading="lazy"></div>`
     : "";
   const searchAttr = escapeHtml(
-    `${post.title || ""} ${post.author || ""} ${category} ${post.excerpt || ""}`.toLowerCase(),
+    `${post.title || ""} ${post.author || ""} ${category} ${effort.shortBadge} ${post.excerpt || ""}`.toLowerCase(),
   );
 
   if (isFeatured) {
     return `<article class="card post-card">
-  <div class="featured-post-wrapper" data-filter-cat="${escapeHtml(filterKey)}" data-author="${escapeHtml(post.author || "AIEvolutio")}" data-search="${searchAttr}">
+  <div class="featured-post-wrapper" data-filter-cat="${escapeHtml(filterKey)}" data-effort="${escapeHtml(effort.key)}" data-author="${escapeHtml(post.author || "AIEvolutio")}" data-search="${searchAttr}">
     ${image}
     <div class="featured-post-content">
-      <div class="post-category-tag">${escapeHtml(category)}</div>
+      <div class="post-tags-row">
+        <div class="post-category-tag">${escapeHtml(category)}</div>
+        <span class="effort-badge effort-${escapeHtml(effort.key)}">${escapeHtml(effort.shortBadge)}</span>
+      </div>
       <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || "Entrada")}</a></h3>
       <p class="muted post-meta">${escapeHtml(metadata)}</p>
       <div class="post-body">${renderPostBody(postSummary(post.body, 260))}</div>
@@ -436,8 +601,11 @@ function renderPostCard(post, isFeatured = false) {
 
   return `<article class="card post-card">
   ${image}
-  <div class="post-card-inner" data-filter-cat="${escapeHtml(filterKey)}" data-author="${escapeHtml(post.author || "AIEvolutio")}" data-search="${searchAttr}">
-    <div class="post-category-tag">${escapeHtml(category)}</div>
+  <div class="post-card-inner" data-filter-cat="${escapeHtml(filterKey)}" data-effort="${escapeHtml(effort.key)}" data-author="${escapeHtml(post.author || "AIEvolutio")}" data-search="${searchAttr}">
+    <div class="post-tags-row">
+      <div class="post-category-tag">${escapeHtml(category)}</div>
+      <span class="effort-badge effort-${escapeHtml(effort.key)}">${escapeHtml(effort.shortBadge)}</span>
+    </div>
     <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || "Entrada")}</a></h3>
     <p class="muted post-meta">${escapeHtml(metadata)}</p>
     <div class="post-body">${renderPostBody(postSummary(post.body, 160))}</div>
@@ -479,6 +647,8 @@ export function renderBlog(content, { archive = false } = {}) {
     </div>
     <p id="blog-filter-status" class="muted sr-only" aria-live="polite"></p>`;
 
+  const glossaryHtml = archive ? "" : `\n${renderGlossary()}`;
+
   return `<section id="blog" class="section">
   <div class="blog-header-bar">
     <h2>${title}</h2>
@@ -487,7 +657,7 @@ export function renderBlog(content, { archive = false } = {}) {
   ${backLink}
   <div class="grid post-grid" id="blog-post-grid">${cardsHtml}</div>
   ${archiveLink}
-</section>`;
+</section>${glossaryHtml}`;
 }
 
 export function renderArticle(post, navigation, version = "v1.0.0") {
@@ -497,6 +667,7 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
   const canonical = `${articleBaseUrl}/${articleUrlPath}`;
   const absoluteImage = post.img ? `${articleBaseUrl}/${String(post.img).replace(/^\/+/, "")}` : "";
   const { label: category } = getPostCategoryMeta(post);
+  const effort = getPostEffortMeta(post);
   const readingTime = calculateReadingTime(post.body);
   const image = post.img
     ? `<div class="article-hero-cover"><img src="../${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${title}`)}" class="post-cover" loading="lazy"></div>`
@@ -564,7 +735,12 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <link href="../styles/tokens.css" rel="stylesheet">
 <link href="../styles/main.css?v=20261105" rel="stylesheet">
+<link href="../images/favicon.svg" rel="icon" sizes="any" type="image/svg+xml">
+<link href="../images/favicon-32.png" rel="icon" sizes="32x32" type="image/png">
+<link href="../images/favicon-48.png" rel="icon" sizes="48x48" type="image/png">
+<link href="../images/favicon-16.png" rel="icon" sizes="16x16" type="image/png">
 <link href="../images/favicon.ico" rel="icon" type="image/x-icon">
+<link href="../images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
 <script type="application/ld+json">${JSON.stringify(articleSchema).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e")}</script>
 </head>
 <body data-page="article">
@@ -591,6 +767,7 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
   <a href="../blog.html" class="archive-back"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12L6 8L10 4"/></svg><span>Blog</span></a>
   <span class="breadcrumb-separator" aria-hidden="true">/</span>
   <span class="post-category-tag">${escapeHtml(category)}</span>
+  <span class="effort-badge effort-${escapeHtml(effort.key)}">${escapeHtml(effort.badge)}</span>
 </nav>
 <header class="article-header">
   <h1>${escapeHtml(title)}</h1>
@@ -823,6 +1000,24 @@ export async function buildSite() {
     }
   }
 
+  const siteVersion = await getSiteVersion();
+
+  for (const page of htmlPages) {
+    const repoPagePath = path.join(repoRoot, page);
+    if (existsSync(repoPagePath)) {
+      const rawHtml = await readFile(repoPagePath, "utf8");
+      if (rawHtml.includes('class="site-version"')) {
+        const updatedHtml = rawHtml.replace(
+          /<span class="site-version">[^<]*<\/span>/g,
+          `<span class="site-version">${siteVersion}</span>`,
+        );
+        if (updatedHtml !== rawHtml) {
+          await writeFile(repoPagePath, updatedHtml, "utf8");
+        }
+      }
+    }
+  }
+
   await copyPublicSource();
 
   // Prerenderizar navegación en contacto.html en dist/
@@ -858,8 +1053,6 @@ export async function buildSite() {
       section: renderBlog(content, { archive: true }),
     },
   ];
-
-  const siteVersion = await getSiteVersion();
 
   for (const page of pages) {
     const outputPath = path.join(outputRoot, page.file);

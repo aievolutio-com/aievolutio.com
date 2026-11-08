@@ -1786,3 +1786,98 @@ figure.quote figcaption {
   background: rgba(249, 115, 22, 0.12);
   color: #f97316;
 }
+
+/* ==========================================================================
+   Semáforo de esfuerzo real y glosario interactivo «De jerga a lenguaje llano»
+   ========================================================================== */
+.post-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: var(--space-2);
+}
+
+.post-tags-row .post-category-tag {
+  margin-bottom: 0;
+}
+
+.effort-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.effort-badge.effort-basic {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.effort-badge.effort-intermediate {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.effort-badge.effort-advanced {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.section-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.section-cta-row .section-cta {
+  margin-top: 0;
+}
+
+.glossary-section {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+
+.glossary-lead {
+  max-width: 72ch;
+  margin: 0 0 var(--space-3);
+}
+
+.glossary-grid {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.glossary-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.glossary-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.glossary-card h3 {
+  margin: 0.2rem 0;
+  font-size: 1.08rem;
+}
+
+.glossary-analogy,
+.glossary-monday {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
