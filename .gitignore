@@ -22,3 +22,6 @@ build/
 
 # Lighthouse CI reports
 .lighthouseci/
+
+# Recovery & temporary archives
+docs/recovery/
