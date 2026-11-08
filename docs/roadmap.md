@@ -36,14 +36,14 @@ El desarrollo de AIEvolutio se organiza en **versiones cerradas de valor verific
 
 ```mermaid
 flowchart LR
-  H1["Horizonte 1 (v1.2 – v1.4)<br><b>Claridad, AIWorkers y telemetría</b><br>Favicon, pedagogía base,<br>agentes prácticos y GA4 WIF"]
-  H2["Horizonte 2 (v1.5 – v1.7)<br><b>Mercado honesto, academia y retos</b><br>Comparador de precios, cursos,<br>exámenes, diplomas y concursos"]
-  H3["Horizonte 3 (v1.8 – v2.0)<br><b>Alcance multicanal y global</b><br>Redes sociales, cápsulas de audio<br>y expansión multi-país / i18n"]
+  H1["Horizonte 1 (v1.2 – v1.5)<br><b>Claridad, EmoInsight, AIWorkers y GA4</b><br>Favicon, pedagogía, reacciones,<br>comentarios IA, agentes y telemetría"]
+  H2["Horizonte 2 (v1.6 – v1.8)<br><b>Mercado honesto, academia y retos</b><br>Comparador de precios, cursos,<br>exámenes, diplomas y concursos"]
+  H3["Horizonte 3 (v1.9 – v2.0)<br><b>Alcance multicanal y global</b><br>Redes sociales, cápsulas de audio<br>y expansión multi-país / i18n"]
 
   H1 --> H2 --> H3
 ```
 
-### Horizonte 1: Claridad visual, pedagogía sin miedo y primeros `AIWorkers` (`v1.2.0` – `v1.4.0`)
+### Horizonte 1: Claridad visual, escucha del `EmoInsight`, primeros `AIWorkers` y telemetría (`v1.2.0` – `v1.5.0`)
 
 #### `v1.2.0` — Nitidez de icono y pedagogía de nivel cero (Completada en producción)
 
@@ -53,7 +53,15 @@ flowchart LR
   - **`US-102` (Serie «Encender la luz»):** Publicación del artículo fundacional «Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales».
   - **`US-105` (Semáforo de dificultad y glosario llano):** Incorporación del semáforo de esfuerzo real (🟢 _Básico_, 🟡 _Intermedio_, 🔴 _Avanzado_) en tarjetas y artículos, más el glosario interactivo con buscador y filtros en `blog.html`.
 
-#### `v1.3.0` — Factoría operativa de `AIWorkers` y recetas listas para usar (Próxima sesión inmediata)
+#### `v1.3.0` — Escucha activa, `EmoInsight` del lector, valoraciones e hilos de comentarios con la IA (Próxima sesión inmediata)
+
+- **Objetivo de valor:** Mantener inamovibles los principios de AIEvolutio pero trazar su camino inexorablemente desde las reacciones reales de los lectores, midiendo su sentir (`EmoInsight`), habilitando valoraciones («Me gusta» / «No me gusta») e inaugurando hilos de comentarios en cada artículo donde la dirección de IA responde y extrae nuevas prioridades para la hoja de ruta.
+- **Alcance de la sesión:**
+  - **`US-107` (Valoraciones «Me gusta» / «No me gusta» y pulso `EmoInsight`):** Botonera interactiva en cada artículo y tarjeta del blog con voto positivo/negativo y cuatro dimensiones de experiencia del lector (`💡 Me ha abierto los ojos`, `🛠️ Aplicable hoy`, `🧗 Siento que es demasiado complejo`, `🛡️ Me genera dudas legales o de privacidad`), registrando eventos reales en GA4 (`emo_insight_feedback`) y estado consolidado en `content/emo-insights.json`.
+  - **`US-108` (Hilos de comentarios en los artículos con respuesta de la IA):** Sección de conversación abierta al pie de cada artículo (`articulos/articulo-*.html` y `blog.html`) conectada con hilos públicos del repositorio (`emo-feedback`) y prerenderizada estáticamente, permitiendo a los lectores comentar, preguntar o proponer temas y a `AIVisio`, `AIDux` y `AIJuris` responder de forma autónoma y transparente.
+  - **`US-407` (Motor de decisiones autónomas guiado por `EmoInsight`):** Integración en `Telemetry-Critic` y `Frontier-Scout` (`scripts/autonomous-evolution.mjs`) de la lectura del índice de `EmoInsight`, balance de valoraciones y comentarios abiertos para responder a los lectores en cada ciclo, simplificar temas percibidos como complejos y registrar propuestas evolutivas hacia el `roadmap.md`.
+
+#### `v1.4.0` — Factoría operativa de `AIWorkers` y recetas listas para usar
 
 - **Objetivo de valor:** Convertir los agentes descritos en la web en herramientas, plantillas y prototipos accionables para autónomos y pymes.
 - **Alcance de la sesión:**
@@ -62,19 +70,19 @@ flowchart LR
   - **`US-303` (`AIOferta`):** Flujo práctico para transformar notas de voz tras una visita técnica en borradores de presupuesto cruzados con tarifas propias.
   - **`US-203` y `US-306`:** Guía paso a paso de servidor MCP local y biblioteca inicial de «Recetas de 15 minutos» por oficio.
 
-#### `v1.4.0` — Telemetría automatizada y bucle de comunicación transparente
+#### `v1.5.0` — Telemetría automatizada y bucle de comunicación transparente
 
 - **Objetivo de valor:** Cerrar el circuito de observabilidad real y atención autónoma sin intervención humana diaria.
 - **Alcance de la sesión:**
-  - **`US-404`:** Activación en GitHub Actions de la lectura agregada de GA4 mediante Workload Identity Federation (`GA4_PROPERTY_ID`).
-  - **`US-403`:** Bucle autónomo de respuesta a consultas con descargo experimental y protección total de datos personales.
+  - **`US-404`:** Activación en GitHub Actions de la lectura agregada de GA4 mediante Workload Identity Federation (`GA4_PROPERTY_ID`), cruzada con los eventos de `EmoInsight`.
+  - **`US-403`:** Bucle autónomo de respuesta a consultas generales con descargo experimental y protección total de datos personales.
   - **`US-406`:** Cuadro de mando público de evolución semanal/mensual para el supervisor estratégico y los lectores.
 
 ---
 
-### Horizonte 2: Radar comercial honesto, academia abierta, exámenes y retos (`v1.5.0` – `v1.7.0`)
+### Horizonte 2: Radar comercial honesto, academia abierta, exámenes y retos (`v1.6.0` – `v1.8.0`)
 
-#### `v1.5.0` — Radar de herramientas, comparador de precios y recomendaciones honestas
+#### `v1.6.0` — Radar de herramientas, comparador de precios y recomendaciones honestas
 
 - **Objetivo de valor:** Ayudar a las pymes a elegir tecnología con criterio económico, evitando pagar sobrecostes publicitarios o comprometer su privacidad.
 - **Alcance de la sesión:**
@@ -82,7 +90,7 @@ flowchart LR
   - **`US-205` (Recomendador por oficio y presupuesto):** Asistente de equipamiento (desde mini-PCs para IA local hasta suites gratuitas) adaptado a cada sector.
   - **`US-206` y `US-405` (Detector de sobreprecio IA e independencia comercial):** Calculadora para auditar subidas de precios de proveedores y sello de independencia auditado por `AIJuris`.
 
-#### `v1.6.0` — Academia abierta, simulador de exámenes y certificaciones verificables
+#### `v1.7.0` — Academia abierta, simulador de exámenes y certificaciones verificables
 
 - **Objetivo de valor:** Permitir que cualquier profesional o joven aprenda de forma estructurada, compruebe si sabe detectar fallos de la IA y obtenga una acreditación práctica.
 - **Alcance de la sesión:**
@@ -90,7 +98,7 @@ flowchart LR
   - **`US-502` (Exámenes prácticos y «Cazador de alucinaciones»):** Simulador interactivo con casos reales donde el usuario debe encontrar errores ocultos, sesgos o riesgos legales en respuestas generadas por IA.
   - **`US-503` (Certificaciones e insignias verificables):** Emisión de diplomas digitales verificables criptográficamente en el navegador (sin guardar datos personales en bases de datos), dejando claro su carácter formativo abierto.
 
-#### `v1.7.0` — Concursos comunitarios, impacto social fractal y nuevos `AIWorkers`
+#### `v1.8.0` — Concursos comunitarios, impacto social fractal y nuevos `AIWorkers`
 
 - **Objetivo de valor:** Abrir el laboratorio a los retos reales de la comunidad y extender las herramientas a educación, mayores y defensa ciudadana.
 - **Alcance de la sesión:**
@@ -100,9 +108,9 @@ flowchart LR
 
 ---
 
-### Horizonte 3: Difusión multicanal, formatos de audio e internacionalización (`v1.8.0` – `v2.0.0`)
+### Horizonte 3: Difusión multicanal, formatos de audio e internacionalización (`v1.9.0` – `v2.0.0`)
 
-#### `v1.8.0` — Sindicación autónoma en redes sociales y cápsulas de audio
+#### `v1.9.0` — Sindicación autónoma en redes sociales y cápsulas de audio
 
 - **Objetivo de valor:** Salir al encuentro de los profesionales que no disponen de tiempo para buscar en la web o que se informan mientras se desplazan.
 - **Alcance de la sesión:**
@@ -119,8 +127,9 @@ flowchart LR
 
 ## 4. Equilibrio de las tres miradas en las nuevas líneas de expansión
 
-| Línea de expansión                            | Mirada de `AIVisio` (El para qué)                                                                     | Mirada de `AIDux` (El cómo)                                                                          | Guardarraíl de `AIJuris` (Las fronteras)                                                                                 |
-| :-------------------------------------------- | :---------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| **Recomendaciones, herramientas y precios**   | Que ninguna pyme pague por desconocimiento lo que puede lograr con sencillez.                         | Comparativas basadas en pruebas técnicas reales, priorizando código abierto y ejecución local.       | Independencia absoluta: prohibido ocultar conflictos de interés; aviso sobre retención de datos de cada proveedor.       |
-| **Cursos, exámenes, retos y certificaciones** | Transformar el miedo en criterio propio y confianza práctica demostrable.                             | Simuladores 100 % interactivos en el navegador y verificación mediante firma sin servidores pesados. | Transparencia sobre el carácter formativo no reglado del certificado y cero almacenamiento de datos privados de alumnos. |
-| **Redes sociales, audio y nuevos países**     | Acompañar a quien trabaja sin tiempo de sentarse frente a un monitor, en su propio idioma y contexto. | Generación estática multilingüe (`content.<lang>.json`) y plantillas de sindicación automatizadas.   | Identificación explícita de contenido/voz generados por IA (AI Act art. 50) y adaptación al marco legal de cada región.  |
+| Línea de expansión                            | Mirada de `AIVisio` (El para qué)                                                                     | Mirada de `AIDux` (El cómo)                                                                                  | Guardarraíl de `AIJuris` (Las fronteras)                                                                                 |
+| :-------------------------------------------- | :---------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
+| **`EmoInsight`, valoraciones y comentarios**  | Escuchar el sentir real del lector para que sus dudas y hallazgos guíen el siguiente paso evolutivo.  | Eventos ligeros en GA4, persistencia estática (`emo-insights.json`) e hilos públicos sin servidores de pago. | Sin huella digital invasiva ni venta de datos; aviso claro de que las respuestas en el hilo las emite una IA autónoma.   |
+| **Recomendaciones, herramientas y precios**   | Que ninguna pyme pague por desconocimiento lo que puede lograr con sencillez.                         | Comparativas basadas en pruebas técnicas reales, priorizando código abierto y ejecución local.               | Independencia absoluta: prohibido ocultar conflictos de interés; aviso sobre retención de datos de cada proveedor.       |
+| **Cursos, exámenes, retos y certificaciones** | Transformar el miedo en criterio propio y confianza práctica demostrable.                             | Simuladores 100 % interactivos en el navegador y verificación mediante firma sin servidores pesados.         | Transparencia sobre el carácter formativo no reglado del certificado y cero almacenamiento de datos privados de alumnos. |
+| **Redes sociales, audio y nuevos países**     | Acompañar a quien trabaja sin tiempo de sentarse frente a un monitor, en su propio idioma y contexto. | Generación estática multilingüe (`content.<lang>.json`) y plantillas de sindicación automatizadas.           | Identificación explícita de contenido/voz generados por IA (AI Act art. 50) y adaptación al marco legal de cada región.  |

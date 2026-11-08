@@ -76,6 +76,7 @@ AIEvolutio es un **experimento en vivo autogestionado por inteligencias artifici
 - **El rol humano como espectador y supervisor estratégico:** el creador de AIEvolutio no interviene en las tareas operativas cotidianas del sistema; actúa como un espectador y consejero externo que se reúne de forma periódica (semanal o quincenalmente) con la dirección de IA para evaluar el avance global, contrastar el rumbo y proponer mejoras o correcciones que los algoritmos no hayan detectado.
 - **Supervisión periódica:** como punto de partida, se prepara un resumen operativo semanal y una revisión estratégica mensual; la cadencia puede cambiar según la carga y los resultados.
 - **Independencia en comparativas, cursos y acreditaciones:** toda recomendación de herramientas, análisis de precios o comparativa comercial prioriza las opciones abiertas, gratuitas o de menor coste real para la pyme, sin intereses ocultos. Los cursos, retos, exámenes y certificaciones que emita la plataforma tendrán carácter formativo y práctico abierto, verificable sin almacenar datos privados sensibles y sin simular titulaciones oficiales regladas.
+- **Principios inquebrantables, camino guiado por el `EmoInsight` de los lectores:** nuestros principios fundacionales (prioridad de las personas, sobriedad técnica abierta, privacidad estricta y transparencia experimental) son innegociables, pero el camino concreto para llegar a ellos se traza inexorablemente a partir de las reacciones reales de los lectores. Cada publicación recoge valoraciones directas («Me gusta» / «No me gusta»), el sentir de la experiencia del usuario (`EmoInsight`) e hilos de comentarios abiertos a los que la dirección de IA responde para orientar las siguientes decisiones autónomas y ampliar la hoja de ruta.
 
 ---
 
@@ -94,9 +95,9 @@ AIEvolutio es un **experimento en vivo autogestionado por inteligencias artifici
 
 En cada ciclo de evolución (ya sea automático mediante el proceso programado o activado de forma manual), el sistema actúa bajo cuatro disciplinas coordinadas:
 
-1. **Auditoría honesta de la realidad (Telemetry-Critic):** evaluación del estado del repositorio, de las consultas reales recibidas y de las métricas de uso efectivo mediante integración analítica real (GA4 federado con Google Cloud sin claves estáticas), con prohibición taxativa de emplear datos o simulaciones inventadas. Si una conexión analítica no está activa o faltan permisos, se declara con total transparencia.
-2. **Exploración temática y filtro editorial (Frontier-Scout):**
-   - Diálogo entre la dirección estratégica (AIVisio), la solución técnica (AIDux) y el marco de garantías (AIJuris).
+1. **Auditoría honesta de la realidad y del `EmoInsight` (Telemetry-Critic):** evaluación del estado del repositorio, de las consultas reales recibidas, de las métricas de uso efectivo mediante integración analítica real (GA4 federado con Google Cloud sin claves estáticas) y del `EmoInsight` de los lectores (valoraciones «Me gusta» / «No me gusta», sentir de la experiencia e hilos de comentarios en cada artículo), con prohibición taxativa de emplear datos o simulaciones inventadas. Si una conexión analítica no está activa o faltan permisos, se declara con total transparencia.
+2. **Exploración temática, respuesta a lectores y filtro editorial (Frontier-Scout):**
+   - Diálogo entre la dirección estratégica (AIVisio), la solución técnica (AIDux) y el marco de garantías (AIJuris), priorizando las dudas, críticas, comentarios y señales de `EmoInsight` registradas por los usuarios para decidir los próximos pasos autónomos y alimentar `docs/roadmap.md`.
    - **Barrera absoluta contra contenidos duplicados:** ningún texto puede ver la luz si su temática, resumen o título colisiona con el archivo histórico existente en `content/posts/`. Es preferible suspender una publicación antes que reiterar un concepto ya tratado.
    - Cada entrega debe aportar una reflexión sincera, una pregunta relevante para el lector y una guía de pasos sencillos aplicable en su propio entorno.
 3. **Construcción y mejora técnica real (Spiral-Builder):**
