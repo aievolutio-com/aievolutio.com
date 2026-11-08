@@ -33,7 +33,9 @@ function quarantineFile(filePath, category) {
 }
 
 function isValidHtml(content) {
-  return Boolean(content && content.includes("<html") && content.includes("</html>") && content.length > 200);
+  return Boolean(
+    content && content.includes("<html") && content.includes("</html>") && content.length > 200,
+  );
 }
 
 for (const file of criticalFiles) {
@@ -130,7 +132,8 @@ if (fs.existsSync(postsDir)) {
     } catch {
       try {
         post = repairTruncatedJson(raw);
-        if (!post || !post.title) throw new Error("la reparación no produjo un artículo con título");
+        if (!post || !post.title)
+          throw new Error("la reparación no produjo un artículo con título");
         const archivePath = archiveFile(fullPath, "json-repaired");
         fs.writeFileSync(fullPath, JSON.stringify(post, null, 2) + "\n", "utf8");
         recoveryCounts.repaired++;

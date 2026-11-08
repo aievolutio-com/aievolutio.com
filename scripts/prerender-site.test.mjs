@@ -135,6 +135,10 @@ test("deployment output contains every profile and a static page for every artic
     "index.html includes static aiworkers section",
   );
   assert.ok(indexHtml.includes('<section id="blog"'), "index.html includes static blog section");
+  assert.ok(
+    indexHtml.includes('<span class="site-version">v1.0.0</span>'),
+    "index.html includes site-version v1.0.0",
+  );
   const posts = source.sections
     .find((section) => section.id === "blog")
     .blocks.filter((block) => block.type === "post");

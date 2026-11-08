@@ -975,6 +975,19 @@ footer .disclaimer {
   font-size: 0.85rem;
   color: var(--muted);
 }
+.site-version {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-sm, 6px);
+  background: color-mix(in srgb, var(--brand-tech) 12%, transparent);
+  color: var(--brand-tech);
+  border: 1px solid color-mix(in srgb, var(--brand-tech) 25%, transparent);
+  vertical-align: middle;
+  letter-spacing: 0.03em;
+}
 .skip-link {
   position: absolute;
   left: -9999px;

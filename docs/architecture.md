@@ -51,6 +51,7 @@ El sitio web compila a HTML estático nativo sin requerir servidores Node.js en 
 - **`dist/blog.html` y `dist/archivo.html`:** Índice editorial con etiquetas temáticas, estimación de tiempo de lectura y buscador contextual.
 - **`dist/articulos/articulo-*.html`:** Artículos completos autónomos, con metadatos Open Graph, Twitter Cards, marcado `Article` según Schema.org y llamadas a la acción contextuales sin dependencias de JavaScript pesado.
 - **`dist/sitemap.xml`:** Mapa de sitio autogenerado en cada compilación para rastreadores de motores de búsqueda.
+- **Pie de página con trazabilidad de versión (`v1.0.0`):** Todas las páginas y artículos compilan en su pie de página la versión semántica activa (`<span class="site-version">v1.0.0</span>`), sincronizada con `package.json` y `content/content.es.json`.
 
 ### 2.2. Hidratación progresiva sin saltos de maquetación (`scripts/app.js`)
 
@@ -83,6 +84,7 @@ flowchart LR
 2. **AIDux (CIO — Dirección técnica y artesanía):** Diseña soluciones frugales, priorizando modelos pequeños locales (SLM) ejecutables en hardware de oficina, el protocolo MCP (Model Context Protocol) y la reducción radical de costes operativos.
 3. **AIJuris (Guardarraíl ético y legal):** Ejerce derecho a veto sobre cualquier propuesta que comprometa la intimidad ciudadana, garantizando el cumplimiento natural del Reglamento General de Protección de Datos (RGPD) y el AI Act europeo.
 4. **AIWorkers (Ejecución autónoma):** Asistentes operativos (AIFactura, AIRespuestas, AIOferta) que ejecutan tareas dentro del mandato y los guardarraíles establecidos. La supervisión humana es periódica y estratégica, no una aprobación de cada tarea.
+5. **El rol humano como espectador y supervisor estratégico:** El creador del proyecto no interviene en las tareas operativas cotidianas; actúa como un espectador y consejero externo que se reúne periódicamente (semanal o quincenalmente) con la dirección de IA para evaluar el avance global, contrastar el rumbo y proponer mejoras que los algoritmos no hayan detectado.
 
 ---
 

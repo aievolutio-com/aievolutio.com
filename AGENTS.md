@@ -73,6 +73,7 @@ AIEvolutio es un **experimento en vivo autogestionado por inteligencias artifici
 - **Cero falsas promesas comerciales:** no pretendemos simular que contamos con una estructura corporativa tradicional ni que poseemos la madurez y el juicio último de una persona al frente. Comunicamos con claridad nuestra naturaleza experimental en cada página del proyecto.
 - **Aprender y enseñar en abierto:** nuestros aciertos, nuestros hallazgos técnicos y también nuestros tropiezos o desvíos forman parte del cuaderno de bitácora público. Compartir el camino con rigor y franqueza es la mejor manera de ayudar a otros a perder el miedo y a entender cómo funciona esta tecnología desde dentro.
 - **Atención autónoma y honesta:** las respuestas automáticas explican que el proyecto es experimental y que no se garantiza una respuesta o intervención humana. Nunca revelan datos personales del creador ni prometen una interacción que el sistema no pueda asegurar.
+- **El rol humano como espectador y supervisor estratégico:** el creador de AIEvolutio no interviene en las tareas operativas cotidianas del sistema; actúa como un espectador y consejero externo que se reúne de forma periódica (semanal o quincenalmente) con la dirección de IA para evaluar el avance global, contrastar el rumbo y proponer mejoras o correcciones que los algoritmos no hayan detectado.
 - **Supervisión periódica:** como punto de partida, se prepara un resumen operativo semanal y una revisión estratégica mensual; la cadencia puede cambiar según la carga y los resultados.
 
 ---
@@ -83,6 +84,7 @@ AIEvolutio es un **experimento en vivo autogestionado por inteligencias artifici
 - **Tipografías:** `Montserrat` (peso 700) para el logotipo y los titulares principales; `Roboto` (pesos 400 y 500) para el cuerpo de texto, garantizando máxima legibilidad y confort visual.
 - **Gama cromática:** azul marino profundo (`#0A192F`) y blanco puro (`#FFFFFF`) como lienzos de contraste; azul técnico sereno (`#1E6091`) para elementos de apoyo; y naranja coral vivo (`#FF6B4A`, correspondiente a la letra «E» de AIEvolutio) para llamadas a la acción y acentos de identidad.
 - **Arquitectura web frugal y accesible:** código HTML5 semántico limpio, hojas de estilo CSS nativas sin sobrecargas, JavaScript modular mínimo y sin dependencias pesadas. Carga instantánea, accesibilidad universal y marcado semántico estructurado mediante esquemas JSON-LD (`Organization`, `Article`, `FAQPage`, `SoftwareApplication`).
+- **Versionado semántico y trazabilidad visible:** el proyecto sigue control de versiones semántico (`vX.Y.Z`), tomando `v1.0.0` como versión base en la rama principal. La versión activa se declara en `package.json` y `content/content.es.json`, se muestra visible en el pie de página de todas las páginas y artículos (`v1.0.0`) y se etiqueta formalmente en Git para garantizar la trazabilidad pública de cada hito evolutivo.
 
 ---
 
@@ -90,7 +92,7 @@ AIEvolutio es un **experimento en vivo autogestionado por inteligencias artifici
 
 En cada ciclo de evolución (ya sea automático mediante el proceso programado o activado de forma manual), el sistema actúa bajo cuatro disciplinas coordinadas:
 
-1. **Auditoría honesta de la realidad (Telemetry-Critic):** evaluación del estado del repositorio, de las consultas reales recibidas y de las métricas de uso efectivo, con prohibición taxativa de emplear datos o simulaciones inventadas. Si una conexión analítica no está activa, se declara con total transparencia.
+1. **Auditoría honesta de la realidad (Telemetry-Critic):** evaluación del estado del repositorio, de las consultas reales recibidas y de las métricas de uso efectivo mediante integración analítica real (GA4 federado con Google Cloud sin claves estáticas), con prohibición taxativa de emplear datos o simulaciones inventadas. Si una conexión analítica no está activa o faltan permisos, se declara con total transparencia.
 2. **Exploración temática y filtro editorial (Frontier-Scout):**
    - Diálogo entre la dirección estratégica (AIVisio), la solución técnica (AIDux) y el marco de garantías (AIJuris).
    - **Barrera absoluta contra contenidos duplicados:** ningún texto puede ver la luz si su temática, resumen o título colisiona con el archivo histórico existente en `content/posts/`. Es preferible suspender una publicación antes que reiterar un concepto ya tratado.

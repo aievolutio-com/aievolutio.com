@@ -4,7 +4,8 @@
     "tagline": "IA para ganar tiempo y vida",
     "language": "es",
     "copyright": "© AIEvolutio",
-    "license": "CC BY-SA 4.0"
+    "license": "CC BY-SA 4.0",
+    "version": "1.0.0"
   },
   "navigation": [
     {

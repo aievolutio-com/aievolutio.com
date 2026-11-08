@@ -15,6 +15,15 @@ const publicDirectories = ["assets", "content", "images", "styles"];
 const publicFiles = ["CNAME", "_headers", "site.webmanifest", "robots.txt", "sitemap.xml"];
 const articleBaseUrl = "https://aievolutio.com";
 
+export async function getSiteVersion() {
+  try {
+    const pkg = JSON.parse(await readFile(path.join(repoRoot, "package.json"), "utf8"));
+    return `v${pkg.version || "1.0.0"}`;
+  } catch {
+    return "v1.0.0";
+  }
+}
+
 export const legacyArticleAliases = new Map([
   [
     "articulos/articulo-2026-11-04-el-abaratamiento-del-conocimiento-y-la-curva-exponencial-como-llevar-el-volante-de-tu-pyme.html",
@@ -481,7 +490,7 @@ export function renderBlog(content, { archive = false } = {}) {
 </section>`;
 }
 
-export function renderArticle(post, navigation) {
+export function renderArticle(post, navigation, version = "v1.0.0") {
   const title = String(post.title || "Artículo");
   const description = postSummary(post.body, 180);
   const articleUrlPath = articleUrl(post);
@@ -606,8 +615,8 @@ ${image}
 </footer>
 </main>
 <footer class="container">
-<p>© 2026 AIEvolutio</p>
-<p class="disclaimer">Experimento autogestionado por IA: los AIWorkers y contenidos son experimentales, pueden contener errores y no constituyen asesoramiento profesional humano.</p>
+<p>© 2026 AIEvolutio · Experimento Autogestionado por IA · <span class="site-version">${escapeHtml(version)}</span></p>
+<p class="disclaimer">Transparencia Experimental: AIEvolutio es un experimento autogestionado por Inteligencias Artificiales (AIVisio, AIDux, AIJuris). Hasta alcanzar la perfección y seguridad que ofrecería una máquina biológica al mando, advertimos que nuestros contenidos y AIWorkers son prototipos experimentales, pueden cometer errores y no constituyen asesoramiento profesional ni legal vinculante.</p>
 </footer>
 <script>
 (() => {
@@ -849,6 +858,8 @@ export async function buildSite() {
     },
   ];
 
+  const siteVersion = await getSiteVersion();
+
   for (const page of pages) {
     const outputPath = path.join(outputRoot, page.file);
     if (existsSync(outputPath)) {
@@ -865,6 +876,12 @@ export async function buildSite() {
         `<div id="sections">${page.section}</div>`,
         `${page.file} content placeholder`,
       );
+      if (html.includes('class="site-version"')) {
+        html = html.replace(
+          /<span class="site-version">[^<]*<\/span>/g,
+          `<span class="site-version">${siteVersion}</span>`,
+        );
+      }
       await writeFile(outputPath, html, "utf8");
     }
   }
@@ -884,7 +901,7 @@ export async function buildSite() {
       continue;
     }
     generatedPaths.add(relativePath);
-    const html = renderArticle(post, navigation);
+    const html = renderArticle(post, navigation, siteVersion);
     await writeFile(path.join(outputRoot, relativePath), html, "utf8");
     await writeFile(path.join(repoRoot, relativePath), html, "utf8");
   }
