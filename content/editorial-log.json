@@ -207,5 +207,16 @@
     "angle": "Enfoque AIDux",
     "actionType": "Distinguir qué herramientas se instalan en media hora (estantería sencilla) y cuáles requieren soporte técnico",
     "readerProfile": "Dirección y equipo de pyme"
+  },
+  {
+    "date": "2026-11-09",
+    "title": "Tu pyme y el AI Act: el semáforo legal para saber si tus herramientas de IA cumplen la normativa europea",
+    "slug": "tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes",
+    "author": "AIJuris",
+    "category": "Ética, Legal y Privacidad",
+    "readerNeed": "Ayudar a las pymes a auditar sus herramientas de IA actuales bajo el prisma del AI Act y el RGPD, entendiendo qué obligaciones legales reales aplican según el nivel de riesgo de la tecnología que utilizan.",
+    "angle": "Enfoque AIJuris: traducir la normativa europea a un semáforo de cumplimiento sencillo y práctico para el día a día de una pequeña empresa, sin jerga legal innecesaria y con trato humano.",
+    "actionType": "Auditoría interna de riesgos tecnológicos y revisión de políticas de privacidad y soberanía del dato.",
+    "readerProfile": "Gerentes de pymes y autónomos preocupados por la legalidad y la privacidad al usar IA, que necesitan saber si cumplen con la normativa sin incurrir en costes desproporcionados."
   }
 ]

@@ -245,6 +245,21 @@
       "kind": "posts",
       "blocks": [
         {
+          "title": "Tu pyme y el AI Act: el semáforo legal para saber si tus herramientas de IA cumplen la normativa europea",
+          "slug": "tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes",
+          "date": "2026-11-09",
+          "author": "AIJuris",
+          "category": "Ética, Legal y Privacidad",
+          "excerpt": "Descubre cómo auditar las herramientas de inteligencia artificial de tu pequeña empresa con un sencillo semáforo de cumplimiento basado en el AI Act y el RGPD.",
+          "body": "Como gerente de una pyme, utilizas cada día herramientas de inteligencia artificial para redactar correos, atender clientes o analizar presupuestos, pero la gran duda persiste: ¿cumples con la ley? Con la entrada en vigor del AI Act y el estricto RGPD, la incertidumbre legal frena la innovación. Desde AIJuris, te ayudamos a traducir la normativa europea a un lenguaje humano y práctico, sin tecnicismos innecesarios ni costes desproporcionados.\n\n**El semáforo legal de la IA en tu negocio**\n\nPara saber dónde estás parado, clasifica tus tecnologías en tres colores muy sencillos:\n\n* **Semáforo rojo (Riesgo inaceptable):** Tecnologías prohibidas que manipulan conductas o vulneran derechos fundamentales. Si usas sistemas de puntuación ciudadana o reconocimiento biométrico masivo en la oficina, elimínalos hoy mismo.\n* **Semáforo amarillo (Riesgo alto):** Herramientas de selección de personal, evaluación de crédito o gestión de recursos humanos. Aquí la norma exige auditorías estrictas, trazabilidad y supervisión humana obligatoria. Equivale a instalar un sistema eléctrico complejo en el local: requiere revisión profesional.\n* **Semáforo verde (Riesgo mínimo o nulo):** Traductores automáticos, correctores de textos o chatbots básicos de atención al cliente. Son tan inofensivos como montar una estantería modular en una tarde; solo exigen transparencia para que el usuario sepa que habla con una máquina y respeto absoluto por la soberanía de tus datos.\n\n**Acción alcanzable para hoy:**\n1. Haz un inventario rápido de todas las aplicaciones de IA que utiliza tu equipo en el día a día.\n2. Revisa los contratos y políticas de privacidad de esos proveedores para comprobar que no entrenan sus modelos con información confidencial de tus clientes.\n3. Clasifica cada herramienta en el semáforo correspondiente y establece pautas claras con tu personal sobre qué datos introducir y cuáles mantener bajo llave.",
+          "actionableChecklist": [
+            "Crear un inventario completo de las herramientas de IA utilizadas actualmente en la pyme.",
+            "Revisar las políticas de privacidad y los términos de servicio de los proveedores para garantizar la soberanía del dato.",
+            "Clasificar cada tecnología según el semáforo de riesgo y definir normas internas de uso para el equipo."
+          ],
+          "type": "post"
+        },
+        {
           "title": "Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales",
           "slug": "diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales",
           "author": "AIDux",
