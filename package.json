@@ -1,14 +1,14 @@
 {
   "name": "aievolutio-site",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.3.0",
   "license": "MIT",
   "scripts": {
     "predev": "npm run build:site",
     "dev": "npx http-server -c-1 dist",
     "build:site": "node scripts/prerender-site.mjs",
-    "evolve:content": "node scripts/autonomous-evolution.mjs --force-content",
-    "evolve:tech": "node scripts/autonomous-evolution.mjs --force-tech",
+    "evolve:content": "node scripts/autonomous-evolution.mjs --phase=content --force-content",
+    "evolve:tech": "node scripts/autonomous-evolution.mjs --phase=tech --force-tech",
     "evolve:audit": "node scripts/autonomous-evolution.mjs --audit-only",
     "test": "node --test scripts/*.test.mjs",
     "lint:js": "eslint scripts --max-warnings=0",

@@ -1881,3 +1881,301 @@ figure.quote figcaption {
   font-size: 0.94rem;
   line-height: 1.55;
 }
+
+/* === v1.3.0: EmoInsight, valoraciones (Me gusta / No me gusta) e hilos de comentarios === */
+.post-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.post-card-emo-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.emo-mini-btn,
+.emo-mini-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--motion-fast) ease;
+}
+
+.emo-mini-btn:hover,
+.emo-mini-link:hover {
+  border-color: var(--brand-tech);
+  color: var(--brand-tech);
+}
+
+.emo-mini-btn.active[data-emo-vote="like"] {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.45);
+  color: #059669;
+}
+
+.emo-mini-btn.active[data-emo-vote="dislike"] {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.45);
+  color: #dc2626;
+}
+
+.emo-compass-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: var(--space-3);
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--brand-tech) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--brand-tech) 24%, var(--border));
+  font-size: 0.9rem;
+}
+
+.emo-compass-badge {
+  font-weight: 700;
+  color: var(--brand-tech);
+  white-space: nowrap;
+}
+
+.emo-insight-card,
+.article-comments-card {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.emo-insight-header h2 {
+  margin: 0.35rem 0 0.4rem;
+  font-size: 1.35rem;
+}
+
+.emo-insight-header p {
+  margin: 0;
+}
+
+.emo-vote-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.emo-vote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--motion-fast) ease;
+}
+
+.emo-vote-btn:hover {
+  border-color: var(--brand-tech);
+}
+
+.emo-vote-btn.active[data-emo-vote="like"] {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+.emo-vote-btn.active[data-emo-vote="dislike"] {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.emo-badge-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 9999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.emo-dimensions-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.emo-dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.65rem;
+}
+
+.emo-dim-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--motion-fast) ease;
+}
+
+.emo-dim-btn:hover {
+  border-color: var(--brand-tech);
+}
+
+.emo-dim-btn.active {
+  background: color-mix(in srgb, var(--brand-tech) 14%, var(--bg));
+  border-color: var(--brand-tech);
+  font-weight: 600;
+}
+
+.emo-feedback-status {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--brand-tech);
+}
+
+.comments-thread-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.comment-item {
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.comment-ai-seed,
+.comment-ai-reply {
+  border-left: 4px solid var(--brand-tech);
+  background: color-mix(in srgb, var(--brand-tech) 6%, var(--bg));
+}
+
+.comment-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.comment-author-badge {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--brand-tech);
+}
+
+.comment-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.comment-body {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.comment-empty-note {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.comment-form h3 {
+  margin: 0;
+  font-size: 1.12rem;
+}
+
+.comment-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-3);
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-field label {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.comment-textarea {
+  resize: vertical;
+  min-height: 96px;
+  font-family: inherit;
+}
+
+.comment-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.comment-privacy-note {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.article-clarity-box {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  border-left: 4px solid #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.article-clarity-box h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.02rem;
+}
+
+.article-clarity-box p {
+  margin: 0;
+  font-size: 0.95rem;
+}

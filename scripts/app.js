@@ -1078,6 +1078,69 @@
     update();
   }
 
+  function setupEmoCardActions() {
+    const EMO_KEY = "ae_emo_state_v1";
+    const loadState = () => {
+      try {
+        return JSON.parse(localStorage.getItem(EMO_KEY) || "{}");
+      } catch {
+        return {};
+      }
+    };
+    const saveState = (st) => {
+      try {
+        localStorage.setItem(EMO_KEY, JSON.stringify(st));
+      } catch {
+        /* ignore */
+      }
+    };
+
+    const syncAllCardButtons = () => {
+      const st = loadState();
+      const votes = st.votes || {};
+      const comments = st.comments || {};
+      document.querySelectorAll(".emo-mini-btn[data-emo-vote]").forEach((btn) => {
+        const slug = btn.getAttribute("data-emo-slug") || "";
+        const vType = btn.getAttribute("data-emo-vote") || "";
+        const base = parseInt(btn.getAttribute("data-base-count") || "0", 10) || 0;
+        const active = votes[slug] === vType;
+        btn.classList.toggle("active", active);
+        btn.setAttribute("aria-pressed", String(active));
+        const countEl = btn.querySelector("[data-emo-count]");
+        if (countEl) countEl.textContent = String(base + (active ? 1 : 0));
+      });
+      document.querySelectorAll("[data-emo-comments-count]").forEach((elCount) => {
+        const slug = elCount.getAttribute("data-emo-comments-count") || "";
+        const localArr = Array.isArray(comments[slug]) ? comments[slug] : [];
+        if (localArr.length > 0) {
+          elCount.textContent = String(localArr.length);
+        }
+      });
+    };
+
+    document.querySelectorAll(".emo-mini-btn[data-emo-vote]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const slug = btn.getAttribute("data-emo-slug") || "";
+        const vType = btn.getAttribute("data-emo-vote") || "";
+        if (!slug || !vType) return;
+        const st = loadState();
+        st.votes = st.votes || {};
+        st.votes[slug] = st.votes[slug] === vType ? null : vType;
+        saveState(st);
+        syncAllCardButtons();
+        if (typeof window.gtag === "function" && st.votes[slug]) {
+          window.gtag("event", "emo_insight_feedback", {
+            article_slug: slug,
+            vote_type: st.votes[slug],
+            event_category: "emo_insight",
+          });
+        }
+      });
+    });
+
+    syncAllCardButtons();
+  }
+
   async function main() {
     setupTheme();
     setupLightbox();
@@ -1085,6 +1148,7 @@
     setupRoiCalculator();
     setupBlogFilters();
     setupGlossaryFilters();
+    setupEmoCardActions();
     const currentYear = $("#current-year");
     if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 

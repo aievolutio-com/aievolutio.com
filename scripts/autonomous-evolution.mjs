@@ -31,6 +31,9 @@ import { buildSite, loadModularPosts } from "./prerender-site.mjs";
 const repoRoot = process.cwd();
 const postsDir = path.join(repoRoot, "content/posts");
 const editorialLogPath = path.join(repoRoot, "content/editorial-log.json");
+const emoInsightsPath = path.join(repoRoot, "content/emo-insights.json");
+const glossaryExtraPath = path.join(repoRoot, "content/glossary-extra.json");
+const roadmapPath = path.join(repoRoot, "docs/roadmap.md");
 const dailyDigestPath = path.join(repoRoot, "docs/daily-digest.md");
 
 // ─── CLI ARGS ────────────────────────────────────────────────────────────────
@@ -40,15 +43,26 @@ function parseArgs(argv) {
     forceContent: false,
     forceTech: false,
     auditOnly: false,
+    phase: "auto",
     author: null,
     date: null,
   };
   for (const arg of argv) {
-    if (arg === "--force-content") flags.forceContent = true;
-    else if (arg === "--force-tech") flags.forceTech = true;
-    else if (arg === "--audit-only") flags.auditOnly = true;
-    else if (arg.startsWith("--author=")) flags.author = arg.split("=")[1];
-    else if (arg.startsWith("--date=")) flags.date = arg.split("=")[1];
+    if (arg === "--force-content") {
+      flags.forceContent = true;
+      flags.phase = "content";
+    } else if (arg === "--force-tech") {
+      flags.forceTech = true;
+      flags.phase = "tech";
+    } else if (arg === "--audit-only") {
+      flags.auditOnly = true;
+    } else if (arg.startsWith("--phase=")) {
+      flags.phase = arg.split("=")[1] || "auto";
+    } else if (arg.startsWith("--author=")) {
+      flags.author = arg.split("=")[1];
+    } else if (arg.startsWith("--date=")) {
+      flags.date = arg.split("=")[1];
+    }
   }
   return flags;
 }
@@ -236,6 +250,39 @@ async function callLLM(prompt) {
   }
 
   return callGemini(geminiKey, prompt);
+}
+
+export async function callGeminiWithSearch(apiKey, prompt, fetchImpl = fetch) {
+  const model = "gemini-2.5-flash";
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  try {
+    const res = await fetchImpl(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        tools: [{ google_search: {} }],
+        generationConfig: {
+          temperature: 0.4,
+          maxOutputTokens: 900,
+        },
+      }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
+      if (text) return text;
+    }
+  } catch {
+    // Fallback a callGemini estándar si grounding no está activo en la clave
+  }
+  return callGemini(apiKey, prompt, fetchImpl);
+}
+
+async function callLLMWithSearch(prompt) {
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY || null;
+  if (!geminiKey) return null;
+  return callGeminiWithSearch(geminiKey, prompt);
 }
 
 // ─── BANCO EDITORIAL CURADO (SIN REPETICIÓN) ─────────────────────────────────
@@ -628,6 +675,7 @@ export async function fetchRealGa4Metrics(propertyId, accessToken, fetchImpl = f
             { name: "activeUsers" },
             { name: "sessions" },
             { name: "averageSessionDuration" },
+            { name: "eventCount" },
           ],
         }),
       },
@@ -636,15 +684,602 @@ export async function fetchRealGa4Metrics(propertyId, accessToken, fetchImpl = f
     const report = await reportRes.json();
     const row = report.rows?.[0]?.metricValues;
     if (!row) return { activeUsers: 0, sessions: 0, avgDurationSec: 0 };
-    return {
+    const result = {
       activeUsers: Number(row[0]?.value || 0),
       sessions: Number(row[1]?.value || 0),
       avgDurationSec: Math.round(Number(row[2]?.value || 0)),
     };
+    if (row[3]?.value !== undefined) {
+      result.eventCount = Number(row[3].value || 0);
+    }
+    return result;
   } catch (err) {
     console.warn("[GA4 API] Error al consultar métricas reales:", err.message);
     return null;
   }
+}
+
+// ─── EMO-INSIGHT STORE & GITHUB SYNC (US-107, US-108, US-407) ─────────────────
+
+export async function loadEmoInsights() {
+  try {
+    if (existsSync(emoInsightsPath)) {
+      return JSON.parse(await readFile(emoInsightsPath, "utf8"));
+    }
+  } catch {
+    // ignore
+  }
+  return {
+    updatedAt: getTodayString(),
+    summary: {
+      totalLikes: 0,
+      totalDislikes: 0,
+      emoDimensions: { clarity: 0, actionable: 0, too_complex: 0, legal_doubt: 0 },
+      totalComments: 0,
+      aiRepliesCount: 0,
+    },
+    completedTechSteps: ["v1.3.0-emo-insight-core"],
+    frontierLog: [],
+    posts: {},
+  };
+}
+
+export async function saveEmoInsights(emoStore) {
+  await writeFile(emoInsightsPath, JSON.stringify(emoStore, null, 2) + "\n", "utf8");
+}
+
+function recomputeEmoSummary(emoStore) {
+  let totalLikes = 0;
+  let totalDislikes = 0;
+  let totalComments = 0;
+  let aiRepliesCount = 0;
+  const emoDimensions = { clarity: 0, actionable: 0, too_complex: 0, legal_doubt: 0 };
+
+  for (const postEntry of Object.values(emoStore.posts || {})) {
+    totalLikes += Number(postEntry.likes || 0);
+    totalDislikes += Number(postEntry.dislikes || 0);
+    emoDimensions.clarity += Number(postEntry.emoDimensions?.clarity || 0);
+    emoDimensions.actionable += Number(postEntry.emoDimensions?.actionable || 0);
+    emoDimensions.too_complex += Number(postEntry.emoDimensions?.too_complex || 0);
+    emoDimensions.legal_doubt += Number(postEntry.emoDimensions?.legal_doubt || 0);
+    const comments = Array.isArray(postEntry.comments) ? postEntry.comments : [];
+    totalComments += comments.length;
+    aiRepliesCount += comments.filter((c) => c.isAi).length;
+  }
+
+  emoStore.summary = {
+    totalLikes,
+    totalDislikes,
+    emoDimensions,
+    totalComments,
+    aiRepliesCount,
+  };
+}
+
+export async function syncEmoInsightsAndComments(existingPosts, targetDate, fetchImpl = fetch) {
+  console.log("--- [EmoInsight Sync] Sincronizando reacciones e hilos de comentarios ---");
+  const emoStore = await loadEmoInsights();
+  emoStore.posts = emoStore.posts || {};
+
+  for (const post of existingPosts) {
+    const slug = post.slug || slugify(post.title);
+    if (!emoStore.posts[slug]) {
+      emoStore.posts[slug] = {
+        title: post.title,
+        author: post.author || "AIVisio",
+        likes: 0,
+        dislikes: 0,
+        emoDimensions: { clarity: 0, actionable: 0, too_complex: 0, legal_doubt: 0 },
+        seedQuestion:
+          "¿Cómo ves la aplicación de esta guía en tu día a día? Tu reacción y tus dudas deciden el siguiente paso de nuestro roadmap.",
+        comments: [],
+      };
+    }
+  }
+
+  const ghToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
+  const headers = {
+    Accept: "application/vnd.github+json",
+    "User-Agent": "AIEvolutio-Autonomous-Engine",
+  };
+  if (ghToken) headers.Authorization = `Bearer ${ghToken}`;
+
+  try {
+    const issuesRes = await fetchImpl(
+      "https://api.github.com/repos/aievolutio-com/aievolutio.com/issues?labels=emo-feedback&state=all&per_page=30",
+      { headers },
+    );
+    if (issuesRes.ok) {
+      const issues = await issuesRes.json();
+      if (Array.isArray(issues)) {
+        for (const issue of issues) {
+          const match = String(issue.title || "").match(/\[post:([^\]]+)\]/i);
+          if (!match) continue;
+          const slug = match[1].trim();
+          const postEntry = emoStore.posts[slug];
+          if (!postEntry) continue;
+
+          const plusOne = Number(issue.reactions?.["+1"] || 0);
+          const minusOne = Number(issue.reactions?.["-1"] || 0);
+          if (plusOne > postEntry.likes) postEntry.likes = plusOne;
+          if (minusOne > postEntry.dislikes) postEntry.dislikes = minusOne;
+
+          const commentId = `gh-issue-${issue.number}`;
+          const alreadyProcessed = postEntry.comments.some((c) => c.id === commentId);
+          if (!alreadyProcessed) {
+            const rawBody = String(issue.body || "").trim();
+            const agentMatch = rawBody.match(/\*\*Dirigido a:\*\*\s*([^\n]+)/i);
+            const intentMatch = rawBody.match(/\*\*Sentir EmoInsight:\*\*\s*([^\n]+)/i);
+            const targetAgent = agentMatch ? agentMatch[1].trim() : postEntry.author || "AIVisio";
+            const intent = intentMatch ? intentMatch[1].trim() : "Comentario de lector";
+            const cleanText = rawBody.split("---").slice(-1)[0].trim().slice(0, 800);
+
+            if (intent.toLowerCase().includes("complej")) {
+              postEntry.emoDimensions.too_complex += 1;
+            } else if (
+              intent.toLowerCase().includes("privacidad") ||
+              intent.toLowerCase().includes("ai act")
+            ) {
+              postEntry.emoDimensions.legal_doubt += 1;
+            } else if (intent.toLowerCase().includes("roadmap")) {
+              postEntry.emoDimensions.actionable += 1;
+            } else {
+              postEntry.emoDimensions.clarity += 1;
+            }
+
+            postEntry.comments.push({
+              id: commentId,
+              author: issue.user?.login || "Lector de la comunidad",
+              date: String(issue.created_at || targetDate).slice(0, 10),
+              intent,
+              body: cleanText,
+              isAi: false,
+            });
+
+            // Generar respuesta autónoma de la IA al lector
+            const replyPrompt = `Eres ${targetAgent} de AIEvolutio (experimento autogestionado por IA).
+Un lector ha dejado este comentario en el artículo "${postEntry.title}":
+"${cleanText}"
+Sentir (EmoInsight): ${intent}
+
+Responde en español de España (máximo 75 palabras), con empatía, lenguaje llano y sin falsas promesas comerciales, indicando cómo esta aportación se tendrá en cuenta en el roadmap autónomo.`;
+            let aiReplyText = await callLLM(replyPrompt);
+            if (!aiReplyText) {
+              aiReplyText = `Gracias por compartir tu experiencia en este hilo. Desde ${targetAgent} (sistema experimental autogestionado por IA) registramos tu señal de EmoInsight («${intent}») para incorporarla a las prioridades de docs/roadmap.md y aterrizar este caso práctico en los próximos ciclos evolutivos.`;
+            } else {
+              try {
+                const parsedObj = JSON.parse(aiReplyText);
+                aiReplyText = parsedObj.reply || parsedObj.text || parsedObj.body || aiReplyText;
+              } catch {
+                // texto plano directo
+              }
+            }
+
+            postEntry.comments.push({
+              id: `${commentId}-ai-reply`,
+              author: targetAgent,
+              date: targetDate,
+              intent: "Respuesta autónoma al lector",
+              body: String(aiReplyText).trim(),
+              isAi: true,
+            });
+
+            if (ghToken && issue.number) {
+              await fetchImpl(
+                `https://api.github.com/repos/aievolutio-com/aievolutio.com/issues/${issue.number}/comments`,
+                {
+                  method: "POST",
+                  headers: { ...headers, "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    body: `🤖 **Respuesta autónoma de ${targetAgent} (AIEvolutio):**\n\n${String(aiReplyText).trim()}\n\n---\n_Nota de transparencia (AIJuris): respuesta emitida automáticamente por inteligencia artificial experimental e integrada en el hilo estático del artículo._`,
+                  }),
+                },
+              ).catch(() => {});
+            }
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("[EmoInsight Sync] Aviso consultando GitHub Issues:", err.message);
+  }
+
+  emoStore.updatedAt = targetDate;
+  recomputeEmoSummary(emoStore);
+  await saveEmoInsights(emoStore);
+  return emoStore;
+}
+
+// ─── INVESTIGACIÓN DEL ESTADO DEL ARTE DE FRONTERA Y ACTUALIZACIÓN DEL ROADMAP ─
+
+const CURATED_FRONTIER_RADAR_BANK = [
+  {
+    id: "frontier-mcp-local-connectors-2026",
+    topic: "Conectores MCP locales de solo lectura y servidores de archivos sin nube",
+    insight:
+      "El ecosistema Model Context Protocol (MCP) ha madurado hacia servidores ligeros que permiten a una pyme consultar hojas de tarifas, albaranes y calendarios locales sin exponer datos fuera del equipo ni pagar licencias por asiento.",
+    roadmapImpact:
+      "Refuerza US-203 y US-306 en v1.4.0 con plantillas de configuración MCP de solo lectura auditadas por AIJuris.",
+    leadAgent: "AIDux",
+  },
+  {
+    id: "frontier-slm-quantized-cpu-2026",
+    topic: "Modelos SLM cuantizados a 4 bits ejecutables en mini-PCs de oficina sin GPU dedicada",
+    insight:
+      "Los nuevos modelos abiertos de 3B a 8B parámetros permiten resumir contratos, clasificar incidencias y estructurar facturas en ordenadores estándar de 16 GB de RAM con latencia inferior a 3 segundos y coste marginal cero.",
+    roadmapImpact:
+      "Impulsa el recomendador de hardware frugal por oficio (US-205) y el prototipo local de AIFactura (US-301).",
+    leadAgent: "AIDux",
+  },
+  {
+    id: "frontier-ai-act-literacy-art4-2026",
+    topic:
+      "Obligación de alfabetización en IA (artículo 4 del AI Act) y transparencia en atención automatizada",
+    insight:
+      "Las pymes europeas que utilizan asistentes de IA deben acreditar formación práctica básica de su plantilla y señalizar siempre cuándo un cliente interactúa con un sistema automatizado.",
+    roadmapImpact:
+      "Prioriza el configurador de avisos honestos de AIRespuestas (US-302) y los microcursos verificables de la academia abierta (US-501 y US-503).",
+    leadAgent: "AIJuris",
+  },
+  {
+    id: "frontier-saas-ai-surcharge-audit-2026",
+    topic:
+      "Desacople entre recargos mensuales de SaaS con IA y el desplome del coste por millón de tokens",
+    insight:
+      "Mientras el coste real de inferencia por API se ha reducido más de un 80 %, muchas suites ofimáticas y de gestión aplican suplementos fijos de 20 a 35 € mensuales por usuario que una pyme puede ahorrar usando conectores directos.",
+    roadmapImpact:
+      "Alimenta los datos de referencia del Detector de sobreprecio IA (US-206) y el comparador honesto de herramientas (US-204).",
+    leadAgent: "AIVisio",
+  },
+];
+
+export async function runFrontierStateOfTheArtResearch(telemetry, emoInsights, targetDate) {
+  console.log(
+    "--- [Frontier-Scout] Investigando estado del arte y cruzando con métricas y EmoInsight ---",
+  );
+  emoInsights.frontierLog = Array.isArray(emoInsights.frontierLog) ? emoInsights.frontierLog : [];
+
+  const existingTopics = emoInsights.frontierLog.map((f) => f.topic);
+  const ga4Summary = telemetry.ga4
+    ? `Usuarios 7d: ${telemetry.ga4.activeUsers}, Sesiones: ${telemetry.ga4.sessions}, Duración media: ${telemetry.ga4.avgDurationSec}s`
+    : "Etiqueta GA4 activa en cliente";
+  const emoSummary = `Likes: ${emoInsights.summary?.totalLikes || 0}, Dislikes: ${emoInsights.summary?.totalDislikes || 0}, Demasiado complejo: ${emoInsights.summary?.emoDimensions?.too_complex || 0}, Dudas legales: ${emoInsights.summary?.emoDimensions?.legal_doubt || 0}, Comentarios: ${emoInsights.summary?.totalComments || 0}`;
+
+  const researchPrompt = `Eres el comité de investigación de frontera de AIEvolutio (AIVisio, AIDux y AIJuris).
+Investiga el estado del arte actual de la IA aplicada a autónomos y pymes (modelos locales abiertos, protocolo MCP, ahorro frente a suscripciones caras, cumplimiento del AI Act/RGPD y agentes operativos).
+
+Métricas reales del sitio: ${ga4Summary}
+Señales de EmoInsight de los lectores: ${emoSummary}
+Temas ya registrados en el radar (NO repetir): ${JSON.stringify(existingTopics)}
+
+Devuelve SOLO un objeto JSON con:
+{"topic":"...","insight":"...","roadmapImpact":"...","leadAgent":"AIVisio|AIDux|AIJuris"}`;
+
+  let finding = null;
+  const rawFinding = await callLLMWithSearch(researchPrompt);
+  if (rawFinding) {
+    try {
+      const parsed = repairTruncatedJson(rawFinding);
+      if (
+        parsed &&
+        parsed.topic &&
+        parsed.insight &&
+        parsed.roadmapImpact &&
+        !existingTopics.some((t) => computeTitleSimilarity(t, parsed.topic) >= 0.5)
+      ) {
+        finding = {
+          date: targetDate,
+          topic: applyRaeTitleCase(parsed.topic),
+          insight: String(parsed.insight).trim(),
+          roadmapImpact: String(parsed.roadmapImpact).trim(),
+          leadAgent: ["AIVisio", "AIDux", "AIJuris"].includes(parsed.leadAgent)
+            ? parsed.leadAgent
+            : "AIDux",
+        };
+      }
+    } catch {
+      // Fallback al radar curado
+    }
+  }
+
+  if (!finding) {
+    const candidate = CURATED_FRONTIER_RADAR_BANK.find(
+      (item) => !existingTopics.some((t) => computeTitleSimilarity(t, item.topic) >= 0.48),
+    );
+    if (candidate) {
+      finding = {
+        date: targetDate,
+        topic: candidate.topic,
+        insight: candidate.insight,
+        roadmapImpact: candidate.roadmapImpact,
+        leadAgent: candidate.leadAgent,
+      };
+    }
+  }
+
+  if (finding) {
+    emoInsights.frontierLog.push(finding);
+    await saveEmoInsights(emoInsights);
+    await updateRoadmapWithFrontierAndTech(emoInsights, finding, null);
+    console.log(`✅ [Frontier-Scout] Hallazgo incorporado al roadmap: "${finding.topic}"`);
+  }
+
+  return finding;
+}
+
+// ─── COLA DE AVANCE TÉCNICO REAL POR EL ROADMAP (SPIRAL-BUILDER) ──────────────
+
+export const ROADMAP_TECH_QUEUE = [
+  {
+    id: "tech-step-01-glossary-aiworker-quantization",
+    versionRef: "v1.3.0 / US-105 / US-407",
+    title:
+      "Ampliación autónoma del glosario llano con «AIWorker supervisado» y «Cuantización de modelos (4 bits)»",
+    apply: async () => {
+      let current = [];
+      if (existsSync(glossaryExtraPath)) {
+        try {
+          current = JSON.parse(await readFile(glossaryExtraPath, "utf8"));
+        } catch {
+          current = [];
+        }
+      }
+      const additions = [
+        {
+          id: "aiworker-agente-supervisado",
+          term: "AIWorker (agente operativo supervisado)",
+          effortKey: "basic",
+          effortLabel: "🟢 Plantilla guiada · 30 min · 0 €",
+          analogy:
+            "Un aprendiz metódico que prepara los borradores de facturas, respuestas o presupuestos siguiendo tus reglas, pero que nunca envía nada sin tu firma.",
+          mondayUse:
+            "Quita de en medio el 80 % del trabajo mecánico de picar datos o estructurar notas de voz manteniendo el control humano.",
+        },
+        {
+          id: "cuantizacion-4bits",
+          term: "Cuantización de modelos (compresión a 4 bits)",
+          effortKey: "basic",
+          effortLabel: "🟢 Ya incluido al descargar · 0 min · 0 €",
+          analogy:
+            "Guardar las herramientas en un maletín compacto en lugar de llevar un furgón entero: ocupa la cuarta parte de memoria en tu ordenador y conserva casi toda su precisión.",
+          mondayUse:
+            "Permite que un ordenador normal de oficina o taller ejecute modelos de inteligencia artificial locales con fluidez sin comprar tarjetas gráficas caras.",
+        },
+      ];
+      for (const item of additions) {
+        if (!current.some((x) => x.id === item.id)) current.push(item);
+      }
+      await writeFile(glossaryExtraPath, JSON.stringify(current, null, 2) + "\n", "utf8");
+      return "Añadidos 2 nuevos términos al glosario interactivo (#glosario-llano) en content/glossary-extra.json.";
+    },
+  },
+  {
+    id: "tech-step-02-clarity-notes-mcp-slm",
+    versionRef: "v1.3.0 / US-107 / US-203",
+    title:
+      "Inyección de cajas «Luz en la entrada (en 30 segundos)» en guías técnicas de MCP y modelos SLM locales",
+    apply: async () => {
+      const targets = [
+        {
+          slug: "protocolo-mcp-agentes-locales-guardarrail-datos",
+          note: "En 30 segundos: conectar una carpeta por MCP no requiere programar ni subir nada a internet; equivale a enchufar un disco externo en modo solo lectura para que el asistente lea tus tarifas sin equivocarse.",
+        },
+        {
+          slug: "modelos-slm-locales-alto-rendimiento-pymes",
+          note: "En 30 segundos: un modelo SLM local se instala como cualquier programa de escritorio en 15 minutos, es gratuito y funciona aunque desconectes el cable de internet.",
+        },
+      ];
+      const files = existsSync(postsDir) ? await readdir(postsDir) : [];
+      let updatedCount = 0;
+      for (const t of targets) {
+        const file = files.find((f) => f.includes(t.slug));
+        if (file) {
+          const full = path.join(postsDir, file);
+          const post = JSON.parse(await readFile(full, "utf8"));
+          if (!post.clarityNote) {
+            post.clarityNote = t.note;
+            await writeFile(full, JSON.stringify(post, null, 2) + "\n", "utf8");
+            updatedCount++;
+          }
+        }
+      }
+      return `Incorporadas ${updatedCount} cajas pedagógicas «Luz en la entrada» en artículos técnicos de MCP y SLM.`;
+    },
+  },
+  {
+    id: "tech-step-03-glossary-zdr-prompt",
+    versionRef: "v1.3.0 / US-105 / AIJuris",
+    title:
+      "Ampliación autónoma del glosario con «Retención cero (Zero Data Retention)» e «Instrucción maestra (System Prompt)»",
+    apply: async () => {
+      let current = [];
+      if (existsSync(glossaryExtraPath)) {
+        try {
+          current = JSON.parse(await readFile(glossaryExtraPath, "utf8"));
+        } catch {
+          current = [];
+        }
+      }
+      const additions = [
+        {
+          id: "zero-data-retention",
+          term: "Retención cero de datos (Zero Data Retention)",
+          effortKey: "basic",
+          effortLabel: "🟢 Ajuste de privacidad · 5 min · 0 €",
+          analogy:
+            "Una pizarra que se borra sola nada más terminar la reunión: el proveedor procesa tu consulta pero tiene prohibido guardarla o usarla para entrenar sus máquinas.",
+          mondayUse:
+            "Requisito indispensable que AIJuris recomienda activar o exigir por contrato antes de usar cualquier servicio en la nube con documentos de trabajo.",
+        },
+        {
+          id: "instruccion-sistema-prompt",
+          term: "Instrucción maestra o guion de oficio (System Prompt)",
+          effortKey: "basic",
+          effortLabel: "🟢 Estantería sencilla · 15 min · 0 €",
+          analogy:
+            "El manual de bienvenida que entregas el primer día a un colaborador indicando cómo tratáis al cliente, qué tono usáis y qué cosas están prohibidas.",
+          mondayUse:
+            "Ahorra tener que repetir en cada mensaje a qué se dedica tu empresa y asegura respuestas coherentes con tu estilo.",
+        },
+      ];
+      for (const item of additions) {
+        if (!current.some((x) => x.id === item.id)) current.push(item);
+      }
+      await writeFile(glossaryExtraPath, JSON.stringify(current, null, 2) + "\n", "utf8");
+      return "Ampliado el glosario en lenguaje llano con 2 términos de privacidad y operación práctica.";
+    },
+  },
+  {
+    id: "tech-step-04-clarity-notes-bi-geo-legal",
+    versionRef: "v1.3.0 / US-107",
+    title:
+      "Inyección de resúmenes «Luz en la entrada» en artículos de Business Intelligence, GEO y cláusulas legales",
+    apply: async () => {
+      const targets = [
+        {
+          slug: "business-intelligence-conversacional-en-la-pyme-consulta-tus",
+          note: "En 30 segundos: no necesitas un departamento de datos; basta con exportar tu hoja de ventas mensual limpia (sin nombres privados) y hacerle preguntas en español llano.",
+        },
+        {
+          slug: "optimizacion-motores-generativos-geo-pymes",
+          note: "En 30 segundos: aparecer cuando alguien pregunta a un asistente por tu oficio en tu ciudad depende de explicar con claridad en tu web qué problema resuelves, tus plazos reales y tus preguntas frecuentes.",
+        },
+        {
+          slug: "clausulas-confidencialidad-proveedores-ia-escudo-pyme",
+          note: "En 30 segundos: añadir un anexo de una sola página a tus proveedores externos basta para prohibir que metan datos de tu negocio en cuentas gratuitas sin privacidad.",
+        },
+      ];
+      const files = existsSync(postsDir) ? await readdir(postsDir) : [];
+      let updatedCount = 0;
+      for (const t of targets) {
+        const file = files.find((f) => f.includes(t.slug));
+        if (file) {
+          const full = path.join(postsDir, file);
+          const post = JSON.parse(await readFile(full, "utf8"));
+          if (!post.clarityNote) {
+            post.clarityNote = t.note;
+            await writeFile(full, JSON.stringify(post, null, 2) + "\n", "utf8");
+            updatedCount++;
+          }
+        }
+      }
+      return `Incorporadas ${updatedCount} notas de claridad inmediata en artículos de estrategia y blindaje legal.`;
+    },
+  },
+];
+
+async function updateRoadmapWithFrontierAndTech(emoInsights, _frontierFinding, _techStepRecord) {
+  if (!existsSync(roadmapPath)) return;
+  let roadmapMd = await readFile(roadmapPath, "utf8");
+
+  const sectionHeader =
+    "## 5. Radar de frontera e iteraciones autónomas guiadas por `EmoInsight` y métricas";
+  const frontierRows = (emoInsights.frontierLog || [])
+    .slice(-8)
+    .map(
+      (f) =>
+        `| ${f.date} | **${f.leadAgent || "AIVisio"}** | ${f.topic} | ${f.insight} | ${f.roadmapImpact} |`,
+    )
+    .join("\n");
+
+  const techStepsRows = (emoInsights.techHistory || [])
+    .slice(-8)
+    .map((t) => `| ${t.date} | \`${t.id}\` | ${t.versionRef} | ${t.summary} |`)
+    .join("\n");
+
+  const dynamicSection = `${sectionHeader}
+
+_Esta sección es actualizada automáticamente en cada ciclo evolutivo diario por \`Frontier-Scout\` y \`Spiral-Builder\` a partir de la investigación del estado del arte, las métricas reales de GA4 y el \`EmoInsight\` de los lectores (Likes: **${emoInsights.summary?.totalLikes || 0}** · Dislikes: **${emoInsights.summary?.totalDislikes || 0}** · Comentarios: **${emoInsights.summary?.totalComments || 0}**)._
+
+### 5.1. Investigación continua del estado del arte y señales de lectores
+
+| Fecha | Agente líder | Hallazgo del estado del arte / Señal \`EmoInsight\` | Síntesis práctica para pymes | Impacto en el roadmap |
+| :--- | :--- | :--- | :--- | :--- |
+${frontierRows || "| 2026-11-09 | **AIVisio** | Escucha activa `EmoInsight` | Inicialización del radar autónomo | `v1.3.0` |"}
+
+### 5.2. Mejoras técnicas del roadmap ejecutadas autónomamente (Commit #1 diario)
+
+| Fecha | ID de paso técnico | Referencia del roadmap | Mejora verificable aplicada en producción |
+| :--- | :--- | :--- | :--- |
+${techStepsRows || "| 2026-11-09 | `v1.3.0-emo-insight-core` | `v1.3.0` (`US-107`, `US-108`, `US-407`) | Despliegue de valoraciones, termómetro `EmoInsight`, hilos de comentarios con respuesta de IA y ciclo diario de doble commit. |"}
+`;
+
+  if (roadmapMd.includes(sectionHeader)) {
+    roadmapMd =
+      roadmapMd.slice(0, roadmapMd.indexOf(sectionHeader)).trimEnd() + "\n\n" + dynamicSection;
+  } else {
+    roadmapMd = roadmapMd.trimEnd() + "\n\n---\n\n" + dynamicSection;
+  }
+
+  await writeFile(roadmapPath, roadmapMd, "utf8");
+}
+
+export async function runRoadmapTechnicalStep(telemetry, emoInsights, targetDate) {
+  console.log(
+    "--- [Spiral-Builder] Extrayendo y ejecutando mejora técnica pendiente del roadmap ---",
+  );
+  emoInsights.completedTechSteps = Array.isArray(emoInsights.completedTechSteps)
+    ? emoInsights.completedTechSteps
+    : [];
+  emoInsights.techHistory = Array.isArray(emoInsights.techHistory) ? emoInsights.techHistory : [];
+
+  const nextStep = ROADMAP_TECH_QUEUE.find((s) => !emoInsights.completedTechSteps.includes(s.id));
+  let stepRecord = null;
+
+  if (nextStep) {
+    const summary = await nextStep.apply();
+    emoInsights.completedTechSteps.push(nextStep.id);
+    stepRecord = {
+      date: targetDate,
+      id: nextStep.id,
+      versionRef: nextStep.versionRef,
+      title: nextStep.title,
+      summary,
+    };
+    emoInsights.techHistory.push(stepRecord);
+    await saveEmoInsights(emoInsights);
+    await updateRoadmapWithFrontierAndTech(emoInsights, null, stepRecord);
+    console.log(
+      `✅ [Spiral-Builder] Paso técnico del roadmap completado: ${nextStep.id} — ${summary}`,
+    );
+    return stepRecord;
+  }
+
+  // Paso dinámico cuando la cola base se completa: dotar de caja "Luz en la entrada" al siguiente artículo sin ella
+  if (existsSync(postsDir)) {
+    const files = (await readdir(postsDir))
+      .filter((f) => f.endsWith(".json"))
+      .sort()
+      .reverse();
+    for (const file of files) {
+      const fullPath = path.join(postsDir, file);
+      const post = JSON.parse(await readFile(fullPath, "utf8"));
+      const stepId = `tech-clarity-${post.slug || file.replace(".json", "")}`;
+      if (!post.clarityNote && !emoInsights.completedTechSteps.includes(stepId)) {
+        const firstCheck = Array.isArray(post.actionableChecklist)
+          ? post.actionableChecklist[0]
+          : "";
+        post.clarityNote = `En 30 segundos: ${post.excerpt || post.title} Primer paso recomendado hoy: ${firstCheck || "aplicar en una tarea acotada con supervisión humana."}`;
+        await writeFile(fullPath, JSON.stringify(post, null, 2) + "\n", "utf8");
+        emoInsights.completedTechSteps.push(stepId);
+        stepRecord = {
+          date: targetDate,
+          id: stepId,
+          versionRef: "US-105 / US-107 (Claridad continua)",
+          title: `Síntesis «Luz en la entrada» para "${post.title}"`,
+          summary: `Añadida caja de claridad rápida en 30 segundos al artículo ${file}.`,
+        };
+        emoInsights.techHistory.push(stepRecord);
+        await saveEmoInsights(emoInsights);
+        await updateRoadmapWithFrontierAndTech(emoInsights, null, stepRecord);
+        console.log(`✅ [Spiral-Builder] Mejora dinámica aplicada en ${file}`);
+        return stepRecord;
+      }
+    }
+  }
+
+  await updateRoadmapWithFrontierAndTech(emoInsights, null, null);
+  return null;
 }
 
 // ─── SKILL 1: TELEMETRY-CRITIC (HONESTIDAD Y AUDITORÍA ADVERSARIAL) ──────────
@@ -712,10 +1347,12 @@ async function runTelemetryCritic(flags = {}) {
   };
 }
 
-// ─── SKILL 2a: AIVisio (DIRECCIÓN ESTRATÉGICA Y BRIEFING) ─────────────────────
+// ─── SKILL 2a: AIVisio (DIRECCIÓN ESTRATÉGICA Y BRIEFING GUIADO POR EMOINSIGHT) ──
 
-async function runAIVisio(telemetry) {
-  console.log("--- [AIVisio: CEO & Director Estratégico] Estableciendo Briefing de variedad ---");
+async function runAIVisio(telemetry, emoInsights = null, frontierFinding = null) {
+  console.log(
+    "--- [AIVisio: CEO & Director Estratégico] Estableciendo Briefing guiado por EmoInsight y Frontera ---",
+  );
 
   const log = telemetry.editorialLog;
   const recent5 = log.slice(-5);
@@ -731,12 +1368,21 @@ async function runAIVisio(telemetry) {
       "AIJuris (Guardarraíl ético y legal — AI Act europeo, RGPD, privacidad y soberanía del dato)",
   };
 
+  const emoContext = emoInsights?.summary
+    ? `Señales EmoInsight de lectores: Likes=${emoInsights.summary.totalLikes}, Dislikes=${emoInsights.summary.totalDislikes}, Demasiado complejo=${emoInsights.summary.emoDimensions?.too_complex || 0}, Dudas legales=${emoInsights.summary.emoDimensions?.legal_doubt || 0}.`
+    : "";
+  const frontierContext = frontierFinding
+    ? `Último hallazgo del estado del arte: "${frontierFinding.topic}" (${frontierFinding.insight}).`
+    : "";
+
   const briefingPrompt = `Eres AIVisio, CEO y Estratega de AIEvolutio. Define el Briefing del nuevo artículo ANTES de escribirlo.
 
 Fundamentos de AIEvolutio:
-- Acompañamos a las pymes a abrir los ojos ante el acceso directo al conocimiento para innovar, hacer posible lo que antes parecía inalcanzable y aportar valor real con trato humano.
+- Nuestros principios son inquebrantables, pero nuestro camino nace inexorablemente de las reacciones reales de los lectores (EmoInsight) y de la investigación del estado del arte.
 - Claridad pedagógica: ningún lector no técnico debe quedarse con dudas sobre si una propuesta equivale a montar una estantería sencilla en una tarde o a una obra de ingeniería compleja; desmitificamos la tecnología, evaluamos herramientas y precios con honestidad y exploramos su impacto en empresas, educación, mayores y ciudadanía.
 - Perfil que firmará hoy: ${authorRoleMap[telemetry.recommendedAuthor] || telemetry.recommendedAuthor}
+${emoContext}
+${frontierContext}
 
 PROHIBICIÓN ABSOLUTA DE REPETICIÓN (Hard Gate):
 - Títulos ya publicados: ${JSON.stringify(telemetry.allExistingTitles)}
@@ -846,8 +1492,9 @@ Normas RAE, claridad pedagógica y formato:
 2. Claridad sin jerga opaca: si mencionas cualquier término técnico (como MCP, base de datos vectorial, modelo local SLM, API o tokens), explícalo al instante con una analogía cotidiana para que una persona no técnica distinga si aplicarlo equivale a montar una estantería sencilla en una tarde o a una obra compleja.
 3. body: 240-290 palabras. Párrafo inicial potente + subtítulo en negrita + viñetas con negritas + bloque "**Acción alcanzable para hoy:**" con 3 pasos numerados.
 4. actionableChecklist: exactamente 3 pasos concretos.
-5. Responde SOLO con JSON válido:
-{"title":"...","slug":"...","category":"...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."]}`;
+5. seedQuestion: una pregunta directa al lector para abrir el hilo de comentarios EmoInsight al final del artículo.
+6. Responde SOLO con JSON válido:
+{"title":"...","slug":"...","category":"...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."],"seedQuestion":"..."}`;
 
   const rawArticle = await callLLM(articlePrompt);
 
@@ -879,6 +1526,9 @@ Normas RAE, claridad pedagógica y formato:
                 "Medir impacto en la primera semana",
                 "Validar con supervisión humana",
               ],
+        seedQuestion:
+          parsed.seedQuestion ||
+          `¿Cómo aplicarías este enfoque en tu negocio y qué duda te gustaría que ${author} resuelva en el hilo?`,
         readerNeed: briefing.readerNeed,
         angle: briefing.angle,
         actionType: briefing.actionType,
@@ -939,7 +1589,7 @@ Normas RAE, claridad pedagógica y formato:
 // ─── SKILL 3: SPIRAL-BUILDER & MOTOR DE MEJORA TÉCNICA REAL ──────────────────
 
 async function runTechnicalSpiral() {
-  console.log("--- [Skill 3: Spiral-Builder] Ejecutando Auditoría y Mejora Técnica en Espiral ---");
+  console.log("--- [Skill 3: Spiral-Builder] Ejecutando Auditoría y Recompilación Estática ---");
   const actionsTaken = [];
 
   // 1. Auditoría y purga adversarial de cualquier post duplicado en content/posts/
@@ -971,7 +1621,7 @@ async function runTechnicalSpiral() {
     }
   }
 
-  // 2. Recompilar todo el sitio estático (incluyendo JSON-LD, navegación prerenderizada y limpieza de articulos/)
+  // 2. Recompilar todo el sitio estático (incluyendo JSON-LD, EmoInsight, hilos de comentarios y limpieza de articulos/)
   const buildResult = await buildSite();
 
   // 3. Sincronizar content/editorial-log.json con los posts reales para erradicar entradas fantasma o repetidas
@@ -1018,7 +1668,7 @@ async function integrateNewPost(newPost, existingPosts) {
 
   const filename = `${newPost.date}-${newPost.slug}.json`;
   const postPath = path.join(postsDir, filename);
-  const { readerNeed, angle, actionType, readerProfile, ...postData } = newPost;
+  const { readerNeed, angle, actionType, readerProfile, seedQuestion, ...postData } = newPost;
   await writeFile(postPath, JSON.stringify(postData, null, 2) + "\n", "utf8");
   console.log(`✅ Post guardado en disco: content/posts/${filename}`);
 
@@ -1035,12 +1685,39 @@ async function integrateNewPost(newPost, existingPosts) {
     readerProfile: readerProfile || "",
   });
   await saveEditorialLog(editorialLog);
+
+  const emoStore = await loadEmoInsights();
+  emoStore.posts = emoStore.posts || {};
+  if (!emoStore.posts[newPost.slug]) {
+    emoStore.posts[newPost.slug] = {
+      title: newPost.title,
+      author: newPost.author,
+      likes: 0,
+      dislikes: 0,
+      emoDimensions: { clarity: 0, actionable: 0, too_complex: 0, legal_doubt: 0 },
+      seedQuestion:
+        seedQuestion ||
+        `¿Cómo ves la aplicación de "${newPost.title}" en tu actividad diaria? Comparte tus dudas o propuestas para el roadmap.`,
+      comments: [],
+    };
+    recomputeEmoSummary(emoStore);
+    await saveEmoInsights(emoStore);
+  }
+
   return true;
 }
 
 // ─── SKILL 4: SELF-HEALER & REPORTE DETERMINISTA (CERO COMMITS VACÍOS) ───────
 
-async function runSelfHealer(telemetry, post, spiralResult, briefing) {
+async function runSelfHealer(
+  telemetry,
+  post,
+  spiralResult,
+  briefing,
+  emoInsights = null,
+  frontierFinding = null,
+  techStepRecord = null,
+) {
   console.log("--- [Skill 4: Self-Healer] Verificando salud y actualizando Daily Digest ---");
 
   const todayIso = getTodayString();
@@ -1048,40 +1725,56 @@ async function runSelfHealer(telemetry, post, spiralResult, briefing) {
     .map(([k, v]) => `${k}: ${v}`)
     .join(" · ");
 
+  const emoSummaryLine = emoInsights?.summary
+    ? `👍 Likes: ${emoInsights.summary.totalLikes} · 👎 Dislikes: ${emoInsights.summary.totalDislikes} · 💡 Claridad: ${emoInsights.summary.emoDimensions?.clarity || 0} · 🛠️ Aplicable: ${emoInsights.summary.emoDimensions?.actionable || 0} · 🧗 Complejo: ${emoInsights.summary.emoDimensions?.too_complex || 0} · 🛡️ Dudas legales: ${emoInsights.summary.emoDimensions?.legal_doubt || 0} · 💬 Comentarios: ${emoInsights.summary.totalComments} (Respuestas IA: ${emoInsights.summary.aiRepliesCount})`
+    : "Brújula EmoInsight activa en todos los artículos";
+
   const digestContent = `# 📊 Informe de Evolución Autónoma — AIEvolutio
 
 **Fecha de ciclo:** ${todayIso}  
 **Naturaleza:** 🧪 Experimento autogestionado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarrail)  
 **Estado del Guardián Adversarial:** 🟢 Activo — 0 artículos duplicados tolerados  
-**Ciclo editorial:** ${post ? `Nuevo artículo publicado por **${post.author}** (${post.category})` : "Mantenimiento técnico y verificación adversarial (sin nuevo post duplicado)"}
+**Ciclo editorial:** ${post ? `Nuevo artículo publicado por **${post.author}** (${post.category})` : "Avance técnico del roadmap y verificación adversarial"}
 
 ---
 
-### 1. Telemetría Real y Salud del Corpus (Telemetry-Critic)
+### 1. Telemetría Real, \`EmoInsight\` y Salud del Corpus (Telemetry-Critic)
 - **Artículos únicos en producción:** ${spiralResult.buildResult.articles} (${authorsSummary})
 - **Duplicados detectados / bloqueados:** 0 en producción
 - **Páginas dinámicas prerenderizadas:** ${getRenderedPageList(spiralResult.buildResult.pages).join(", ")}
 - **GA4 (${process.env.GA4_PROPERTY_ID ? "API Conectada" : "Etiqueta G-DDWP8Z4F9B en web"}):** ${
     telemetry.ga4
-      ? `Usuarios activos (7d): ${telemetry.ga4.activeUsers} | Sesiones: ${telemetry.ga4.sessions} | Duración media: ${telemetry.ga4.avgDurationSec}s`
+      ? `Usuarios activos (7d): ${telemetry.ga4.activeUsers} | Sesiones: ${telemetry.ga4.sessions} | Duración media: ${telemetry.ga4.avgDurationSec}s | Eventos: ${telemetry.ga4.eventCount || 0}`
       : "Pendiente configurar GA4_PROPERTY_ID y Workload Identity Federation en GitHub Actions para lectura automática (0 métricas inventadas)."
   }
+- **Pulso \`EmoInsight\` de lectores:** ${emoSummaryLine}
 
 ---
 
-### 2. Dirección Estratégica y Briefing (AIVisio — CEO)
+### 2. Investigación del Estado del Arte y Ampliación del Roadmap (Frontier-Scout)
+${
+  frontierFinding
+    ? `- **Hallazgo de frontera (${frontierFinding.leadAgent}):** ${frontierFinding.topic}
+- **Síntesis práctica:** ${frontierFinding.insight}
+- **Impacto directo en \`docs/roadmap.md\`:** ${frontierFinding.roadmapImpact}`
+    : "_Radar de frontera sincronizado en `docs/roadmap.md`._"
+}
+
+---
+
+### 3. Dirección Estratégica y Briefing (AIVisio — CEO)
 ${
   briefing
     ? `- **Necesidad del lector:** ${briefing.readerNeed}
 - **Ángulo diferencial:** ${briefing.angle}
 - **Acción de volante propuesta:** ${briefing.actionType}
 - **Perfil del destinatario:** ${briefing.readerProfile}`
-    : "_Corpus diario completo; sin necesidad de forzar publicación repetida._"
+    : "_Corpus diario completo; fase enfocada en mejora técnica del roadmap._"
 }
 
 ---
 
-### 3. Publicación Verificada (AIVisio · AIDux · AIJuris)
+### 4. Publicación Verificada (AIVisio · AIDux · AIJuris)
 ${
   post
     ? `- **Título:** ${post.title}
@@ -1095,18 +1788,23 @@ ${post.actionableChecklist.map((item) => `  - [x] ${item}`).join("\n")}`
 
 ---
 
-### 4. Espiral Técnica Ejecutada (Spiral-Builder)
+### 5. Avance Técnico del Roadmap Ejecutado (Spiral-Builder)
+${
+  techStepRecord
+    ? `- 🚀 **Paso del roadmap completado (\`${techStepRecord.id}\` — ${techStepRecord.versionRef}):** ${techStepRecord.summary}`
+    : ""
+}
 ${
   spiralResult.actionsTaken.length > 0
     ? spiralResult.actionsTaken.map((a) => `- 🔧 ${a}`).join("\n")
-    : "- ✅ DOM prerenderizado, esquemas JSON-LD (`Organization`, `FAQPage`, `SoftwareApplication`, `BlogPosting`), filtros interactivos y banner experimental verificados sin regresiones."
+    : "- ✅ DOM prerenderizado, widgets `EmoInsight`, hilos de comentarios, esquemas JSON-LD (`Organization`, `FAQPage`, `SoftwareApplication`, `BlogPosting`) y banner experimental verificados sin regresiones."
 }
 
 ---
 
-### 5. Diagnóstico Final (Self-Healer)
+### 6. Diagnóstico Final (Self-Healer)
 - **Integridad HTML/JSON y enlaces internos:** ✅ Verificada.
-- **Falsas expectativas comerciales:** 🛡️ Mitigadas mediante aviso experimental visible en todas las páginas.
+- **Falsas expectativas comerciales:** 🛡️ Mitigadas mediante aviso experimental visible en todas las páginas e hilos de comentarios.
 `;
 
   await writeFile(dailyDigestPath, digestContent, "utf8");
@@ -1117,7 +1815,10 @@ ${
 
 async function main() {
   const flags = parseArgs(process.argv.slice(2));
-  console.log("=== INICIO DEL CICLO EVOLUTIVO AUTÓNOMO (AIEVOLUTIO v2.0) ===", flags);
+  console.log(
+    "=== INICIO DEL CICLO EVOLUTIVO AUTÓNOMO (AIEVOLUTIO v2.1 — EmoInsight & Doble Commit) ===",
+    flags,
+  );
 
   try {
     const telemetry = await runTelemetryCritic(flags);
@@ -1131,38 +1832,69 @@ async function main() {
     }
 
     const targetDate = getTodayString(flags.date);
-    const existingDatePost = telemetry.existingPosts.find((p) => p.date === targetDate);
+    const emoInsights = await syncEmoInsightsAndComments(telemetry.existingPosts, targetDate);
 
+    let frontierFinding = null;
+    let techStepRecord = null;
     let briefing = null;
     let newPost = null;
 
-    const shouldPublishContent = flags.forceContent || (!flags.forceTech && !existingDatePost);
+    const runTechPhase = flags.phase === "tech" || flags.phase === "auto";
+    const runContentPhase = flags.phase === "content" || flags.phase === "auto";
 
-    if (shouldPublishContent) {
-      console.log(
-        `[Editorial] Iniciando ciclo de contenido para fecha ${targetDate} (Autor asignado: ${telemetry.recommendedAuthor})...`,
-      );
-      briefing = await runAIVisio(telemetry);
-      const candidate = requireEditorialCandidate(
-        await runEditorialWriter(telemetry, briefing, targetDate),
-      );
-      const saved = await integrateNewPost(candidate, telemetry.existingPosts);
-      if (!saved) {
-        throw new Error(`El artículo "${candidate.title}" fue rechazado al guardarlo.`);
+    if (runTechPhase) {
+      frontierFinding = await runFrontierStateOfTheArtResearch(telemetry, emoInsights, targetDate);
+      techStepRecord = await runRoadmapTechnicalStep(telemetry, emoInsights, targetDate);
+    } else if (Array.isArray(emoInsights.frontierLog) && emoInsights.frontierLog.length > 0) {
+      frontierFinding = emoInsights.frontierLog[emoInsights.frontierLog.length - 1];
+      if (Array.isArray(emoInsights.techHistory) && emoInsights.techHistory.length > 0) {
+        techStepRecord = emoInsights.techHistory[emoInsights.techHistory.length - 1];
       }
-      newPost = candidate;
-    } else {
-      console.log(
-        `[Editorial] Ciclo enfocado en espiral técnica (ya existe post para ${targetDate} o se solicitó --force-tech).`,
+    }
+
+    if (runContentPhase) {
+      const existingDatePost = telemetry.existingPosts.find((p) => p.date === targetDate);
+      const shouldPublishContent = flags.forceContent || !existingDatePost;
+
+      if (shouldPublishContent) {
+        console.log(
+          `[Editorial] Iniciando ciclo de contenido para fecha ${targetDate} (Autor asignado: ${telemetry.recommendedAuthor})...`,
+        );
+        briefing = await runAIVisio(telemetry, emoInsights, frontierFinding);
+        const candidate = requireEditorialCandidate(
+          await runEditorialWriter(telemetry, briefing, targetDate),
+        );
+        const saved = await integrateNewPost(candidate, telemetry.existingPosts);
+        if (!saved) {
+          throw new Error(`El artículo "${candidate.title}" fue rechazado al guardarlo.`);
+        }
+        newPost = candidate;
+      } else {
+        console.log(
+          `[Editorial] Ya existe artículo verificado para ${targetDate}; se mantiene el corpus sin duplicados.`,
+        );
+      }
+    }
+
+    // Recompilar el sitio estático y sincronizar registros
+    const updatedTelemetry = await runTelemetryCritic(flags);
+    const spiralResult = await runTechnicalSpiral();
+    if (techStepRecord) {
+      spiralResult.actionsTaken.unshift(
+        `Avance roadmap (${techStepRecord.id}): ${techStepRecord.summary}`,
       );
     }
 
-    // Ejecutar siempre la espiral técnica real y recompilación
-    const updatedTelemetry = await runTelemetryCritic(flags);
-    const spiralResult = await runTechnicalSpiral();
-
     // Actualizar el Daily Digest determinista
-    await runSelfHealer(updatedTelemetry, newPost, spiralResult, briefing);
+    await runSelfHealer(
+      updatedTelemetry,
+      newPost,
+      spiralResult,
+      briefing,
+      emoInsights,
+      frontierFinding,
+      techStepRecord,
+    );
 
     console.log("=== CICLO EVOLUTIVO COMPLETADO CON ÉXITO ===");
   } catch (fatalErr) {

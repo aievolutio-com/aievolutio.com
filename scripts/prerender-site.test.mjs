@@ -5,7 +5,9 @@ import path from "node:path";
 import {
   PLAIN_GLOSSARY_ITEMS,
   buildSite,
+  getGlossaryItems,
   getPostEffortMeta,
+  getPostEmoData,
   legacyArticleAliases,
   renderArticle,
   renderArticleAlias,
@@ -13,6 +15,7 @@ import {
   renderTeam,
 } from "./prerender-site.mjs";
 import {
+  ROADMAP_TECH_QUEUE,
   computeTitleSimilarity,
   getRenderedPageList,
   isDuplicatePost,
@@ -289,3 +292,33 @@ test("v1.2.0 renders multi-resolution favicons, effort badges, and plain-languag
   assert.equal(getPostEffortMeta({ title: "Guía de protocolo MCP local" }).key, "intermediate");
 });
 
+test("v1.3.0 renders EmoInsight thermometer, ratings, comment threads, and roadmap tech queue", async () => {
+  await buildSite();
+  const blogHtml = await readFile(path.join(process.cwd(), "dist/blog.html"), "utf8");
+  assert.match(blogHtml, /id="emo-compass-banner"/);
+  assert.match(blogHtml, /data-emo-vote="like"/);
+  assert.match(blogHtml, /data-emo-vote="dislike"/);
+  assert.match(blogHtml, /#comentarios-ia/);
+
+  const sampleArticleHtml = await readFile(
+    path.join(
+      process.cwd(),
+      "dist/articulos/articulo-2026-11-08-diccionario-sin-miedo-que-son-el-protocolo-mcp-las-bases-vectoriales-y-los-modelos-locales.html",
+    ),
+    "utf8",
+  );
+  assert.match(sampleArticleHtml, /id="emo-insight-section"/);
+  assert.match(sampleArticleHtml, /id="comentarios-ia"/);
+  assert.match(sampleArticleHtml, /id="article-comment-form"/);
+  assert.match(sampleArticleHtml, /InteractionCounter/);
+
+  const emoData = getPostEmoData({
+    slug: "diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales",
+  });
+  assert.equal(typeof emoData.likes, "number");
+  assert.equal(typeof emoData.dislikes, "number");
+  assert.ok(Array.isArray(emoData.comments));
+
+  assert.ok(getGlossaryItems().length >= 10);
+  assert.ok(Array.isArray(ROADMAP_TECH_QUEUE) && ROADMAP_TECH_QUEUE.length >= 4);
+});

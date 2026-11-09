@@ -24,11 +24,12 @@ El desarrollo de AIEvolutio se organiza en **versiones cerradas de valor verific
 
 ## 2. Versiones consolidadas en producción
 
-| Versión      | Fecha      | Hito de valor alcanzado                                                                                                                                                                                                                                     | Estado           |
-| :----------- | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
-| **`v1.0.0`** | 2026-11-08 | Estabilización fundacional, prerenderizado estático sin parpadeo (SSG), Guardián Adversarial Antiduplicados, Constitución en [`../AGENTS.md`](../AGENTS.md), conector GA4 federado y ortotipografía RAE (`US-103`, `US-201`, `US-202`, `US-401`, `US-402`). | ✅ En producción |
-| **`v1.1.0`** | 2026-11-08 | Identidad visual adaptativa con logotipos vectoriales nativos para modo claro y oscuro (`US-104`) y reestructuración documental SSOT lista para RAG.                                                                                                        | ✅ En producción |
-| **`v1.2.0`** | 2026-11-08 | Favicon vectorial y multirresolución nítido (`US-101`), artículo fundacional con analogías cotidianas (`US-102`), semáforo de esfuerzo real y glosario interactivo «De jerga a lenguaje llano» (`US-105`).                                                  | ✅ En producción |
+| Versión      | Fecha      | Hito de valor alcanzado                                                                                                                                                                                                                                                                              | Estado           |
+| :----------- | :--------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
+| **`v1.0.0`** | 2026-11-08 | Estabilización fundacional, prerenderizado estático sin parpadeo (SSG), Guardián Adversarial Antiduplicados, Constitución en [`../AGENTS.md`](../AGENTS.md), conector GA4 federado y ortotipografía RAE (`US-103`, `US-201`, `US-202`, `US-401`, `US-402`).                                          | ✅ En producción |
+| **`v1.1.0`** | 2026-11-08 | Identidad visual adaptativa con logotipos vectoriales nativos para modo claro y oscuro (`US-104`) y reestructuración documental SSOT lista para RAG.                                                                                                                                                 | ✅ En producción |
+| **`v1.2.0`** | 2026-11-08 | Favicon vectorial y multirresolución nítido (`US-101`), artículo fundacional con analogías cotidianas (`US-102`), semáforo de esfuerzo real y glosario interactivo «De jerga a lenguaje llano» (`US-105`).                                                                                           | ✅ En producción |
+| **`v1.3.0`** | 2026-11-09 | Escucha activa del lector con valoraciones «Me gusta» / «No me gusta» y termómetro `EmoInsight` (`US-107`), hilos de comentarios con respuesta autónoma de la IA (`US-108`), y reforma del motor autónomo en dos commits diarios con investigación de frontera y avance real del roadmap (`US-407`). | ✅ En producción |
 
 ---
 
@@ -53,15 +54,15 @@ flowchart LR
   - **`US-102` (Serie «Encender la luz»):** Publicación del artículo fundacional «Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales».
   - **`US-105` (Semáforo de dificultad y glosario llano):** Incorporación del semáforo de esfuerzo real (🟢 _Básico_, 🟡 _Intermedio_, 🔴 _Avanzado_) en tarjetas y artículos, más el glosario interactivo con buscador y filtros en `blog.html`.
 
-#### `v1.3.0` — Escucha activa, `EmoInsight` del lector, valoraciones e hilos de comentarios con la IA (Próxima sesión inmediata)
+#### `v1.3.0` — Escucha activa, `EmoInsight` del lector, valoraciones, hilos de comentarios y motor autónomo de doble commit (Completada en producción)
 
-- **Objetivo de valor:** Mantener inamovibles los principios de AIEvolutio pero trazar su camino inexorablemente desde las reacciones reales de los lectores, midiendo su sentir (`EmoInsight`), habilitando valoraciones («Me gusta» / «No me gusta») e inaugurando hilos de comentarios en cada artículo donde la dirección de IA responde y extrae nuevas prioridades para la hoja de ruta.
-- **Alcance de la sesión:**
+- **Objetivo de valor:** Mantener inamovibles los principios de AIEvolutio pero trazar su camino inexorablemente desde las reacciones reales de los lectores, midiendo su sentir (`EmoInsight`), habilitando valoraciones («Me gusta» / «No me gusta»), inaugurando hilos de comentarios en cada artículo donde la dirección de IA responde y reformando el motor autónomo para avanzar diariamente por el roadmap mediante dos commits verificados (`05:23 UTC`).
+- **Alcance entregado:**
   - **`US-107` (Valoraciones «Me gusta» / «No me gusta» y pulso `EmoInsight`):** Botonera interactiva en cada artículo y tarjeta del blog con voto positivo/negativo y cuatro dimensiones de experiencia del lector (`💡 Me ha abierto los ojos`, `🛠️ Aplicable hoy`, `🧗 Siento que es demasiado complejo`, `🛡️ Me genera dudas legales o de privacidad`), registrando eventos reales en GA4 (`emo_insight_feedback`) y estado consolidado en `content/emo-insights.json`.
   - **`US-108` (Hilos de comentarios en los artículos con respuesta de la IA):** Sección de conversación abierta al pie de cada artículo (`articulos/articulo-*.html` y `blog.html`) conectada con hilos públicos del repositorio (`emo-feedback`) y prerenderizada estáticamente, permitiendo a los lectores comentar, preguntar o proponer temas y a `AIVisio`, `AIDux` y `AIJuris` responder de forma autónoma y transparente.
-  - **`US-407` (Motor de decisiones autónomas guiado por `EmoInsight`):** Integración en `Telemetry-Critic` y `Frontier-Scout` (`scripts/autonomous-evolution.mjs`) de la lectura del índice de `EmoInsight`, balance de valoraciones y comentarios abiertos para responder a los lectores en cada ciclo, simplificar temas percibidos como complejos y registrar propuestas evolutivas hacia el `roadmap.md`.
+  - **`US-407` (Motor de decisiones autónomas de doble commit guiado por `EmoInsight` e investigación de frontera):** Reforma de `scripts/autonomous-evolution.mjs` y `.github/workflows/evolution-loop.yml` (cron `23 5 * * *` para evitar el cuello de botella de las `:00` en GitHub Actions) separando la Fase 1 (`--phase=tech`, Commit 1: sincronización de `EmoInsight`, respuestas autónomas en hilos de comentarios, investigación del estado del arte con Google Search Grounding, actualización de `docs/roadmap.md` y ejecución del siguiente paso técnico de la cola del roadmap) y la Fase 2 (`--phase=content`, Commit 2: publicación editorial diaria guiada por `EmoInsight` y hallazgos de frontera).
 
-#### `v1.4.0` — Factoría operativa de `AIWorkers` y recetas listas para usar
+#### `v1.4.0` — Factoría operativa de `AIWorkers` y recetas listas para usar (Próxima sesión inmediata)
 
 - **Objetivo de valor:** Convertir los agentes descritos en la web en herramientas, plantillas y prototipos accionables para autónomos y pymes.
 - **Alcance de la sesión:**
@@ -133,3 +134,22 @@ flowchart LR
 | **Recomendaciones, herramientas y precios**   | Que ninguna pyme pague por desconocimiento lo que puede lograr con sencillez.                         | Comparativas basadas en pruebas técnicas reales, priorizando código abierto y ejecución local.               | Independencia absoluta: prohibido ocultar conflictos de interés; aviso sobre retención de datos de cada proveedor.       |
 | **Cursos, exámenes, retos y certificaciones** | Transformar el miedo en criterio propio y confianza práctica demostrable.                             | Simuladores 100 % interactivos en el navegador y verificación mediante firma sin servidores pesados.         | Transparencia sobre el carácter formativo no reglado del certificado y cero almacenamiento de datos privados de alumnos. |
 | **Redes sociales, audio y nuevos países**     | Acompañar a quien trabaja sin tiempo de sentarse frente a un monitor, en su propio idioma y contexto. | Generación estática multilingüe (`content.<lang>.json`) y plantillas de sindicación automatizadas.           | Identificación explícita de contenido/voz generados por IA (AI Act art. 50) y adaptación al marco legal de cada región.  |
+
+---
+
+## 5. Radar de frontera e iteraciones autónomas guiadas por `EmoInsight` y métricas
+
+_Esta sección es actualizada automáticamente en cada ciclo evolutivo diario por `Frontier-Scout` y `Spiral-Builder` a partir de la investigación del estado del arte, las métricas reales de GA4 y el `EmoInsight` de los lectores (Likes: **0** · Dislikes: **0** · Comentarios: **0**)._
+
+### 5.1. Investigación continua del estado del arte y señales de lectores
+
+| Fecha      | Agente líder | Hallazgo del estado del arte / Señal `EmoInsight`                                           | Síntesis práctica para pymes                                                                                                                                                                                                                                                                                                             | Impacto en el roadmap                                                                                              |
+| :--------- | :----------- | :------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| 2026-11-09 | **AIVisio**  | Arquitectura de escucha activa EmoInsight y protocolo MCP local con modelos SLM cuantizados | La adopción real en microempresas se frena cuando el lector no puede expresar en el acto si una guía le resulta clara o demasiado compleja. Combinar telemetría de eventos GA4 con hilos públicos en el repositorio permite que la dirección autónoma de IA conteste dudas reales y adapte la hoja de ruta sin almacenar datos privados. | Activación de US-107, US-108 y US-407 en v1.3.0 y preparación de plantillas interactivas de AIWorkers para v1.4.0. |
+| 2026-11-09 | **AIDux**    | Conectores MCP locales de solo lectura y servidores de archivos sin nube                    | El ecosistema Model Context Protocol (MCP) ha madurado hacia servidores ligeros que permiten a una pyme consultar hojas de tarifas, albaranes y calendarios locales sin exponer datos fuera del equipo ni pagar licencias por asiento.                                                                                                   | Refuerza US-203 y US-306 en v1.4.0 con plantillas de configuración MCP de solo lectura auditadas por AIJuris.      |
+
+### 5.2. Mejoras técnicas del roadmap ejecutadas autónomamente (Commit #1 diario)
+
+| Fecha      | ID de paso técnico                            | Referencia del roadmap   | Mejora verificable aplicada en producción                                                            |
+| :--------- | :-------------------------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------------- |
+| 2026-11-09 | `tech-step-01-glossary-aiworker-quantization` | v1.3.0 / US-105 / US-407 | Añadidos 2 nuevos términos al glosario interactivo (#glosario-llano) en content/glossary-extra.json. |

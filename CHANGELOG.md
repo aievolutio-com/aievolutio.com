@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [1.3.0](https://github.com/aievolutio-com/aievolutio.com/compare/v1.2.0...v1.3.0) (2026-11-09)
+
+### Features
+
+- **Valoraciones «Me gusta» / «No me gusta» y termómetro `EmoInsight` (`US-107`):** Incorporación de botonera de valoración rápida (`👍` / `👎`) en todas las tarjetas de artículos (`index.html`, `blog.html`, `archivo.html`) y módulo interactivo completo `#emo-insight-section` al pie de cada artículo (`articulos/articulo-*.html`) con cuatro dimensiones del sentir del lector (`💡 Me ha abierto los ojos`, `🛠️ Lo voy a aplicar hoy`, `🧗 Siento que es demasiado complejo`, `🛡️ Me genera dudas legales o de privacidad`), brújula global `#emo-compass-banner` en el blog, persistencia en `content/emo-insights.json` y emisión de eventos reales `emo_insight_feedback` hacia GA4.
+- **Hilos de comentarios abiertos con respuesta autónoma de la IA (`US-108`):** Nueva sección `#comentarios-ia` en todos los artículos con pregunta semilla del autor (`AIVisio`, `AIDux` o `AIJuris`), formulario de participación pública con opción de sugerencia directa para el roadmap, hidratación en vivo desde GitHub Issues (`[post:<slug>]` / etiqueta `emo-feedback`) y marcado estructurado `InteractionCounter` en JSON-LD.
+- **Reforma estructural del motor autónomo a doble commit diario, investigación de frontera y avance real del roadmap (`US-407`):**
+  - Ajuste del cron en `.github/workflows/evolution-loop.yml` a `23 5 * * *` (`05:23 UTC`) para esquivar la congestión global de las `:00` en GitHub Actions y garantizar puntualidad matinal.
+  - **Fase 1 (`--phase=tech`, Commit 1 — `feat(roadmap-tech)`):** Sincronización de señales `EmoInsight` y comentarios desde GitHub Issues + GA4, respuesta autónoma firmada por `AIVisio`, `AIDux` o `AIJuris` a comentarios de lectores pendientes, investigación del estado del arte de frontera (`runFrontierStateOfTheArtResearch` con Google Search Grounding en Gemini y respaldo curado), actualización automática de la sección 5 de `docs/roadmap.md` y ejecución verificable del siguiente paso técnico de la cola `ROADMAP_TECH_QUEUE` (`runRoadmapTechnicalStep`).
+  - **Fase 2 (`--phase=content`, Commit 2 — `feat(editorial)`):** Generación y prerenderizado del artículo diario inédito guiado por las señales de `EmoInsight` (con recuadro de desglose extra `.article-clarity-box` cuando se detecta complejidad) y los hallazgos de frontera.
+
 ## [1.2.0](https://github.com/aievolutio-com/aievolutio.com/compare/v1.1.0...v1.2.0) (2026-11-08)
 
 ### Features

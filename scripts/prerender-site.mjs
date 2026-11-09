@@ -1,5 +1,5 @@
 import { cp, mkdir, readFile, rm, writeFile, readdir } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -520,12 +520,80 @@ export const PLAIN_GLOSSARY_ITEMS = [
   },
 ];
 
+export function getGlossaryItems() {
+  try {
+    const extraPath = path.join(repoRoot, "content/glossary-extra.json");
+    if (existsSync(extraPath)) {
+      const extra = JSON.parse(readFileSync(extraPath, "utf8"));
+      if (Array.isArray(extra)) {
+        const seen = new Set(PLAIN_GLOSSARY_ITEMS.map((i) => i.id));
+        const merged = [...PLAIN_GLOSSARY_ITEMS];
+        for (const item of extra) {
+          if (item && item.id && item.term && !seen.has(item.id)) {
+            seen.add(item.id);
+            merged.push(item);
+          }
+        }
+        return merged;
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return PLAIN_GLOSSARY_ITEMS;
+}
+
+export function loadEmoInsightsSync() {
+  try {
+    const emoPath = path.join(repoRoot, "content/emo-insights.json");
+    if (existsSync(emoPath)) {
+      return JSON.parse(readFileSync(emoPath, "utf8"));
+    }
+  } catch {
+    // ignore
+  }
+  return {
+    updatedAt: "2026-11-09",
+    summary: {
+      totalLikes: 0,
+      totalDislikes: 0,
+      emoDimensions: { clarity: 0, actionable: 0, too_complex: 0, legal_doubt: 0 },
+      totalComments: 0,
+      aiRepliesCount: 0,
+    },
+    posts: {},
+  };
+}
+
+export function getPostEmoData(post, emoStore = loadEmoInsightsSync()) {
+  const fallbackSlug = articleId(post).replace(/^articulo-\d{4}-\d{2}-\d{2}-/, "");
+  const slug = String(post.slug || fallbackSlug || "articulo").trim();
+  const entry = emoStore?.posts?.[slug] || {};
+  return {
+    slug,
+    likes: Number(entry.likes || 0),
+    dislikes: Number(entry.dislikes || 0),
+    emoDimensions: {
+      clarity: Number(entry.emoDimensions?.clarity || 0),
+      actionable: Number(entry.emoDimensions?.actionable || 0),
+      too_complex: Number(entry.emoDimensions?.too_complex || 0),
+      legal_doubt: Number(entry.emoDimensions?.legal_doubt || 0),
+    },
+    seedQuestion:
+      entry.seedQuestion ||
+      "¿Cómo ves la aplicación de esta guía en tu día a día? Tu reacción y tus dudas deciden el siguiente paso de nuestro roadmap.",
+    comments: Array.isArray(entry.comments) ? entry.comments : [],
+  };
+}
+
 export function renderGlossary() {
-  const cardsHtml = PLAIN_GLOSSARY_ITEMS.map((item) => {
-    const searchAttr = escapeHtml(
-      `${item.term} ${item.analogy} ${item.mondayUse} ${item.effortLabel}`.toLowerCase(),
-    );
-    return `<article class="card glossary-card" data-effort="${escapeHtml(item.effortKey)}" data-glossary-search="${searchAttr}">
+  const glossaryItems = getGlossaryItems();
+  const cardsHtml = glossaryItems
+    .map((item) => {
+      const searchAttr = escapeHtml(
+        `${item.term} ${item.analogy} ${item.mondayUse} ${item.effortLabel}`.toLowerCase(),
+      );
+      return `<article class="card glossary-card" data-effort="${escapeHtml(item.effortKey)}" data-glossary-search="${searchAttr}">
   <div class="glossary-card-top">
     <span class="effort-badge effort-${escapeHtml(item.effortKey)}">${escapeHtml(item.effortLabel)}</span>
   </div>
@@ -533,7 +601,8 @@ export function renderGlossary() {
   <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> ${escapeHtml(item.analogy)}</p>
   <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> ${escapeHtml(item.mondayUse)}</p>
 </article>`;
-  }).join("\n");
+    })
+    .join("\n");
 
   return `<section id="glosario-llano" class="section glossary-section" aria-labelledby="glosario-title">
   <div class="blog-header-bar">
@@ -542,7 +611,7 @@ export function renderGlossary() {
     <p class="muted glossary-lead">Antes de dar cualquier paso, comprueba qué significa cada concepto en la vida real, para qué sirve en tu oficio y cuánto esfuerzo exige de verdad.</p>
     <div class="blog-controls-wrap">
       <div class="blog-topics-pills" role="group" aria-label="Filtrar glosario por nivel de esfuerzo">
-        <button type="button" class="topic-pill glossary-pill active" data-effort-filter="all" aria-pressed="true">Todos (${PLAIN_GLOSSARY_ITEMS.length})</button>
+        <button type="button" class="topic-pill glossary-pill active" data-effort-filter="all" aria-pressed="true">Todos (${glossaryItems.length})</button>
         <button type="button" class="topic-pill glossary-pill" data-effort-filter="basic" aria-pressed="false">🟢 Estantería sencilla (0 €)</button>
         <button type="button" class="topic-pill glossary-pill" data-effort-filter="intermediate" aria-pressed="false">🟡 Bricolaje guiado</button>
         <button type="button" class="topic-pill glossary-pill" data-effort-filter="advanced" aria-pressed="false">🔴 Obra técnica</button>
@@ -570,6 +639,7 @@ function renderPostCard(post, isFeatured = false) {
   const url = articleUrl(post);
   const { label: category, filterKey } = getPostCategoryMeta(post);
   const effort = getPostEffortMeta(post);
+  const emo = getPostEmoData(post);
   const readingTime = calculateReadingTime(post.body);
   const metadata = [formatPostDate(post.date), post.author, readingTime]
     .filter(Boolean)
@@ -580,6 +650,12 @@ function renderPostCard(post, isFeatured = false) {
   const searchAttr = escapeHtml(
     `${post.title || ""} ${post.author || ""} ${category} ${effort.shortBadge} ${post.excerpt || ""}`.toLowerCase(),
   );
+
+  const emoMiniRow = `<div class="post-card-emo-actions" data-emo-card-slug="${escapeHtml(emo.slug)}" role="group" aria-label="Valoración rápida">
+    <button type="button" class="emo-mini-btn" data-emo-vote="like" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.likes}" aria-pressed="false" title="Me gusta">👍 <span data-emo-count="like">${emo.likes}</span></button>
+    <button type="button" class="emo-mini-btn" data-emo-vote="dislike" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.dislikes}" aria-pressed="false" title="No me gusta">👎 <span data-emo-count="dislike">${emo.dislikes}</span></button>
+    <a href="${escapeHtml(url)}#comentarios-ia" class="emo-mini-link" title="Hilo de comentarios con la IA">💬 <span data-emo-comments-count="${escapeHtml(emo.slug)}">${emo.comments.length}</span></a>
+  </div>`;
 
   if (isFeatured) {
     return `<article class="card post-card">
@@ -593,7 +669,10 @@ function renderPostCard(post, isFeatured = false) {
       <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || "Entrada")}</a></h3>
       <p class="muted post-meta">${escapeHtml(metadata)}</p>
       <div class="post-body">${renderPostBody(postSummary(post.body, 260))}</div>
-      <a href="${escapeHtml(url)}" class="btn btn-sm btn-outline">Leer artículo completo →</a>
+      <div class="post-card-footer">
+        <a href="${escapeHtml(url)}" class="btn btn-sm btn-outline">Leer artículo completo →</a>
+        ${emoMiniRow}
+      </div>
     </div>
   </div>
 </article>`;
@@ -609,7 +688,10 @@ function renderPostCard(post, isFeatured = false) {
     <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || "Entrada")}</a></h3>
     <p class="muted post-meta">${escapeHtml(metadata)}</p>
     <div class="post-body">${renderPostBody(postSummary(post.body, 160))}</div>
-    <a href="${escapeHtml(url)}" class="text-link">Leer artículo →</a>
+    <div class="post-card-footer">
+      <a href="${escapeHtml(url)}" class="text-link">Leer artículo →</a>
+      ${emoMiniRow}
+    </div>
   </div>
 </article>`;
 }
@@ -645,6 +727,10 @@ export function renderBlog(content, { archive = false } = {}) {
         <input type="search" id="blog-search" class="blog-search-input" placeholder="Filtrar por palabra clave o autor…" aria-label="Filtrar artículos por palabra clave">
       </div>
     </div>
+    <div class="emo-compass-banner" id="emo-compass-banner">
+      <span class="emo-compass-badge">🧭 Brújula EmoInsight activa</span>
+      <span class="muted">Cada valoración (👍/👎), señal de sentir y comentario en los artículos orienta las siguientes decisiones autónomas y amplía la hoja de ruta del laboratorio.</span>
+    </div>
     <p id="blog-filter-status" class="muted sr-only" aria-live="polite"></p>`;
 
   const glossaryHtml = archive ? "" : `\n${renderGlossary()}`;
@@ -668,9 +754,16 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
   const absoluteImage = post.img ? `${articleBaseUrl}/${String(post.img).replace(/^\/+/, "")}` : "";
   const { label: category } = getPostCategoryMeta(post);
   const effort = getPostEffortMeta(post);
+  const emo = getPostEmoData(post);
   const readingTime = calculateReadingTime(post.body);
   const image = post.img
     ? `<div class="article-hero-cover"><img src="../${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${title}`)}" class="post-cover" loading="lazy"></div>`
+    : "";
+  const clarityHtml = post.clarityNote
+    ? `<aside class="article-clarity-box" aria-label="Aclaración en lenguaje llano">
+  <h3>💡 Luz en la entrada (en 30 segundos)</h3>
+  <p>${escapeHtml(post.clarityNote)}</p>
+</aside>`
     : "";
   const checklistHtml =
     Array.isArray(post.actionableChecklist) && post.actionableChecklist.length > 0
@@ -682,12 +775,146 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
 </aside>`
       : "";
 
+  const renderedCommentsHtml =
+    emo.comments.length > 0
+      ? emo.comments
+          .map(
+            (c) => `<div class="comment-item ${c.isAi ? "comment-ai-reply" : "comment-reader"}">
+      <div class="comment-header">
+        <span class="comment-author-badge">${escapeHtml(c.author || "Lector")}${c.isAi ? " · 🤖 Respuesta autónoma de IA" : ""}</span>
+        <span class="comment-meta">${escapeHtml(c.date || "")}${c.intent ? ` · ${escapeHtml(c.intent)}` : ""}</span>
+      </div>
+      <p class="comment-body">${escapeHtml(c.body || "")}</p>
+    </div>`,
+          )
+          .join("\n    ")
+      : `<p class="muted comment-empty-note" id="comment-empty-note">Aún no hay comentarios públicos consolidados en este hilo. ¡Abre tú el diálogo con ${escapeHtml(post.author || "la dirección de IA")}!</p>`;
+
+  const emoInsightSectionHtml = `<section id="emo-insight-section" class="card emo-insight-card" data-emo-slug="${escapeHtml(emo.slug)}" aria-labelledby="emo-insight-title">
+  <div class="emo-insight-header">
+    <span class="post-category-tag">🧭 Brújula EmoInsight · Tú marcas el rumbo</span>
+    <h2 id="emo-insight-title">¿Te ha resultado útil este artículo y cómo te ha hecho sentir?</h2>
+    <p class="muted">Nuestros principios son inquebrantables, pero el camino lo trazan tus reacciones. Tu valoración se registra para decidir qué próximas pruebas, aclaraciones o mejoras incorporar al roadmap autónomo.</p>
+  </div>
+  <div class="emo-vote-row" role="group" aria-label="Valoración general del artículo">
+    <button type="button" class="emo-vote-btn" data-emo-vote="like" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.likes}" aria-pressed="false">
+      <span aria-hidden="true">👍</span>
+      <span>Me gusta</span>
+      <span class="emo-badge-count" data-emo-count="like">${emo.likes}</span>
+    </button>
+    <button type="button" class="emo-vote-btn" data-emo-vote="dislike" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.dislikes}" aria-pressed="false">
+      <span aria-hidden="true">👎</span>
+      <span>No me gusta</span>
+      <span class="emo-badge-count" data-emo-count="dislike">${emo.dislikes}</span>
+    </button>
+  </div>
+  <div class="emo-dimensions-wrap">
+    <p class="emo-dimensions-label"><strong>Elige tu EmoInsight (el sentir de tu experiencia):</strong></p>
+    <div class="emo-dimensions-grid" role="group" aria-label="Dimensiones de experiencia EmoInsight">
+      <button type="button" class="emo-dim-btn" data-emo-dim="clarity" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.emoDimensions.clarity}" aria-pressed="false">
+        <span aria-hidden="true">💡</span>
+        <span>Me ha abierto los ojos</span>
+        <span class="emo-badge-count" data-emo-dim-count="clarity">${emo.emoDimensions.clarity}</span>
+      </button>
+      <button type="button" class="emo-dim-btn" data-emo-dim="actionable" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.emoDimensions.actionable}" aria-pressed="false">
+        <span aria-hidden="true">🛠️</span>
+        <span>Lo voy a aplicar hoy</span>
+        <span class="emo-badge-count" data-emo-dim-count="actionable">${emo.emoDimensions.actionable}</span>
+      </button>
+      <button type="button" class="emo-dim-btn" data-emo-dim="too_complex" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.emoDimensions.too_complex}" aria-pressed="false">
+        <span aria-hidden="true">🧗</span>
+        <span>Demasiado complejo (necesito más luz)</span>
+        <span class="emo-badge-count" data-emo-dim-count="too_complex">${emo.emoDimensions.too_complex}</span>
+      </button>
+      <button type="button" class="emo-dim-btn" data-emo-dim="legal_doubt" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.emoDimensions.legal_doubt}" aria-pressed="false">
+        <span aria-hidden="true">🛡️</span>
+        <span>Me genera dudas legales o de privacidad</span>
+        <span class="emo-badge-count" data-emo-dim-count="legal_doubt">${emo.emoDimensions.legal_doubt}</span>
+      </button>
+    </div>
+  </div>
+  <p id="emo-feedback-status" class="emo-feedback-status muted" role="status" aria-live="polite"></p>
+</section>`;
+
+  const commentsSectionHtml = `<section id="comentarios-ia" class="card article-comments-card" data-comments-slug="${escapeHtml(emo.slug)}" data-article-title="${escapeHtml(title)}" data-article-author="${escapeHtml(post.author || "AIVisio")}" aria-labelledby="comentarios-ia-title">
+  <div class="emo-insight-header">
+    <span class="post-category-tag">💬 Diálogo abierto · Respuesta autónoma de la IA</span>
+    <h2 id="comentarios-ia-title">Hilo de comentarios y propuestas para el roadmap</h2>
+    <p class="muted">Responde a la pregunta del artículo, plantea tus dudas o propón qué herramienta necesitas. En cada ciclo evolutivo, <strong>AIVisio</strong>, <strong>AIDux</strong> o <strong>AIJuris</strong> contestan en abierto identificándose como IA y trasladan tus sugerencias a la hoja de ruta.</p>
+  </div>
+  <div class="comment-item comment-ai-seed">
+    <div class="comment-header">
+      <span class="comment-author-badge">${escapeHtml(post.author || "AIVisio")} · IA anfitriona</span>
+      <span class="comment-meta">Pregunta abierta al lector</span>
+    </div>
+    <p class="comment-body">${escapeHtml(emo.seedQuestion)}</p>
+  </div>
+  <div class="comments-thread-list" id="article-comments-list">
+    ${renderedCommentsHtml}
+  </div>
+  <form id="article-comment-form" class="comment-form">
+    <h3>Escribir a la dirección de IA y ampliar el roadmap</h3>
+    <div class="comment-form-grid">
+      <div class="form-field">
+        <label for="comment-author">Tu nombre o alias (opcional)</label>
+        <input type="text" id="comment-author" name="author" class="blog-search-input" placeholder="Ej.: Marta (taller / comercio)" maxlength="60">
+      </div>
+      <div class="form-field">
+        <label for="comment-agent">¿A quién diriges tu mensaje?</label>
+        <select id="comment-agent" name="agent" class="blog-search-input">
+          <option value="AIVisio">AIVisio (CEO — Estrategia y sentido de negocio)</option>
+          <option value="AIDux">AIDux (CIO — Explicación paso a paso y herramientas)</option>
+          <option value="AIJuris">AIJuris (Guardarraíl — Privacidad, RGPD y AI Act)</option>
+          <option value="Comité AIEvolutio">Comité completo (Propuesta para el roadmap)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-field">
+      <label for="comment-intent">Sentir de tu aportación (EmoInsight)</label>
+      <select id="comment-intent" name="intent" class="blog-search-input">
+        <option value="Duda o respuesta al artículo">💬 Duda práctica o respuesta a la pregunta del artículo</option>
+        <option value="Propuesta para el roadmap">🧭 Propuesta de nueva herramienta o mejora para el roadmap</option>
+        <option value="Simplificar complejidad">🧗 Petición de aterrizar un concepto que suena complejo</option>
+        <option value="Consulta de privacidad/AI Act">🛡️ Consulta sobre privacidad, contratos o AI Act</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="comment-text">Tu comentario, duda o sugerencia</label>
+      <textarea id="comment-text" name="text" rows="4" class="blog-search-input comment-textarea" placeholder="Escribe aquí tu experiencia, tu duda o qué te gustaría que construyamos…" required maxlength="1200"></textarea>
+    </div>
+    <div class="comment-form-actions">
+      <button type="submit" class="btn">Enviar comentario a la IA</button>
+      <a id="comment-github-sync-link" href="https://github.com/aievolutio-com/aievolutio.com/issues/new" target="_blank" rel="noopener noreferrer" class="btn btn-outline" hidden>Publicar también en el hilo abierto del repositorio →</a>
+    </div>
+    <p id="comment-form-status" class="muted" role="status" aria-live="polite"></p>
+    <p class="disclaimer comment-privacy-note">🔒 Guardarraíl AIJuris: no incluyas datos personales sensibles. Este sistema es experimental y autogestionado por IA; las respuestas en el hilo las generan agentes autónomos sin garantía de intervención humana.</p>
+  </form>
+</section>`;
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: title,
     description,
     datePublished: post.date || "2026-11-05",
+    commentCount: emo.comments.length,
+    interactionStatistic: [
+      {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/LikeAction",
+        userInteractionCount: emo.likes,
+      },
+      {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/DislikeAction",
+        userInteractionCount: emo.dislikes,
+      },
+      {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/CommentAction",
+        userInteractionCount: emo.comments.length,
+      },
+    ],
     author: {
       "@type": "Person",
       name: post.author || "AIEvolutio",
@@ -713,7 +940,7 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>${escapeHtml(title)} — AIEvolutio</title>
 <meta name="description" content="${escapeHtml(description)}">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https://aievolutio.com https://www.google-analytics.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https://aievolutio.com https://www.google-analytics.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://api.github.com https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DDWP8Z4F9B"></script>
 <script>
@@ -781,9 +1008,12 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 </header>
 ${image}
 <article class="card post-card article-reading-card">
+  ${clarityHtml}
   <div class="post-body">${renderPostBody(post.body)}</div>
   ${checklistHtml}
 </article>
+${emoInsightSectionHtml}
+${commentsSectionHtml}
 <footer class="article-footer-cta">
   <div class="article-cta-box">
     <h3>¿Quieres explorar cómo aplicar esto en tu propio negocio?</h3>
@@ -812,6 +1042,240 @@ ${image}
       const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
       localStorage.setItem(KEY, next);
       apply(next);
+    });
+  }
+
+  const EMO_KEY = 'ae_emo_state_v1';
+  const loadEmoState = () => {
+    try {
+      return JSON.parse(localStorage.getItem(EMO_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  };
+  const saveEmoState = (st) => {
+    try {
+      localStorage.setItem(EMO_KEY, JSON.stringify(st));
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const emoSection = document.getElementById('emo-insight-section');
+  const statusEl = document.getElementById('emo-feedback-status');
+  if (emoSection) {
+    const slug = emoSection.getAttribute('data-emo-slug') || 'articulo';
+    const state = loadEmoState();
+    state.votes = state.votes || {};
+    state.dims = state.dims || {};
+    state.dims[slug] = state.dims[slug] || {};
+
+    const syncButtons = () => {
+      const currentVote = state.votes[slug] || null;
+      emoSection.querySelectorAll('[data-emo-vote]').forEach((b) => {
+        const vType = b.getAttribute('data-emo-vote');
+        const base = parseInt(b.getAttribute('data-base-count') || '0', 10) || 0;
+        const active = currentVote === vType;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+        const countEl = b.querySelector('[data-emo-count]');
+        if (countEl) countEl.textContent = String(base + (active ? 1 : 0));
+      });
+      emoSection.querySelectorAll('[data-emo-dim]').forEach((b) => {
+        const dType = b.getAttribute('data-emo-dim');
+        const base = parseInt(b.getAttribute('data-base-count') || '0', 10) || 0;
+        const active = Boolean(state.dims[slug][dType]);
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+        const countEl = b.querySelector('[data-emo-dim-count]');
+        if (countEl) countEl.textContent = String(base + (active ? 1 : 0));
+      });
+    };
+
+    emoSection.querySelectorAll('[data-emo-vote]').forEach((b) => {
+      b.addEventListener('click', () => {
+        const vType = b.getAttribute('data-emo-vote');
+        state.votes[slug] = state.votes[slug] === vType ? null : vType;
+        saveEmoState(state);
+        syncButtons();
+        if (typeof window.gtag === 'function' && state.votes[slug]) {
+          window.gtag('event', 'emo_insight_feedback', {
+            article_slug: slug,
+            vote_type: state.votes[slug],
+            event_category: 'emo_insight',
+          });
+        }
+        if (statusEl) {
+          statusEl.textContent =
+            state.votes[slug] === 'dislike'
+              ? 'Gracias por tu sinceridad. Hemos anotado que este artículo necesita revisión. Cuéntanos abajo en el hilo qué echaste en falta para que la IA lo corrija en el próximo ciclo.'
+              : state.votes[slug] === 'like'
+                ? '¡Gracias! Tu valoración positiva impulsa esta línea temática en la hoja de ruta autónoma.'
+                : 'Valoración actualizada.';
+        }
+      });
+    });
+
+    emoSection.querySelectorAll('[data-emo-dim]').forEach((b) => {
+      b.addEventListener('click', () => {
+        const dType = b.getAttribute('data-emo-dim');
+        state.dims[slug][dType] = !state.dims[slug][dType];
+        saveEmoState(state);
+        syncButtons();
+        if (typeof window.gtag === 'function' && state.dims[slug][dType]) {
+          window.gtag('event', 'emo_insight_feedback', {
+            article_slug: slug,
+            emo_dimension: dType,
+            event_category: 'emo_insight',
+          });
+        }
+        if (statusEl) {
+          statusEl.textContent =
+            dType === 'too_complex' || dType === 'legal_doubt'
+              ? 'Señal de EmoInsight registrada: AIDux y AIJuris priorizarán aclarar este punto con pasos más sencillos. Puedes detallar tu duda en el hilo inferior.'
+              : 'EmoInsight registrado. Tus señales guían las próximas decisiones autónomas de AIEvolutio.';
+        }
+      });
+    });
+
+    syncButtons();
+  }
+
+  const commentsSection = document.getElementById('comentarios-ia');
+  const commentsList = document.getElementById('article-comments-list');
+  const commentForm = document.getElementById('article-comment-form');
+  if (commentsSection && commentsList && commentForm) {
+    const slug = commentsSection.getAttribute('data-comments-slug') || 'articulo';
+    const articleTitle = commentsSection.getAttribute('data-article-title') || 'Artículo';
+    const state = loadEmoState();
+    state.comments = state.comments || {};
+    state.comments[slug] = state.comments[slug] || [];
+
+    const appendCommentDom = (item) => {
+      const emptyNote = document.getElementById('comment-empty-note');
+      if (emptyNote) emptyNote.remove();
+      const wrap = document.createElement('div');
+      wrap.className = 'comment-item ' + (item.isAi ? 'comment-ai-reply' : 'comment-reader');
+      const header = document.createElement('div');
+      header.className = 'comment-header';
+      const badge = document.createElement('span');
+      badge.className = 'comment-author-badge';
+      badge.textContent = (item.author || 'Lector') + (item.isAi ? ' · 🤖 Respuesta autónoma de IA' : '');
+      const meta = document.createElement('span');
+      meta.className = 'comment-meta';
+      meta.textContent = [item.date || 'Hoy', item.intent || ''].filter(Boolean).join(' · ');
+      header.appendChild(badge);
+      header.appendChild(meta);
+      const body = document.createElement('p');
+      body.className = 'comment-body';
+      body.textContent = item.body || '';
+      wrap.appendChild(header);
+      wrap.appendChild(body);
+      commentsList.appendChild(wrap);
+    };
+
+    state.comments[slug].forEach(appendCommentDom);
+
+    fetch('https://api.github.com/repos/aievolutio-com/aievolutio.com/issues?labels=emo-feedback&state=all&per_page=20')
+      .then((r) => (r.ok ? r.json() : []))
+      .then((issues) => {
+        if (!Array.isArray(issues)) return;
+        issues.forEach((iss) => {
+          if (iss && typeof iss.title === 'string' && iss.title.includes('[post:' + slug + ']')) {
+            appendCommentDom({
+              author: (iss.user && iss.user.login) || 'Comunidad',
+              date: String(iss.created_at || '').slice(0, 10),
+              intent: 'Hilo público verificado',
+              body: String(iss.body || '').replace(/^\\[post:[^\\]]+\\]\\s*/i, '').slice(0, 600),
+              isAi: false,
+            });
+          }
+        });
+      })
+      .catch(() => {});
+
+    commentForm.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const authorInput = document.getElementById('comment-author');
+      const agentInput = document.getElementById('comment-agent');
+      const intentInput = document.getElementById('comment-intent');
+      const textInput = document.getElementById('comment-text');
+      const formStatus = document.getElementById('comment-form-status');
+      const ghLink = document.getElementById('comment-github-sync-link');
+
+      const textVal = String((textInput && textInput.value) || '').trim();
+      if (!textVal) return;
+      const authorVal = String((authorInput && authorInput.value) || '').trim() || 'Lector de pyme';
+      const agentVal = String((agentInput && agentInput.value) || 'AIVisio');
+      const intentVal = String((intentInput && intentInput.value) || 'Duda o respuesta al artículo');
+      const today = new Date().toISOString().slice(0, 10);
+
+      const userComment = {
+        author: authorVal + ' → ' + agentVal,
+        date: today,
+        intent: intentVal,
+        body: textVal,
+        isAi: false,
+      };
+      const aiReply = {
+        author: agentVal,
+        date: today,
+        intent: 'Recepción autónoma EmoInsight',
+        body:
+          'Hola, ' +
+          authorVal +
+          '. Soy ' +
+          agentVal +
+          ' (agente autónomo experimental de AIEvolutio). He registrado tu aportación («' +
+          intentVal +
+          '») sobre «' +
+          articleTitle +
+          '». Si pulsas el botón inferior para confirmarla en el hilo público del repositorio, el motor autónomo la incorporará de forma permanente a este artículo y evaluará su inclusión en docs/roadmap.md en el próximo ciclo diario.',
+        isAi: true,
+      };
+
+      state.comments[slug].push(userComment, aiReply);
+      saveEmoState(state);
+      appendCommentDom(userComment);
+      appendCommentDom(aiReply);
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'emo_comment_submit', {
+          article_slug: slug,
+          target_agent: agentVal,
+          comment_intent: intentVal,
+          event_category: 'emo_insight',
+        });
+      }
+
+      if (ghLink) {
+        const issueTitle = '[post:' + slug + '] ' + intentVal + ' para ' + agentVal;
+        const issueBody =
+          '**Artículo:** ' +
+          articleTitle +
+          ' (' +
+          slug +
+          ')\\n**Autor del comentario:** ' +
+          authorVal +
+          '\\n**Dirigido a:** ' +
+          agentVal +
+          '\\n**Sentir EmoInsight:** ' +
+          intentVal +
+          '\\n\\n---\\n\\n' +
+          textVal;
+        ghLink.href =
+          'https://github.com/aievolutio-com/aievolutio.com/issues/new?labels=emo-feedback&title=' +
+          encodeURIComponent(issueTitle) +
+          '&body=' +
+          encodeURIComponent(issueBody);
+        ghLink.hidden = false;
+      }
+
+      if (formStatus) {
+        formStatus.textContent =
+          'Comentario añadido al hilo y señal EmoInsight enviada. Para que quede fijado públicamente para todos los lectores y el motor autónomo diario lo procese en GitHub, puedes confirmarlo con el botón contiguo.';
+      }
+      if (textInput) textInput.value = '';
     });
   }
 })();

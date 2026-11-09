@@ -2,7 +2,7 @@ name: AIEvolutio Autonomous Evolution & Deploy
 
 on:
   schedule:
-    - cron: "0 6 * * *" # Ciclo evolutivo diario (06:00 UTC) con Guardián Adversarial Antiduplicados
+    - cron: "23 5 * * *" # Ciclo evolutivo diario (05:23 UTC, fuera del minuto 00 para evitar cola de GitHub Actions)
   push:
     branches: [main] # Despliegue en cada avance a main
   workflow_dispatch: # Disparador manual para forzar ciclos de contenido o técnicos bajo demanda
@@ -59,8 +59,8 @@ jobs:
           access_token_scopes: https://www.googleapis.com/auth/analytics.readonly
           create_credentials_file: false
 
-      - name: 3. Ejecutar Ciclo Evolutivo IA (Con Guardián Adversarial)
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+      - name: 3A. Fase 1 — Investigación de Frontera, EmoInsight y Avance Técnico del Roadmap (Commit 1)
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'force-content')
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,33 +69,58 @@ jobs:
           INPUT_MODE: ${{ inputs.mode }}
           INPUT_AUTHOR: ${{ inputs.author }}
         run: |
-          ARGS=""
-          if [ "$INPUT_MODE" = "force-content" ]; then ARGS="$ARGS --force-content"; fi
-          if [ "$INPUT_MODE" = "force-tech" ]; then ARGS="$ARGS --force-tech"; fi
-          if [ "$INPUT_MODE" = "audit-only" ]; then ARGS="$ARGS --audit-only"; fi
-          if [ -n "$INPUT_AUTHOR" ]; then ARGS="$ARGS --author=$INPUT_AUTHOR"; fi
-          node scripts/autonomous-evolution.mjs $ARGS
+          git config user.name "AIEvolutio-Engine"
+          git config user.email "autonomous@aievolutio.com"
+          if [ "$INPUT_MODE" = "audit-only" ]; then
+            node scripts/autonomous-evolution.mjs --audit-only
+          else
+            node scripts/autonomous-evolution.mjs --phase=tech
+            npx --yes prettier --write "**/*.{html,css,js,json,md}" || true
+            node scripts/self-heal-check.mjs
+            git add -A
+            if ! git diff --staged --quiet; then
+              git commit -m "feat(roadmap-tech): avance autónomo del roadmap, investigación de frontera y sincronización EmoInsight"
+            else
+              echo "Fase 1 sin cambios pendientes en el árbol de trabajo."
+            fi
+          fi
 
-      - name: 4. Autorreparación de Integridad y Antiduplicados
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'audit-only')
-        run: |
-          npx --yes prettier --write "**/*.{html,css,js,json,md}" || true
-          node scripts/self-heal-check.mjs
-
-      - name: 5. Auto-Commit Directo a Main (Solo si hay cambios reales verificados)
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'audit-only')
+      - name: 3B. Fase 2 — Publicación Editorial Guiada por EmoInsight y Frontera (Commit 2)
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'force-tech' && inputs.mode != 'audit-only')
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA4_ACCESS_TOKEN: ${{ steps.google-auth.outputs.access_token }}
+          INPUT_MODE: ${{ inputs.mode }}
+          INPUT_AUTHOR: ${{ inputs.author }}
         run: |
           git config user.name "AIEvolutio-Engine"
           git config user.email "autonomous@aievolutio.com"
+          ARGS="--phase=content"
+          if [ "$INPUT_MODE" = "force-content" ]; then ARGS="$ARGS --force-content"; fi
+          if [ -n "$INPUT_AUTHOR" ]; then ARGS="$ARGS --author=$INPUT_AUTHOR"; fi
+          node scripts/autonomous-evolution.mjs $ARGS
+          npx --yes prettier --write "**/*.{html,css,js,json,md}" || true
+          node scripts/self-heal-check.mjs
           git add -A
           if ! git diff --staged --quiet; then
-            git commit -m "evo(spiral): evolución verificada por guardián adversarial"
-            git fetch origin main
-            git rebase -X theirs origin/main || (git rebase --abort && git merge --strategy-option=theirs origin/main -m "evo(merge): reconciliación automática")
-            git push origin HEAD:main || true
+            git commit -m "feat(editorial): publicación autónoma diaria y parte de bitácora verificados"
           else
-            echo "Sin cambios reales en este ciclo; se omite commit vacío."
+            echo "Fase 2 sin cambios pendientes en el árbol de trabajo."
           fi
+
+      - name: 4. Autorreparación Final de Integridad y Antiduplicados
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'audit-only')
+        run: |
+          node scripts/self-heal-check.mjs
+
+      - name: 5. Sincronizar y Subir Commits Autónomos a Main
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'audit-only')
+        run: |
+          git fetch origin main
+          git rebase -X theirs origin/main || (git rebase --abort && git merge --strategy-option=theirs origin/main -m "evo(merge): reconciliación automática")
+          git push origin HEAD:main || true
 
       - name: 6. Emitir o Actualizar Parte de Observabilidad (Issue Único Diario)
         if: always() && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'audit-only'))
