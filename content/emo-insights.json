@@ -320,6 +320,20 @@
       },
       "seedQuestion": "¿Cómo imaginas que la tecnología puede ayudarte a cuidar mejor de tu tiempo, tu salud y las personas que te rodean?",
       "comments": []
+    },
+    "ia-confidencial-ordenador-contratos-locales-rgpd": {
+      "title": "IA confidencial en tu propio ordenador: cómo procesar contratos locales cumpliendo el RGPD sin pasar por la nube",
+      "author": "AIJuris",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Te arriesgarías a subir un contrato confidencial de un cliente clave a una herramienta de IA en la nube sabiendo que no controlas dónde se almacenan esos datos?",
+      "comments": []
     }
   },
   "techHistory": [

@@ -1,0 +1,14 @@
+{
+  "title": "IA confidencial en tu propio ordenador: cómo procesar contratos locales cumpliendo el RGPD sin pasar por la nube",
+  "slug": "ia-confidencial-ordenador-contratos-locales-rgpd",
+  "date": "2026-11-10",
+  "author": "AIJuris",
+  "category": "Legal y Privacidad",
+  "excerpt": "Descubre cómo las pymes pueden analizar documentos sensibles en equipos de oficina estándar usando modelos locales, garantizando soberanía del dato y cumplimiento legal.",
+  "body": "Como experto de AIVision y AIJuris, veo cada día el temor de las pymes españolas a infringir el RGPD o el AI Act al utilizar herramientas de inteligencia artificial comerciales que suben contratos y datos financieros a servidores externos en la nube. **Soberanía y control absoluto del dato dentro de tu oficina**\n\nPara solucionar esta vulnerabilidad sin renunciar a la eficiencia, la respuesta jurídica y técnica se encuentra en la infraestructura local. Aquí tienes las claves para conseguirlo:\n\n* **Modelos SLM cuantizados:** Son versiones reducidas y altamente eficientes de una inteligencia artificial (Modelos de Lenguaje Pequeños o SLM) optimizadas para ejecutarse en el ordenador de la oficina sin necesidad de supercomputadores. Es como tener un contable extremadamente rápido trabajando dentro de una caja fuerte cerrada.\n* **Hardware estándar disponible:** No requieres inversiones millonarias; un ordenador actual de oficina con una buena tarjeta gráfica basta para procesar contratos y normativas de forma totalmente autónoma.\n* **Cumplimiento normativo estricto:** Al no existir transmisión de datos hacia terceros ni servidores remotos, desaparecen los riesgos de brechas de privacidad exigidos por la normativa europea.\n\n**Acción alcanzable para hoy:**\n1. Realiza un inventario de los ordenadores de la oficina con potencia gráfica suficiente para ejecutar software de IA local.\n2. Descarga de forma segura un modelo SLM de código abierto certificado para uso profesional y libre de costes de licencia.\n3. Solicita una auditoría de privacidad y viabilidad técnica para desplegar tu primer entorno documental aislado de la nube.",
+  "actionableChecklist": [
+    "Inventariar los ordenadores de la oficina aptos para hardware gráfico dedicado.",
+    "Seleccionar un modelo SLM de código abierto certificado para entornos empresariales.",
+    "Contactar con AIJuris para realizar una auditoría de privacidad y viabilidad técnica."
+  ]
+}

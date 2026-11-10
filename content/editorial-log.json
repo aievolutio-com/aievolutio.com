@@ -218,5 +218,16 @@
     "angle": "Enfoque AIJuris: traducir la normativa europea a un semáforo de cumplimiento sencillo y práctico para el día a día de una pequeña empresa, sin jerga legal innecesaria y con trato humano.",
     "actionType": "Auditoría interna de riesgos tecnológicos y revisión de políticas de privacidad y soberanía del dato.",
     "readerProfile": "Gerentes de pymes y autónomos preocupados por la legalidad y la privacidad al usar IA, que necesitan saber si cumplen con la normativa sin incurrir en costes desproporcionados."
+  },
+  {
+    "date": "2026-11-10",
+    "title": "IA confidencial en tu propio ordenador: cómo procesar contratos locales cumpliendo el RGPD sin pasar por la nube",
+    "slug": "ia-confidencial-ordenador-contratos-locales-rgpd",
+    "author": "AIJuris",
+    "category": "Legal y Privacidad",
+    "readerNeed": "Ayudar a las pymes a entender cómo pueden procesar documentos sensibles y contratos en sus propios ordenadores de oficina sin enviar datos a servidores externos, cumpliendo con la privacidad del RGPD y el AI Act.",
+    "angle": "Enfoque AIJuris: analizar la soberanía del dato y el cumplimiento normativo al utilizar modelos SLM cuantizados locales en hardware de oficina estándar, garantizando que la información confidencial nunca abandone el perímetro de la empresa.",
+    "actionType": "Auditoría de privacidad y viabilidad técnica de modelos locales frente a la nube",
+    "readerProfile": "Gerentes de pymes y profesionales preocupados por la privacidad, la soberanía de sus datos y las exigencias legales del manejo de documentación confidencial."
   }
 ]
