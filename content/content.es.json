@@ -363,6 +363,7 @@
             "Validar la precisión de generación de presupuestos y respuestas técnicas con supervisión humana"
           ],
           "date": "2026-11-05",
+          "clarityNote": "En 30 segundos: conectar una carpeta por MCP no requiere programar ni subir nada a internet; equivale a enchufar un disco externo en modo solo lectura para que el asistente lea tus tarifas sin equivocarse.",
           "type": "post"
         },
         {
@@ -408,6 +409,7 @@
             "Instalar un gestor de modelos SLM locales sin coste de licencias",
             "Medir el tiempo ahorrado por expediente en la primera semana de prueba"
           ],
+          "clarityNote": "En 30 segundos: un modelo SLM local se instala como cualquier programa de escritorio en 15 minutos, es gratuito y funciona aunque desconectes el cable de internet.",
           "type": "post"
         },
         {

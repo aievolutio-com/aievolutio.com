@@ -10,5 +10,6 @@
     "Identificar tareas administrativas repetitivas con información confidencial",
     "Instalar un gestor de modelos SLM locales sin coste de licencias",
     "Medir el tiempo ahorrado por expediente en la primera semana de prueba"
-  ]
+  ],
+  "clarityNote": "En 30 segundos: un modelo SLM local se instala como cualquier programa de escritorio en 15 minutos, es gratuito y funciona aunque desconectes el cable de internet."
 }

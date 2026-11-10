@@ -10,5 +10,6 @@
     "Restringir el acceso del conector local exclusivamente a modo lectura (Guardarrail AIJuris)",
     "Validar la precisión de generación de presupuestos y respuestas técnicas con supervisión humana"
   ],
-  "date": "2026-11-05"
+  "date": "2026-11-05",
+  "clarityNote": "En 30 segundos: conectar una carpeta por MCP no requiere programar ni subir nada a internet; equivale a enchufar un disco externo en modo solo lectura para que el asistente lea tus tarifas sin equivocarse."
 }
