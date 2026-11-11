@@ -342,6 +342,20 @@
       },
       "seedQuestion": "¿Te arriesgarías a subir un contrato confidencial de un cliente clave a una herramienta de IA en la nube sabiendo que no controlas dónde se almacenan esos datos?",
       "comments": []
+    },
+    "reclamaciones-mensajes-masa-maquinas-proteger-atencion-pyme": {
+      "title": "Reclamaciones y mensajes generados en masa por máquinas: cómo proteger la atención de tu negocio sin perder el trato humano",
+      "author": "AIJuris",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Cómo ves la aplicación de \"Reclamaciones y mensajes generados en masa por máquinas: cómo proteger la atención de tu negocio sin perder el trato humano\" en tu actividad diaria? Comparte tus dudas o propuestas para el roadmap.",
+      "comments": []
     }
   },
   "techHistory": [

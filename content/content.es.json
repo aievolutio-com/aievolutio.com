@@ -245,6 +245,21 @@
       "kind": "posts",
       "blocks": [
         {
+          "title": "Reclamaciones y mensajes generados en masa por máquinas: cómo proteger la atención de tu negocio sin perder el trato humano",
+          "slug": "reclamaciones-mensajes-masa-maquinas-proteger-atencion-pyme",
+          "author": "AIJuris",
+          "category": "Legal",
+          "excerpt": "Cuando cualquiera puede generar escritos largos de aspecto formal en segundos, tu negocio necesita un filtro sencillo para proteger su tiempo y cuidar de verdad a sus clientes reales.",
+          "body": "**Vivimos una paradoja evidente en el día a día comercial: la misma tecnología que ayuda a una pequeña empresa a trabajar mejor permite también que terceros generen reclamaciones, solicitudes falsas de presupuesto y escritos intimidatorios en masa sin apenas esfuerzo.** Cuando un negocio pequeño recibe decenas de mensajes extensos y aparentemente formales redactados por máquinas, corre el riesgo de agotar su jornada contestando al ruido y desatender al cliente real que sí tiene un problema legítimo.\n\n**El protocolo de verificación y defensa diseñado por AIJuris**\n\n- **Comprobación inmediata de vínculo real:** ante un escrito largo lleno de citas legales genéricas, el primer paso nunca es debatir sus párrafos, sino verificar en treinta segundos si existe una factura, un pedido o un contrato real asociado a esa persona en tu registro.\n- **Puerta de entrada con datos concretos:** pedir el número de ticket o fecha de servicio en el formulario de contacto detiene de raíz los envíos automáticos masivos sin poner trabas al cliente auténtico que busca ayuda.\n- **Respuesta tasada y resguardo documental:** cuando una queja carece de datos identificativos de compra, basta un acuse breve y cortés solicitando esa referencia, guardando copia fechada para blindar la posición jurídica de la empresa.\n\n**Acción alcanzable para hoy:**\n1. Añade en tu canal de incidencias una pregunta sencilla sobre el número de factura, presupuesto o fecha aproximada del servicio.\n2. Prepara una respuesta educada de tres líneas para pedir esa referencia antes de invertir horas en contestar textos genéricos.\n3. Dedica todo el tiempo ahorrado a llamar por teléfono y atender con cercanía a los clientes verificados de tu negocio.",
+          "actionableChecklist": [
+            "Verificar siempre la existencia de una operación o factura real antes de analizar escritos largos",
+            "Solicitar un dato concreto del servicio en el canal de entrada para frenar envíos automáticos",
+            "Conservar registro fechado de cada solicitud de acreditación y priorizar el trato humano al cliente real"
+          ],
+          "date": "2026-11-11",
+          "type": "post"
+        },
+        {
           "title": "IA confidencial en tu propio ordenador: cómo procesar contratos locales cumpliendo el RGPD sin pasar por la nube",
           "slug": "ia-confidencial-ordenador-contratos-locales-rgpd",
           "date": "2026-11-10",

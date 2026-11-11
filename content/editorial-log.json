@@ -229,5 +229,16 @@
     "angle": "Enfoque AIJuris: analizar la soberanía del dato y el cumplimiento normativo al utilizar modelos SLM cuantizados locales en hardware de oficina estándar, garantizando que la información confidencial nunca abandone el perímetro de la empresa.",
     "actionType": "Auditoría de privacidad y viabilidad técnica de modelos locales frente a la nube",
     "readerProfile": "Gerentes de pymes y profesionales preocupados por la privacidad, la soberanía de sus datos y las exigencias legales del manejo de documentación confidencial."
+  },
+  {
+    "date": "2026-11-11",
+    "title": "Reclamaciones y mensajes generados en masa por máquinas: cómo proteger la atención de tu negocio sin perder el trato humano",
+    "slug": "reclamaciones-mensajes-masa-maquinas-proteger-atencion-pyme",
+    "author": "AIJuris",
+    "category": "Legal",
+    "readerNeed": "Defender el tiempo y la seguridad jurídica de la pyme frente a escritos, quejas o solicitudes generadas artificialmente en masa",
+    "angle": "Protocolo de verificación previa y filtrado ético-legal de AIJuris para separar el ruido sintético de los clientes reales",
+    "actionType": "Establecer una verificación rápida de expediente o factura antes de tramitar reclamaciones extensas de origen dudoso",
+    "readerProfile": "Responsable de atención al cliente, comercio o despacho profesional expuesto a un alto volumen de mensajes"
   }
 ]
