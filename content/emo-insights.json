@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-10",
+  "updatedAt": "2026-11-11",
   "summary": {
     "totalLikes": 0,
     "totalDislikes": 0,
@@ -15,7 +15,8 @@
   "completedTechSteps": [
     "v1.3.0-emo-insight-core",
     "tech-step-01-glossary-aiworker-quantization",
-    "tech-step-02-clarity-notes-mcp-slm"
+    "tech-step-02-clarity-notes-mcp-slm",
+    "tech-step-03-glossary-zdr-prompt"
   ],
   "frontierLog": [
     {
@@ -38,6 +39,13 @@
       "insight": "Los nuevos modelos abiertos de 3B a 8B parámetros permiten resumir contratos, clasificar incidencias y estructurar facturas en ordenadores estándar de 16 GB de RAM con latencia inferior a 3 segundos y coste marginal cero.",
       "roadmapImpact": "Impulsa el recomendador de hardware frugal por oficio (US-205) y el prototipo local de AIFactura (US-301).",
       "leadAgent": "AIDux"
+    },
+    {
+      "date": "2026-11-11",
+      "topic": "Obligación de alfabetización en IA (artículo 4 del AI Act) y transparencia en atención automatizada",
+      "insight": "Las pymes europeas que utilizan asistentes de IA deben acreditar formación práctica básica de su plantilla y señalizar siempre cuándo un cliente interactúa con un sistema automatizado.",
+      "roadmapImpact": "Prioriza el configurador de avisos honestos de AIRespuestas (US-302) y los microcursos verificables de la academia abierta (US-501 y US-503).",
+      "leadAgent": "AIJuris"
     }
   ],
   "posts": {
@@ -350,6 +358,13 @@
       "versionRef": "v1.3.0 / US-107 / US-203",
       "title": "Inyección de cajas «Luz en la entrada (en 30 segundos)» en guías técnicas de MCP y modelos SLM locales",
       "summary": "Incorporadas 2 cajas pedagógicas «Luz en la entrada» en artículos técnicos de MCP y SLM."
+    },
+    {
+      "date": "2026-11-11",
+      "id": "tech-step-03-glossary-zdr-prompt",
+      "versionRef": "v1.3.0 / US-105 / AIJuris",
+      "title": "Ampliación autónoma del glosario con «Retención cero (Zero Data Retention)» e «Instrucción maestra (System Prompt)»",
+      "summary": "Ampliado el glosario en lenguaje llano con 2 términos de privacidad y operación práctica."
     }
   ]
 }
