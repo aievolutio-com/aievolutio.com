@@ -10,5 +10,6 @@
     "Identifica una única hoja de cálculo con datos operativos clave que la dirección consulte frecuentemente.",
     "Evalúa la instalación de un modelo de lenguaje local ligero sobre un ordenador de oficina dedicado.",
     "Conecta el asistente mediante una base de datos vectorial básica para realizar pruebas de consulta privada."
-  ]
+  ],
+  "clarityNote": "En 30 segundos: no necesitas un departamento de datos; basta con exportar tu hoja de ventas mensual limpia (sin nombres privados) y hacerle preguntas en español llano."
 }

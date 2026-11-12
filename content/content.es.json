@@ -318,6 +318,7 @@
             "Evalúa la instalación de un modelo de lenguaje local ligero sobre un ordenador de oficina dedicado.",
             "Conecta el asistente mediante una base de datos vectorial básica para realizar pruebas de consulta privada."
           ],
+          "clarityNote": "En 30 segundos: no necesitas un departamento de datos; basta con exportar tu hoja de ventas mensual limpia (sin nombres privados) y hacerle preguntas en español llano.",
           "type": "post"
         },
         {
@@ -363,6 +364,7 @@
             "Archivar la adenda de confidencialidad algorítmica en el expediente legal de la empresa"
           ],
           "date": "2026-11-05",
+          "clarityNote": "En 30 segundos: añadir un anexo de una sola página a tus proveedores externos basta para prohibir que metan datos de tu negocio en cuentas gratuitas sin privacidad.",
           "type": "post"
         },
         {
@@ -424,6 +426,7 @@
             "Añadir datos estructurados Schema.org a las páginas principales de servicio"
           ],
           "date": "2026-11-01",
+          "clarityNote": "En 30 segundos: aparecer cuando alguien pregunta a un asistente por tu oficio en tu ciudad depende de explicar con claridad en tu web qué problema resuelves, tus plazos reales y tus preguntas frecuentes.",
           "type": "post"
         },
         {

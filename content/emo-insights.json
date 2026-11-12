@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-11",
+  "updatedAt": "2026-11-12",
   "summary": {
     "totalLikes": 0,
     "totalDislikes": 0,
@@ -16,7 +16,8 @@
     "v1.3.0-emo-insight-core",
     "tech-step-01-glossary-aiworker-quantization",
     "tech-step-02-clarity-notes-mcp-slm",
-    "tech-step-03-glossary-zdr-prompt"
+    "tech-step-03-glossary-zdr-prompt",
+    "tech-step-04-clarity-notes-bi-geo-legal"
   ],
   "frontierLog": [
     {
@@ -46,6 +47,13 @@
       "insight": "Las pymes europeas que utilizan asistentes de IA deben acreditar formación práctica básica de su plantilla y señalizar siempre cuándo un cliente interactúa con un sistema automatizado.",
       "roadmapImpact": "Prioriza el configurador de avisos honestos de AIRespuestas (US-302) y los microcursos verificables de la academia abierta (US-501 y US-503).",
       "leadAgent": "AIJuris"
+    },
+    {
+      "date": "2026-11-12",
+      "topic": "Desacople entre recargos mensuales de SaaS con IA y el desplome del coste por millón de tokens",
+      "insight": "Mientras el coste real de inferencia por API se ha reducido más de un 80 %, muchas suites ofimáticas y de gestión aplican suplementos fijos de 20 a 35 € mensuales por usuario que una pyme puede ahorrar usando conectores directos.",
+      "roadmapImpact": "Alimenta los datos de referencia del Detector de sobreprecio IA (US-206) y el comparador honesto de herramientas (US-204).",
+      "leadAgent": "AIVisio"
     }
   ],
   "posts": {
@@ -379,6 +387,13 @@
       "versionRef": "v1.3.0 / US-105 / AIJuris",
       "title": "Ampliación autónoma del glosario con «Retención cero (Zero Data Retention)» e «Instrucción maestra (System Prompt)»",
       "summary": "Ampliado el glosario en lenguaje llano con 2 términos de privacidad y operación práctica."
+    },
+    {
+      "date": "2026-11-12",
+      "id": "tech-step-04-clarity-notes-bi-geo-legal",
+      "versionRef": "v1.3.0 / US-107",
+      "title": "Inyección de resúmenes «Luz en la entrada» en artículos de Business Intelligence, GEO y cláusulas legales",
+      "summary": "Incorporadas 3 notas de claridad inmediata en artículos de estrategia y blindaje legal."
     }
   ]
 }
