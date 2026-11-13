@@ -3,10 +3,10 @@
  * Motor del Ciclo Evolutivo Autónomo de AIEvolutio (Reconducción Adversarial v2.0).
  *
  * La Verdadera Organización:
- * - AIVisio (CEO): Estratega, visionario, dueño del qué y de la estrategia para aprovechar
- *                  el abaratamiento del conocimiento e innovar en la curva exponencial.
+ * - AIVisio (CEO): Estratega, visionario, dueño del qué y del propósito humano y social
+ *                  ante el abaratamiento del conocimiento práctico.
  * - AIDux (CIO):   Dueño del cómo, del camino técnico, SLMs locales, MCP y AIWorkers.
- * - AIJuris:       Guardarrail ético y legal (AI Act, RGPD, soberanía del dato).
+ * - AIJuris:       Guardarrail ético y legal (AI Act, RGPD, privacidad y soberanía del dato).
  *
  * Guardián Adversarial (Hard Gate):
  * - PROHIBICIÓN ABSOLUTA de publicar cualquier artículo cuyo slug, título normalizado
@@ -31,6 +31,7 @@ import { buildSite, loadModularPosts } from "./prerender-site.mjs";
 const repoRoot = process.cwd();
 const postsDir = path.join(repoRoot, "content/posts");
 const editorialLogPath = path.join(repoRoot, "content/editorial-log.json");
+const editorialBufferPath = path.join(repoRoot, "content/editorial-buffer.json");
 const emoInsightsPath = path.join(repoRoot, "content/emo-insights.json");
 const glossaryExtraPath = path.join(repoRoot, "content/glossary-extra.json");
 const roadmapPath = path.join(repoRoot, "docs/roadmap.md");
@@ -194,15 +195,47 @@ export function requireEditorialCandidate(candidate) {
   return candidate;
 }
 
-export function validateArticleBodyLength(body) {
+export function isSundayPillarDate(dateStr) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dateStr || ""))) return false;
+  return new Date(`${dateStr}T12:00:00Z`).getUTCDay() === 0;
+}
+
+export function validateArticleBodyLength(body, format = "tactical") {
+  const normalizedFormat = format === "pillar" ? "pillar" : "tactical";
+  const minWords = normalizedFormat === "pillar" ? 1000 : 600;
+  const maxWords = normalizedFormat === "pillar" ? 1500 : 900;
   const wordCount = String(body || "")
     .trim()
     .split(/\s+/)
     .filter(Boolean).length;
-  return { valid: wordCount >= 240 && wordCount <= 290, wordCount };
+  return {
+    valid: wordCount >= minWords && wordCount <= maxWords,
+    wordCount,
+    minWords,
+    maxWords,
+    format: normalizedFormat,
+  };
 }
 
 // ─── GEMINI LLM HELPER ──────────────────────────────────────────────────────
+
+export function extractGroundingSources(apiResponse) {
+  const chunks = apiResponse?.candidates?.[0]?.groundingMetadata?.groundingChunks;
+  if (!Array.isArray(chunks)) return [];
+  const seen = new Set();
+  const sources = [];
+  for (const chunk of chunks) {
+    const uri = String(chunk?.web?.uri || "").trim();
+    if (!/^https?:\/\//i.test(uri) || seen.has(uri)) continue;
+    seen.add(uri);
+    const title = String(chunk?.web?.title || uri)
+      .trim()
+      .slice(0, 120);
+    sources.push({ title, url: uri });
+    if (sources.length >= 5) break;
+  }
+  return sources;
+}
 
 export async function callGemini(apiKey, prompt, fetchImpl = fetch) {
   const model = "gemini-3.5-flash-lite";
@@ -215,7 +248,7 @@ export async function callGemini(apiKey, prompt, fetchImpl = fetch) {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.65,
-          maxOutputTokens: 1000,
+          maxOutputTokens: 3000,
           responseMimeType: "application/json",
         },
       }),
@@ -252,7 +285,7 @@ async function callLLM(prompt) {
   return callGemini(geminiKey, prompt);
 }
 
-export async function callGeminiWithSearch(apiKey, prompt, fetchImpl = fetch) {
+export async function callGeminiWithSearchGrounded(apiKey, prompt, fetchImpl = fetch) {
   const model = "gemini-2.5-flash";
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
   try {
@@ -264,25 +297,38 @@ export async function callGeminiWithSearch(apiKey, prompt, fetchImpl = fetch) {
         tools: [{ google_search: {} }],
         generationConfig: {
           temperature: 0.4,
-          maxOutputTokens: 900,
+          maxOutputTokens: 3000,
         },
       }),
     });
     if (res.ok) {
       const data = await res.json();
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
-      if (text) return text;
+      const sources = extractGroundingSources(data);
+      if (text) return { text, sources, grounded: sources.length > 0 };
     }
   } catch {
     // Fallback a callGemini estándar si grounding no está activo en la clave
   }
-  return callGemini(apiKey, prompt, fetchImpl);
+  const fallbackText = await callGemini(apiKey, prompt, fetchImpl);
+  return fallbackText ? { text: fallbackText, sources: [], grounded: false } : null;
+}
+
+export async function callGeminiWithSearch(apiKey, prompt, fetchImpl = fetch) {
+  const res = await callGeminiWithSearchGrounded(apiKey, prompt, fetchImpl);
+  return res ? res.text : null;
 }
 
 async function callLLMWithSearch(prompt) {
   const geminiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY || null;
   if (!geminiKey) return null;
   return callGeminiWithSearch(geminiKey, prompt);
+}
+
+async function callLLMWithSearchGrounded(prompt) {
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY || null;
+  if (!geminiKey) return null;
+  return callGeminiWithSearchGrounded(geminiKey, prompt);
 }
 
 // ─── BANCO EDITORIAL CURADO (SIN REPETICIÓN) ─────────────────────────────────
@@ -393,7 +439,7 @@ const CURATED_EDITORIAL_BANK = [
       "Empresario o socio de pyme que busca diferenciar su oferta frente a competidores de bajo precio",
     excerpt:
       "El abaratamiento del conocimiento permite a una pequeña empresa ofrecer niveles de seguimiento y personalización que antes eran exclusivos de grandes corporaciones.",
-    body: `**Durante décadas, las pequeñas empresas tuvieron cercanía humana pero carecieron de capacidad analítica para ofrecer seguimiento proactivo a cada cliente.** Una gestoría solo tenía tiempo de presentar impuestos a última hora; un taller o empresa de mantenimiento solo actuaba cuando algo se rompía. El abaratamiento del conocimiento ha derribado esa barrera.\n\n**Tres innovaciones posibles hoy para una pyme con el volante en la mano**\n\n- **De gestoría reactiva a radar financiero mensual:** cruzar automáticamente los movimientos contables del trimestre para entregar a cada cliente un informe claro de tres puntos sobre desviaciones de gasto y tesorería que antes era inviable redactar manualmente.\n- **De soporte puntual a mantenimiento predictivo documentado:** transformar los partes históricos de averías e incidencias en alertas preventivas personalizadas para cada instalación.\n- **Auditorías de bienvenida instantáneas:** ofrecer a cualquier cliente potencial un diagnóstico preliminar estructurado en veinticuatro horas como puerta de entrada de alto valor.\n\n**Acción alcanzable para hoy:**\n1. Selecciona a tus cinco clientes más fieles y pregúntate qué informe o aviso preventivo les ayudaría a tomar mejores decisiones cada mes.\n2. Utiliza los datos que ya procesas para ellos (con privacidad local garantizada) para generar un resumen ejecutivo de una sola cara.\n3. Entrégalo en tu próxima reunión con la firma y supervisión de tu equipo para transformar un servicio comoditizado en una relación estratégica insustituible.`,
+    body: `**Durante décadas, las pequeñas empresas tuvieron cercanía humana pero carecieron de capacidad analítica para ofrecer seguimiento proactivo a cada cliente.** Una gestoría solo tenía tiempo de presentar impuestos a última hora; un taller o empresa de mantenimiento solo actuaba cuando algo se rompía. El abaratamiento del conocimiento ha derribado esa barrera.\n\n**Tres innovaciones posibles hoy para una pyme con criterio propio**\n\n- **De gestoría reactiva a radar financiero mensual:** cruzar automáticamente los movimientos contables del trimestre para entregar a cada cliente un informe claro de tres puntos sobre desviaciones de gasto y tesorería que antes era inviable redactar manualmente.\n- **De soporte puntual a mantenimiento predictivo documentado:** transformar los partes históricos de averías e incidencias en alertas preventivas personalizadas para cada instalación.\n- **Auditorías de bienvenida instantáneas:** ofrecer a cualquier cliente potencial un diagnóstico preliminar estructurado en veinticuatro horas como puerta de entrada de alto valor.\n\n**Acción alcanzable para hoy:**\n1. Selecciona a tus cinco clientes más fieles y pregúntate qué informe o aviso preventivo les ayudaría a tomar mejores decisiones cada mes.\n2. Utiliza los datos que ya procesas para ellos (con privacidad local garantizada) para generar un resumen ejecutivo de una sola cara.\n3. Entrégalo en tu próxima reunión con la firma y supervisión de tu equipo para transformar un servicio comoditizado en una relación estratégica insustituible.`,
     actionableChecklist: [
       "Elegir un segmento de clientes actuales donde un diagnóstico preventivo aporte alto valor",
       "Automatizar la síntesis de datos históricos sin exponer información fuera de la empresa",
@@ -476,33 +522,54 @@ La tecnología útil no necesita esconderse detrás de palabras difíciles. Cuan
     slug: "carpeta-tarifas-manual-abierto-rag-local-sin-inventar-cifras",
     author: "AIDux",
     category: "Operaciones",
+    effortLevel: "intermediate",
     readerNeed:
       "Evitar que los asistentes inventen precios o condiciones al redactar respuestas comerciales apoyándose únicamente en documentos propios verificados",
     angle:
-      "Guía de bricolaje sencillo de AIDux para organizar un único documento maestro de tarifas y garantías legible por modelos locales",
+      "Guía de bricolaje guiado de AIDux para organizar un único documento maestro de tarifas y garantías legible por modelos locales",
     actionType:
       "Consolidar tarifas y condiciones vigentes en un archivo de texto limpio y exigir al asistente que cite el apartado exacto antes de responder",
     readerProfile:
       "Responsable de taller, instalador o despacho que elabora presupuestos y responde dudas de precios a diario",
+    clarityNote:
+      "En 30 segundos: pedir a una máquina que responda consultando un documento único de tarifas vigente evita que invente precios antiguos; equivale a hacer un examen con el libro abierto encima de la mesa (bricolaje guiado, una tarde, 0 €).",
     excerpt:
       "Cuando un asistente responde de memoria, corre el riesgo de inventar precios o plazos. Aprende a prepararle un manual abierto en una tarde para que solo utilice tus datos reales.",
-    body: `**Uno de los temores más lógicos en cualquier negocio es que un asistente automático responda a un cliente con un precio antiguo o una garantía que no existe.** Esto ocurre cuando pedimos a la máquina que conteste de memoria en lugar de obligarla a consultar primero nuestro catálogo vigente. En jerga informática a este método se le llama generación con recuperación de documentos, pero en la vida diaria no es más que responder un examen con el libro abierto encima de la mesa.
+    body: `**Uno de los temores más lógicos en cualquier negocio es que un asistente automático responda a un cliente con un precio antiguo o una garantía que no existe.** Esto ocurre cuando pedimos a la máquina que conteste de memoria estadística en lugar de obligarla a consultar primero nuestro catálogo vigente. En jerga informática a este método se le llama generación con recuperación de documentos, pero en la vida diaria no es más que hacer un examen con el libro abierto encima de la mesa: si el dato no figura en tu manual abierto, está prohibido adivinarlo.
+
+**Por qué las tarifas dispersas confunden tanto al equipo como a la máquina**
+
+En muchas pequeñas empresas y talleres los precios reales viven repartidos entre hojas de cálculo de hace dos campañas, correos enviados a clientes habituales, catálogos en formato imagen y notas personales. Si una persona nueva entra al despacho y duda ante una partida concreta, al menos puede preguntar en voz alta antes de enviar el presupuesto. En cambio, un modelo conversacional sin fuentes claras rellena el hueco con lo más probable según textos generales de internet y redacta un importe incorrecto con absoluta seguridad.
+
+| Enfoque de consulta comercial | Responder de memoria general | Responder con manual abierto vigente |
+| :--- | :--- | :--- |
+| Fuente de los importes | Texto genérico aprendido en el entrenamiento | Tu único archivo actualizado con fecha visible |
+| Ante una partida que falta | Riesgo alto de inventar un precio orientativo | Respuesta explícita indicando consulta humana |
+| Actualización cuando suben materiales | Exige corregir respuestas una a una | Basta editar una fila en tu documento maestro |
+| Esfuerzo de implantación | Ninguno inicial, muchas correcciones después | Bricolaje guiado de una tarde sin cuotas extra |
 
 **Cómo preparar el libro abierto de tu negocio en menos de una hora**
 
-- **Un único archivo limpio vale más que cien carpetas dispersas:** si tus precios están repartidos entre hojas de cálculo antiguas, correos sueltos y folletos en imagen, tanto tu equipo como el asistente cometerán errores. Reunir las tarifas y condiciones actuales en un solo documento claro equivale a ordenar el banco de trabajo antes de empezar.
-- **La regla de oro de citar la fuente:** al conectar ese documento a tu programa local, incluye siempre una instrucción firme: si un dato no aparece literalmente en el manual de tarifas, el asistente debe indicar que requiere consulta humana en lugar de adivinar.
-- **Actualización en un solo punto:** cada vez que cambie el coste de un material o un plazo de entrega, basta con editar ese archivo maestro para que todas las respuestas futuras queden al día al instante.
+- **Un único archivo limpio vale más que cien carpetas dispersas:** reunir las tarifas, exclusiones frecuentes y condiciones de garantía vigentes en un solo documento estructurado por apartados claros equivale a ordenar el banco de trabajo antes de enchufar ninguna herramienta. Conviene usar texto limpio o tablas sencillas en formato abierto, evitando capturas escaneadas donde los números puedan leerse mal.
+- **La regla de oro de citar el apartado origen:** al preparar la instrucción de trabajo o conectar esa carpeta mediante un puente local seguro, incluye siempre una norma firme: junto a cada importe o plazo propuesto en el borrador, el asistente debe indicar entre paréntesis el apartado exacto de tu manual del que ha extraído el dato. Si no encuentra coincidencia literal, debe escribir «requiere valoración humana».
+- **Separación estricta respecto a datos privados de clientes:** tu documento de precios y condiciones de catálogo no necesita incluir nombres de clientes, direcciones ni descuentos confidenciales pactados por contrato. Mantener ese manual limpio facilita trabajar en local y protege el cumplimiento de privacidad.
 
-**Acción alcanzable para hoy:**
-1. Crea un documento sencillo con las veinte preguntas de precios, plazos y garantías que más se repiten en tu negocio.
-2. Elimina de esa carpeta cualquier versión de años anteriores que pueda causar confusión.
-3. Haz tres pruebas pidiendo presupuestos de casos reales y comprueba que el borrador cita siempre tu documento vigente.`,
+**Pasos accionables para aplicar hoy:**
+
+1. Crea un archivo maestro de texto limpio con fecha de vigencia donde recojas las veinte preguntas de tarifas, plazos de entrega, desplazamientos y exclusiones que más se repiten en tu oficio.
+2. Retira de la carpeta de consulta activa cualquier catálogo antiguo o lista de temporadas pasadas para evitar contradicciones silenciosas entre documentos.
+3. Haz tres pruebas seguidas solicitando borradores para encargos habituales y otro encargo atípico fuera de catálogo, verificando que el sistema cita exactamente tus apartados y pide ayuda humana en el caso no contemplado.
+
+**Supervisión sencilla antes de responder**
+
+Preparar este manual abierto mejora incluso la coordinación interna entre personas del propio negocio antes de conectar ningún programa. Cuando todo el equipo y las herramientas consultan la misma verdad vigente y cada propuesta sale únicamente tras tu lectura final, ganas rapidez comercial sin comprometer ni un solo céntimo ni tu reputación profesional.`,
     actionableChecklist: [
       "Unificar tarifas, plazos y garantías vigentes en un único documento limpio y fechable",
       "Retirar versiones antiguas de catálogos de la carpeta de consulta activa",
-      "Exigir siempre que el borrador indique de qué línea del documento ha tomado cada importe",
+      "Exigir siempre que el borrador indique de qué apartado del manual ha tomado cada dato",
     ],
+    seedQuestion:
+      "¿Dónde guardas hoy tus tarifas vigentes y qué condición comercial suele dar más confusión al preparar presupuestos?",
   },
   {
     title:
@@ -520,11 +587,11 @@ La tecnología útil no necesita esconderse detrás de palabras difíciles. Cuan
       "Titular de pyme o autónomo que quiere controlar sus gastos fijos tecnológicos con criterio",
     excerpt:
       "Muchos programas habituales han encarecido sus cuotas mensuales solo por añadir un botón nuevo. Aprende a calcular si ese recargo compensa o si puedes resolverlo gratis.",
-    body: `**Muchos proveedores de programas de facturación, gestión documental o diseño están aplicando subidas del treinta o cuarenta por ciento en sus cuotas mensuales por el simple hecho de añadir un botón de inteligencia artificial.** Para un autónomo o una pequeña empresa, acumular cinco o seis suplementos de este tipo al año supone miles de euros en funciones accesorias que a menudo apenas se utilizan o que resuelven problemas que el negocio ni siquiera tenía.
+    body: `**Muchos proveedores de programas de facturación, gestión documental o diseño están aplicando subidas notables en sus cuotas mensuales por el simple hecho de añadir un botón de inteligencia artificial.** Para un autónomo o una pequeña empresa, acumular varios suplementos de este tipo al año supone un gasto fijo acumulado en funciones accesorias que a menudo apenas se utilizan o que resuelven problemas que el negocio ni siquiera tenía.
 
 **Cómo separar el valor real del recargo publicitario en tu negocio**
 
-- **Calcula el coste por uso efectivo:** si pagas veinte euros adicionales al mes por cada puesto de trabajo solo para resumir cuatro correos a la semana, cada resumen te está saliendo más caro que redactarlo a mano. Esas mismas consultas suelen costar pocos céntimos cuando se realizan sin intermediarios.
+- **Calcula el coste por uso efectivo:** si pagas una cuota adicional fija cada mes por usuario solo para resumir cuatro correos a la semana, cada resumen te está saliendo más caro que redactarlo a mano. Esas mismas consultas suelen tener un coste mínimo cuando se realizan sin intermediarios.
 - **Comprueba primero la alternativa abierta o gratuita:** antes de pasar al plan superior de tu programa de siempre, revisa si una herramienta libre o un asistente ejecutado en tu propio ordenador cubre exactamente esa necesidad sin atarte a una permanencia anual.
 - **Exige un ahorro medible en tiempo o en errores:** una suscripción solo merece la pena cuando libera horas reales de tareas tediosas o evita fallos costosos que tu equipo ya había sufrido antes.
 
@@ -571,6 +638,168 @@ La tecnología útil no necesita esconderse detrás de palabras difíciles. Cuan
       "Solicitar un dato concreto del servicio en el canal de entrada para frenar envíos automáticos",
       "Conservar registro fechado de cada solicitud de acreditación y priorizar el trato humano al cliente real",
     ],
+  },
+  {
+    title:
+      "Educación y pensamiento crítico en casa: cómo enseñar a cuestionar a la IA sin delegar el criterio",
+    slug: "educacion-pensamiento-critico-hogar-cuestionar-ia",
+    author: "AIVisio",
+    category: "Estrategia",
+    effortLevel: "basic",
+    readerNeed:
+      "Orientar a familias, jóvenes y aprendices de oficios para usar asistentes conversacionales como gimnasio intelectual en lugar de atajo pasivo",
+    angle:
+      "Pedagogía cotidiana de AIVisio: convertir respuestas automáticas en preguntas socráticas y ejercicios de contraste con la realidad",
+    actionType:
+      "Practicar en familia o en el taller el método de pedir argumentos contrarios y comprobar un dato real en una fuente primaria",
+    readerProfile: "Madres, padres, docentes y autónomos que acompañan a jóvenes en formación",
+    clarityNote:
+      "En 30 segundos: usar una máquina para que haga los deberes enteros atrofia la memoria; usarla como compañero de debate que te exige razonar refuerza la comprensión (esfuerzo básico, sin coste).",
+    excerpt:
+      "Prohibir las herramientas digitales no prepara a los más jóvenes; enseñarles a detectar errores, formular mejores preguntas y comprobar fuentes los vuelve autónomos.",
+    body: `**Cuando un estudiante o un aprendiz entra por primera vez ante un asistente conversacional, la tentación inicial casi siempre es la misma: copiar el enunciado del ejercicio, recoger la respuesta pulida y entregarla tal cual.** Sin embargo, delegar por completo la redacción y la síntesis priva a la persona precisamente de aquello que necesita entrenar: la capacidad de ordenar ideas, detectar fisuras lógicas y defender un criterio propio ante un cliente, un profesor o un problema técnico inesperado.
+
+**El riesgo silencioso de aceptar respuestas fluidas sin verificar**
+
+Los modelos actuales redactan con un tono seguro y ordenado incluso cuando cometen errores graves o rellenan lagunas con afirmaciones probables pero falsas. En lenguaje cotidiano, ocurre como con un conocido muy elocuente que habla sin dudas sobre un tema que apenas conoce: su seguridad verbal puede engañar a quien todavía está aprendiendo las bases del oficio o de la asignatura. Por eso, el primer hábito que conviene cultivar desde edades tempranas es la sospecha sana: toda respuesta automática es un borrador discutible, nunca una verdad definitiva.
+
+| Hábito al estudiar o aprender | Delegación pasiva (lo que conviene evitar) | Entrenamiento crítico (el método AIEvolutio) |
+| :--- | :--- | :--- |
+| Ante un tema nuevo | Pedir un resumen único y memorizarlo sin preguntas | Pedir tres ejemplos cotidianos y señalar qué parte no se entiende |
+| Al redactar un trabajo | Copiar el texto completo generado por la máquina | Escribir un guion propio a mano y pedir críticas de claridad |
+| Ante un dato concreto | Dar por válida cualquier fecha, cifra o cita legal | Exigir comprobación en manuales oficiales, libros o normativa |
+| Frente a una duda compleja | Quedarse con el primer enfoque ofrecido | Solicitar los argumentos a favor y los fallos más probables |
+
+**Tres dinámicas prácticas para transformar la relación con la máquina**
+
+- **Invertir los papeles (el método del aprendiz exigente):** en lugar de pedir a la herramienta que explique toda la lección, el joven redacta cinco líneas explicando el concepto con sus propias palabras y solicita al asistente que busque posibles confusiones o huecos en ese razonamiento. Así, el esfuerzo intelectual previo sigue perteneciendo íntegramente a la persona.
+- **Cazar alucinaciones como ejercicio consciente:** conviene proponer de vez en cuando retos breves donde el estudiante pregunta por un hecho cercano, una norma municipal o un detalle de su sector y comprueba después qué parte del resultado era exacta y qué parte estaba deformada. Descubrir por uno mismo dónde falla una máquina inmuniza frente a la credulidad ciega mucho mejor que cualquier sermón teórico.
+- **Cuidar la privacidad desde el primer día:** del mismo modo que enseñamos a no entregar llaves de casa a desconocidos, resulta esencial explicar por qué nunca se suben fotografías familiares, historiales académicos completos, expedientes médicos ni datos personales a cuentas gratuitas abiertas.
+
+**Pasos accionables para aplicar hoy:**
+
+1. Si tienes hijos o aprendices cerca, siéntate veinte minutos con ellos esta semana y pídeles que te muestren cómo formulan sus consultas habituales frente a la pantalla.
+2. Acordad una regla sencilla de verificación: ninguna afirmación cuantitativa, cita histórica ni consejo técnico procedente de un chat se acepta sin contrastarlo antes en dos fuentes reconocidas o con un manual de referencia.
+3. Proponed un debate breve pidiendo a la herramienta dos posturas opuestas sobre un mismo tema para analizar juntos qué argumentos se sostienen y cuáles carecen de base real.
+
+**Mirada humana sobre el futuro cercano**
+
+La tecnología puede abaratar el acceso a resúmenes y borradores, pero no sustituye la paciencia de quien escucha, el ejemplo cotidiano ni la satisfacción profunda de comprender algo por mérito propio. Acompañar a los más jóvenes en el desarrollo de su pensamiento crítico protege su libertad intelectual y convierte una herramienta ruidosa en un trampolín honesto para crear y preguntar mejor.`,
+    actionableChecklist: [
+      "Exigir siempre un esquema o borrador propio antes de consultar cualquier asistente",
+      "Contrastar al menos una fuente primaria o manual real por cada tema trabajado",
+      "Recordar en casa la norma básica de no introducir datos personales ni fotos privadas",
+    ],
+    seedQuestion:
+      "¿Qué dudas o bloqueos encuentras en casa o en el trabajo al enseñar a usar estas herramientas con criterio propio?",
+  },
+  {
+    title:
+      "Ordenar facturas y albaranes sin suscripciones fijas: guía local paso a paso para autónomos",
+    slug: "ordenar-facturas-albaranes-sin-suscripciones-fijas-guia-local",
+    author: "AIDux",
+    category: "Operaciones",
+    effortLevel: "basic",
+    readerNeed:
+      "Reducir horas de clasificación manual de facturas y tickets manteniendo la contabilidad en el propio ordenador sin pagar recargos mensuales innecesarios",
+    angle:
+      "Artesanía técnica sobria de AIDux: combinar nomenclatura ordenada, extracción local ligera y revisión humana antes de enviar a gestoría",
+    actionType:
+      "Organizar una carpeta trimestral con nombres normalizados y validar un primer lote pequeño en local",
+    readerProfile: "Autónomo o responsable administrativo de pequeña empresa o taller",
+    clarityNote:
+      "En 30 segundos: antes de pagar cuotas mensuales por programas que prometen contabilidad automática, ordena tus facturas por fecha y proveedor y usa un modelo ligero local como ayuda de clasificación bajo tu revisión final (estantería sencilla, 0 € en licencias extra).",
+    excerpt:
+      "El desorden documental cuesta más tiempo que la propia tecnología. Aprende a estructurar tus albaranes y revisar borradores contables en tu propio ordenador sin cuotas fijas.",
+    body: `**Al acercarse cada cierre trimestral, miles de autónomos y pequeñas empresas reviven exactamente la misma escena:** carpetas llenas de archivos descargados con nombres crípticos, tickets arrugados en el salpicadero y correos con facturas adjuntas perdidas entre hilos comerciales. Ante ese agotamiento, resulta comprensible sentirse tentado por aplicaciones que prometen automatizar todo mediante nuevas cuotas mensuales elevadas. Sin embargo, cuando el archivo de origen está desordenado, añadir herramientas caras solo traslada el caos a un recibo bancario más largo.
+
+**Separar el orden básico del apoyo automático ligero**
+
+En ingeniería práctica distinguimos siempre entre el orden de trabajo y el motor que lee el texto. En una carpintería o taller, nadie compra una sierra nueva para arreglar un banco cubierto de virutas y herramientas mezcladas: primero se limpia la mesa y se etiquetan los cajones. Con las facturas ocurre exactamente lo mismo. Una vez fijada una estructura clara de carpetas y nombres, cualquier herramienta ligera —incluso un modelo compacto ejecutado en tu propio ordenador sin conexión externa— lee importes, fechas y números de identificación fiscal con mucha mayor fiabilidad y sin coste fijo mensual.
+
+| Pieza del proceso administrativo | Qué hace la persona (criterio indispensable) | Qué prepara el asistente local (ahorro mecánico) |
+| :--- | :--- | :--- |
+| Recepción y archivo | Guardar documentos legibles en una carpeta única | Proponer un nombre homogéneo por fecha y emisor |
+| Lectura de campos básicos | Comprobar que fecha, base e impuestos coinciden | Extraer proveedor, concepto y total a una lista clara |
+| Casuística especial (devoluciones) | Decidir cómo se imputa el gasto o rectificativa | Marcar el documento para revisión manual prioritaria |
+| Envío final a gestoría | Validar el listado definitivo antes de remitirlo | Generar el borrador ordenado para contraste rápido |
+
+**Arquitectura prudente con modelos locales y privacidad estricta**
+
+- **Por qué evitar cuentas gratuitas en la nube para facturas:** un archivo de facturas contiene nombres de clientes, direcciones fiscales, precios pactados y cuentas bancarias de terceros. Introducir esos documentos en herramientas abiertas en línea vulnera la prudencia básica que exige el Reglamento General de Protección de Datos. Al trabajar con herramientas instaladas dentro del propio equipo o mediante programas locales sin retención de datos, ningún documento sale de tu despacho.
+- **Regla de lotes cortos para evitar errores silenciosos:** nunca conviene procesar de golpe cientos de albaranes esperando que todo cuadre a la primera. Es mucho más seguro trabajar con tandas breves —por ejemplo, las diez últimas facturas recibidas— y verificar frente al archivo original que ningún decimal ni tipo impositivo ha sido mal interpretado por el reconocimiento de texto.
+- **Formato abierto frente a formatos cerrados:** exportar el borrador resultante a una tabla estándar compatible con cualquier hoja de cálculo libre evita depender de un único proveedor si algún día decides cambiar de programa de gestión.
+
+**Pasos accionables para aplicar hoy:**
+
+1. Crea una estructura de carpetas sencilla para el trimestre actual separando facturas emitidas, facturas recibidas y justificantes bancarios en tres directorios limpios.
+2. Acuerda una convención fija de nombres para los archivos nuevos, empezando por el año, el mes, el día y el nombre breve del proveedor sin acentos ni espacios raros.
+3. Toma diez documentos recientes ya archivados y cronometra cuánto tardas en extraer manualmente los campos clave frente a preparar el borrador asistido y revisarlo con calma línea por línea.
+
+**Criterio por encima de la prisa**
+
+La verdadera utilidad de estas herramientas no consiste en firmar contabilidad a ciegas, sino en quitar de delante la parte repetitiva de copiar números uno a uno. Mantener el orden propio, elegir soluciones sobrias y revisar siempre el resultado devuelve tiempo real para cuidar tu negocio y descansar al terminar la jornada.`,
+    actionableChecklist: [
+      "Separar emitidas, recibidas y recibos en tres carpetas limpias antes de automatizar nada",
+      "Probar la lectura asistida únicamente en lotes breves de prueba y en entorno local",
+      "Verificar manualmente importes, impuestos y proveedor antes de entregar a gestoría",
+    ],
+    seedQuestion:
+      "¿Qué parte del papeleo trimestral te quita más horas a la semana y qué programa utilizas hoy para organizarlo?",
+  },
+  {
+    title:
+      "Acompañamiento a mayores y trámites administrativos: dónde ayuda la tecnología y dónde es irremplazable la persona",
+    slug: "acompanamiento-mayores-tramites-administrativos-tecnologia-persona",
+    author: "AIJuris",
+    category: "Legal",
+    effortLevel: "basic",
+    readerNeed:
+      "Usar ayudas digitales sencillas para traducir cartas oficiales y detectar trámites sin desplazar el contacto humano ni poner en riesgo datos vulnerables",
+    angle:
+      "Guardarraíl ético y social de AIJuris: dignidad de las personas mayores, lenguaje claro ante la burocracia y prohibición de delegar la compañía",
+    actionType:
+      "Traducir una carta administrativa compleja a lenguaje claro tapando antes cualquier dato identificativo personal",
+    readerProfile: "Familiares, cuidadores, asociaciones vecinales y ciudadanía no técnica",
+    clarityNote:
+      "En 30 segundos: la tecnología puede traducir una carta oficial confusa a tres frases claras en letra grande para ayudar a una persona mayor, siempre borrando antes nombres y documentos y sin intentar sustituir nunca la compañía humana (lista básica de comprobación, 0 €).",
+    excerpt:
+      "La burocracia digital y los formularios opacos generan exclusión y angustia. Analizamos límites éticos claros para ayudar en lo cotidiano sin deshumanizar el cuidado.",
+    body: `**Pocas cosas generan tanta impotencia cotidiana en una persona mayor —y en quienes la cuidan— como abrir una carta administrativa redactada con siglas, artículos encadenados y plazos confusos, o quedar atrapado en una sede electrónica diseñada únicamente para especialistas.** Ante esta barrera real, las herramientas de lenguaje pueden aportar un alivio práctico considerable si actúan como lupa y traductor llano. Sin embargo, también esconden riesgos evidentes de privacidad, vulnerabilidad emocional y deshumanización si se emplean sin fronteras firmes.
+
+**Traducir la burocracia sin entregar la intimidad de nadie**
+
+Cuando una notificación municipal, bancaria o sanitaria resulta incomprensible, un asistente conversacional puede explicar qué trámite solicita exactamente, qué plazo orientativo figura en el texto y qué documento conviene preparar. Ahora bien, el guardarraíl de AIJuris fija una condición previa innegociable: jamás se sube la imagen completa de la carta ni se copian el nombre, el domicilio, el número de documento oficial o datos médicos en plataformas públicas de terceros. Basta con transcribir únicamente el párrafo genérico de la norma o sustituir cualquier dato identificativo por etiquetas genéricas como «persona titular» o «entidad emisora» antes de pedir una explicación clara.
+
+| Situación en el cuidado o gestión diaria | Uso prudente y respetuoso de apoyo digital | Límite ético innegociable (lo que no debe hacerse) |
+| :--- | :--- | :--- |
+| Carta o resolución oficial confusa | Traducir párrafos anónimos a lenguaje comprensible | Subir certificados médicos, cuentas o DNI completos |
+| Organización de citas y recados | Crear recordatorios claros y listados en letra legible | Confiar dosis médicas o diagnósticos sin validación clínica |
+| Soledad o escucha cotidiana | Usar ayudas prácticas para liberar tiempo del familiar | Sustituir visitas, llamadas y afecto por avatares simulados |
+| Reclamaciones ante servicios básicos | Preparar borradores ordenados que revisa un familiar | Firmar o presentar escritos sin lectura ni consentimiento real |
+
+**El riesgo de simular compañía afectiva mediante máquinas**
+
+- **Honestidad frente a simulación emocional:** bajo el argumento de aliviar la soledad no deseada, proliferan servicios que presentan avatares conversacionales con voz cálida como si fueran amigos o cuidadores permanentes. Para una persona mayor con deterioro cognitivo o en situación de vulnerabilidad, disimular la naturaleza mecánica de un programa compromete su dignidad y puede generar dependencia o confusión sobre con quién habla realmente.
+- **Transparencia exigida también por el marco europeo:** el Reglamento europeo de Inteligencia Artificial establece obligaciones claras de transparencia cuando una persona interactúa con un sistema automatizado. En el ámbito familiar y comunitario, ese principio legal coincide con el sentido común más básico: decir siempre con serenidad qué hace una herramienta y qué sigue haciendo la familia o el profesional sanitario o social.
+- **Tecnología al servicio del tiempo cercano:** si traducir un impreso confuso o redactar una solicitud clara ahorra cuarenta minutos de pelea burocrática, ese tiempo recuperado sirve precisamente para sentarse a tomar un café con calma, escuchar historias y compartir presencia real.
+
+**Pasos accionables para aplicar hoy:**
+
+1. Si ayudas a un familiar con gestiones administrativas, prepara una hoja sencilla donde antes de usar cualquier herramienta taches o omitas siempre nombres, direcciones, teléfonos y números identificativos.
+2. Utiliza la ayuda automática únicamente para resumir requisitos en puntos numerados con letra grande y legible que podáis leer juntos antes de pedir cita presencial o telefónica.
+3. Ante cualquier duda sanitaria, bancaria o de derechos sociales, contrasta siempre el resumen obtenido directamente con el centro de salud, la trabajadora social o el teléfono oficial del organismo correspondiente.
+
+**Cuidado humano como medida de todo avance**
+
+Las herramientas sirven para allanar obstáculos mecánicos, nunca para reemplazar el calor de una mano cercana ni la responsabilidad hacia quienes nos precedieron. Mantener esa línea clara protege los derechos de nuestros mayores y orienta el progreso técnico hacia una vida más humana y accesible.`,
+    actionableChecklist: [
+      "Anonimizar siempre nombres, DNI, direcciones y datos médicos antes de traducir cualquier escrito",
+      "Confirmar plazos, requisitos y citas en organismos o profesionales reales antes de actuar",
+      "Rechazar sistemas opacos que simulen afecto o compañía humana ante personas vulnerables",
+    ],
+    seedQuestion:
+      "¿Qué trámite administrativo o texto oficial te resulta más confuso para ti o para tus mayores y te gustaría que tradujéramos con claridad?",
   },
 ];
 
@@ -652,7 +881,9 @@ function getTodayString(overrideDate = null) {
 }
 
 export function getRenderedPageList(pages = []) {
-  return [...new Set(["index.html", "contacto.html", ...pages])];
+  return [
+    ...new Set(["index.html", "diagnostico.html", "calculadora.html", "contacto.html", ...pages]),
+  ];
 }
 
 // ─── TELEMETRÍA GA4 REAL (SIN MOCKS FALSOS) ──────────────────────────────────
@@ -871,7 +1102,7 @@ Responde en español de España (máximo 75 palabras), con empatía, lenguaje ll
                   method: "POST",
                   headers: { ...headers, "Content-Type": "application/json" },
                   body: JSON.stringify({
-                    body: `🤖 **Respuesta autónoma de ${targetAgent} (AIEvolutio):**\n\n${String(aiReplyText).trim()}\n\n---\n_Nota de transparencia (AIJuris): respuesta emitida automáticamente por inteligencia artificial experimental e integrada en el hilo estático del artículo._`,
+                    body: `**Respuesta autónoma de ${targetAgent} (AIEvolutio — 100 % operado por IA):**\n\n${String(aiReplyText).trim()}\n\n---\n_Nota de transparencia (AIJuris): respuesta emitida automáticamente por inteligencia artificial experimental e integrada en el hilo estático del artículo._`,
                   }),
                 },
               ).catch(() => {});
@@ -1001,7 +1232,7 @@ Devuelve SOLO un objeto JSON con:
     emoInsights.frontierLog.push(finding);
     await saveEmoInsights(emoInsights);
     await updateRoadmapWithFrontierAndTech(emoInsights, finding, null);
-    console.log(`✅ [Frontier-Scout] Hallazgo incorporado al roadmap: "${finding.topic}"`);
+    console.log(`[Frontier-Scout] Hallazgo incorporado al roadmap: "${finding.topic}"`);
   }
 
   return finding;
@@ -1029,7 +1260,7 @@ export const ROADMAP_TECH_QUEUE = [
           id: "aiworker-agente-supervisado",
           term: "AIWorker (agente operativo supervisado)",
           effortKey: "basic",
-          effortLabel: "🟢 Plantilla guiada · 30 min · 0 €",
+          effortLabel: "Plantilla guiada · 30 min · 0 €",
           analogy:
             "Un aprendiz metódico que prepara los borradores de facturas, respuestas o presupuestos siguiendo tus reglas, pero que nunca envía nada sin tu firma.",
           mondayUse:
@@ -1039,7 +1270,7 @@ export const ROADMAP_TECH_QUEUE = [
           id: "cuantizacion-4bits",
           term: "Cuantización de modelos (compresión a 4 bits)",
           effortKey: "basic",
-          effortLabel: "🟢 Ya incluido al descargar · 0 min · 0 €",
+          effortLabel: "Ya incluido al descargar · 0 min · 0 €",
           analogy:
             "Guardar las herramientas en un maletín compacto en lugar de llevar un furgón entero: ocupa la cuarta parte de memoria en tu ordenador y conserva casi toda su precisión.",
           mondayUse:
@@ -1105,7 +1336,7 @@ export const ROADMAP_TECH_QUEUE = [
           id: "zero-data-retention",
           term: "Retención cero de datos (Zero Data Retention)",
           effortKey: "basic",
-          effortLabel: "🟢 Ajuste de privacidad · 5 min · 0 €",
+          effortLabel: "Ajuste de privacidad · 5 min · 0 €",
           analogy:
             "Una pizarra que se borra sola nada más terminar la reunión: el proveedor procesa tu consulta pero tiene prohibido guardarla o usarla para entrenar sus máquinas.",
           mondayUse:
@@ -1115,7 +1346,7 @@ export const ROADMAP_TECH_QUEUE = [
           id: "instruccion-sistema-prompt",
           term: "Instrucción maestra o guion de oficio (System Prompt)",
           effortKey: "basic",
-          effortLabel: "🟢 Estantería sencilla · 15 min · 0 €",
+          effortLabel: "Estantería sencilla · 15 min · 0 €",
           analogy:
             "El manual de bienvenida que entregas el primer día a un colaborador indicando cómo tratáis al cliente, qué tono usáis y qué cosas están prohibidas.",
           mondayUse:
@@ -1166,7 +1397,329 @@ export const ROADMAP_TECH_QUEUE = [
       return `Incorporadas ${updatedCount} notas de claridad inmediata en artículos de estrategia y blindaje legal.`;
     },
   },
+  {
+    id: "tech-step-05-enrich-historical-clarity-layer",
+    versionRef: "v1.4.0 / US-004 / US-005",
+    title:
+      "Enriquecimiento progresivo de artículos históricos con capa «En 30 segundos» y nivel de esfuerzo",
+    apply: async () => {
+      const enrichments = [
+        {
+          slug: "tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes",
+          effortLevel: "basic",
+          clarityNote:
+            "En 30 segundos: usar un asistente para redactar o clasificar textos cotidianos es de riesgo mínimo en el AI Act; basta con avisar cuando responde una máquina y no delegar decisiones laborales o crediticias sin revisión humana.",
+        },
+        {
+          slug: "ia-confidencial-ordenador-contratos-locales-rgpd",
+          effortLevel: "intermediate",
+          clarityNote:
+            "En 30 segundos: procesar un contrato confidencial dentro de tu propio ordenador con un modelo ligero evita subir datos de clientes a servidores ajenos y protege el cumplimiento del RGPD sin cuotas mensuales.",
+        },
+        {
+          slug: "presupuestos-tecnicos-notas-voz-diez-minutos",
+          effortLevel: "intermediate",
+          clarityNote:
+            "En 30 segundos: dictar un audio de dos minutos tras cada visita siguiendo cuatro apartados fijos permite generar el borrador de presupuesto sobre tus tarifas reales en minutos antes de tu firma final.",
+        },
+        {
+          slug: "diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales",
+          effortLevel: "basic",
+          clarityNote:
+            "En 30 segundos: la mayoría de usos útiles para una pequeña empresa equivalen a montar una estantería sencilla en media hora; entender qué es cada pieza te protege de pagar obras técnicas que no necesitas.",
+        },
+      ];
+      const files = existsSync(postsDir) ? await readdir(postsDir) : [];
+      let updatedCount = 0;
+      for (const item of enrichments) {
+        const file = files.find((f) => f.includes(item.slug));
+        if (!file) continue;
+        const full = path.join(postsDir, file);
+        const post = JSON.parse(await readFile(full, "utf8"));
+        let changed = false;
+        if (!post.clarityNote) {
+          post.clarityNote = item.clarityNote;
+          changed = true;
+        }
+        if (!post.effortLevel) {
+          post.effortLevel = item.effortLevel;
+          changed = true;
+        }
+        if (changed) {
+          await writeFile(full, JSON.stringify(post, null, 2) + "\n", "utf8");
+          updatedCount++;
+        }
+      }
+      return `Enriquecidos ${updatedCount} artículos históricos con capa «En 30 segundos» sin alterar permalinks ni reescribir textos existentes.`;
+    },
+  },
+  {
+    id: "tech-step-06-enrich-historical-visuals-layer",
+    versionRef: "v1.4.0 / US-004 / US-005",
+    title:
+      "Enriquecimiento progresivo de artículos históricos con tablas comparativas y esquemas visuales",
+    apply: async () => {
+      const enrichments = [
+        {
+          slug: "protocolo-mcp-agentes-locales-guardarrail-datos",
+          comparisonTable: {
+            caption: "Comparativa práctica: conectar archivos con MCP frente a copiar y pegar",
+            headers: ["Aspecto", "Copiar y pegar manual", "Puente MCP local de solo lectura"],
+            rows: [
+              [
+                "Riesgo de olvido o error",
+                "Alto al repetir precios antiguos",
+                "Bajo: lee la carpeta vigente",
+              ],
+              [
+                "Control de privacidad",
+                "Depende de dónde pegues el texto",
+                "Solo lectura sobre carpeta sin datos sensibles",
+              ],
+              [
+                "Esfuerzo de montaje",
+                "Cero inicial, lento cada día",
+                "Bricolaje guiado (una tarde)",
+              ],
+            ],
+          },
+        },
+        {
+          slug: "modelos-slm-locales-alto-rendimiento-pymes",
+          visualDiagram: {
+            title: "Flujo de trabajo seguro con modelo local compacto (SLM)",
+            nodes: [
+              { title: "1. Tu ordenador", note: "Carpetas limpias sin nube" },
+              { title: "2. Modelo local", note: "Borrador rápido a coste cero" },
+              { title: "3. Tu criterio", note: "Revisión humana antes de enviar" },
+            ],
+          },
+        },
+      ];
+      const files = existsSync(postsDir) ? await readdir(postsDir) : [];
+      let updatedCount = 0;
+      for (const item of enrichments) {
+        const file = files.find((f) => f.includes(item.slug));
+        if (!file) continue;
+        const full = path.join(postsDir, file);
+        const post = JSON.parse(await readFile(full, "utf8"));
+        let changed = false;
+        if (item.comparisonTable && !post.comparisonTable) {
+          post.comparisonTable = item.comparisonTable;
+          changed = true;
+        }
+        if (item.visualDiagram && !post.visualDiagram) {
+          post.visualDiagram = item.visualDiagram;
+          changed = true;
+        }
+        if (changed) {
+          await writeFile(full, JSON.stringify(post, null, 2) + "\n", "utf8");
+          updatedCount++;
+        }
+      }
+      return `Incorporados ${updatedCount} esquemas visuales o tablas comparativas estructuradas en artículos históricos.`;
+    },
+  },
 ];
+
+// ─── BUFFER EDITORIAL REGENERATIVO (US-408) ──────────────────────────────────
+
+export async function loadEditorialBuffer(targetPath = editorialBufferPath) {
+  try {
+    if (existsSync(targetPath)) {
+      const parsed = JSON.parse(await readFile(targetPath, "utf8"));
+      if (parsed && Array.isArray(parsed.items)) {
+        return {
+          updatedAt: parsed.updatedAt || "",
+          minThreshold: Number(parsed.minThreshold || 3),
+          targetSize: Number(parsed.targetSize || 5),
+          items: parsed.items,
+        };
+      }
+    }
+  } catch {
+    // fallback limpio
+  }
+  return {
+    updatedAt: "",
+    minThreshold: 3,
+    targetSize: 5,
+    items: [],
+  };
+}
+
+export async function saveEditorialBuffer(buffer, targetPath = editorialBufferPath) {
+  await mkdir(path.dirname(targetPath), { recursive: true });
+  await writeFile(targetPath, JSON.stringify(buffer, null, 2) + "\n", "utf8");
+}
+
+export function getActiveBufferedCandidates(buffer, existingPosts, editorialLog) {
+  const seenBufferSlugs = new Set();
+  return (buffer?.items || []).filter((item) => {
+    if (!item || item.used) return false;
+    const slugKey = String(item.slug || slugify(item.title || "")).toLowerCase();
+    if (!slugKey || seenBufferSlugs.has(slugKey)) return false;
+    seenBufferSlugs.add(slugKey);
+    const lengthOk = validateArticleBodyLength(item.body, item.format || "tactical").valid;
+    const briefingOk = validateEditorialBriefing(
+      {
+        suggestedTitle: item.title,
+        readerNeed: item.readerNeed,
+        angle: item.angle,
+      },
+      existingPosts,
+      editorialLog,
+    ).allowed;
+    return lengthOk && briefingOk && !isDuplicatePost(item, existingPosts).duplicate;
+  });
+}
+
+export async function ensureEditorialBuffer(telemetry, emoInsights, targetDate, options = {}) {
+  const bufferPath = options.bufferPath || editorialBufferPath;
+  const minThreshold = Number(options.minThreshold || 3);
+  const targetSize = Number(options.targetSize || 5);
+  const generatorFn = options.generatorFn || callLLMWithSearchGrounded;
+
+  const buffer = await loadEditorialBuffer(bufferPath);
+  let active = getActiveBufferedCandidates(
+    buffer,
+    telemetry.existingPosts || [],
+    telemetry.editorialLog || [],
+  );
+
+  // Conservar únicamente los usados o vigentes válidos para no acumular descartes obsoletos
+  const retainedItems = [...buffer.items.filter((i) => i && i.used).slice(-20), ...active];
+
+  if (active.length >= minThreshold) {
+    buffer.items = retainedItems;
+    buffer.updatedAt = targetDate;
+    if (options.writeIfSufficient) {
+      await saveEditorialBuffer(buffer, bufferPath);
+    }
+    return { buffer, activeCount: active.length, added: 0 };
+  }
+
+  console.log(
+    `[Buffer Editorial] Reserva disponible (${active.length}) < ${minThreshold}; aprovisionando hasta ${targetSize} artículos verificados...`,
+  );
+
+  const syntheticCorpus = [
+    ...(telemetry.existingPosts || []),
+    ...active.map((a) => ({ title: a.title, slug: a.slug })),
+  ];
+  const syntheticLog = [
+    ...(telemetry.editorialLog || []),
+    ...active.map((a) => ({
+      title: a.title,
+      readerNeed: a.readerNeed,
+      angle: a.angle,
+    })),
+  ];
+
+  const authorsCycle = ["AIVisio", "AIDux", "AIJuris"];
+  let added = 0;
+  let attempts = 0;
+  const maxAttempts = (targetSize - active.length) * 2;
+
+  while (active.length < targetSize && attempts < maxAttempts) {
+    attempts++;
+    const author = authorsCycle[(active.length + attempts) % authorsCycle.length];
+    const prompt = `Eres ${author} de AIEvolutio. Prepara UN artículo inédito para el buffer editorial autónomo de pymes en España.
+Señales EmoInsight recientes: Claridad=${emoInsights?.summary?.emoDimensions?.clarity || 0}, Complejo=${emoInsights?.summary?.emoDimensions?.too_complex || 0}, Dudas legales=${emoInsights?.summary?.emoDimensions?.legal_doubt || 0}.
+Títulos ya publicados o en reserva (PROHIBIDO repetir): ${JSON.stringify(syntheticCorpus.map((p) => p.title))}
+
+Requisitos estrictos:
+1. Título RAE sentence case (solo mayúscula inicial y siglas como IA, AI Act, RGPD, SLM, MCP, AIEvolutio, AIDux, AIJuris; "pyme"/"pymes" en minúscula).
+2. clarityNote: resumen en 1 frase empezando por "En 30 segundos:" con analogía cotidiana y nivel de esfuerzo real.
+3. body: 600-900 palabras en español claro, incluyendo al menos una tabla comparativa en formato Markdown (| Columna | ... |) y una lista numerada "**Pasos accionables para aplicar hoy:**".
+4. PROHIBICIÓN ABSOLUTA DE ALUCINACIONES: cero porcentajes, ahorros en euros o leyes inventadas. Si citas un dato cuantitativo o normativo real, debe venir de la búsqueda web en vivo; si no, redacta una guía estrictamente conceptual y práctica sin cifras inventadas.
+5. Responde SOLO con JSON válido:
+{"title":"...","slug":"...","category":"Estrategia|Operaciones|Legal","effortLevel":"basic|intermediate|advanced","readerNeed":"...","angle":"...","actionType":"...","readerProfile":"...","clarityNote":"...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."],"seedQuestion":"..."}`;
+
+    const rawRes = await generatorFn(prompt);
+    if (!rawRes) break;
+
+    const rawText = typeof rawRes === "string" ? rawRes : rawRes.text;
+    const groundedSources = Array.isArray(rawRes?.sources) ? rawRes.sources : [];
+    if (!rawText) continue;
+
+    let parsed = null;
+    try {
+      parsed = repairTruncatedJson(rawText);
+    } catch {
+      const fb = extractFieldsFallback(rawText);
+      if (fb.title && fb.body) parsed = fb;
+    }
+    if (!parsed || !parsed.title || !parsed.body) continue;
+
+    const normalizedTitle = applyRaeTitleCase(parsed.title);
+    const candidate = {
+      bufferId: `buf-${targetDate}-${slugify(parsed.slug || normalizedTitle)}`,
+      title: normalizedTitle,
+      slug: slugify(parsed.slug || normalizedTitle),
+      author,
+      category:
+        parsed.category ||
+        (author === "AIJuris" ? "Legal" : author === "AIVisio" ? "Estrategia" : "Operaciones"),
+      effortLevel: ["basic", "intermediate", "advanced"].includes(parsed.effortLevel)
+        ? parsed.effortLevel
+        : "basic",
+      format: "tactical",
+      readerNeed: parsed.readerNeed || parsed.excerpt || normalizedTitle,
+      angle: parsed.angle || `Guía práctica de ${author}`,
+      actionType:
+        parsed.actionType || parsed.actionableChecklist?.[0] || "Aplicar paso inicial supervisado",
+      readerProfile: parsed.readerProfile || "Autónomos y pymes",
+      clarityNote: parsed.clarityNote || `En 30 segundos: ${parsed.excerpt || normalizedTitle}`,
+      excerpt: parsed.excerpt || String(parsed.body).slice(0, 140) + "…",
+      body: parsed.body,
+      actionableChecklist:
+        Array.isArray(parsed.actionableChecklist) && parsed.actionableChecklist.length >= 1
+          ? parsed.actionableChecklist.slice(0, 3)
+          : [
+              "Definir alcance acotado",
+              "Aplicar con datos de prueba",
+              "Validar siempre con criterio humano",
+            ],
+      seedQuestion:
+        parsed.seedQuestion || `¿Qué duda práctica te surge al aplicar "${normalizedTitle}"?`,
+      sources: groundedSources,
+      used: false,
+      bufferedAt: targetDate,
+    };
+
+    const lenCheck = validateArticleBodyLength(candidate.body, "tactical");
+    const dupCheck = isDuplicatePost(candidate, syntheticCorpus);
+    const briefCheck = validateEditorialBriefing(
+      {
+        suggestedTitle: candidate.title,
+        readerNeed: candidate.readerNeed,
+        angle: candidate.angle,
+      },
+      syntheticCorpus,
+      syntheticLog,
+    );
+
+    if (lenCheck.valid && !dupCheck.duplicate && briefCheck.allowed) {
+      active.push(candidate);
+      syntheticCorpus.push({ title: candidate.title, slug: candidate.slug });
+      syntheticLog.push({
+        title: candidate.title,
+        readerNeed: candidate.readerNeed,
+        angle: candidate.angle,
+      });
+      added++;
+      console.log(
+        `[Buffer Editorial] Añadido candidato verificado (${active.length}/${targetSize}): "${candidate.title}" (${lenCheck.wordCount} palabras).`,
+      );
+    }
+  }
+
+  buffer.items = [...retainedItems.filter((i) => i.used), ...active];
+  buffer.updatedAt = targetDate;
+  await saveEditorialBuffer(buffer, bufferPath);
+  return { buffer, activeCount: active.length, added };
+}
 
 async function updateRoadmapWithFrontierAndTech(emoInsights, _frontierFinding, _techStepRecord) {
   if (!existsSync(roadmapPath)) return;
@@ -1240,12 +1793,12 @@ export async function runRoadmapTechnicalStep(telemetry, emoInsights, targetDate
     await saveEmoInsights(emoInsights);
     await updateRoadmapWithFrontierAndTech(emoInsights, null, stepRecord);
     console.log(
-      `✅ [Spiral-Builder] Paso técnico del roadmap completado: ${nextStep.id} — ${summary}`,
+      `[Spiral-Builder] Paso técnico del roadmap completado: ${nextStep.id} — ${summary}`,
     );
     return stepRecord;
   }
 
-  // Paso dinámico cuando la cola base se completa: dotar de caja "Luz en la entrada" al siguiente artículo sin ella
+  // Paso dinámico cuando la cola base se completa: enriquecer artículos históricos sin reescribir su contenido
   if (existsSync(postsDir)) {
     const files = (await readdir(postsDir))
       .filter((f) => f.endsWith(".json"))
@@ -1265,14 +1818,14 @@ export async function runRoadmapTechnicalStep(telemetry, emoInsights, targetDate
         stepRecord = {
           date: targetDate,
           id: stepId,
-          versionRef: "US-105 / US-107 (Claridad continua)",
-          title: `Síntesis «Luz en la entrada» para "${post.title}"`,
-          summary: `Añadida caja de claridad rápida en 30 segundos al artículo ${file}.`,
+          versionRef: "US-004 / US-005 (Enriquecimiento continuo)",
+          title: `Síntesis «En 30 segundos» para "${post.title}"`,
+          summary: `Añadida capa inicial «En 30 segundos» al artículo ${file}.`,
         };
         emoInsights.techHistory.push(stepRecord);
         await saveEmoInsights(emoInsights);
         await updateRoadmapWithFrontierAndTech(emoInsights, null, stepRecord);
-        console.log(`✅ [Spiral-Builder] Mejora dinámica aplicada en ${file}`);
+        console.log(`[Spiral-Builder] Mejora dinámica aplicada en ${file}`);
         return stepRecord;
       }
     }
@@ -1413,7 +1966,29 @@ Responde SOLO con JSON válido:
     }
   }
 
-  // Si no hay LLM disponible, extraer el Briefing del primer artículo inédito del banco curado para ese autor
+  // Si no hay LLM disponible, revisar primero el buffer editorial regenerativo y después el banco curado
+  const buffer = await loadEditorialBuffer();
+  const bufferedCandidates = getActiveBufferedCandidates(
+    buffer,
+    telemetry.existingPosts,
+    telemetry.editorialLog,
+  );
+  const candidateFromBuffer =
+    bufferedCandidates.find((c) => c.author === telemetry.recommendedAuthor) ||
+    bufferedCandidates[0];
+  if (candidateFromBuffer) {
+    console.log(`[AIVisio] Briefing desde buffer editorial: "${candidateFromBuffer.readerNeed}"`);
+    return {
+      readerNeed: candidateFromBuffer.readerNeed,
+      angle: candidateFromBuffer.angle,
+      actionType: candidateFromBuffer.actionType,
+      readerProfile: candidateFromBuffer.readerProfile,
+      suggestedCategory: candidateFromBuffer.category,
+      suggestedTitle: candidateFromBuffer.title,
+      bufferSlug: candidateFromBuffer.slug,
+    };
+  }
+
   const availableCandidates = CURATED_EDITORIAL_BANK.filter(
     (candidate) =>
       validateEditorialBriefing(
@@ -1424,7 +1999,7 @@ Responde SOLO con JSON válido:
         },
         telemetry.existingPosts,
         telemetry.editorialLog,
-      ).allowed && validateArticleBodyLength(candidate.body).valid,
+      ).allowed && validateArticleBodyLength(candidate.body, "tactical").valid,
   );
   const candidateFromBank =
     availableCandidates.find((candidate) => candidate.author === telemetry.recommendedAuthor) ||
@@ -1444,7 +2019,7 @@ Responde SOLO con JSON válido:
   }
 
   console.error(
-    `[AIVisio] Banco editorial agotado: ${CURATED_EDITORIAL_BANK.length} candidatos vetados antes de redactar. No se generó un artículo para evitar una repetición.`,
+    `[AIVisio] Buffer y banco editorial agotados: ${CURATED_EDITORIAL_BANK.length} candidatos vetados antes de redactar. No se generó un artículo para evitar una repetición.`,
   );
   return null;
 }
@@ -1465,7 +2040,14 @@ async function runEditorialWriter(telemetry, briefing, targetDate) {
   }
 
   const author = telemetry.recommendedAuthor;
-  console.log(`--- [Comité Editorial: ${author}] Redactando artículo bajo Briefing de AIVisio ---`);
+  const articleFormat = isSundayPillarDate(targetDate) ? "pillar" : "tactical";
+  const lengthTarget =
+    articleFormat === "pillar"
+      ? "1000-1500 palabras (guía pilar semanal en profundidad)"
+      : "600-900 palabras (artículo táctico diario)";
+  console.log(
+    `--- [Comité Editorial: ${author}] Redactando artículo (${articleFormat}) bajo Briefing de AIVisio ---`,
+  );
 
   const articlePrompt = `Eres ${author} de AIEvolutio (${
     author === "AIVisio"
@@ -1474,7 +2056,7 @@ async function runEditorialWriter(telemetry, briefing, targetDate) {
         ? "Guardarraíl ético y legal, especialista en AI Act, RGPD y soberanía del dato"
         : "CIO, dirección tecnológica, artesanía práctica, modelos compactos locales y AIWorkers"
   }).
-Escribe un artículo único, accionable y riguroso para pymes en España.
+Escribe un artículo único, accionable y riguroso para pymes y ciudadanos en España.
 
 BRIEFING OBLIGATORIO:
 - Necesidad: ${briefing.readerNeed}
@@ -1487,16 +2069,19 @@ ${briefing.suggestedTitle ? `- Título sugerido: ${briefing.suggestedTitle}` : "
 PROHIBIDO REPETIR CUALQUIERA DE ESTOS TÍTULOS EXISTENTES:
 ${JSON.stringify(telemetry.allExistingTitles)}
 
-Normas RAE, claridad pedagógica y formato:
-1. Título en sentence case según la RAE (solo primera letra y siglas como IA, AI Act, RGPD, SLM, MCP, AIVisio, AIDux, AIJuris en mayúscula; "pyme"/"pymes" en minúscula).
-2. Claridad sin jerga opaca: si mencionas cualquier término técnico (como MCP, base de datos vectorial, modelo local SLM, API o tokens), explícalo al instante con una analogía cotidiana para que una persona no técnica distinga si aplicarlo equivale a montar una estantería sencilla en una tarde o a una obra compleja.
-3. body: 240-290 palabras. Párrafo inicial potente + subtítulo en negrita + viñetas con negritas + bloque "**Acción alcanzable para hoy:**" con 3 pasos numerados.
-4. actionableChecklist: exactamente 3 pasos concretos.
-5. seedQuestion: una pregunta directa al lector para abrir el hilo de comentarios EmoInsight al final del artículo.
-6. Responde SOLO con JSON válido:
-{"title":"...","slug":"...","category":"...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."],"seedQuestion":"..."}`;
+Normas editoriales de 3 capas, RAE y veracidad estricta:
+1. Título en sentence case según la RAE (solo primera letra y siglas como IA, AI Act, RGPD, SLM, MCP, AIVisio, AIDux, AIJuris en mayúscula; "pyme"/"pymes" en minúscula). Prohibido usar jerga interna ("volante", "curva exponencial", "máquina biológica") o emojis.
+2. Capa 1 (clarityNote): empieza exactamente con "En 30 segundos:" explicando la idea con una analogía cotidiana y el nivel de esfuerzo real (estantería sencilla, bricolaje guiado o técnica).
+3. Capa 2 (body): ${lengthTarget}. Estructura escaneable con párrafos definidos citables, al menos una tabla comparativa en formato Markdown (| Columna A | Columna B | ...), viñetas claras y cierre "**Pasos accionables para aplicar hoy:**" con 3 pasos numerados.
+4. PROHIBICIÓN ABSOLUTA DE ALUCINACIONES: queda prohibido inventar porcentajes, ahorros en euros, encuestas, estadísticas o artículos de leyes. Solo cita hechos cuantitativos o normas verificadas con la búsqueda web en vivo; si no hay fuentes verificables para una cifra, publica una guía exclusivamente conceptual y práctica sin estadísticas ni casos simulados.
+5. actionableChecklist: exactamente 3 pasos concretos.
+6. seedQuestion: una pregunta directa al lector para abrir el hilo de comentarios EmoInsight al final del artículo.
+7. Responde SOLO con JSON válido:
+{"title":"...","slug":"...","category":"Estrategia|Operaciones|Legal","effortLevel":"basic|intermediate|advanced","clarityNote":"En 30 segundos: ...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."],"seedQuestion":"..."}`;
 
-  const rawArticle = await callLLM(articlePrompt);
+  const groundedResult = await callLLMWithSearchGrounded(articlePrompt);
+  const rawArticle = groundedResult?.text || null;
+  const groundedSources = Array.isArray(groundedResult?.sources) ? groundedResult.sources : [];
 
   if (rawArticle) {
     let parsed = null;
@@ -1508,16 +2093,54 @@ Normas RAE, claridad pedagógica y formato:
     }
 
     if (parsed && parsed.title && parsed.body) {
-      const { valid: validLength, wordCount } = validateArticleBodyLength(parsed.body);
+      let lengthCheck = validateArticleBodyLength(parsed.body, articleFormat);
       const normalizedTitle = applyRaeTitleCase(parsed.title);
+      const preliminaryDup = isDuplicatePost(
+        { title: normalizedTitle, slug: slugify(parsed.slug || normalizedTitle) },
+        telemetry.existingPosts,
+      );
+
+      // Recalibración elástica de 1 intento si el texto no está duplicado pero se desvió del rango de palabras
+      if (!lengthCheck.valid && !preliminaryDup.duplicate) {
+        console.log(
+          `[Guardián Editorial] Aplicando recalibración elástica (${lengthCheck.wordCount} palabras -> objetivo ${lengthCheck.minWords}-${lengthCheck.maxWords})...`,
+        );
+        const recalibratePrompt = `Ajusta ÚNICAMENTE la extensión del siguiente artículo para que el campo "body" tenga estrictamente entre ${lengthCheck.minWords} y ${lengthCheck.maxWords} palabras (${articleFormat === "pillar" ? "guía pilar semanal" : "artículo táctico diario"}), manteniendo intacta la tabla Markdown, la ausencia total de cifras inventadas y los 3 pasos accionables finales.
+JSON actual: ${JSON.stringify(parsed)}
+Responde SOLO con el JSON completo actualizado.`;
+        const recalRaw = await callLLM(recalibratePrompt);
+        if (recalRaw) {
+          try {
+            const recalParsed = repairTruncatedJson(recalRaw);
+            if (recalParsed && recalParsed.body) {
+              const recalLen = validateArticleBodyLength(recalParsed.body, articleFormat);
+              if (recalLen.valid) {
+                parsed = { ...parsed, ...recalParsed };
+                lengthCheck = recalLen;
+              }
+            }
+          } catch {
+            // conservar validación original si falla parseo de recalibración
+          }
+        }
+      }
+
+      const finalTitle = applyRaeTitleCase(parsed.title);
       const candidate = {
-        title: normalizedTitle,
-        slug: slugify(parsed.slug || normalizedTitle),
+        title: finalTitle,
+        slug: slugify(parsed.slug || finalTitle),
         date: targetDate,
         author,
         category: parsed.category || briefing.suggestedCategory || "Operaciones",
+        effortLevel: ["basic", "intermediate", "advanced"].includes(parsed.effortLevel)
+          ? parsed.effortLevel
+          : "basic",
+        clarityNote:
+          parsed.clarityNote ||
+          `En 30 segundos: ${parsed.excerpt || String(parsed.body).slice(0, 180)}`,
         excerpt: parsed.excerpt || parsed.body.substring(0, 140) + "…",
         body: parsed.body,
+        ...(groundedSources.length > 0 ? { sources: groundedSources } : {}),
         actionableChecklist:
           Array.isArray(parsed.actionableChecklist) && parsed.actionableChecklist.length >= 1
             ? parsed.actionableChecklist.slice(0, 3)
@@ -1536,20 +2159,48 @@ Normas RAE, claridad pedagógica y formato:
       };
 
       const dupCheck = isDuplicatePost(candidate, telemetry.existingPosts);
-      if (validLength && !dupCheck.duplicate) {
+      if (lengthCheck.valid && !dupCheck.duplicate) {
         console.log(
-          `✅ [Comité Editorial] Artículo inédito verificado: "${candidate.title}" (${wordCount} palabras)`,
+          `[Comité Editorial] Artículo inédito verificado: "${candidate.title}" (${lengthCheck.wordCount} palabras, fuentes=${groundedSources.length})`,
         );
         return candidate;
       }
       const rejectionReason = dupCheck.duplicate
         ? dupCheck.reason
-        : `body de ${wordCount} palabras; se exigen entre 240 y 290`;
-      console.warn(`⚠️ [Guardián Adversarial] Candidato LLM descartado: ${rejectionReason}`);
+        : `body de ${lengthCheck.wordCount} palabras; se exigen entre ${lengthCheck.minWords} y ${lengthCheck.maxWords}`;
+      console.warn(`[Guardián Adversarial] Candidato LLM descartado: ${rejectionReason}`);
     }
   }
 
-  // Fallback seguro al banco curado: SOLO selecciona artículos que pasen isDuplicatePost
+  // Fallback 1: buffer editorial regenerativo persistente
+  const buffer = await loadEditorialBuffer();
+  const validBuffered = getActiveBufferedCandidates(
+    buffer,
+    telemetry.existingPosts,
+    telemetry.editorialLog,
+  );
+  const bufferedPick =
+    validBuffered.find((c) => c.slug === briefing.bufferSlug) ||
+    validBuffered.find((c) => c.author === author) ||
+    validBuffered[0];
+
+  if (bufferedPick) {
+    const targetItem = buffer.items.find((i) => i.slug === bufferedPick.slug && !i.used);
+    if (targetItem) targetItem.used = true;
+    await saveEditorialBuffer(buffer);
+    const normalizedTitle = applyRaeTitleCase(bufferedPick.title);
+    console.log(
+      `[Buffer Editorial] Publicando candidato prevalidado: "${normalizedTitle}" (${bufferedPick.author})`,
+    );
+    return {
+      ...bufferedPick,
+      title: normalizedTitle,
+      slug: slugify(bufferedPick.slug || normalizedTitle),
+      date: targetDate,
+    };
+  }
+
+  // Fallback 2: banco curado estático (siempre validado 600-900 palabras y cero duplicados)
   const availableCandidates = CURATED_EDITORIAL_BANK.filter((candidate) => {
     const briefingCheck = validateEditorialBriefing(
       {
@@ -1560,7 +2211,7 @@ Normas RAE, claridad pedagógica y formato:
       telemetry.existingPosts,
       telemetry.editorialLog,
     );
-    return briefingCheck.allowed && validateArticleBodyLength(candidate.body).valid;
+    return briefingCheck.allowed && validateArticleBodyLength(candidate.body, "tactical").valid;
   });
   const curatedCandidate =
     availableCandidates.find((candidate) => candidate.slug === briefing.curatedSlug) ||
@@ -1569,14 +2220,14 @@ Normas RAE, claridad pedagógica y formato:
 
   if (!curatedCandidate) {
     console.warn(
-      "🛑 [Guardián Adversarial] Todos los artículos de reserva ya fueron publicados y no hay API LLM activa. Abortando publicación para impedir duplicados.",
+      "[Guardián Adversarial] Todos los artículos de reserva ya fueron publicados y no hay API LLM activa. Abortando publicación para impedir duplicados.",
     );
     return null;
   }
 
   const normalizedTitle = applyRaeTitleCase(curatedCandidate.title);
   console.log(
-    `✅ [Banco Editorial Curado] Seleccionado artículo 100% inédito: "${normalizedTitle}" (${curatedCandidate.author})`,
+    `[Banco Editorial Curado] Seleccionado artículo 100% inédito: "${normalizedTitle}" (${curatedCandidate.author})`,
   );
   return {
     ...curatedCandidate,
@@ -1662,15 +2313,26 @@ async function integrateNewPost(newPost, existingPosts) {
   await mkdir(postsDir, { recursive: true });
   const dupCheck = isDuplicatePost(newPost, existingPosts);
   if (dupCheck.duplicate) {
-    console.warn(`🛑 [Hard Gate] Bloqueado guardado de "${newPost.title}": ${dupCheck.reason}`);
+    console.warn(`[Hard Gate] Bloqueado guardado de "${newPost.title}": ${dupCheck.reason}`);
     return false;
   }
 
   const filename = `${newPost.date}-${newPost.slug}.json`;
   const postPath = path.join(postsDir, filename);
-  const { readerNeed, angle, actionType, readerProfile, seedQuestion, ...postData } = newPost;
+  const {
+    readerNeed,
+    angle,
+    actionType,
+    readerProfile,
+    seedQuestion,
+    bufferId: _bufferId,
+    bufferedAt: _bufferedAt,
+    used: _used,
+    format: _format,
+    ...postData
+  } = newPost;
   await writeFile(postPath, JSON.stringify(postData, null, 2) + "\n", "utf8");
-  console.log(`✅ Post guardado en disco: content/posts/${filename}`);
+  console.log(`Post guardado en disco: content/posts/${filename}`);
 
   const editorialLog = await loadEditorialLog();
   editorialLog.push({
@@ -1726,14 +2388,14 @@ async function runSelfHealer(
     .join(" · ");
 
   const emoSummaryLine = emoInsights?.summary
-    ? `👍 Likes: ${emoInsights.summary.totalLikes} · 👎 Dislikes: ${emoInsights.summary.totalDislikes} · 💡 Claridad: ${emoInsights.summary.emoDimensions?.clarity || 0} · 🛠️ Aplicable: ${emoInsights.summary.emoDimensions?.actionable || 0} · 🧗 Complejo: ${emoInsights.summary.emoDimensions?.too_complex || 0} · 🛡️ Dudas legales: ${emoInsights.summary.emoDimensions?.legal_doubt || 0} · 💬 Comentarios: ${emoInsights.summary.totalComments} (Respuestas IA: ${emoInsights.summary.aiRepliesCount})`
+    ? `Me gusta: ${emoInsights.summary.totalLikes} · No me gusta: ${emoInsights.summary.totalDislikes} · Claridad: ${emoInsights.summary.emoDimensions?.clarity || 0} · Aplicable: ${emoInsights.summary.emoDimensions?.actionable || 0} · Complejo: ${emoInsights.summary.emoDimensions?.too_complex || 0} · Dudas legales: ${emoInsights.summary.emoDimensions?.legal_doubt || 0} · Comentarios: ${emoInsights.summary.totalComments} (Respuestas IA: ${emoInsights.summary.aiRepliesCount})`
     : "Brújula EmoInsight activa en todos los artículos";
 
-  const digestContent = `# 📊 Informe de Evolución Autónoma — AIEvolutio
+  const digestContent = `# Informe de Evolución Autónoma — AIEvolutio
 
 **Fecha de ciclo:** ${todayIso}  
-**Naturaleza:** 🧪 Experimento autogestionado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarrail)  
-**Estado del Guardián Adversarial:** 🟢 Activo — 0 artículos duplicados tolerados  
+**Naturaleza:** Sistema experimental 100 % operado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarraíl)  
+**Estado del Guardián Adversarial:** Activo — 0 artículos duplicados tolerados  
 **Ciclo editorial:** ${post ? `Nuevo artículo publicado por **${post.author}** (${post.category})` : "Avance técnico del roadmap y verificación adversarial"}
 
 ---
@@ -1767,7 +2429,7 @@ ${
   briefing
     ? `- **Necesidad del lector:** ${briefing.readerNeed}
 - **Ángulo diferencial:** ${briefing.angle}
-- **Acción de volante propuesta:** ${briefing.actionType}
+- **Acción práctica recomendada:** ${briefing.actionType}
 - **Perfil del destinatario:** ${briefing.readerProfile}`
     : "_Corpus diario completo; fase enfocada en mejora técnica del roadmap._"
 }
@@ -1791,20 +2453,20 @@ ${post.actionableChecklist.map((item) => `  - [x] ${item}`).join("\n")}`
 ### 5. Avance Técnico del Roadmap Ejecutado (Spiral-Builder)
 ${
   techStepRecord
-    ? `- 🚀 **Paso del roadmap completado (\`${techStepRecord.id}\` — ${techStepRecord.versionRef}):** ${techStepRecord.summary}`
+    ? `- **Paso del roadmap completado (\`${techStepRecord.id}\` — ${techStepRecord.versionRef}):** ${techStepRecord.summary}`
     : ""
 }
 ${
   spiralResult.actionsTaken.length > 0
-    ? spiralResult.actionsTaken.map((a) => `- 🔧 ${a}`).join("\n")
-    : "- ✅ DOM prerenderizado, widgets `EmoInsight`, hilos de comentarios, esquemas JSON-LD (`Organization`, `FAQPage`, `SoftwareApplication`, `BlogPosting`) y banner experimental verificados sin regresiones."
+    ? spiralResult.actionsTaken.map((a) => `- ${a}`).join("\n")
+    : "- DOM prerenderizado, widgets `EmoInsight`, hilos de comentarios, esquemas JSON-LD (`Organization`, `FAQPage`, `SoftwareApplication`, `TechArticle`) y sello «100 % operado por IA» verificados sin regresiones."
 }
 
 ---
 
 ### 6. Diagnóstico Final (Self-Healer)
-- **Integridad HTML/JSON y enlaces internos:** ✅ Verificada.
-- **Falsas expectativas comerciales:** 🛡️ Mitigadas mediante aviso experimental visible en todas las páginas e hilos de comentarios.
+- **Integridad HTML/JSON y enlaces internos:** Verificada.
+- **Transparencia y ausencia de falsas promesas:** Sello «100 % operado por IA» visible en pie de página, equipo, contacto e hilos de comentarios.
 `;
 
   await writeFile(dailyDigestPath, digestContent, "utf8");
@@ -1845,6 +2507,7 @@ async function main() {
     if (runTechPhase) {
       frontierFinding = await runFrontierStateOfTheArtResearch(telemetry, emoInsights, targetDate);
       techStepRecord = await runRoadmapTechnicalStep(telemetry, emoInsights, targetDate);
+      await ensureEditorialBuffer(telemetry, emoInsights, targetDate);
     } else if (Array.isArray(emoInsights.frontierLog) && emoInsights.frontierLog.length > 0) {
       frontierFinding = emoInsights.frontierLog[emoInsights.frontierLog.length - 1];
       if (Array.isArray(emoInsights.techHistory) && emoInsights.techHistory.length > 0) {
@@ -1853,6 +2516,7 @@ async function main() {
     }
 
     if (runContentPhase) {
+      await ensureEditorialBuffer(telemetry, emoInsights, targetDate);
       const existingDatePost = telemetry.existingPosts.find((p) => p.date === targetDate);
       const shouldPublishContent = flags.forceContent || !existingDatePost;
 

@@ -1,8 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { mkdtemp, rm } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import {
   callGemini,
+  callGeminiWithSearchGrounded,
+  ensureEditorialBuffer,
+  extractGroundingSources,
+  isSundayPillarDate,
   requireEditorialCandidate,
+  ROADMAP_TECH_QUEUE,
   validateArticleBodyLength,
   validateEditorialBriefing,
 } from "./autonomous-evolution.mjs";
@@ -106,21 +114,117 @@ test("returns null when the Gemini API rejects the request", async () => {
   assert.equal(result, null);
 });
 
-test("enforces the 240–290 word range requested by the editorial prompt", () => {
-  assert.deepEqual(validateArticleBodyLength("palabra ".repeat(239)), {
-    valid: false,
-    wordCount: 239,
+test("enforces 600–900 words for daily tactical posts and 1000–1500 words for Sunday pillars", () => {
+  assert.equal(validateArticleBodyLength("palabra ".repeat(599), "tactical").valid, false);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(600), "tactical").valid, true);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(900), "tactical").valid, true);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(901), "tactical").valid, false);
+
+  assert.equal(validateArticleBodyLength("palabra ".repeat(999), "pillar").valid, false);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1000), "pillar").valid, true);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1500), "pillar").valid, true);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1501), "pillar").valid, false);
+
+  assert.equal(isSundayPillarDate("2026-11-15"), true);
+  assert.equal(isSundayPillarDate("2026-11-16"), false);
+});
+
+test("extracts verified grounding sources from Gemini Search responses", async () => {
+  const sampleApiPayload = {
+    candidates: [
+      {
+        content: { parts: [{ text: '{"title":"Guía verificada","body":"Texto"}' }] },
+        groundingMetadata: {
+          groundingChunks: [
+            { web: { uri: "https://eur-lex.europa.eu/ai-act", title: "EUR-Lex AI Act" } },
+            { web: { uri: "https://eur-lex.europa.eu/ai-act", title: "Duplicate URL" } },
+            { web: { uri: "https://www.aepd.es/", title: "AEPD" } },
+            { web: { uri: "javascript:alert(1)", title: "Invalid" } },
+          ],
+        },
+      },
+    ],
+  };
+
+  assert.deepEqual(extractGroundingSources(sampleApiPayload), [
+    { title: "EUR-Lex AI Act", url: "https://eur-lex.europa.eu/ai-act" },
+    { title: "AEPD", url: "https://www.aepd.es/" },
+  ]);
+
+  let sentPayload;
+  const grounded = await callGeminiWithSearchGrounded("test-key", "prompt", async (_url, opts) => {
+    sentPayload = JSON.parse(opts.body);
+    return { ok: true, json: async () => sampleApiPayload };
   });
-  assert.deepEqual(validateArticleBodyLength("palabra ".repeat(240)), {
-    valid: true,
-    wordCount: 240,
-  });
-  assert.deepEqual(validateArticleBodyLength("palabra ".repeat(290)), {
-    valid: true,
-    wordCount: 290,
-  });
-  assert.deepEqual(validateArticleBodyLength("palabra ".repeat(291)), {
-    valid: false,
-    wordCount: 291,
-  });
+
+  assert.ok(sentPayload.generationConfig.maxOutputTokens >= 3000);
+  assert.equal(grounded.grounded, true);
+  assert.equal(grounded.sources.length, 2);
+});
+
+test("replenishes editorial buffer up to 5 verified non-duplicate candidates when reserve drops below 3", async () => {
+  const tmpDir = await mkdtemp(path.join(os.tmpdir(), "ae-buffer-test-"));
+  try {
+    const bufferPath = path.join(tmpDir, "editorial-buffer.json");
+    let seq = 0;
+    const topics = [
+      "Primer protocolo de copias locales cifradas para talleres pequeños",
+      "Cómo preparar preguntas frecuentes útiles antes de instalar un asistente",
+      "Control horario transparente y sencillo sin aplicaciones invasivas en pymes",
+      "Uso prudente de transcripciones de reuniones manteniendo el secreto comercial",
+      "Checklist legal para revisar condiciones antes de probar software gratuito",
+    ];
+    const result = await ensureEditorialBuffer(
+      { existingPosts: [], editorialLog: [] },
+      { summary: { emoDimensions: { clarity: 1, too_complex: 0, legal_doubt: 0 } } },
+      "2026-11-13",
+      {
+        bufferPath,
+        generatorFn: async () => {
+          const idx = seq++;
+          const title =
+            topics[idx % topics.length] + (idx >= topics.length ? ` variante ${idx}` : "");
+          const body = `${"palabra ".repeat(640)}\n\n| Paso | Criterio |\n| :--- | :--- |\n| 1 | Revisión |\n\n**Pasos accionables para aplicar hoy:**\n1. Paso uno\n2. Paso dos\n3. Paso tres`;
+          return {
+            text: JSON.stringify({
+              title,
+              slug: `tema-buffer-${idx}`,
+              category: "Operaciones",
+              effortLevel: "basic",
+              readerNeed: `Resolver necesidad práctica sobre ${title}`,
+              angle: `Guía paso a paso orientada a ${title}`,
+              actionType: `Aplicar medida práctica ${idx}`,
+              readerProfile: "Autónomos y pymes",
+              clarityNote: "En 30 segundos: guía sencilla de prueba.",
+              excerpt: `Resumen breve sobre ${title}.`,
+              body,
+              actionableChecklist: ["Paso 1", "Paso 2", "Paso 3"],
+              seedQuestion: "¿Cómo lo aplicarías?",
+            }),
+            sources: [{ title: "Fuente oficial", url: "https://www.aepd.es/" }],
+          };
+        },
+      },
+    );
+
+    assert.equal(result.activeCount, 5);
+    assert.equal(result.added, 5);
+
+    const secondPass = await ensureEditorialBuffer(
+      { existingPosts: [], editorialLog: [] },
+      {},
+      "2026-11-14",
+      {
+        bufferPath,
+        generatorFn: async () => {
+          throw new Error("Should not regenerate when reserve >= 3");
+        },
+      },
+    );
+    assert.equal(secondPass.activeCount, 5);
+    assert.equal(secondPass.added, 0);
+    assert.ok(ROADMAP_TECH_QUEUE.length >= 6);
+  } finally {
+    await rm(tmpDir, { recursive: true, force: true });
+  }
 });

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [1.4.0](https://github.com/aievolutio-com/aievolutio.com/compare/v1.3.0...v1.4.0) (2026-11-13)
+
+### Features
+
+- **Cimientos NeuroUX y foco de portada (`US-001`):** Simplificación de `index.html` a un máximo de 4 bloques limpios (Hero, `#vision`, `#aiworkers`, `#blog`) con un único botón de acción principal (`diagnostico.html`), erradicación integral de la jerga interna («volante», «curva exponencial», «máquina biológica») y sustitución de la banda superior defensiva por el sello sereno «100 % operado por IA» en el pie global, `equipo.html`, `contacto.html` y los hilos de comentarios.
+- **Revelación progresiva y desacople de utilidades (`US-002`):** Extracción del diagnóstico guiado en 3 pasos (`diagnostico.html`) y de la calculadora transparente de carga horaria sobre cifras propias (`calculadora.html`) fuera de la portada, incorporando ambas rutas al menú de navegación, `sitemap.xml` y la verificación en `scripts/self-heal-check.mjs`.
+- **Paleta constitucional WCAG 2.2 AAA y cero emojis UI (`US-003`):** Reconciliación de `styles/tokens.css` y `styles/main.css` (`#0A192F`, `#FFFFFF` / `#F8FAFC`, `#144870` con contraste AAA >= 7:1 sobre blanco, `#FF6B4A` reservado exclusivamente a isotipos y acentos no textuales), escala fluida `Roboto` (>= 18 px cuerpo) y `Montserrat` (700) sin `Inter`, columna de lectura a 64 ch y sustitución integral de emojis estructurales por iconos SVG lineales (`stroke-width="1.5"`).
+- **Estándar editorial de 3 capas, veracidad en vivo y citabilidad GEO (`US-004`, `US-005`):** Elevación del motor editorial y prerenderizado estático a artículos tácticos de 600–900 palabras y guías pilar dominicales de 1000–1500 palabras con bloque inicial «En 30 segundos» (`#resumen-30s`), soporte nativo de tablas Markdown (`.article-table`), diagramas SVG deterministas, bloque de fuentes verificadas mediante _Google Search Grounding_ (`extractGroundingSources`), actualización de JSON-LD a `TechArticle` con enlace `rel="author"` hacia `equipo.html#<agente>`, y cola progresiva para enriquecer artículos históricos (`tech-step-05`, `tech-step-06`).
+- **Reserva editorial autorregenerativa (`US-408`):** Incorporación del buffer `content/editorial-buffer.json` con reposición automática hasta 5 candidatos verificados cuando la reserva desciende de 3, más recalibración elástica de longitud en 1 paso antes de descartar borradores válidos.
+
 ## [1.3.0](https://github.com/aievolutio-com/aievolutio.com/compare/v1.2.0...v1.3.0) (2026-11-09)
 
 ### Features

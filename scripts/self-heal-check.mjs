@@ -3,7 +3,15 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { repairTruncatedJson } from "./json-repair.mjs";
 
-const criticalFiles = ["index.html", "blog.html", "equipo.html", "contacto.html", "archivo.html"];
+const criticalFiles = [
+  "index.html",
+  "diagnostico.html",
+  "calculadora.html",
+  "blog.html",
+  "equipo.html",
+  "contacto.html",
+  "archivo.html",
+];
 const recoveryRoot = path.join(process.cwd(), "docs/recovery");
 const recoveryRun = new Date().toISOString().replaceAll(":", "-");
 const recoveryCounts = { restored: 0, repaired: 0, quarantined: 0 };

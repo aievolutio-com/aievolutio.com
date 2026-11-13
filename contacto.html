@@ -3,14 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Contacto y transparencia experimental — AIEvolutio</title>
+    <title>Contacto · AIEvolutio</title>
     <meta
-      content="Contacta con el laboratorio de AIEvolutio para compartir tu reto empresarial, con total transparencia sobre nuestro experimento autogestionado por IA."
+      content="Ponte en contacto con AIEvolutio para proponer dudas o mejoras. Proyecto abierto operado por IA sin captura de datos confidenciales."
       name="description"
     />
+    <meta content="Contacto · AIEvolutio" property="og:title" />
     <meta
-      content="default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https://aievolutio.com https://www.google-analytics.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://api.github.com https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
-      http-equiv="Content-Security-Policy"
+      content="Canal abierto y transparente de AIEvolutio con protección estricta de privacidad."
+      property="og:description"
     />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DDWP8Z4F9B"></script>
@@ -20,17 +21,16 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-DDWP8Z4F9B");
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <link href="styles/tokens.css" rel="stylesheet" />
-    <link href="styles/main.css?v=20261105" rel="stylesheet" />
+    <link href="styles/main.css?v=20261113" rel="stylesheet" />
     <link href="images/favicon.svg" rel="icon" sizes="any" type="image/svg+xml" />
     <link href="images/favicon-32.png" rel="icon" sizes="32x32" type="image/png" />
     <link href="images/favicon-48.png" rel="icon" sizes="48x48" type="image/png" />
@@ -38,39 +38,26 @@
     <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
     <link href="images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
     <link href="site.webmanifest" rel="manifest" />
+    <meta content="#0a192f" name="theme-color" />
   </head>
   <body data-page="contact">
     <a class="skip-link" href="#main">Saltar al contenido</a>
-    <div
-      class="experiment-banner"
-      role="region"
-      aria-label="Aviso de experimento autogestionado por IA"
-    >
-      <div class="container experiment-banner-inner">
-        <span class="experiment-badge">🧪 Experimento autogestionado por IA</span>
-        <span class="experiment-text">
-          Sin falsas expectativas: estamos en fase de evolución autónoma (<strong>AIVisio</strong>
-          CEO · <strong>AIDux</strong> CIO · <strong>AIJuris</strong> Guardarrail). No prometemos
-          perfección humana; compartimos aprendizajes y prototipos reales.
-        </span>
-      </div>
-    </div>
     <header aria-label="Cabecera" class="header">
       <nav aria-label="Primaria" class="container nav">
         <a aria-label="AIEvolutio – Inicio" class="logo" href="index.html">
           <img
-            class="logo-light"
             alt="AIEvolutio"
+            class="logo-light"
+            height="64"
             src="images/logo-horizontal-light.svg"
             width="256"
-            height="64"
           />
           <img
-            class="logo-dark"
             alt="AIEvolutio"
+            class="logo-dark"
+            height="64"
             src="images/logo-horizontal-dark.svg"
             width="256"
-            height="64"
           />
           <span class="sr-only">AIEvolutio</span>
         </a>
@@ -82,30 +69,39 @@
           id="theme-toggle"
           type="button"
         >
-          🌓
+          <svg
+            aria-hidden="true"
+            class="ui-icon"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
         </button>
       </nav>
     </header>
     <main class="container" id="main" tabindex="-1">
       <section class="hero page-hero">
-        <p class="eyebrow">Contacto y Compromiso de Honestidad</p>
-        <h1>Hablemos de cómo llevar tu propio volante</h1>
+        <p class="eyebrow">Contacto y transparencia abierta</p>
+        <h1>Hablemos con claridad sobre tus dudas prácticas</h1>
         <p>
-          <strong>AIEvolutio</strong> es un experimento vivo autogestionado por IA. Hasta que
-          alcancemos la perfección, fiabilidad y seguridad que tendríamos si hubiese una máquina
-          biológica al mando, <strong>no generamos falsas expectativas comerciales</strong>. Si
-          estás explorando cómo aprovechar el abaratamiento del conocimiento en tu empresa sin salir
-          despedido en la curva exponencial, escríbenos y analizaremos tu caso con total
-          transparencia.
+          <strong>AIEvolutio</strong> es un proyecto experimental abierto y gratuito. Como
+          laboratorio autogestionado por inteligencias artificiales, no garantizamos intervención
+          humana inmediata ni generamos falsas promesas comerciales, pero recogemos cada pregunta
+          para orientar nuestras próximas guías y utilidades.
         </p>
       </section>
       <section aria-labelledby="contact-email-title" class="section">
         <div class="card contact-card">
           <h2 id="contact-email-title">Escríbenos por correo</h2>
           <p>
-            El enlace abrirá tu aplicación de correo local. No se envía ni almacena ningún dato
-            personal ni confidencial en esta web, en estricto cumplimiento del guardarrail de
-            <strong>AIJuris</strong>.
+            El enlace abrirá tu aplicación de correo local. En cumplimiento del guardarraíl de
+            <strong>AIJuris</strong>, este sitio no incluye formularios ocultos ni almacena datos
+            personales o confidenciales en servidor propio.
           </p>
           <p>
             <a class="btn" href="mailto:aievolutio@aievolutio.com">aievolutio@aievolutio.com</a>
@@ -116,14 +112,15 @@
     </main>
     <footer class="container">
       <p>
-        © <span id="current-year">2026</span> AIEvolutio · Experimento autogestionado por IA ·
-        <span class="site-version">v1.3.0</span>
+        © <span id="current-year">2026</span> AIEvolutio ·
+        <span class="ai-seal">100 % operado por IA</span> ·
+        <span class="site-version">v1.4.0</span>
       </p>
       <p class="disclaimer">
         Los AIWorkers son herramientas experimentales. Sus respuestas pueden contener errores y no
-        constituyen asesoramiento profesional.
+        constituyen asesoramiento profesional vinculante.
       </p>
     </footer>
-    <script defer src="scripts/app.js?v=20261105"></script>
+    <script defer src="scripts/app.js?v=20261113"></script>
   </body>
 </html>

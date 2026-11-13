@@ -44,11 +44,15 @@
     const activeId =
       page === "blog" || page === "blog-archive"
         ? "blog"
-        : page === "team"
-          ? "aiworkers"
-          : page === "contact"
-            ? "contact"
-            : "home";
+        : page === "diagnostico"
+          ? "diagnostico"
+          : page === "calculadora"
+            ? "calculadora"
+            : page === "team"
+              ? "aiworkers"
+              : page === "contact"
+                ? "contact"
+                : "home";
     nav.replaceChildren(
       ...items.map((item) => {
         const attrs = {
@@ -108,7 +112,7 @@
       text.includes("rgpd") ||
       text.includes("guardarrail")
     ) {
-      return { label: "Guardarrail Ético & Legal", filterKey: "legal" };
+      return { label: "Guardarraíl ético y legal", filterKey: "legal" };
     }
     if (
       author.includes("visio") ||
@@ -119,7 +123,7 @@
       text.includes("geo") ||
       text.includes("resiliencia")
     ) {
-      return { label: "Visión & Estrategia", filterKey: "estrategia" };
+      return { label: "Visión y estrategia", filterKey: "estrategia" };
     }
     if (
       text.includes("slm") ||
@@ -129,9 +133,9 @@
       text.includes("modelo") ||
       text.includes("offline")
     ) {
-      return { label: "Tecnología & SLMs", filterKey: "tecnologia" };
+      return { label: "Tecnología y SLM", filterKey: "tecnologia" };
     }
-    return { label: "IAWorkers & Procesos", filterKey: "tecnologia" };
+    return { label: "AIWorkers y procesos", filterKey: "tecnologia" };
   }
 
   function getPostEffortMeta(post) {
@@ -140,13 +144,13 @@
     if (explicit === "basic" || slugAndTitle.includes("diccionario-sin-miedo")) {
       return {
         key: "basic",
-        shortBadge: "🟢 Básico (1 tarde · 0 €)",
+        shortBadge: "Básico (1 tarde · 0 €)",
       };
     }
     if (explicit === "advanced") {
       return {
         key: "advanced",
-        shortBadge: "🔴 Avanzado (perfil técnico)",
+        shortBadge: "Avanzado (perfil técnico)",
       };
     }
     const bodyText = `${slugAndTitle} ${post.body || ""}`.toLowerCase();
@@ -159,12 +163,12 @@
     ) {
       return {
         key: "intermediate",
-        shortBadge: "🟡 Intermedio (guiado · 0 €)",
+        shortBadge: "Intermedio (guiado · 0 €)",
       };
     }
     return {
       key: "basic",
-      shortBadge: "🟢 Básico (1 tarde · 0 €)",
+      shortBadge: "Básico (1 tarde · 0 €)",
     };
   }
 
@@ -267,6 +271,46 @@
       }
 
       const lines = trimmed.split("\n");
+      if (
+        lines.length >= 3 &&
+        lines[0].trim().startsWith("|") &&
+        /^\|[\s:|-]+\|$/.test(lines[1].trim())
+      ) {
+        const parseRow = (row) =>
+          row
+            .trim()
+            .replace(/^\|/, "")
+            .replace(/\|$/, "")
+            .split("|")
+            .map((cell) => cell.trim());
+        const headers = parseRow(lines[0]);
+        const bodyRows = lines.slice(2).map(parseRow);
+        const wrap = el("div", { class: "article-table-wrap" });
+        const table = el("table", { class: "article-table" });
+        const thead = el("thead");
+        const headTr = el("tr");
+        headers.forEach((hText) => {
+          const th = el("th", { scope: "col" });
+          appendInlineFormatted(th, hText);
+          headTr.append(th);
+        });
+        thead.append(headTr);
+        table.append(thead);
+        const tbody = el("tbody");
+        bodyRows.forEach((cells) => {
+          const tr = el("tr");
+          cells.forEach((cText) => {
+            const td = el("td");
+            appendInlineFormatted(td, cText);
+            tr.append(td);
+          });
+          tbody.append(tr);
+        });
+        table.append(tbody);
+        wrap.append(table);
+        content.append(wrap);
+        return;
+      }
       if (lines.every((l) => l.trim().startsWith("- ") || l.trim().startsWith("* "))) {
         const ul = el("ul", { class: "article-list" });
         lines.forEach((l) => {
@@ -322,7 +366,7 @@
         : null;
     const sectionTitle =
       sec.id === "blog" && page === "home"
-        ? "Ideas recientes para llevar el volante"
+        ? "Guías recientes en lenguaje llano"
         : sec.id === "blog" && page === "blog"
           ? selectedPost
             ? "Artículo"
@@ -448,10 +492,12 @@
       if (b.type === "worker") {
         const name = b.name || b.title || "";
         const agentKey = name.toLowerCase();
-        const card = el("article", {
+        const cardAttrs = {
           class: "worker-card",
           "data-agent": agentKey,
-        });
+        };
+        if (page === "team" && agentKey) cardAttrs.id = agentKey;
+        const card = el("article", cardAttrs);
 
         const header = el("div", { class: "worker-header" });
         const iconBox = el("div", {
@@ -680,7 +726,7 @@
           ? sections.filter((section) => section.id === "aiworkers")
           : page === "contact"
             ? []
-            : sections.filter((section) => section.id !== "home");
+            : sections.filter((section) => ["vision", "aiworkers", "blog"].includes(section.id));
     visibleSections.forEach((section) => {
       if (section.id !== "eventos") {
         mount.append(renderSection(section));
@@ -822,10 +868,10 @@
       return;
     }
     const pageTitle = $("#page-title");
-    if (pageTitle) pageTitle.textContent = selectedPost?.title || "Ideas para llevar el volante";
+    if (pageTitle) pageTitle.textContent = selectedPost?.title || "Guías en lenguaje llano";
     document.title = selectedPost
       ? `${selectedPost.title} — AIEvolutio`
-      : "Ideas para llevar el volante — AIEvolutio";
+      : "Guías en lenguaje llano — AIEvolutio";
     renderSections(state.content.sections);
     setupBlogFilters();
     setupGlossaryFilters();
@@ -902,87 +948,132 @@
     });
   }
 
-  function setupVolanteDiagnostic() {
-    const root = document.getElementById("volante-diagnostic");
+  function setupMaturityDiagnostic() {
+    const root = document.getElementById("maturity-diagnostic");
     if (!root) return;
 
-    const scores = { visio: 15, dux: 15, juris: 10 };
+    const scores = { priority: 25, base: 20, guardrail: 20 };
+    const choices = { priority: "facturas", base: "basica", guardrail: "privacidad" };
+
+    function goToStep(stepNum) {
+      const target = String(stepNum);
+      root.querySelectorAll("[data-wizard-step]").forEach((tab) => {
+        const isCurrent = tab.getAttribute("data-wizard-step") === target;
+        tab.classList.toggle("active", isCurrent);
+        tab.setAttribute("aria-selected", String(isCurrent));
+      });
+      root.querySelectorAll("[data-step-panel]").forEach((panel) => {
+        panel.hidden = panel.getAttribute("data-step-panel") !== target;
+      });
+    }
 
     function updateDiagnosis() {
-      const avg = Math.round((scores.visio + scores.dux + scores.juris) / 3);
-      const badgeEl = document.getElementById("volante-status-badge");
-      const leadEl = document.getElementById("volante-lead-agent");
-      const scoreEl = document.getElementById("volante-score-num");
-      const stateEl = document.getElementById("volante-curve-state");
-      const descEl = document.getElementById("volante-prescription");
+      const avg = Math.round((scores.priority + scores.base + scores.guardrail) / 3);
+      const badgeEl = document.getElementById("maturity-status-badge");
+      const leadEl = document.getElementById("maturity-lead-agent");
+      const scoreEl = document.getElementById("maturity-score-num");
+      const stateEl = document.getElementById("maturity-level-label");
+      const descEl = document.getElementById("maturity-prescription");
+      const ctaEl = document.getElementById("maturity-cta-link");
 
-      if (scoreEl) scoreEl.textContent = `${avg}%`;
+      if (scoreEl) scoreEl.textContent = `${avg} %`;
 
-      if (scores.juris < 40) {
-        if (badgeEl) badgeEl.textContent = "Alerta: sin guardarraíl de protección";
-        if (leadEl) leadEl.textContent = "Prioridad: AIJuris (Guardarraíl)";
-        if (stateEl) stateEl.textContent = "Vulnerable";
+      if (choices.guardrail === "privacidad" || scores.guardrail < 40) {
+        if (badgeEl) badgeEl.textContent = "Prioridad de protección";
+        if (leadEl) leadEl.textContent = "AIJuris + AIFactura";
+        if (stateEl) stateEl.textContent = "Inicio prudente";
         if (descEl) {
           descEl.textContent =
-            "Antes de conectar herramientas, es prioritario proteger la privacidad y los secretos de tu negocio con el guardarraíl de AIJuris: aislar datos sensibles en local, revisar acuerdos con proveedores y garantizar el respeto al RGPD y al AI Act europeo.";
+            "Conviene empezar con una estantería sencilla: crea una lista breve de qué documentos no deben salir de tu equipo y prueba una plantilla sin coste con datos de ejemplo antes de contratar cuotas.";
         }
-      } else if (scores.visio < 50) {
-        if (badgeEl) badgeEl.textContent = "Oportunidad: definir el rumbo";
-        if (leadEl) leadEl.textContent = "Prioridad: AIVisio (Dirección y estrategia)";
-        if (stateEl) stateEl.textContent = "Explorando";
+        if (ctaEl) {
+          ctaEl.href =
+            "articulos/articulo-2026-11-10-ia-confidencial-en-tu-propio-ordenador-como-procesar-contratos-locales-cumpliendo-el-rgpd-sin-pasar-por-la-nube.html";
+          ctaEl.textContent = "Leer guía práctica de privacidad local";
+        }
+      } else if (scores.base < 50) {
+        if (badgeEl) badgeEl.textContent = "Orden previo de carpetas";
+        if (leadEl) leadEl.textContent = "AIDux + AIRespuestas";
+        if (stateEl) stateEl.textContent = "Base en marcha";
         if (descEl) {
           descEl.textContent =
-            "Contáis con prudencia, pero falta abrir la mirada hacia nuevas oportunidades: AIVisio ayuda a plantear las preguntas adecuadas para descubrir qué servicios diferenciales podéis ofrecer ahora que el conocimiento práctico es accesible a cualquier pequeña empresa.";
+            "El mayor retorno llega ordenando primero tus preguntas frecuentes y documentos modelo en carpetas claras. Una vez ordenado ese punto, un asistente ligero ahorra tiempo sin perder supervisión humana.";
         }
-      } else if (scores.dux < 50) {
-        if (badgeEl) badgeEl.textContent = "Reto: aterrizar en la práctica técnica";
-        if (leadEl) leadEl.textContent = "Prioridad: AIDux (Dirección tecnológica)";
-        if (stateEl) stateEl.textContent = "En marcha";
-        if (descEl) {
-          descEl.textContent =
-            "Tenéis clara la meta y cuidáis la seguridad, pero la operativa diaria se frena en tareas manuales. Es el momento de que AIDux aterrice soluciones sencillas y modelos compactos locales para devolver horas útiles al equipo.";
+        if (ctaEl) {
+          ctaEl.href = "blog.html#glosario-llano";
+          ctaEl.textContent = "Consultar diccionario en lenguaje llano";
         }
-      } else if (avg < 85) {
-        if (badgeEl) badgeEl.textContent = "Progreso: integración equilibrada";
-        if (leadEl) leadEl.textContent = "Sinergia: AIVisio · AIDux · AIJuris";
+      } else if (avg < 75) {
+        if (badgeEl) badgeEl.textContent = "Bricolaje guiado";
+        if (leadEl) leadEl.textContent = "AIVisio + AIOferta";
         if (stateEl) stateEl.textContent = "Equilibrado";
         if (descEl) {
           descEl.textContent =
-            "Vuestra organización avanza con criterio y equilibrio. El siguiente paso consiste en consolidar automatizaciones útiles y transformar el tiempo recuperado en mayor atención humana y cercanía con vuestros clientes.";
+            "Tienes buena base documental y criterio preventivo. El siguiente paso útil es automatizar borradores repetitivos manteniendo revisión humana obligatoria y evitando suscripciones que no uses.";
+        }
+        if (ctaEl) {
+          ctaEl.href = "calculadora.html";
+          ctaEl.textContent = "Calcular carga horaria con tus datos";
         }
       } else {
-        if (badgeEl) badgeEl.textContent = "Madurez: rumbo claro y sostenible";
-        if (leadEl) leadEl.textContent = "Equilibrio AIEvolutio";
+        if (badgeEl) badgeEl.textContent = "Madurez sostenible";
+        if (leadEl) leadEl.textContent = "AIVisio · AIDux · AIJuris";
         if (stateEl) stateEl.textContent = "Avanzado";
         if (descEl) {
           descEl.textContent =
-            "Rumbo firme y maduro: combináis visión humana (AIVisio), artesanía técnica sobria (AIDux) y protección ética y legal estricta (AIJuris) para hacer posible lo que antes parecía inalcanzable.";
+            "Combinas privacidad preventiva, orden operativo y control de costes. Revisa periódicamente el saldo real de horas liberadas y prioriza herramientas abiertas o ejecutables en tu propio equipo.";
+        }
+        if (ctaEl) {
+          ctaEl.href = "equipo.html";
+          ctaEl.textContent = "Explorar la arquitectura del equipo";
         }
       }
 
       if (typeof window.gtag === "function") {
-        window.gtag("event", "volante_diagnosis", {
-          visio_score: scores.visio,
-          dux_score: scores.dux,
-          juris_score: scores.juris,
+        window.gtag("event", "maturity_diagnosis", {
+          priority_choice: choices.priority,
+          base_choice: choices.base,
+          guardrail_choice: choices.guardrail,
           total_score: avg,
         });
       }
     }
 
-    root.querySelectorAll(".volante-btn[data-dim]").forEach((btn) => {
+    root.querySelectorAll("[data-wizard-step]").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        goToStep(tab.getAttribute("data-wizard-step") || "1");
+      });
+    });
+
+    root.querySelectorAll("[data-wizard-next]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        goToStep(btn.getAttribute("data-wizard-next") || "2");
+      });
+    });
+
+    root.querySelectorAll("[data-wizard-prev]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        goToStep(btn.getAttribute("data-wizard-prev") || "1");
+      });
+    });
+
+    root.querySelectorAll(".maturity-btn[data-dim]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const dim = btn.getAttribute("data-dim");
         if (!dim) return;
-        root
-          .querySelectorAll(`.volante-btn[data-dim="${dim}"]`)
-          .forEach((b) => b.classList.remove("active"));
+        root.querySelectorAll(`.maturity-btn[data-dim="${dim}"]`).forEach((b) => {
+          b.classList.remove("active");
+          b.setAttribute("aria-pressed", "false");
+        });
         btn.classList.add("active");
+        btn.setAttribute("aria-pressed", "true");
         scores[dim] = parseInt(btn.getAttribute("data-score") || "0", 10) || 0;
+        choices[dim] = btn.getAttribute("data-value") || choices[dim];
         updateDiagnosis();
       });
     });
 
+    goToStep("1");
     updateDiagnosis();
   }
 
@@ -990,87 +1081,127 @@
     const root = document.getElementById("roi-calculator");
     if (!root) return;
 
-    const data = {
+    const tasks = {
       facturas: {
         worker: "AIFactura",
-        role: "Facturas y asientos contables",
-        hours: [12, 24, 45],
-        savings: [300, 600, 1125],
-        desc: "Extracción automática de importes, CIFs y conceptos desde facturas y tickets en PDF directos a tu gestoría o ERP.",
-        link: "equipo.html",
+        anchor: "aifactura",
       },
       whatsapp: {
         worker: "AIRespuestas",
-        role: "Atención 24/7 y citas en WhatsApp",
-        hours: [15, 30, 60],
-        savings: [375, 750, 1500],
-        desc: "Respuesta inmediata a clientes potenciales fuera del horario comercial y filtrado de citas en tu calendario.",
-        link: "equipo.html",
+        anchor: "airespuestas",
       },
       presupuestos: {
         worker: "AIOferta",
-        role: "Presupuestos rápidos en PDF",
-        hours: [10, 20, 38],
-        savings: [250, 500, 950],
-        desc: "Transforma notas de voz de WhatsApp o correos en propuestas formales desglosadas listas para revisar y enviar en 10 minutos.",
-        link: "equipo.html",
+        anchor: "aioferta",
       },
       legal: {
         worker: "AIJuris",
-        role: "Guardarrail ético-legal, contratos y AI Act",
-        hours: [8, 16, 32],
-        savings: [400, 800, 1600],
-        desc: "Detección preventiva de cláusulas abusivas y adecuación al Reglamento Europeo de IA sin minutas infladas.",
-        link: "https://chatgpt.com/g/g-68bb49c6392081918c1bd85b74a78b0d-aijuris",
+        anchor: "aijuris",
       },
     };
 
-    let teamSizeIndex = 0;
+    const hoursInput = document.getElementById("calc-hours-input");
+    const rateInput = document.getElementById("calc-rate-input");
+    const subInput = document.getElementById("calc-sub-input");
+
     let currentTask = "facturas";
+    let currentFactor = 0.4;
+
+    function clampNum(val, min, max, fallback) {
+      const parsed = Number.parseFloat(String(val ?? ""));
+      if (!Number.isFinite(parsed)) return fallback;
+      return Math.min(max, Math.max(min, parsed));
+    }
+
+    function syncPresets(selector, attr, activeValue) {
+      root.querySelectorAll(selector).forEach((btn) => {
+        const matches = Number(btn.getAttribute(attr)) === Number(activeValue);
+        btn.classList.toggle("active", matches);
+        btn.setAttribute("aria-pressed", String(matches));
+      });
+    }
 
     function update() {
-      const item = data[currentTask] || data.facturas;
-      const h = item.hours[teamSizeIndex];
-      const s = item.savings[teamSizeIndex];
+      const item = tasks[currentTask] || tasks.facturas;
+      const hoursPerWeek = clampNum(hoursInput?.value, 1, 80, 4);
+      const hourlyRate = clampNum(rateInput?.value, 5, 250, 25);
+      const monthlySub = clampNum(subInput?.value, 0, 5000, 0);
+
+      const monthlyHours = hoursPerWeek * 4.33 * currentFactor;
+      const netEuro = Math.round(monthlyHours * hourlyRate - monthlySub);
 
       const hoursEl = root.querySelector(".roi-res-hours");
       const moneyEl = root.querySelector(".roi-res-money");
       const workerEl = root.querySelector(".roi-res-worker");
-      const descEl = root.querySelector(".roi-res-desc");
+      const noteEl = document.getElementById("calc-formula-note");
       const linkEl = root.querySelector(".roi-res-link");
 
-      if (hoursEl) hoursEl.textContent = `~${h} h/mes`;
-      if (moneyEl) moneyEl.textContent = `~${s} €/mes`;
+      if (hoursEl) hoursEl.textContent = `~${monthlyHours.toFixed(1).replace(".", ",")} h/mes`;
+      if (moneyEl) moneyEl.textContent = `~${netEuro} €/mes`;
       if (workerEl) workerEl.textContent = item.worker;
-      if (descEl) descEl.textContent = item.desc;
-      if (linkEl) {
-        linkEl.href = item.link;
-        linkEl.textContent = `Conocer a ${item.worker} →`;
+      if (noteEl) {
+        noteEl.textContent = `Fórmula transparente: ${hoursPerWeek} h/sem × 4,33 semanas × ${Math.round(currentFactor * 100)} % × ${hourlyRate} €/h − ${monthlySub} €/mes de cuota. Siempre sujeto a validación humana.`;
       }
+      if (linkEl) {
+        linkEl.href = `equipo.html#${item.anchor}`;
+        linkEl.textContent = `Conocer a ${item.worker}`;
+      }
+
+      syncPresets("[data-hours-preset]", "data-hours-preset", hoursPerWeek);
+      syncPresets("[data-rate-preset]", "data-rate-preset", hourlyRate);
 
       if (typeof window.gtag === "function") {
         window.gtag("event", "roi_calculation", {
           task: currentTask,
-          team_size_idx: teamSizeIndex,
-          estimated_hours: h,
+          hours_per_week: hoursPerWeek,
+          factor_pct: Math.round(currentFactor * 100),
+          estimated_hours: Number(monthlyHours.toFixed(1)),
         });
       }
     }
 
-    root.querySelectorAll("[data-team-size]").forEach((btn) => {
+    root.querySelectorAll("[data-hours-preset]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        root.querySelectorAll("[data-team-size]").forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        teamSizeIndex = parseInt(btn.dataset.teamSize, 10) || 0;
+        if (hoursInput) hoursInput.value = btn.getAttribute("data-hours-preset") || "4";
         update();
       });
     });
 
+    root.querySelectorAll("[data-rate-preset]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (rateInput) rateInput.value = btn.getAttribute("data-rate-preset") || "25";
+        update();
+      });
+    });
+
+    [hoursInput, rateInput, subInput].forEach((input) => {
+      if (input) {
+        input.addEventListener("input", update);
+      }
+    });
+
     root.querySelectorAll("[data-task]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        root.querySelectorAll("[data-task]").forEach((b) => b.classList.remove("active"));
+        root.querySelectorAll("[data-task]").forEach((b) => {
+          b.classList.remove("active");
+          b.setAttribute("aria-pressed", "false");
+        });
         btn.classList.add("active");
-        currentTask = btn.dataset.task;
+        btn.setAttribute("aria-pressed", "true");
+        currentTask = btn.dataset.task || "facturas";
+        update();
+      });
+    });
+
+    root.querySelectorAll("[data-factor]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        root.querySelectorAll("[data-factor]").forEach((b) => {
+          b.classList.remove("active");
+          b.setAttribute("aria-pressed", "false");
+        });
+        btn.classList.add("active");
+        btn.setAttribute("aria-pressed", "true");
+        currentFactor = clampNum(btn.getAttribute("data-factor"), 0.1, 0.9, 0.4);
         update();
       });
     });
@@ -1144,7 +1275,7 @@
   async function main() {
     setupTheme();
     setupLightbox();
-    setupVolanteDiagnostic();
+    setupMaturityDiagnostic();
     setupRoiCalculator();
     setupBlogFilters();
     setupGlossaryFilters();

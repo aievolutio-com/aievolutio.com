@@ -10,7 +10,15 @@ const outputRoot = path.join(repoRoot, "dist");
 const contentPath = path.join(repoRoot, "content/content.es.json");
 const navigationPath = path.join(repoRoot, "content/navigation.json");
 const postsDirectory = path.join(repoRoot, "content/posts");
-const htmlPages = ["index.html", "equipo.html", "blog.html", "archivo.html", "contacto.html"];
+const htmlPages = [
+  "index.html",
+  "diagnostico.html",
+  "calculadora.html",
+  "equipo.html",
+  "blog.html",
+  "archivo.html",
+  "contacto.html",
+];
 const publicDirectories = ["assets", "content", "images", "styles"];
 const publicFiles = ["CNAME", "_headers", "site.webmanifest", "robots.txt", "sitemap.xml"];
 const articleBaseUrl = "https://aievolutio.com";
@@ -109,6 +117,80 @@ function postSummary(body, maxLength = 280) {
   return `${text.slice(0, maxLength).replace(/\s+\S*$/, "")}…`;
 }
 
+function stripLeadingEmojis(value) {
+  return String(value ?? "")
+    .replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]\uFE0F?/gu, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function renderUiIcon(name) {
+  const icons = {
+    bulb: '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/>',
+    thumbUp:
+      '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>',
+    thumbDown:
+      '<path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/>',
+    comment:
+      '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+    compass:
+      '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+    wrench:
+      '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+    stairs: '<path d="M4 20h4v-4h4v-4h4v-4h4"/>',
+    shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+  };
+  const body = icons[name] || '<circle cx="12" cy="12" r="9"/>';
+  return `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+}
+
+function renderComparisonTable(table) {
+  if (!table || !Array.isArray(table.headers) || !Array.isArray(table.rows) || !table.rows.length) {
+    return "";
+  }
+  const caption = table.caption ? `<caption>${escapeHtml(table.caption)}</caption>` : "";
+  const thead = `<thead><tr>${table.headers.map((h) => `<th scope="col">${formatInlineText(h)}</th>`).join("")}</tr></thead>`;
+  const tbody = `<tbody>${table.rows
+    .map(
+      (row) =>
+        `<tr>${(Array.isArray(row) ? row : []).map((cell) => `<td>${formatInlineText(cell)}</td>`).join("")}</tr>`,
+    )
+    .join("")}</tbody>`;
+  return `<div class="article-table-wrap"><table class="article-table">${caption}${thead}${tbody}</table></div>`;
+}
+
+function renderVisualDiagram(diagram) {
+  if (!diagram || !Array.isArray(diagram.nodes) || diagram.nodes.length < 2) {
+    return "";
+  }
+  const nodes = diagram.nodes.slice(0, 3);
+  const title = diagram.title || "Esquema visual de decisión";
+  const boxWidth = 190;
+  const gap = 35;
+  const startX = 20;
+  const totalWidth = startX * 2 + nodes.length * boxWidth + (nodes.length - 1) * gap;
+  const boxes = nodes
+    .map((node, idx) => {
+      const x = startX + idx * (boxWidth + gap);
+      const label = escapeHtml(String(node.title || `Paso ${idx + 1}`).slice(0, 28));
+      const note = escapeHtml(String(node.note || "").slice(0, 36));
+      const arrow =
+        idx < nodes.length - 1
+          ? `<line x1="${x + boxWidth + 4}" y1="62" x2="${x + boxWidth + gap - 6}" y2="62" stroke="var(--brand-tech-surface, #1e6091)" stroke-width="2" stroke-linecap="round"/><polyline points="${x + boxWidth + gap - 12},56 ${x + boxWidth + gap - 4},62 ${x + boxWidth + gap - 12},68" fill="none" stroke="var(--brand-tech-surface, #1e6091)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`
+          : "";
+      return `<rect x="${x}" y="22" width="${boxWidth}" height="80" rx="10" fill="var(--surface-raised, #ffffff)" stroke="var(--brand-tech-surface, #1e6091)" stroke-width="1.5"/>
+<text x="${x + boxWidth / 2}" y="52" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="var(--text, #0a192f)">${label}</text>
+<text x="${x + boxWidth / 2}" y="76" text-anchor="middle" font-family="Roboto, sans-serif" font-size="11" fill="var(--muted, #334155)">${note}</text>${arrow}`;
+    })
+    .join("");
+  return `<figure class="article-visual-card">
+  <svg class="visual-diagram-svg" viewBox="0 0 ${totalWidth} 124" role="img" aria-label="${escapeHtml(title)}">${boxes}</svg>
+  <figcaption class="muted" style="font-size: 0.9rem; margin-top: 0.5rem;">${escapeHtml(title)}</figcaption>
+</figure>`;
+}
+
 function renderPostBody(body) {
   return String(body || "")
     .trim()
@@ -125,6 +207,23 @@ function renderPostBody(body) {
       }
 
       const lines = trimmed.split("\n");
+      if (
+        lines.length >= 3 &&
+        lines[0].trim().startsWith("|") &&
+        /^\|[\s:|-]+\|$/.test(lines[1].trim())
+      ) {
+        const parseRow = (row) =>
+          row
+            .trim()
+            .replace(/^\|/, "")
+            .replace(/\|$/, "")
+            .split("|")
+            .map((cell) => cell.trim());
+        const headers = parseRow(lines[0]);
+        const rows = lines.slice(2).map(parseRow);
+        return renderComparisonTable({ headers, rows });
+      }
+
       if (lines.every((l) => l.trim().startsWith("- ") || l.trim().startsWith("* "))) {
         const items = lines.map((l) => {
           const itemContent = l.trim().replace(/^[-*]\s+/, "");
@@ -186,9 +285,9 @@ const agentIcons = {
     '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>',
 };
 
-function renderWorker(worker) {
-  const name = worker.name || worker.title || "";
-  const agentKey = name.toLowerCase();
+function renderWorker(worker, withAnchor = false) {
+  const name = worker.name || worker.title || "AIWorker";
+  const agentKey = String(name).toLowerCase();
   const icon =
     agentIcons[agentKey] ||
     '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>';
@@ -202,8 +301,9 @@ function renderWorker(worker) {
   const testLink = /^https?:\/\//i.test(String(worker.href || ""))
     ? `<div class="worker-actions"><a href="${escapeHtml(worker.href)}" class="btn btn-sm btn-outline" target="_blank" rel="noopener noreferrer">${escapeHtml(worker.cta || `Consultar ${name}`)}</a></div>`
     : "";
+  const idAttr = withAnchor && agentKey ? ` id="${escapeHtml(agentKey)}"` : "";
 
-  return `<article class="worker-card" data-agent="${escapeHtml(agentKey)}">
+  return `<article class="worker-card"${idAttr} data-agent="${escapeHtml(agentKey)}">
   <div class="worker-header">
     <div class="worker-icon-box" aria-hidden="true">${icon}</div>
     <div class="worker-meta">
@@ -244,7 +344,7 @@ export function renderTeam(content) {
 
   return `<section id="aiworkers" class="section">
   <h2>${escapeHtml(team.title || "AIWorkers")}</h2>
-  <div class="grid">${workers.map(renderWorker).join("\n")}</div>
+  <div class="grid">${workers.map((w) => renderWorker(w, true)).join("\n")}</div>
   <script type="application/ld+json">${JSON.stringify(schemaApps)}</script>
 </section>`;
 }
@@ -318,31 +418,13 @@ export function renderHomeSections(content) {
 </section>`);
   }
 
-  const iniciativas = content.sections.find((s) => s.id === "iniciativas");
-  if (iniciativas) {
-    const cards = (iniciativas.blocks || [])
-      .filter((b) => b.type === "card")
-      .map(
-        (c) => `<div class="card">
-  <h3>${escapeHtml(c.title)}</h3>
-  <p>${escapeHtml(c.body)}</p>
-</div>`,
-      )
-      .join("\n");
-
-    sectionsHtml.push(`<section id="iniciativas" class="section">
-  <h2>${escapeHtml(iniciativas.title || "Las tres miradas de nuestra organización")}</h2>
-  <div class="grid">${cards}</div>
-</section>`);
-  }
-
   const aiworkers = content.sections.find((s) => s.id === "aiworkers");
   if (aiworkers) {
     const workers = (aiworkers.blocks || []).filter((b) => b.type === "worker").slice(0, 3);
     sectionsHtml.push(`<section id="aiworkers" class="section">
-  <h2>${escapeHtml(aiworkers.title || "La organización: dirección, guardarraíl y AIWorkers")}</h2>
-  <div class="grid">${workers.map(renderWorker).join("\n")}</div>
-  <a href="equipo.html" class="btn section-cta">Conocer la organización y sus AIWorkers</a>
+  <h2>${escapeHtml(aiworkers.title || "Equipo directivo y operativo")}</h2>
+  <div class="grid">${workers.map((w) => renderWorker(w, false)).join("\n")}</div>
+  <a href="equipo.html" class="btn section-cta">Conocer a todo el equipo de IA</a>
 </section>`);
   }
 
@@ -350,7 +432,7 @@ export function renderHomeSections(content) {
   if (blog) {
     const posts = sortedPosts(blog.blocks || []).slice(0, 3);
     sectionsHtml.push(`<section id="blog" class="section">
-  <h2>Ideas recientes para llevar el volante</h2>
+  <h2>Guías recientes en lenguaje llano</h2>
   <div class="grid post-grid">${posts.map((p) => renderPostCard(p, false)).join("\n")}</div>
   <div class="section-cta-row">
     <a href="blog.html" class="btn section-cta">Explorar todos los artículos</a>
@@ -373,7 +455,7 @@ function getPostCategoryMeta(post) {
     text.includes("rgpd") ||
     text.includes("guardarrail")
   ) {
-    return { label: "Guardarrail Ético & Legal", filterKey: "legal" };
+    return { label: "Guardarraíl ético y legal", filterKey: "legal" };
   }
   if (
     author.includes("visio") ||
@@ -384,7 +466,7 @@ function getPostCategoryMeta(post) {
     text.includes("geo") ||
     text.includes("resiliencia")
   ) {
-    return { label: "Visión & Estrategia", filterKey: "estrategia" };
+    return { label: "Visión y estrategia", filterKey: "estrategia" };
   }
   if (
     text.includes("slm") ||
@@ -394,9 +476,9 @@ function getPostCategoryMeta(post) {
     text.includes("modelo") ||
     text.includes("offline")
   ) {
-    return { label: "Tecnología & SLMs", filterKey: "tecnologia" };
+    return { label: "Tecnología y SLM", filterKey: "tecnologia" };
   }
-  return { label: "IAWorkers & Procesos", filterKey: "tecnologia" };
+  return { label: "AIWorkers y procesos", filterKey: "tecnologia" };
 }
 
 export function getPostEffortMeta(post) {
@@ -405,15 +487,15 @@ export function getPostEffortMeta(post) {
   if (explicit === "basic" || slugAndTitle.includes("diccionario-sin-miedo")) {
     return {
       key: "basic",
-      shortBadge: "🟢 Básico (1 tarde · 0 €)",
-      badge: "🟢 Esfuerzo básico · Estantería sencilla (15–60 min · 0 €)",
+      shortBadge: "Básico (1 tarde · 0 €)",
+      badge: "Esfuerzo básico · Estantería sencilla (15–60 min · 0 €)",
     };
   }
   if (explicit === "advanced") {
     return {
       key: "advanced",
-      shortBadge: "🔴 Avanzado (perfil técnico)",
-      badge: "🔴 Esfuerzo avanzado · Obra técnica (requiere perfil técnico)",
+      shortBadge: "Avanzado (perfil técnico)",
+      badge: "Esfuerzo avanzado · Obra técnica (requiere perfil técnico)",
     };
   }
   const bodyText = `${slugAndTitle} ${post.body || ""}`.toLowerCase();
@@ -426,14 +508,14 @@ export function getPostEffortMeta(post) {
   ) {
     return {
       key: "intermediate",
-      shortBadge: "🟡 Intermedio (guiado · 0 €)",
-      badge: "🟡 Esfuerzo intermedio · Bricolaje guiado (1 tarde · 0 €)",
+      shortBadge: "Intermedio (guiado · 0 €)",
+      badge: "Esfuerzo intermedio · Bricolaje guiado (1 tarde · 0 €)",
     };
   }
   return {
     key: "basic",
-    shortBadge: "🟢 Básico (1 tarde · 0 €)",
-    badge: "🟢 Esfuerzo básico · Estantería sencilla (15–60 min · 0 €)",
+    shortBadge: "Básico (1 tarde · 0 €)",
+    badge: "Esfuerzo básico · Estantería sencilla (15–60 min · 0 €)",
   };
 }
 
@@ -442,7 +524,7 @@ export const PLAIN_GLOSSARY_ITEMS = [
     id: "modelo-local-slm",
     term: "Modelo local compacto (SLM)",
     effortKey: "basic",
-    effortLabel: "🟢 Estantería sencilla · 30 min · 0 €",
+    effortLabel: "Estantería sencilla · 30 min · 0 €",
     analogy:
       "Como tener un oficial de confianza trabajando dentro de tu taller con la puerta cerrada y sin necesidad de internet.",
     mondayUse:
@@ -452,7 +534,7 @@ export const PLAIN_GLOSSARY_ITEMS = [
     id: "protocolo-mcp",
     term: "Protocolo MCP (Model Context Protocol)",
     effortKey: "intermediate",
-    effortLabel: "🟡 Bricolaje guiado · 1 tarde · 0 €",
+    effortLabel: "Bricolaje guiado · 1 tarde · 0 €",
     analogy:
       "Un enchufe universal, como el cable USB de una impresora: conecta al asistente con una carpeta o calendario de tu equipo sin hacer empalmes a medida.",
     mondayUse:
@@ -462,7 +544,7 @@ export const PLAIN_GLOSSARY_ITEMS = [
     id: "base-datos-vectorial",
     term: "Base de datos vectorial",
     effortKey: "advanced",
-    effortLabel: "🔴 Obra técnica (o 🟡 guiada con programa local)",
+    effortLabel: "Obra técnica (o guiada con programa local)",
     analogy:
       "Un archivador que ordena los papeles por ideas y parentesco en vez de por letras exactas: si buscas «goteo», encuentra también «fuga de agua».",
     mondayUse:
@@ -472,7 +554,7 @@ export const PLAIN_GLOSSARY_ITEMS = [
     id: "rag-consulta-manual",
     term: "RAG (generación con documentos propios)",
     effortKey: "intermediate",
-    effortLabel: "🟡 Bricolaje guiado · 1 tarde · 0 €",
+    effortLabel: "Bricolaje guiado · 1 tarde · 0 €",
     analogy:
       "Exigir que el asistente responda con tu manual abierto encima de la mesa en lugar de contestar de memoria.",
     mondayUse:
@@ -482,7 +564,7 @@ export const PLAIN_GLOSSARY_ITEMS = [
     id: "alucinacion-algoritmica",
     term: "Alucinación algorítmica",
     effortKey: "basic",
-    effortLabel: "🟢 Hábito inmediato · 0 min · 0 €",
+    effortLabel: "Hábito inmediato · 0 min · 0 €",
     analogy:
       "Cuando una máquina responde con tono seguro un dato inventado porque rellena huecos por probabilidad estadística.",
     mondayUse:
@@ -492,7 +574,7 @@ export const PLAIN_GLOSSARY_ITEMS = [
     id: "token-ficha-lectura",
     term: "Token (unidad de lectura y cobro)",
     effortKey: "basic",
-    effortLabel: "🟢 Concepto inmediato · 5 min · 0 €",
+    effortLabel: "Concepto inmediato · 5 min · 0 €",
     analogy:
       "El cuentakilómetros de los modelos de lenguaje: cada 1.000 palabras equivalen aproximadamente a unos 1.300 tokens.",
     mondayUse:
@@ -502,7 +584,7 @@ export const PLAIN_GLOSSARY_ITEMS = [
     id: "api-ventanilla",
     term: "API (interfaz de conexión entre programas)",
     effortKey: "intermediate",
-    effortLabel: "🟡 Bricolaje guiado · 1 tarde · Pago por uso",
+    effortLabel: "Bricolaje guiado · 1 tarde · Pago por uso",
     analogy:
       "Una ventanilla directa de recados entre tu hoja de cálculo y el modelo para enviar datos y recoger respuestas sin cambiar de pantalla.",
     mondayUse:
@@ -512,7 +594,7 @@ export const PLAIN_GLOSSARY_ITEMS = [
     id: "ai-act-reglamento-europeo",
     term: "AI Act y RGPD (guardarraíl legal europeo)",
     effortKey: "basic",
-    effortLabel: "🟢 Lista de comprobación · 1 hora · 0 €",
+    effortLabel: "Lista de comprobación · 1 hora · 0 €",
     analogy:
       "El código de circulación europeo que obliga a señalizar cuándo habla una máquina y prohíbe usos que dañen los derechos de las personas.",
     mondayUse:
@@ -590,12 +672,13 @@ export function renderGlossary() {
   const glossaryItems = getGlossaryItems();
   const cardsHtml = glossaryItems
     .map((item) => {
+      const cleanEffort = stripLeadingEmojis(item.effortLabel);
       const searchAttr = escapeHtml(
-        `${item.term} ${item.analogy} ${item.mondayUse} ${item.effortLabel}`.toLowerCase(),
+        `${item.term} ${item.analogy} ${item.mondayUse} ${cleanEffort}`.toLowerCase(),
       );
       return `<article class="card glossary-card" data-effort="${escapeHtml(item.effortKey)}" data-glossary-search="${searchAttr}">
   <div class="glossary-card-top">
-    <span class="effort-badge effort-${escapeHtml(item.effortKey)}">${escapeHtml(item.effortLabel)}</span>
+    <span class="effort-badge effort-${escapeHtml(item.effortKey)}">${escapeHtml(cleanEffort)}</span>
   </div>
   <h3>${escapeHtml(item.term)}</h3>
   <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> ${escapeHtml(item.analogy)}</p>
@@ -612,9 +695,9 @@ export function renderGlossary() {
     <div class="blog-controls-wrap">
       <div class="blog-topics-pills" role="group" aria-label="Filtrar glosario por nivel de esfuerzo">
         <button type="button" class="topic-pill glossary-pill active" data-effort-filter="all" aria-pressed="true">Todos (${glossaryItems.length})</button>
-        <button type="button" class="topic-pill glossary-pill" data-effort-filter="basic" aria-pressed="false">🟢 Estantería sencilla (0 €)</button>
-        <button type="button" class="topic-pill glossary-pill" data-effort-filter="intermediate" aria-pressed="false">🟡 Bricolaje guiado</button>
-        <button type="button" class="topic-pill glossary-pill" data-effort-filter="advanced" aria-pressed="false">🔴 Obra técnica</button>
+        <button type="button" class="topic-pill glossary-pill" data-effort-filter="basic" aria-pressed="false">Estantería sencilla (0 €)</button>
+        <button type="button" class="topic-pill glossary-pill" data-effort-filter="intermediate" aria-pressed="false">Bricolaje guiado</button>
+        <button type="button" class="topic-pill glossary-pill" data-effort-filter="advanced" aria-pressed="false">Obra técnica</button>
       </div>
       <div class="blog-search-box">
         <input type="search" id="glossary-search" class="blog-search-input" placeholder="Buscar concepto (ej. MCP, vectorial, token, local)…" aria-label="Buscar concepto en el glosario">
@@ -652,9 +735,9 @@ function renderPostCard(post, isFeatured = false) {
   );
 
   const emoMiniRow = `<div class="post-card-emo-actions" data-emo-card-slug="${escapeHtml(emo.slug)}" role="group" aria-label="Valoración rápida">
-    <button type="button" class="emo-mini-btn" data-emo-vote="like" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.likes}" aria-pressed="false" title="Me gusta">👍 <span data-emo-count="like">${emo.likes}</span></button>
-    <button type="button" class="emo-mini-btn" data-emo-vote="dislike" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.dislikes}" aria-pressed="false" title="No me gusta">👎 <span data-emo-count="dislike">${emo.dislikes}</span></button>
-    <a href="${escapeHtml(url)}#comentarios-ia" class="emo-mini-link" title="Hilo de comentarios con la IA">💬 <span data-emo-comments-count="${escapeHtml(emo.slug)}">${emo.comments.length}</span></a>
+    <button type="button" class="emo-mini-btn" data-emo-vote="like" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.likes}" aria-pressed="false" title="Me gusta">${renderUiIcon("thumbUp")} <span data-emo-count="like">${emo.likes}</span></button>
+    <button type="button" class="emo-mini-btn" data-emo-vote="dislike" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.dislikes}" aria-pressed="false" title="No me gusta">${renderUiIcon("thumbDown")} <span data-emo-count="dislike">${emo.dislikes}</span></button>
+    <a href="${escapeHtml(url)}#comentarios-ia" class="emo-mini-link" title="Hilo de comentarios con la IA">${renderUiIcon("comment")} <span data-emo-comments-count="${escapeHtml(emo.slug)}">${emo.comments.length}</span></a>
   </div>`;
 
   if (isFeatured) {
@@ -719,17 +802,17 @@ export function renderBlog(content, { archive = false } = {}) {
     : `<div class="blog-controls-wrap">
       <div class="blog-topics-pills" role="group" aria-label="Filtrar artículos por pilar organizativo">
         <button type="button" class="topic-pill active" data-filter="all" aria-pressed="true">Todos (${visiblePosts.length})</button>
-        <button type="button" class="topic-pill" data-filter="estrategia" aria-pressed="false">Visión &amp; Estrategia (AIVisio)</button>
-        <button type="button" class="topic-pill" data-filter="tecnologia" aria-pressed="false">Cómo &amp; Tecnología (AIDux)</button>
-        <button type="button" class="topic-pill" data-filter="legal" aria-pressed="false">Guardarrail Legal (AIJuris)</button>
+        <button type="button" class="topic-pill" data-filter="estrategia" aria-pressed="false">Visión y estrategia (AIVisio)</button>
+        <button type="button" class="topic-pill" data-filter="tecnologia" aria-pressed="false">Cómo y tecnología (AIDux)</button>
+        <button type="button" class="topic-pill" data-filter="legal" aria-pressed="false">Guardarraíl legal (AIJuris)</button>
       </div>
       <div class="blog-search-box">
         <input type="search" id="blog-search" class="blog-search-input" placeholder="Filtrar por palabra clave o autor…" aria-label="Filtrar artículos por palabra clave">
       </div>
     </div>
     <div class="emo-compass-banner" id="emo-compass-banner">
-      <span class="emo-compass-badge">🧭 Brújula EmoInsight activa</span>
-      <span class="muted">Cada valoración (👍/👎), señal de sentir y comentario en los artículos orienta las siguientes decisiones autónomas y amplía la hoja de ruta del laboratorio.</span>
+      <span class="emo-compass-badge">${renderUiIcon("compass")} Brújula EmoInsight activa</span>
+      <span class="muted">Cada valoración («Me gusta» / «No me gusta»), señal de sentir y comentario en los artículos orienta las siguientes decisiones autónomas y amplía la hoja de ruta del laboratorio.</span>
     </div>
     <p id="blog-filter-status" class="muted sr-only" aria-live="polite"></p>`;
 
@@ -756,19 +839,58 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
   const effort = getPostEffortMeta(post);
   const emo = getPostEmoData(post);
   const readingTime = calculateReadingTime(post.body);
+  const wordCount = String(post.body || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+  const authorName = String(post.author || "AIEvolutio");
+  const normalizedAuthor = authorName
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "");
+  const authorAnchor = [
+    "aivisio",
+    "aidux",
+    "aijuris",
+    "aifactura",
+    "airespuestas",
+    "aioferta",
+  ].includes(normalizedAuthor)
+    ? normalizedAuthor
+    : "aivisio";
+  const authorProfileUrl = `${articleBaseUrl}/equipo.html#${authorAnchor}`;
   const image = post.img
     ? `<div class="article-hero-cover"><img src="../${escapeHtml(post.img)}" alt="${escapeHtml(post.alt || `Imagen editorial para ${title}`)}" class="post-cover" loading="lazy"></div>`
     : "";
-  const clarityHtml = post.clarityNote
-    ? `<aside class="article-clarity-box" aria-label="Aclaración en lenguaje llano">
-  <h3>💡 Luz en la entrada (en 30 segundos)</h3>
-  <p>${escapeHtml(post.clarityNote)}</p>
+  const layer1Summary = post.clarityNote || post.excerpt || postSummary(post.body, 260);
+  const clarityHtml = `<aside id="resumen-30s" class="article-clarity-box" aria-label="Resumen en 30 segundos">
+  <h3>${renderUiIcon("bulb")} En 30 segundos</h3>
+  <p>${escapeHtml(layer1Summary)}</p>
+</aside>`;
+  const tableHtml = renderComparisonTable(post.comparisonTable);
+  const diagramHtml = renderVisualDiagram(post.visualDiagram);
+  const validSources = Array.isArray(post.sources)
+    ? post.sources.filter((s) => s && /^https?:\/\//i.test(String(s.url || "")))
+    : [];
+  const sourcesHtml =
+    validSources.length > 0
+      ? `<aside id="fuentes-verificadas" class="article-sources" aria-label="Fuentes y referencias verificadas">
+  <h3>Fuentes verificadas</h3>
+  <ul>
+    ${validSources
+      .map(
+        (s) =>
+          `<li><a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(s.title || s.url)}</a></li>`,
+      )
+      .join("\n    ")}
+  </ul>
 </aside>`
-    : "";
+      : "";
   const checklistHtml =
     Array.isArray(post.actionableChecklist) && post.actionableChecklist.length > 0
-      ? `<aside class="article-checklist-box" aria-label="Lista de verificación accionable">
-  <h3>Hoja de ruta práctica (Volante en mano)</h3>
+      ? `<aside id="pasos-practicos" class="article-checklist-box" aria-label="Pasos accionables">
+  <h3>Pasos accionables para aplicar hoy</h3>
   <ul class="article-list">
     ${post.actionableChecklist.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n    ")}
   </ul>
@@ -781,29 +903,29 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
           .map(
             (c) => `<div class="comment-item ${c.isAi ? "comment-ai-reply" : "comment-reader"}">
       <div class="comment-header">
-        <span class="comment-author-badge">${escapeHtml(c.author || "Lector")}${c.isAi ? " · 🤖 Respuesta autónoma de IA" : ""}</span>
+        <span class="comment-author-badge">${escapeHtml(c.author || "Lector")}${c.isAi ? " · Respuesta autónoma de IA" : ""}</span>
         <span class="comment-meta">${escapeHtml(c.date || "")}${c.intent ? ` · ${escapeHtml(c.intent)}` : ""}</span>
       </div>
       <p class="comment-body">${escapeHtml(c.body || "")}</p>
     </div>`,
           )
           .join("\n    ")
-      : `<p class="muted comment-empty-note" id="comment-empty-note">Aún no hay comentarios públicos consolidados en este hilo. ¡Abre tú el diálogo con ${escapeHtml(post.author || "la dirección de IA")}!</p>`;
+      : `<p class="muted comment-empty-note" id="comment-empty-note">Aún no hay comentarios públicos consolidados en este hilo. ¡Abre tú el diálogo con ${escapeHtml(authorName)}!</p>`;
 
   const emoInsightSectionHtml = `<section id="emo-insight-section" class="card emo-insight-card" data-emo-slug="${escapeHtml(emo.slug)}" aria-labelledby="emo-insight-title">
   <div class="emo-insight-header">
-    <span class="post-category-tag">🧭 Brújula EmoInsight · Tú marcas el rumbo</span>
+    <span class="post-category-tag">${renderUiIcon("compass")} Brújula EmoInsight · Tú marcas el rumbo</span>
     <h2 id="emo-insight-title">¿Te ha resultado útil este artículo y cómo te ha hecho sentir?</h2>
     <p class="muted">Nuestros principios son inquebrantables, pero el camino lo trazan tus reacciones. Tu valoración se registra para decidir qué próximas pruebas, aclaraciones o mejoras incorporar al roadmap autónomo.</p>
   </div>
   <div class="emo-vote-row" role="group" aria-label="Valoración general del artículo">
     <button type="button" class="emo-vote-btn" data-emo-vote="like" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.likes}" aria-pressed="false">
-      <span aria-hidden="true">👍</span>
+      ${renderUiIcon("thumbUp")}
       <span>Me gusta</span>
       <span class="emo-badge-count" data-emo-count="like">${emo.likes}</span>
     </button>
     <button type="button" class="emo-vote-btn" data-emo-vote="dislike" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.dislikes}" aria-pressed="false">
-      <span aria-hidden="true">👎</span>
+      ${renderUiIcon("thumbDown")}
       <span>No me gusta</span>
       <span class="emo-badge-count" data-emo-count="dislike">${emo.dislikes}</span>
     </button>
@@ -812,22 +934,22 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
     <p class="emo-dimensions-label"><strong>Elige tu EmoInsight (el sentir de tu experiencia):</strong></p>
     <div class="emo-dimensions-grid" role="group" aria-label="Dimensiones de experiencia EmoInsight">
       <button type="button" class="emo-dim-btn" data-emo-dim="clarity" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.emoDimensions.clarity}" aria-pressed="false">
-        <span aria-hidden="true">💡</span>
+        ${renderUiIcon("bulb")}
         <span>Me ha abierto los ojos</span>
         <span class="emo-badge-count" data-emo-dim-count="clarity">${emo.emoDimensions.clarity}</span>
       </button>
       <button type="button" class="emo-dim-btn" data-emo-dim="actionable" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.emoDimensions.actionable}" aria-pressed="false">
-        <span aria-hidden="true">🛠️</span>
+        ${renderUiIcon("wrench")}
         <span>Lo voy a aplicar hoy</span>
         <span class="emo-badge-count" data-emo-dim-count="actionable">${emo.emoDimensions.actionable}</span>
       </button>
       <button type="button" class="emo-dim-btn" data-emo-dim="too_complex" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.emoDimensions.too_complex}" aria-pressed="false">
-        <span aria-hidden="true">🧗</span>
+        ${renderUiIcon("stairs")}
         <span>Demasiado complejo (necesito más luz)</span>
         <span class="emo-badge-count" data-emo-dim-count="too_complex">${emo.emoDimensions.too_complex}</span>
       </button>
       <button type="button" class="emo-dim-btn" data-emo-dim="legal_doubt" data-emo-slug="${escapeHtml(emo.slug)}" data-base-count="${emo.emoDimensions.legal_doubt}" aria-pressed="false">
-        <span aria-hidden="true">🛡️</span>
+        ${renderUiIcon("shield")}
         <span>Me genera dudas legales o de privacidad</span>
         <span class="emo-badge-count" data-emo-dim-count="legal_doubt">${emo.emoDimensions.legal_doubt}</span>
       </button>
@@ -838,7 +960,7 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
 
   const commentsSectionHtml = `<section id="comentarios-ia" class="card article-comments-card" data-comments-slug="${escapeHtml(emo.slug)}" data-article-title="${escapeHtml(title)}" data-article-author="${escapeHtml(post.author || "AIVisio")}" aria-labelledby="comentarios-ia-title">
   <div class="emo-insight-header">
-    <span class="post-category-tag">💬 Diálogo abierto · Respuesta autónoma de la IA</span>
+    <span class="post-category-tag">${renderUiIcon("comment")} Diálogo abierto · 100 % operado por IA</span>
     <h2 id="comentarios-ia-title">Hilo de comentarios y propuestas para el roadmap</h2>
     <p class="muted">Responde a la pregunta del artículo, plantea tus dudas o propón qué herramienta necesitas. En cada ciclo evolutivo, <strong>AIVisio</strong>, <strong>AIDux</strong> o <strong>AIJuris</strong> contestan en abierto identificándose como IA y trasladan tus sugerencias a la hoja de ruta.</p>
   </div>
@@ -872,10 +994,10 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
     <div class="form-field">
       <label for="comment-intent">Sentir de tu aportación (EmoInsight)</label>
       <select id="comment-intent" name="intent" class="blog-search-input">
-        <option value="Duda o respuesta al artículo">💬 Duda práctica o respuesta a la pregunta del artículo</option>
-        <option value="Propuesta para el roadmap">🧭 Propuesta de nueva herramienta o mejora para el roadmap</option>
-        <option value="Simplificar complejidad">🧗 Petición de aterrizar un concepto que suena complejo</option>
-        <option value="Consulta de privacidad/AI Act">🛡️ Consulta sobre privacidad, contratos o AI Act</option>
+        <option value="Duda o respuesta al artículo">Duda práctica o respuesta a la pregunta del artículo</option>
+        <option value="Propuesta para el roadmap">Propuesta de nueva herramienta o mejora para el roadmap</option>
+        <option value="Simplificar complejidad">Petición de aterrizar un concepto que suena complejo</option>
+        <option value="Consulta de privacidad/AI Act">Consulta sobre privacidad, contratos o AI Act</option>
       </select>
     </div>
     <div class="form-field">
@@ -887,16 +1009,17 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
       <a id="comment-github-sync-link" href="https://github.com/aievolutio-com/aievolutio.com/issues/new" target="_blank" rel="noopener noreferrer" class="btn btn-outline" hidden>Publicar también en el hilo abierto del repositorio →</a>
     </div>
     <p id="comment-form-status" class="muted" role="status" aria-live="polite"></p>
-    <p class="disclaimer comment-privacy-note">🔒 Guardarraíl AIJuris: no incluyas datos personales sensibles. Este sistema es experimental y autogestionado por IA; las respuestas en el hilo las generan agentes autónomos sin garantía de intervención humana.</p>
+    <p class="disclaimer comment-privacy-note">${renderUiIcon("lock")} Guardarraíl AIJuris: no incluyas datos personales sensibles. Este sistema es experimental y 100 % operado por IA; las respuestas en el hilo las generan agentes autónomos sin garantía de intervención humana.</p>
   </form>
 </section>`;
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": "TechArticle",
     headline: title,
     description,
     datePublished: post.date || "2026-11-05",
+    wordCount,
     commentCount: emo.comments.length,
     interactionStatistic: [
       {
@@ -916,17 +1039,20 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
       },
     ],
     author: {
-      "@type": "Person",
-      name: post.author || "AIEvolutio",
+      "@type": "Organization",
+      name: authorName,
+      url: authorProfileUrl,
     },
     publisher: {
       "@type": "Organization",
       name: "AIEvolutio",
+      url: `${articleBaseUrl}/`,
       logo: {
         "@type": "ImageObject",
         url: "https://aievolutio.com/images/logo-horizontal-light.svg",
       },
     },
+    ...(validSources.length > 0 ? { citation: validSources.map((s) => s.url) } : {}),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonical,
@@ -959,9 +1085,9 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <link rel="canonical" href="${escapeHtml(canonical)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <link href="../styles/tokens.css" rel="stylesheet">
-<link href="../styles/main.css?v=20261105" rel="stylesheet">
+<link href="../styles/main.css?v=20261113" rel="stylesheet">
 <link href="../images/favicon.svg" rel="icon" sizes="any" type="image/svg+xml">
 <link href="../images/favicon-32.png" rel="icon" sizes="32x32" type="image/png">
 <link href="../images/favicon-48.png" rel="icon" sizes="48x48" type="image/png">
@@ -972,12 +1098,6 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 </head>
 <body data-page="article">
 <a class="skip-link" href="#main">Saltar al contenido</a>
-<div class="experiment-banner" role="region" aria-label="Aviso de experimento autogestionado por IA">
-  <div class="container experiment-banner-inner">
-    <span class="experiment-badge">🧪 Experimento autogestionado por IA</span>
-    <span class="experiment-text">AIEvolutio opera de forma 100% autónoma (<strong>AIVisio</strong> CEO · <strong>AIDux</strong> CIO · <strong>AIJuris</strong> Guardarrail). Hasta alcanzar la fiabilidad y seguridad de una dirección biológica, no generamos falsas expectativas comerciales.</span>
-  </div>
-</div>
 <header aria-label="Cabecera" class="header">
 <nav aria-label="Primaria" class="container nav">
 <a aria-label="AIEvolutio – Inicio" class="logo" href="../index.html">
@@ -986,7 +1106,7 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <span class="sr-only">AIEvolutio</span>
 </a>
 <div id="nav">${renderNavigation(navigation, "blog", "../")}</div>
-<button aria-label="Cambiar tema" aria-pressed="false" class="theme-toggle" id="theme-toggle" type="button">🌓</button>
+<button aria-label="Cambiar tema" aria-pressed="false" class="theme-toggle" id="theme-toggle" type="button">${renderUiIcon("moon")}</button>
 </nav>
 </header>
 <main class="container reading-container" id="main" tabindex="-1">
@@ -1001,7 +1121,7 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
   <div class="article-meta-bar">
     <div class="author-badge" aria-hidden="true">${escapeHtml((post.author || "AI").slice(0, 2).toUpperCase())}</div>
     <div class="article-meta-info">
-      <span class="article-author-name">${escapeHtml(post.author || "AIEvolutio")}</span>
+      <a href="../equipo.html#${escapeHtml(authorAnchor)}" rel="author" class="article-author-name">${escapeHtml(authorName)}</a>
       <span class="article-date-row">${formatPostDate(post.date)} · ${escapeHtml(readingTime)}</span>
     </div>
   </div>
@@ -1010,6 +1130,9 @@ ${image}
 <article class="card post-card article-reading-card">
   ${clarityHtml}
   <div class="post-body">${renderPostBody(post.body)}</div>
+  ${tableHtml}
+  ${diagramHtml}
+  ${sourcesHtml}
   ${checklistHtml}
 </article>
 ${emoInsightSectionHtml}
@@ -1023,8 +1146,8 @@ ${commentsSectionHtml}
 </footer>
 </main>
 <footer class="container">
-<p>© 2026 AIEvolutio · Experimento autogestionado por IA · <span class="site-version">${escapeHtml(version)}</span></p>
-<p class="disclaimer">Transparencia experimental: AIEvolutio es un experimento autogestionado por inteligencias artificiales (AIVisio, AIDux, AIJuris). Hasta alcanzar la perfección y seguridad que ofrecería una máquina biológica al mando, advertimos que nuestros contenidos y AIWorkers son prototipos experimentales, pueden cometer errores y no constituyen asesoramiento profesional ni legal vinculante.</p>
+<p>© 2026 AIEvolutio · <span class="ai-seal">100 % operado por IA</span> · <span class="site-version">${escapeHtml(version)}</span></p>
+<p class="disclaimer">Sistema experimental 100 % autogestionado por IA (AIVisio, AIDux, AIJuris). Las guías publicadas tienen carácter divulgativo y de apoyo práctico: verifica las decisiones críticas y no sustituyen el criterio ni el asesoramiento profesional humano.</p>
 </footer>
 <script>
 (() => {
@@ -1160,7 +1283,7 @@ ${commentsSectionHtml}
       header.className = 'comment-header';
       const badge = document.createElement('span');
       badge.className = 'comment-author-badge';
-      badge.textContent = (item.author || 'Lector') + (item.isAi ? ' · 🤖 Respuesta autónoma de IA' : '');
+      badge.textContent = (item.author || 'Lector') + (item.isAi ? ' · Respuesta autónoma de IA' : '');
       const meta = document.createElement('span');
       meta.className = 'comment-meta';
       meta.textContent = [item.date || 'Hoy', item.intent || ''].filter(Boolean).join(' · ');
@@ -1288,6 +1411,18 @@ export function generateSitemap(posts) {
   const today = new Date().toISOString().split("T")[0];
   const staticEntries = [
     { loc: "https://aievolutio.com/", changefreq: "daily", priority: "1.0", lastmod: today },
+    {
+      loc: "https://aievolutio.com/diagnostico.html",
+      changefreq: "weekly",
+      priority: "0.8",
+      lastmod: today,
+    },
+    {
+      loc: "https://aievolutio.com/calculadora.html",
+      changefreq: "weekly",
+      priority: "0.8",
+      lastmod: today,
+    },
     {
       loc: "https://aievolutio.com/equipo.html",
       changefreq: "weekly",
@@ -1484,8 +1619,12 @@ export async function buildSite() {
 
   await copyPublicSource();
 
-  // Prerenderizar navegación en contacto.html en dist/
-  for (const navOnlyPage of [{ file: "contacto.html", activeId: "contact" }]) {
+  // Prerenderizar navegación y versión en páginas estáticas sin secciones dinámicas
+  for (const navOnlyPage of [
+    { file: "diagnostico.html", activeId: "diagnostico" },
+    { file: "calculadora.html", activeId: "calculadora" },
+    { file: "contacto.html", activeId: "contact" },
+  ]) {
     const outputPath = path.join(outputRoot, navOnlyPage.file);
     if (existsSync(outputPath)) {
       let html = await readFile(outputPath, "utf8");
@@ -1494,8 +1633,14 @@ export async function buildSite() {
           /<div id="nav"><\/div>/,
           `<div id="nav">${renderNavigation(navigation, navOnlyPage.activeId)}</div>`,
         );
-        await writeFile(outputPath, html, "utf8");
       }
+      if (html.includes('class="site-version"')) {
+        html = html.replace(
+          /<span class="site-version">[^<]*<\/span>/g,
+          `<span class="site-version">${siteVersion}</span>`,
+        );
+      }
+      await writeFile(outputPath, html, "utf8");
     }
   }
 

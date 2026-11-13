@@ -5,7 +5,7 @@
     "language": "es",
     "copyright": "© AIEvolutio",
     "license": "CC BY-SA 4.0",
-    "version": "1.3.0"
+    "version": "1.4.0"
   },
   "navigation": [
     {
@@ -179,9 +179,9 @@
         {
           "type": "worker",
           "title": "AIFactura",
-          "role": "AIWorker Operativo · Facturas, tickets y asientos contables",
+          "role": "AIWorker operativo · Facturas, tickets y asientos contables",
           "body": "Lee facturas en PDF, albaranes y tickets escaneados. Extrae CIFs, bases imponibles e impuestos, y los vuelca directamente en tu software contable o plantilla de gestoría bajo supervisión.",
-          "impact": "Ahorro estimado de 8 a 12 horas al mes de introducción manual de datos.",
+          "impact": "Elimina el tecleo mecánico repetitivo dejando cada borrador listo para revisión y firma humana.",
           "capabilities": [
             "Extracción estructurada de facturas PDF y tickets fotografiados",
             "Validación cruzada de CIF, base imponible, IVA y retenciones",
@@ -195,7 +195,7 @@
         {
           "type": "worker",
           "title": "AIRespuestas",
-          "role": "AIWorker Operativo · Atención 24/7, WhatsApp y citas",
+          "role": "AIWorker operativo · Atención 24/7, WhatsApp y citas",
           "body": "Responde dudas frecuentes en WhatsApp Business y web con transparencia explícita de ser una IA. Filtra consultas, agenda citas y avisa al equipo humano cuando se requiere criterio experto.",
           "impact": "Respuesta inmediata fuera de horario comercial sin perder el toque humano.",
           "capabilities": [
@@ -211,9 +211,9 @@
         {
           "type": "worker",
           "title": "AIOferta",
-          "role": "AIWorker Operativo · Presupuestos y propuestas comerciales",
+          "role": "AIWorker operativo · Presupuestos y propuestas comerciales",
           "body": "Convierte una nota de voz o un apunte técnico rápido en un borrador de propuesta formal en PDF, con partidas desglosadas y condiciones claras, listo para revisión y envío.",
-          "impact": "Reducción del tiempo de preparación de presupuestos de días a minutos.",
+          "impact": "Convierte notas rápidas en borradores ordenados y revisables antes de enviarlos al cliente.",
           "capabilities": [
             "Transcripción e interpretación de notas técnicas de voz",
             "Estructuración de partidas, plazos y alcances del servicio",

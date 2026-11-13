@@ -1,6 +1,8 @@
 [
   { "id": "home", "label": "Inicio", "href": "index.html" },
-  { "id": "blog", "label": "Blog", "href": "blog.html" },
+  { "id": "diagnostico", "label": "Diagnóstico", "href": "diagnostico.html" },
+  { "id": "calculadora", "label": "Calculadora", "href": "calculadora.html" },
+  { "id": "blog", "label": "Guías", "href": "blog.html" },
   { "id": "aiworkers", "label": "Equipo", "href": "equipo.html" },
   { "id": "contact", "label": "Contacto", "href": "contacto.html" }
 ]

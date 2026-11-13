@@ -7,7 +7,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const checkerPath = fileURLToPath(new URL("./self-heal-check.mjs", import.meta.url));
-const criticalFiles = ["index.html", "blog.html", "equipo.html", "contacto.html", "archivo.html"];
+const criticalFiles = [
+  "index.html",
+  "diagnostico.html",
+  "calculadora.html",
+  "blog.html",
+  "equipo.html",
+  "contacto.html",
+  "archivo.html",
+];
 
 function createRepository() {
   const root = mkdtempSync(path.join(os.tmpdir(), "aievolutio-self-heal-"));

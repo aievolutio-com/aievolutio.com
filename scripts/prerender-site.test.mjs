@@ -119,9 +119,12 @@ test("deployment output contains every profile and a static page for every artic
     await readFile(path.join(process.cwd(), "content/content.es.json"), "utf8"),
   );
   const indexHtml = await readFile(path.join(process.cwd(), "dist/index.html"), "utf8");
+  const diagHtml = await readFile(path.join(process.cwd(), "dist/diagnostico.html"), "utf8");
+  const calcHtml = await readFile(path.join(process.cwd(), "dist/calculadora.html"), "utf8");
   const teamHtml = await readFile(path.join(process.cwd(), "dist/equipo.html"), "utf8");
   const blogHtml = await readFile(path.join(process.cwd(), "dist/blog.html"), "utf8");
   const archiveHtml = await readFile(path.join(process.cwd(), "dist/archivo.html"), "utf8");
+  const sitemapXml = await readFile(path.join(process.cwd(), "dist/sitemap.xml"), "utf8");
 
   assert.ok(
     indexHtml.includes('<section id="vision"'),
@@ -131,10 +134,17 @@ test("deployment output contains every profile and a static page for every artic
     indexHtml.includes("Una exploración fractal"),
     "index.html includes fractal exploration",
   );
-  assert.ok(
-    indexHtml.includes('<section id="iniciativas"'),
-    "index.html includes static iniciativas section",
+  assert.doesNotMatch(
+    indexHtml,
+    /<section id="iniciativas"/,
+    "index.html limits Home strictly to 4 clean blocks (no #iniciativas)",
   );
+  assert.doesNotMatch(
+    indexHtml,
+    /class="experiment-banner"|volante-diagnostic/,
+    "index.html removes defensive experiment-banner and decoupled utilities",
+  );
+  assert.match(indexHtml, /class="ai-seal">100 % operado por IA</);
   assert.ok(
     indexHtml.includes('<section id="aiworkers"'),
     "index.html includes static aiworkers section",
@@ -144,6 +154,10 @@ test("deployment output contains every profile and a static page for every artic
     indexHtml.includes(`<span class="site-version">v${source.meta.version}</span>`),
     `index.html includes site-version v${source.meta.version}`,
   );
+  assert.match(diagHtml, /id="maturity-diagnostic"/);
+  assert.match(calcHtml, /id="roi-calculator"/);
+  assert.match(sitemapXml, /https:\/\/aievolutio\.com\/diagnostico\.html/);
+  assert.match(sitemapXml, /https:\/\/aievolutio\.com\/calculadora\.html/);
   const posts = source.sections
     .find((section) => section.id === "blog")
     .blocks.filter((block) => block.type === "post");
@@ -193,15 +207,26 @@ test("deployment output contains every profile and a static page for every artic
 
   const outputRoot = path.resolve(process.cwd(), "dist");
   const htmlFiles = [
-    ...["index.html", "equipo.html", "blog.html", "archivo.html", "contacto.html"].map((file) =>
-      path.join(outputRoot, file),
-    ),
+    ...[
+      "index.html",
+      "diagnostico.html",
+      "calculadora.html",
+      "equipo.html",
+      "blog.html",
+      "archivo.html",
+      "contacto.html",
+    ].map((file) => path.join(outputRoot, file)),
     ...(await readdir(path.join(outputRoot, "articulos")))
       .filter((file) => file.endsWith(".html"))
       .map((file) => path.join(outputRoot, "articulos", file)),
   ];
   for (const htmlFile of htmlFiles) {
     const html = await readFile(htmlFile, "utf8");
+    assert.doesNotMatch(
+      html,
+      /[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u,
+      `${path.basename(htmlFile)} contains zero structural UI emojis`,
+    );
     for (const [, reference] of html.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)) {
       if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(reference)) continue;
       const [pathname, fragment] = reference.split("#", 2);
@@ -273,7 +298,15 @@ test("adversarial anti-duplication guard blocks duplicate slugs and similar titl
 test("rendered page summary lists each dynamic page once", () => {
   assert.deepEqual(
     getRenderedPageList(["index.html", "equipo.html", "blog.html", "archivo.html"]),
-    ["index.html", "contacto.html", "equipo.html", "blog.html", "archivo.html"],
+    [
+      "index.html",
+      "diagnostico.html",
+      "calculadora.html",
+      "contacto.html",
+      "equipo.html",
+      "blog.html",
+      "archivo.html",
+    ],
   );
 });
 
@@ -320,5 +353,39 @@ test("v1.3.0 renders EmoInsight thermometer, ratings, comment threads, and roadm
   assert.ok(Array.isArray(emoData.comments));
 
   assert.ok(getGlossaryItems().length >= 10);
-  assert.ok(Array.isArray(ROADMAP_TECH_QUEUE) && ROADMAP_TECH_QUEUE.length >= 4);
+  assert.ok(Array.isArray(ROADMAP_TECH_QUEUE) && ROADMAP_TECH_QUEUE.length >= 6);
+});
+
+test("v1.4.0 renders 3-layer articles, Markdown tables, verified citations, TechArticle JSON-LD and rel=author links", () => {
+  const h0Post = {
+    type: "post",
+    title: "Guía práctica de prueba sin cifras inventadas",
+    slug: "guia-practica-prueba-sin-cifras",
+    date: "2026-11-13",
+    author: "AIDux",
+    clarityNote: "En 30 segundos: equivale a montar una estantería sencilla en media hora.",
+    body: "Párrafo inicial.\n\n| Opción | Esfuerzo |\n| :--- | :--- |\n| Local | Básico |\n\nCierre accionable.",
+    visualDiagram: {
+      title: "Flujo sencillo",
+      nodes: [
+        { title: "1. Carpeta", note: "Ordenada" },
+        { title: "2. Modelo", note: "Local" },
+        { title: "3. Revisión", note: "Humana" },
+      ],
+    },
+    sources: [{ title: "Referencia oficial", url: "https://eur-lex.europa.eu/" }],
+    actionableChecklist: ["Paso 1", "Paso 2", "Paso 3"],
+  };
+
+  const html = renderArticle(h0Post, navigation, "v1.4.0");
+  assert.match(html, /id="resumen-30s"/);
+  assert.match(html, /<table class="article-table">/);
+  assert.match(html, /<svg class="visual-diagram-svg"/);
+  assert.match(html, /id="fuentes-verificadas"/);
+  assert.match(html, /href="https:\/\/eur-lex\.europa\.eu\/"/);
+  assert.match(html, /id="pasos-practicos"/);
+  assert.match(html, /href="\.\.\/equipo\.html#aidux" rel="author"/);
+  assert.match(html, /"@type":"TechArticle"/);
+  assert.match(html, /"citation":\["https:\/\/eur-lex\.europa\.eu\/"\]/);
+  assert.doesNotMatch(html, /Inter:wght|experiment-banner|volante/i);
 });
