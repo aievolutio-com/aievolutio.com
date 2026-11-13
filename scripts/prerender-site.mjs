@@ -285,23 +285,26 @@ const agentIcons = {
     '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>',
 };
 
-function renderWorker(worker, withAnchor = false) {
+function renderWorker(worker, withAnchor = false, compact = false) {
   const name = worker.name || worker.title || "AIWorker";
   const agentKey = String(name).toLowerCase();
   const icon =
     agentIcons[agentKey] ||
     '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>';
-  const impact = worker.impact
-    ? `<div class="worker-impact"><span class="worker-impact-label">Impacto para tu pyme:</span> <strong class="worker-impact-val">${escapeHtml(worker.impact)}</strong></div>`
-    : "";
+  const impact =
+    !compact && worker.impact
+      ? `<div class="worker-impact"><span class="worker-impact-label">Impacto para tu pyme:</span> <strong class="worker-impact-val">${escapeHtml(worker.impact)}</strong></div>`
+      : "";
   const capabilities =
-    Array.isArray(worker.capabilities) && worker.capabilities.length
+    !compact && Array.isArray(worker.capabilities) && worker.capabilities.length
       ? `<div class="worker-caps"><ul class="worker-caps-list">${worker.capabilities.map((c) => `<li>${escapeHtml(c)}</li>`).join("")}</ul></div>`
       : "";
-  const testLink = /^https?:\/\//i.test(String(worker.href || ""))
-    ? `<div class="worker-actions"><a href="${escapeHtml(worker.href)}" class="btn btn-sm btn-outline" target="_blank" rel="noopener noreferrer">${escapeHtml(worker.cta || `Consultar ${name}`)}</a></div>`
-    : "";
+  const testLink =
+    !compact && /^https?:\/\//i.test(String(worker.href || ""))
+      ? `<div class="worker-actions"><a href="${escapeHtml(worker.href)}" class="btn btn-sm btn-outline" target="_blank" rel="noopener noreferrer">${escapeHtml(worker.cta || `Consultar ${name}`)}</a></div>`
+      : "";
   const idAttr = withAnchor && agentKey ? ` id="${escapeHtml(agentKey)}"` : "";
+  const workerText = compact && worker.impact ? worker.impact : worker.body;
 
   return `<article class="worker-card"${idAttr} data-agent="${escapeHtml(agentKey)}">
   <div class="worker-header">
@@ -311,7 +314,7 @@ function renderWorker(worker, withAnchor = false) {
       ${worker.role ? `<span class="worker-role">${escapeHtml(worker.role)}</span>` : ""}
     </div>
   </div>
-  ${worker.body ? `<p class="worker-body">${escapeHtml(worker.body)}</p>` : ""}
+  ${workerText ? `<p class="worker-body">${escapeHtml(workerText)}</p>` : ""}
   ${impact}
   ${capabilities}
   ${testLink}
@@ -354,7 +357,7 @@ export function renderHomeSections(content) {
 
   const vision = content.sections.find((s) => s.id === "vision");
   if (vision) {
-    const paragraphs = (vision.blocks || []).filter((b) => b.type === "p");
+    const paragraphs = (vision.blocks || []).filter((b) => b.type === "p").slice(0, 1);
     const quote = (vision.blocks || []).find((b) => b.type === "quote");
     const fractal = (vision.blocks || []).find((b) => b.type === "fractal");
 
@@ -391,6 +394,7 @@ export function renderHomeSections(content) {
       };
 
       const fractalItems = (fractal.items || [])
+        .slice(0, 4)
         .map(
           (item) => `<div class="card fractal-card">
   <div class="fractal-card-header">
@@ -423,7 +427,7 @@ export function renderHomeSections(content) {
     const workers = (aiworkers.blocks || []).filter((b) => b.type === "worker").slice(0, 3);
     sectionsHtml.push(`<section id="aiworkers" class="section">
   <h2>${escapeHtml(aiworkers.title || "Equipo directivo y operativo")}</h2>
-  <div class="grid">${workers.map((w) => renderWorker(w, false)).join("\n")}</div>
+  <div class="grid">${workers.map((w) => renderWorker(w, false, true)).join("\n")}</div>
   <a href="equipo.html" class="btn section-cta">Conocer a todo el equipo de IA</a>
 </section>`);
   }
@@ -433,7 +437,7 @@ export function renderHomeSections(content) {
     const posts = sortedPosts(blog.blocks || []).slice(0, 3);
     sectionsHtml.push(`<section id="blog" class="section">
   <h2>Guías recientes en lenguaje llano</h2>
-  <div class="grid post-grid">${posts.map((p) => renderPostCard(p, false)).join("\n")}</div>
+  <div class="grid post-grid">${posts.map((p) => renderPostCard(p, false, 80)).join("\n")}</div>
   <div class="section-cta-row">
     <a href="blog.html" class="btn section-cta">Explorar todos los artículos</a>
     <a href="blog.html#glosario-llano" class="btn btn-outline section-cta">Diccionario sin miedo (glosario llano)</a>
@@ -718,7 +722,7 @@ function calculateReadingTime(body) {
   return `${minutes} min de lectura`;
 }
 
-function renderPostCard(post, isFeatured = false) {
+function renderPostCard(post, isFeatured = false, summaryLimit = null) {
   const url = articleUrl(post);
   const { label: category, filterKey } = getPostCategoryMeta(post);
   const effort = getPostEffortMeta(post);
@@ -751,7 +755,7 @@ function renderPostCard(post, isFeatured = false) {
       </div>
       <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || "Entrada")}</a></h3>
       <p class="muted post-meta">${escapeHtml(metadata)}</p>
-      <div class="post-body">${renderPostBody(postSummary(post.body, 260))}</div>
+      <div class="post-body">${renderPostBody(postSummary(post.body, summaryLimit || 260))}</div>
       <div class="post-card-footer">
         <a href="${escapeHtml(url)}" class="btn btn-sm btn-outline">Leer artículo completo →</a>
         ${emoMiniRow}
@@ -760,6 +764,10 @@ function renderPostCard(post, isFeatured = false) {
   </div>
 </article>`;
   }
+
+  const cardLimit = summaryLimit || 160;
+  const summarySource =
+    summaryLimit && summaryLimit < 160 && post.excerpt ? post.excerpt : post.body;
 
   return `<article class="card post-card">
   ${image}
@@ -770,7 +778,7 @@ function renderPostCard(post, isFeatured = false) {
     </div>
     <h3><a href="${escapeHtml(url)}">${escapeHtml(post.title || "Entrada")}</a></h3>
     <p class="muted post-meta">${escapeHtml(metadata)}</p>
-    <div class="post-body">${renderPostBody(postSummary(post.body, 160))}</div>
+    <div class="post-body">${renderPostBody(postSummary(summarySource, cardLimit))}</div>
     <div class="post-card-footer">
       <a href="${escapeHtml(url)}" class="text-link">Leer artículo →</a>
       ${emoMiniRow}
@@ -1009,7 +1017,7 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
       <a id="comment-github-sync-link" href="https://github.com/aievolutio-com/aievolutio.com/issues/new" target="_blank" rel="noopener noreferrer" class="btn btn-outline" hidden>Publicar también en el hilo abierto del repositorio →</a>
     </div>
     <p id="comment-form-status" class="muted" role="status" aria-live="polite"></p>
-    <p class="disclaimer comment-privacy-note">${renderUiIcon("lock")} Guardarraíl AIJuris: no incluyas datos personales sensibles. Este sistema es experimental y 100 % operado por IA; las respuestas en el hilo las generan agentes autónomos sin garantía de intervención humana.</p>
+    <p class="disclaimer comment-privacy-note">${renderUiIcon("lock")} Guardarraíl AIJuris: evita incluir datos personales sensibles. Plataforma 100 % operada por IA con verificación automática de fuentes y supervisión estratégica periódica; los agentes autónomos responden directamente en el hilo.</p>
   </form>
 </section>`;
 
@@ -1147,7 +1155,7 @@ ${commentsSectionHtml}
 </main>
 <footer class="container">
 <p>© 2026 AIEvolutio · <span class="ai-seal">100 % operado por IA</span> · <span class="site-version">${escapeHtml(version)}</span></p>
-<p class="disclaimer">Sistema experimental 100 % autogestionado por IA (AIVisio, AIDux, AIJuris). Las guías publicadas tienen carácter divulgativo y de apoyo práctico: verifica las decisiones críticas y no sustituyen el criterio ni el asesoramiento profesional humano.</p>
+<p class="disclaimer">Contenido generado en abierto por el sistema 100 % operado por IA (AIVisio, AIDux, AIJuris) con verificación automática de fuentes y supervisión estratégica periódica.</p>
 </footer>
 <script>
 (() => {

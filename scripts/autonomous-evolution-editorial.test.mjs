@@ -114,16 +114,16 @@ test("returns null when the Gemini API rejects the request", async () => {
   assert.equal(result, null);
 });
 
-test("enforces 600–900 words for daily tactical posts and 1000–1500 words for Sunday pillars", () => {
-  assert.equal(validateArticleBodyLength("palabra ".repeat(599), "tactical").valid, false);
-  assert.equal(validateArticleBodyLength("palabra ".repeat(600), "tactical").valid, true);
-  assert.equal(validateArticleBodyLength("palabra ".repeat(900), "tactical").valid, true);
-  assert.equal(validateArticleBodyLength("palabra ".repeat(901), "tactical").valid, false);
+test("enforces 1200–1600 words for daily tactical posts and 1400–1800 words for Sunday pillars", () => {
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1199), "tactical").valid, false);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1200), "tactical").valid, true);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1600), "tactical").valid, true);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1601), "tactical").valid, false);
 
-  assert.equal(validateArticleBodyLength("palabra ".repeat(999), "pillar").valid, false);
-  assert.equal(validateArticleBodyLength("palabra ".repeat(1000), "pillar").valid, true);
-  assert.equal(validateArticleBodyLength("palabra ".repeat(1500), "pillar").valid, true);
-  assert.equal(validateArticleBodyLength("palabra ".repeat(1501), "pillar").valid, false);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1399), "pillar").valid, false);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1400), "pillar").valid, true);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1800), "pillar").valid, true);
+  assert.equal(validateArticleBodyLength("palabra ".repeat(1801), "pillar").valid, false);
 
   assert.equal(isSundayPillarDate("2026-11-15"), true);
   assert.equal(isSundayPillarDate("2026-11-16"), false);
@@ -184,7 +184,7 @@ test("replenishes editorial buffer up to 5 verified non-duplicate candidates whe
           const idx = seq++;
           const title =
             topics[idx % topics.length] + (idx >= topics.length ? ` variante ${idx}` : "");
-          const body = `${"palabra ".repeat(640)}\n\n| Paso | Criterio |\n| :--- | :--- |\n| 1 | Revisión |\n\n**Pasos accionables para aplicar hoy:**\n1. Paso uno\n2. Paso dos\n3. Paso tres`;
+          const body = `${"palabra ".repeat(1240)}\n\n| Paso | Criterio |\n| :--- | :--- |\n| 1 | Revisión |\n\n**Pasos accionables para aplicar hoy:**\n1. Paso uno\n2. Paso dos\n3. Paso tres`;
           return {
             text: JSON.stringify({
               title,

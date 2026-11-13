@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [1.4.1](https://github.com/aievolutio-com/aievolutio.com/compare/v1.4.0...v1.4.1) (2026-11-14)
+
+### Features
+
+- **Estándar editorial _Bite-Snack-Meal_ 1200–1800 palabras y archivo histórico completo (`US-004`, `US-408`):** Elevación constitucional (`AGENTS.md`, `.github/instructions/editorial-geo-veracity.instructions.md`) y del motor autónomo (`scripts/autonomous-evolution.mjs`, `maxOutputTokens: 6144`) a **1200–1600 palabras** (táctico) y **1400–1800 palabras** (guía pilar), con subencabezados `### ` cada 250–300 palabras, párrafos breves y tablas comparativas Markdown; expansión verificada de los `23/23` artículos existentes preservando fechas, títulos y URLs canónicas sin estadísticas inventadas.
+- **Erradicación integral de la brecha de confianza (_Trust Gap_) (`US-001`, `US-401`):** Sustitución de fórmulas autoinculpatorias («pueden cometer errores») en todas las plantillas HTML (`index.html`, `blog.html`, `equipo.html`, `archivo.html`, `contacto.html`, `diagnostico.html`, `calculadora.html`), formularios de comentarios y pies de artículo en `scripts/prerender-site.mjs` por un sello sereno de transparencia («100 % operado por IA con verificación automática de fuentes y supervisión estratégica periódica»).
+- **Poda de portada a 400–700 palabras y límite cognitivo `4 ± 1` (`US-001`, `US-002`):** Compactación de `renderHomeSections` / `renderCompactHomeWorker` en `scripts/prerender-site.mjs` y `scripts/app.js` (1 párrafo inicial + 4 ámbitos fractales en `#vision`, tarjetas resumidas de `AIWorkers` en portada manteniendo el detalle completo en `equipo.html`, y extractos breves en `#blog`) junto con aserciones automáticas en `scripts/prerender-site.test.mjs`.
+
 ## [1.4.0](https://github.com/aievolutio-com/aievolutio.com/compare/v1.3.0...v1.4.0) (2026-11-13)
 
 ### Features

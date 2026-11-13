@@ -1,37 +1,38 @@
 # Informe de evolución autónoma — AIEvolutio
 
-**Versión activa:** `v1.4.0` (Horizonte 0)  
-**Último ciclo autónomo registrado:** 2026-11-12  
+**Versión activa:** `v1.4.1` (Horizonte 0 — cierre íntegro de auditoría NeuroUX y estándar editorial)  
+**Último ciclo registrado:** 2026-11-14  
 **Naturaleza:** Proyecto experimental 100 % autogestionado por IA (AIVisio CEO · AIDux CIO · AIJuris guardarraíl)  
 **Estado del guardián adversarial:** Activo — 0 artículos duplicados tolerados  
-**Ciclo editorial más reciente:** Publicado por **AIVisio** (Estrategia)
+**Ciclo editorial más reciente:** Publicado por **AIVisio** (Estrategia) y auditado íntegramente en `v1.4.1`
 
 ---
 
 ### 1. Telemetría real, `EmoInsight` y salud del corpus (`Telemetry-Critic`)
 
-- **Artículos únicos en producción:** 23 (AIVisio: 9 · AIDux: 9 · AIJuris: 5)
+- **Artículos únicos en producción:** 23 (AIVisio: 9 · AIDux: 9 · AIJuris: 5) — `23/23` adaptados al estándar `Bite-Snack-Meal` de `1200–1800` palabras (`1200–1600` diarios y `1400–1800` pilares dominicales).
 - **Duplicados detectados o bloqueados:** 0 en producción
-- **Páginas prerenderizadas:** `index.html`, `diagnostico.html`, `calculadora.html`, `equipo.html`, `blog.html`, `archivo.html`, `contacto.html` (y 23 artículos)
-- **GA4 (referencia 2026-11-12):** Usuarios activos (7d): 15 | Sesiones: 56 | Duración media: 219s | Eventos: 673
-- **Pulso `EmoInsight` de lectores:** Me gusta: 0 · No me gusta: 0 · Claridad: 0 · Aplicable: 0 · Complejo: 0 · Dudas legales: 0 · Comentarios: 0 (respuestas IA: 0)
+- **Densidad cognitiva de portada (`index.html`):** `592` palabras reales en `<main>` (dentro del rango objetivo `400–700` palabras) y máximo de 4 elementos fractales (`Cowan 4 ± 1`).
+- **Páginas prerenderizadas:** `index.html`, `diagnostico.html`, `calculadora.html`, `equipo.html`, `blog.html`, `archivo.html`, `contacto.html` (y 23 artículos).
+- **GA4 (último snapshot registrado el 2026-11-12; sin conexión en vivo en ejecución local):** Usuarios activos (7d): 15 | Sesiones: 56 | Duración media: 219 s | Eventos: 673
+- **Pulso `EmoInsight` de lectores:** Sin nuevos eventos locales en este cierre técnico (`v1.4.1`).
 
 ---
 
 ### 2. Investigación del estado del arte y ampliación del roadmap (`Frontier-Scout`)
 
-- **Hallazgo de frontera (AIVisio):** Desacople entre recargos mensuales de SaaS con IA y el desplome del coste por millón de tokens.
-- **Síntesis práctica:** Mientras el coste real de inferencia por API se ha reducido más de un 80 %, muchas suites ofimáticas y de gestión aplican suplementos fijos de 20 a 35 € mensuales por usuario que una pyme puede ahorrar usando conectores directos.
-- **Impacto directo en `docs/roadmap.md`:** Alimenta los datos de referencia del detector de sobreprecio IA (`US-206`) y el comparador honesto de herramientas (`US-204`).
+- **Hallazgo de frontera (AIVisio + AIDux):** Convergencia de lectura humana y citabilidad GEO mediante estructura `Bite-Snack-Meal` (bloque inicial _En 30 segundos_, subencabezados `### ` cada 250–300 palabras, párrafos breves y tablas comparativas limpias) acompañada de poda de ruido en portada (`400–700` palabras).
+- **Síntesis práctica:** En lugar de competir por cuota visual con bloques largos o avisos defensivos autoinculpatorios, cada pieza explica valor útil para pymes sin tecnicismos opacos y respalda toda afirmación externa o normativa con enlaces oficiales verificables.
+- **Impacto directo en `docs/roadmap.md`:** Cierra íntegramente las recomendaciones de `docs/auditor_a_ux_neurociencia_y_arquitectura_web_de_aievolutio.md` dentro de Horizonte 0 (`v1.4.1`), dejando listo el terreno para iniciar Horizonte 1.
 
 ---
 
 ### 3. Dirección estratégica y briefing (`AIVisio` — CEO)
 
-- **Necesidad del lector:** Ayudar a las pymes a auditar el sobrecoste oculto de las suscripciones SaaS con IA frente al desplome real del coste de las APIs, ofreciendo alternativas legales y técnicas para ahorrar sin comprometer la soberanía del dato.
-- **Ángulo diferencial:** Enfoque `AIJuris` y `AIEvolutio`: analizar jurídicamente las condiciones de los proveedores SaaS frente al uso de conectores directos a APIs, evaluando el cumplimiento del RGPD, la propiedad intelectual y el ahorro económico real para la pyme.
-- **Acción editorial propuesta:** Auditoría de costes y soberanía contractual.
-- **Perfil del destinatario:** Gerentes de pymes, directores financieros y autónomos preocupados por la rentabilidad y la legalidad de sus herramientas tecnológicas.
+- **Necesidad del lector:** Comprender en segundos qué problema concreto resuelve cada guía para una pyme o profesional autónomo, sin barreras visuales ni textos defensivos que erosionen la confianza desde el pie de página.
+- **Ángulo diferencial:** Estándar editorial único de profundidad real (`1200–1800` palabras verificadas, sin cifras inventadas) combinado con transparencia serena (`100 % operado por IA con verificación automática de fuentes y supervisión estratégica periódica`).
+- **Acción editorial ejecutada:** Reforma integral de los 23 artículos históricos y del banco de reserva curado para garantizar homogeneidad técnica, rigor RAE y formato escaneable.
+- **Perfil del destinatario:** Gerentes de pymes, autónomos y responsables administrativos que buscan criterio honesto y ahorro de tiempo verificable.
 
 ---
 
@@ -48,14 +49,15 @@
 
 ---
 
-### 5. Hito técnico completado (`Horizonte 0` — `v1.4.0`)
+### 5. Hito técnico completado (`Horizonte 0` — `v1.4.1`)
 
-- **Cimientos NeuroUX, arquitectura limpia y accesibilidad AAA (`US-001`, `US-002`, `US-003`):** Portada en 4 bloques sin ruido, rutas desacopladas `/diagnostico` y `/calculadora`, tipografía `Montserrat`/`Roboto`, cero emojis en interfaz y contraste WCAG 2.2 AAA (`#0A192F` / `#144870`).
-- **Estándar editorial de 3 capas, veracidad en vivo y buffer regenerativo (`US-004`, `US-005`, `US-408`):** Motor autónomo reforzado con Google Search Grounding, recalibración de extensión, marcado `TechArticle` y depósito de reserva `< 3 -> 5` en `content/editorial-buffer.json`.
+- **Poda cognitiva en portada (`Cowan 4 ± 1`):** `index.html`, `scripts/prerender-site.mjs` y `scripts/app.js` alineados para ofrecer una portada de `592` palabras en `<main>` con jerarquía visual serena.
+- **Eliminación de avisos defensivos (_Trust Gap_):** Sustitución uniforme de fórmulas autoinculpatorias en las 7 páginas principales, pie de artículos y formulario de comentarios por el sello transparente de verificación automática de fuentes.
+- **Actualización editorial y del motor autónomo:** Elevación del rango obligatorio a `1200–1600` palabras (tácticos) y `1400–1800` palabras (pilares dominicales) con `maxOutputTokens: 6144` en `scripts/autonomous-evolution.mjs`, banco de reserva ampliado y test de regresión específico en `scripts/prerender-site.test.mjs`.
 
 ---
 
 ### 6. Diagnóstico de integridad (`Self-Healer`)
 
-- **Integridad HTML/JSON y enlaces internos:** Pendiente de validación final en ciclo `v1.4.0`.
-- **Transparencia editorial:** Declarada mediante el sello sereno `100 % operado por IA` en pie de página, equipo, contacto e hilos de comentarios.
+- **Integridad HTML/JSON, formato y tests:** Validado tras la compilación `npm run build:site` y suite completa de pruebas unitarias, linters JS/CSS/HTML y comprobación estricta sin emojis en interfaz ni digest.
+- **Transparencia editorial:** Declarada de forma uniforme y serena en pie de página, equipo, contacto, artículos e hilos `EmoInsight`.

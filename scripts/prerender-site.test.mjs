@@ -389,3 +389,73 @@ test("v1.4.0 renders 3-layer articles, Markdown tables, verified citations, Tech
   assert.match(html, /"citation":\["https:\/\/eur-lex\.europa\.eu\/"\]/);
   assert.doesNotMatch(html, /Inter:wght|experiment-banner|volante/i);
 });
+
+test("v1.4.1 guarantees Home pruning (400-700w, Cowan 4±1), zero Trust Gap disclaimers and 1200-1800w Bite-Snack-Meal articles", async () => {
+  await buildSite();
+  const distDir = path.join(process.cwd(), "dist");
+  const indexHtml = await readFile(path.join(distDir, "index.html"), "utf8");
+  const mainMatch = indexHtml.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
+  assert.ok(mainMatch, "dist/index.html contains <main>");
+  const mainPlainWords = mainMatch[1]
+    .replace(/<svg[\s\S]*?<\/svg>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+  assert.ok(
+    mainPlainWords >= 400 && mainPlainWords <= 700,
+    `Expected dist/index.html <main> word count in [400, 700], got ${mainPlainWords}`,
+  );
+
+  const fractalCardsCount = (indexHtml.match(/class="card fractal-card"/g) || []).length;
+  assert.ok(
+    fractalCardsCount >= 3 && fractalCardsCount <= 4,
+    `Expected <= 4 fractal cards on Home (Cowan 4±1), got ${fractalCardsCount}`,
+  );
+
+  const rootHtmlFiles = (await readdir(distDir)).filter((f) => f.endsWith(".html"));
+  const articleHtmlFiles = (await readdir(path.join(distDir, "articulos"))).filter((f) =>
+    f.endsWith(".html"),
+  );
+  const allHtmlPaths = [
+    ...rootHtmlFiles.map((f) => path.join(distDir, f)),
+    ...articleHtmlFiles.map((f) => path.join(distDir, "articulos", f)),
+  ];
+  for (const htmlFile of allHtmlPaths) {
+    const htmlContent = await readFile(htmlFile, "utf8");
+    assert.doesNotMatch(
+      htmlContent,
+      /pueden cometer errores|no sustituyen el criterio/i,
+      `Trust Gap disclaimer still present in ${htmlFile}`,
+    );
+  }
+
+  const postsDir = path.join(process.cwd(), "content/posts");
+  const postFiles = (await readdir(postsDir)).filter((f) => f.endsWith(".json"));
+  assert.ok(postFiles.length >= 23);
+  for (const pf of postFiles) {
+    const post = JSON.parse(await readFile(path.join(postsDir, pf), "utf8"));
+    const words = String(post.body || "")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean).length;
+    assert.ok(
+      words >= 1200 && words <= 1800,
+      `Post ${pf} word count must be in [1200, 1800], got ${words}`,
+    );
+    const h3Count = (String(post.body || "").match(/^###\s+/gm) || []).length;
+    assert.ok(
+      h3Count >= 3,
+      `Post ${pf} must have >= 3 Bite-Snack-Meal H3 headings, got ${h3Count}`,
+    );
+    const canonicalSlug = `${post.date || ""}-${post.title || "articulo"}`
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    const canonicalHtml = path.join(distDir, "articulos", `articulo-${canonicalSlug}.html`);
+    const artHtml = await readFile(canonicalHtml, "utf8");
+    assert.match(artHtml, /<table class="article-table">/, `Post ${pf} missing rendered table`);
+  }
+});

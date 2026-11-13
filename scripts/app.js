@@ -181,7 +181,7 @@
     return `${minutes} min de lectura`;
   }
 
-  function renderPost(post, preview, showTitle = true) {
+  function renderPost(post, preview, showTitle = true, summaryLimit = 180) {
     const id = articleId(post);
     const { label: category, filterKey } = getPostCategoryMeta(post);
     const effort = getPostEffortMeta(post);
@@ -217,7 +217,8 @@
       .filter(Boolean)
       .join(" · ");
     inner.append(el("p", { class: "muted post-meta" }, [metadata]));
-    inner.append(renderPostBody(preview ? postSummary(post.body, 180) : post.body));
+    const previewSource = summaryLimit < 180 && post.excerpt ? post.excerpt : post.body;
+    inner.append(renderPostBody(preview ? postSummary(previewSource, summaryLimit) : post.body));
 
     if (preview) {
       inner.append(el("a", { href: articleUrl(post), class: "text-link" }, ["Leer artículo →"]));
@@ -393,7 +394,8 @@
       const quoteBlock = (sec.blocks || []).find((b) => b.type === "quote");
       const fractalBlock = (sec.blocks || []).find((b) => b.type === "fractal");
 
-      paragraphs.forEach((p) => {
+      const paragraphsToRender = page === "home" ? paragraphs.slice(0, 1) : paragraphs;
+      paragraphsToRender.forEach((p) => {
         textCol.append(el("p", {}, [p.body]));
       });
       visionGrid.append(textCol);
@@ -436,7 +438,9 @@
           sparkles:
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>',
         };
-        (fractalBlock.items || []).forEach((item) => {
+        const fractalItemsToRender =
+          page === "home" ? (fractalBlock.items || []).slice(0, 4) : fractalBlock.items || [];
+        fractalItemsToRender.forEach((item) => {
           const card = el("div", { class: "card fractal-card" });
           const header = el("div", { class: "fractal-card-header" });
           const iconBox = el("div", { class: "fractal-icon" });
@@ -531,45 +535,48 @@
         header.append(meta);
         card.append(header);
 
-        if (b.body) {
-          card.append(el("p", { class: "worker-body" }, [b.body]));
+        const workerSummary = page === "home" && b.impact ? b.impact : b.body;
+        if (workerSummary) {
+          card.append(el("p", { class: "worker-body" }, [workerSummary]));
         }
 
-        if (b.impact) {
-          const impactBox = el("div", { class: "worker-impact" });
-          impactBox.append(
-            el("span", { class: "worker-impact-label" }, ["Impacto para tu pyme: "]),
-          );
-          impactBox.append(el("strong", { class: "worker-impact-val" }, [b.impact]));
-          card.append(impactBox);
-        }
+        if (page !== "home") {
+          if (b.impact) {
+            const impactBox = el("div", { class: "worker-impact" });
+            impactBox.append(
+              el("span", { class: "worker-impact-label" }, ["Impacto para tu pyme: "]),
+            );
+            impactBox.append(el("strong", { class: "worker-impact-val" }, [b.impact]));
+            card.append(impactBox);
+          }
 
-        if (Array.isArray(b.capabilities) && b.capabilities.length) {
-          const capsWrap = el("div", { class: "worker-caps" });
-          const capsList = el("ul", { class: "worker-caps-list" });
-          b.capabilities.forEach((cap) => {
-            capsList.append(el("li", {}, [cap]));
-          });
-          capsWrap.append(capsList);
-          card.append(capsWrap);
-        }
+          if (Array.isArray(b.capabilities) && b.capabilities.length) {
+            const capsWrap = el("div", { class: "worker-caps" });
+            const capsList = el("ul", { class: "worker-caps-list" });
+            b.capabilities.forEach((cap) => {
+              capsList.append(el("li", {}, [cap]));
+            });
+            capsWrap.append(capsList);
+            card.append(capsWrap);
+          }
 
-        if (isExternalHref(b.href)) {
-          const label = b.cta || (name ? `Probar ${name}` : "Probar");
-          const actions = el("div", { class: "worker-actions" });
-          actions.append(
-            el(
-              "a",
-              {
-                href: b.href,
-                class: "btn btn-sm btn-outline",
-                target: "_blank",
-                rel: "noopener noreferrer",
-              },
-              [label],
-            ),
-          );
-          card.append(actions);
+          if (isExternalHref(b.href)) {
+            const label = b.cta || (name ? `Probar ${name}` : "Probar");
+            const actions = el("div", { class: "worker-actions" });
+            actions.append(
+              el(
+                "a",
+                {
+                  href: b.href,
+                  class: "btn btn-sm btn-outline",
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                },
+                [label],
+              ),
+            );
+            card.append(actions);
+          }
         }
 
         container.append(card);
@@ -666,7 +673,7 @@
         const isArticle = page === "blog" && selectedPost === b;
         const isPreview =
           page === "home" || ((page === "blog" || page === "blog-archive") && !selectedPost);
-        container.append(renderPost(b, isPreview, !isArticle));
+        container.append(renderPost(b, isPreview, !isArticle, page === "home" ? 80 : 180));
       }
       if (b.type === "links") {
         const row = el("div", { class: b.class || "" });

@@ -17,20 +17,21 @@ El desarrollo de AIEvolutio se organiza en **versiones cerradas de valor verific
 2. **Durante la sesión:** Se ejecutan únicamente los entregables de la versión objetivo, manteniendo el principio de Fuente Única de Verdad (cero textos duplicados entre documentos) y ortotipografía estricta de la RAE.
 3. **Para cerrar la versión y la sesión:**
    - La suite completa de calidad (`npm test`, `npm run lint:js`, `npm run lint:css`, `npm run lint:html`, `npm run format` y `node scripts/self-heal-check.mjs`) debe terminar con **0 errores**.
-   - Se actualiza el número de versión en `package.json` y `content/content.es.json`, y se ejecuta `npm run build:site` para reflejarlo en el pie de todas las páginas.
+   - Se actualiza el número de versión en `VERSION`, `package.json` y `content/content.es.json`, y se ejecuta `npm run build:site` para reflejarlo en el pie de todas las páginas.
    - Se documenta la versión en `CHANGELOG.md`, se confirma en `main`, se etiqueta en Git (`git tag -a vX.Y.Z`) y se sube al repositorio remoto.
 
 ---
 
 ## 2. Versiones consolidadas en producción
 
-| Versión      | Fecha      | Hito de valor alcanzado                                                                                                                                                                                                                                                                                                 | Estado           |
-| :----------- | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
-| **`v1.0.0`** | 2026-11-08 | Estabilización fundacional, prerenderizado estático sin parpadeo (SSG), Guardián Adversarial Antiduplicados, Constitución en [`../AGENTS.md`](../AGENTS.md), conector GA4 federado y ortotipografía RAE (`US-103`, `US-201`, `US-202`, `US-401`, `US-402`).                                                             | ✅ En producción |
-| **`v1.1.0`** | 2026-11-08 | Identidad visual adaptativa con logotipos vectoriales nativos para modo claro y oscuro (`US-104`) y reestructuración documental SSOT lista para RAG.                                                                                                                                                                    | ✅ En producción |
-| **`v1.2.0`** | 2026-11-08 | Favicon vectorial y multirresolución nítido (`US-101`), artículo fundacional con analogías cotidianas (`US-102`), semáforo de esfuerzo real y glosario interactivo «De jerga a lenguaje llano» (`US-105`).                                                                                                              | ✅ En producción |
-| **`v1.3.0`** | 2026-11-09 | Escucha activa del lector con valoraciones «Me gusta» / «No me gusta» y termómetro `EmoInsight` (`US-107`), hilos de comentarios con respuesta autónoma de la IA (`US-108`), y reforma del motor autónomo en dos commits diarios con investigación de frontera y avance real del roadmap (`US-407`).                    | ✅ En producción |
-| **`v1.4.0`** | 2026-11-13 | **Horizonte 0:** Poda NeuroUX a 4 bloques y sello «100 % operado por IA» (`US-001`), desacople en `/diagnostico.html` y `/calculadora.html` (`US-002`), paleta WCAG AAA sin emojis (`US-003`), estándar 3 capas con veracidad en vivo y `TechArticle` (`US-004`, `US-005`), y buffer editorial regenerativo (`US-408`). | ✅ En producción |
+| Versión      | Fecha      | Hito de valor alcanzado                                                                                                                                                                                                                                                                                                                               | Estado           |
+| :----------- | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- |
+| **`v1.0.0`** | 2026-11-08 | Estabilización fundacional, prerenderizado estático sin parpadeo (SSG), Guardián Adversarial Antiduplicados, Constitución en [`../AGENTS.md`](../AGENTS.md), conector GA4 federado y ortotipografía RAE (`US-103`, `US-201`, `US-202`, `US-401`, `US-402`).                                                                                           | ✅ En producción |
+| **`v1.1.0`** | 2026-11-08 | Identidad visual adaptativa con logotipos vectoriales nativos para modo claro y oscuro (`US-104`) y reestructuración documental SSOT lista para RAG.                                                                                                                                                                                                  | ✅ En producción |
+| **`v1.2.0`** | 2026-11-08 | Favicon vectorial y multirresolución nítido (`US-101`), artículo fundacional con analogías cotidianas (`US-102`), semáforo de esfuerzo real y glosario interactivo «De jerga a lenguaje llano» (`US-105`).                                                                                                                                            | ✅ En producción |
+| **`v1.3.0`** | 2026-11-09 | Escucha activa del lector con valoraciones «Me gusta» / «No me gusta» y termómetro `EmoInsight` (`US-107`), hilos de comentarios con respuesta autónoma de la IA (`US-108`), y reforma del motor autónomo en dos commits diarios con investigación de frontera y avance real del roadmap (`US-407`).                                                  | ✅ En producción |
+| **`v1.4.0`** | 2026-11-13 | **Horizonte 0:** Poda NeuroUX a 4 bloques y sello «100 % operado por IA» (`US-001`), desacople en `/diagnostico.html` y `/calculadora.html` (`US-002`), paleta WCAG AAA sin emojis (`US-003`), estándar 3 capas con veracidad en vivo y `TechArticle` (`US-004`, `US-005`), y buffer editorial regenerativo (`US-408`).                               | ✅ En producción |
+| **`v1.4.1`** | 2026-11-14 | **Cierre de auditoría NeuroUX y Trust Gap:** Portada podada a `400–700` palabras con límite `4 ± 1` (`US-001`), erradicación de avisos autoinculpatorios («pueden cometer errores»), elevación constitucional y del motor a **1200–1800 palabras** _Bite-Snack-Meal_ y expansión verificada de los `23/23` artículos históricos (`US-004`, `US-408`). | ✅ En producción |
 
 ---
 
@@ -38,7 +39,7 @@ El desarrollo de AIEvolutio se organiza en **versiones cerradas de valor verific
 
 ```mermaid
 flowchart LR
-  H0["<b>Horizonte 0 (v1.4.0)</b><br><b>Cimientos NeuroUX y Visibilidad</b><br>Poda de carga cognitiva, revelación progresiva,<br>desacople de test/calculadora y estándar 3 capas"]
+  H0["<b>Horizonte 0 (v1.4.0 – v1.4.1)</b><br><b>Cimientos NeuroUX y Visibilidad</b><br>Poda 400–700 w, cero brecha de confianza,<br>desacople test/calc y artículos 1200–1800 w"]
   H1["<b>Horizonte 1 (v1.5 – v1.6)</b><br><b>AIWorkers, Recetas y GA4</b><br>AIFactura, AIRespuestas, AIOferta,<br>recetas de 15 min y telemetría federada"]
   H2["<b>Horizonte 2 (v1.7 – v1.8)</b><br><b>Mercado honesto, academia y retos</b><br>Comparador de precios, simulador de alucinaciones,<br>exámenes, diplomas y retos comunitarios"]
   H3["<b>Horizonte 3 (v1.9 – v2.0)</b><br><b>Alcance multicanal y global</b><br>Redes sociales, cápsulas de audio<br>y expansión multi-país / i18n"]
@@ -48,10 +49,18 @@ flowchart LR
 
 ---
 
-### Horizonte 0: Cimientos NeuroUX, Claridad de Impacto y Umbral de Tracción (`v1.4.0`)
+### Horizonte 0: Cimientos NeuroUX, Claridad de Impacto y Umbral de Tracción (`v1.4.0` – `v1.4.1`)
 
-> **Diagnóstico de auditoría neurocognitiva y arquitectura UX (SSOT: [`auditor_a_neurocognitiva_y_arquitectura_ux_de_vanguardia_aplicada_a_aievolutio_com.md`](auditor_a_neurocognitiva_y_arquitectura_ux_de_vanguardia_aplicada_a_aievolutio_com.md)):**
+> **Diagnósticos de auditoría neurocognitiva y arquitectura UX (SSOT: [`auditor_a_neurocognitiva_y_arquitectura_ux_de_vanguardia_aplicada_a_aievolutio_com.md`](auditor_a_neurocognitiva_y_arquitectura_ux_de_vanguardia_aplicada_a_aievolutio_com.md) y [`auditor_a_ux_neurociencia_y_arquitectura_web_de_aievolutio.md`](auditor_a_ux_neurociencia_y_arquitectura_web_de_aievolutio.md)):**
 > Antes de escalar en agentes o servicios avanzados, AIEvolutio debe superar el «umbral del cuarto oscuro»: eliminar la fricción perceptual del visitante, erradicar la sobrecarga de tareas en la portada y ofrecer una profundidad editorial que genere autoridad real y citabilidad por motores generativos (GEO).
+
+#### `v1.4.1` — Cierre completo de auditoría NeuroUX, Trust Gap y estándar editorial 1200–1800 palabras (Completada — 2026-11-14)
+
+- **Objetivo de valor:** Cerrar todas las desviaciones de arquitectura cognitiva y editorial detectadas en la segunda auditoría sobre `v1.4.0`, dejando el sitio listo para iniciar el Horizonte 1.
+- **Alcance de la sesión:**
+  - **`US-004` y `US-408` (Estándar _Bite-Snack-Meal_ 1200–1800 palabras y expansión histórica):** Elevación constitucional y del motor (`AGENTS.md`, `.github/instructions/editorial-geo-veracity.instructions.md`, `scripts/autonomous-evolution.mjs`) a 1200–1600 palabras (artículos tácticos) y 1400–1800 palabras (guías pilar), con `### ` cada 250–300 palabras, párrafos ligeros y tablas Markdown; expansión verificada de los `23/23` artículos históricos en `content/posts/` preservando las URLs canónicas intactas y sin métricas inventadas.
+  - **`US-001` y `US-401` (Erradicación de la brecha de confianza / _Trust Gap_):** Eliminación de fórmulas autoinculpatorias («pueden cometer errores») en todas las plantillas HTML, hilos de comentarios, pies de artículo y guías operativas, sustituidas por transparencia factual serena («100 % operado por IA con verificación automática de fuentes y supervisión estratégica periódica»).
+  - **`US-001` y `US-002` (Poda de portada a 400–700 palabras y Ley de Cowan `4 ± 1`):** Simplificación de `index.html`, `scripts/prerender-site.mjs` y `scripts/app.js` para mantener `<main>` entre 400 y 700 palabras con resúmenes compactos, 4 ámbitos fractales en portada y pruebas automatizadas de no regresión.
 
 #### `v1.4.0` — Cimientos NeuroUX, arquitectura de revelación progresiva y resiliencia del motor autónomo (Completada — 2026-11-13)
 

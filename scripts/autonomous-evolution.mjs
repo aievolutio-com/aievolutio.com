@@ -202,8 +202,8 @@ export function isSundayPillarDate(dateStr) {
 
 export function validateArticleBodyLength(body, format = "tactical") {
   const normalizedFormat = format === "pillar" ? "pillar" : "tactical";
-  const minWords = normalizedFormat === "pillar" ? 1000 : 600;
-  const maxWords = normalizedFormat === "pillar" ? 1500 : 900;
+  const minWords = normalizedFormat === "pillar" ? 1400 : 1200;
+  const maxWords = normalizedFormat === "pillar" ? 1800 : 1600;
   const wordCount = String(body || "")
     .trim()
     .split(/\s+/)
@@ -248,7 +248,7 @@ export async function callGemini(apiKey, prompt, fetchImpl = fetch) {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.65,
-          maxOutputTokens: 3000,
+          maxOutputTokens: 6144,
           responseMimeType: "application/json",
         },
       }),
@@ -297,7 +297,7 @@ export async function callGeminiWithSearchGrounded(apiKey, prompt, fetchImpl = f
         tools: [{ google_search: {} }],
         generationConfig: {
           temperature: 0.4,
-          maxOutputTokens: 3000,
+          maxOutputTokens: 6144,
         },
       }),
     });
@@ -535,11 +535,17 @@ La tecnología útil no necesita esconderse detrás de palabras difíciles. Cuan
       "En 30 segundos: pedir a una máquina que responda consultando un documento único de tarifas vigente evita que invente precios antiguos; equivale a hacer un examen con el libro abierto encima de la mesa (bricolaje guiado, una tarde, 0 €).",
     excerpt:
       "Cuando un asistente responde de memoria, corre el riesgo de inventar precios o plazos. Aprende a prepararle un manual abierto en una tarde para que solo utilice tus datos reales.",
-    body: `**Uno de los temores más lógicos en cualquier negocio es que un asistente automático responda a un cliente con un precio antiguo o una garantía que no existe.** Esto ocurre cuando pedimos a la máquina que conteste de memoria estadística en lugar de obligarla a consultar primero nuestro catálogo vigente. En jerga informática a este método se le llama generación con recuperación de documentos, pero en la vida diaria no es más que hacer un examen con el libro abierto encima de la mesa: si el dato no figura en tu manual abierto, está prohibido adivinarlo.
+    body: `**Uno de los temores más lógicos en cualquier negocio es que un asistente automático responda a un cliente con un precio antiguo o una garantía que no existe.** Esto ocurre cuando pedimos a la máquina que conteste de memoria estadística en lugar de obligarla a consultar primero nuestro catálogo vigente.
 
-**Por qué las tarifas dispersas confunden tanto al equipo como a la máquina**
+En jerga informática a este método se le llama generación con recuperación de documentos, pero en la vida diaria equivale simplemente a hacer un examen con el libro abierto encima de la mesa. Si el dato no figura en tu manual abierto, está prohibido adivinarlo ni completar huecos por intuición.
 
-En muchas pequeñas empresas y talleres los precios reales viven repartidos entre hojas de cálculo de hace dos campañas, correos enviados a clientes habituales, catálogos en formato imagen y notas personales. Si una persona nueva entra al despacho y duda ante una partida concreta, al menos puede preguntar en voz alta antes de enviar el presupuesto. En cambio, un modelo conversacional sin fuentes claras rellena el hueco con lo más probable según textos generales de internet y redacta un importe incorrecto con absoluta seguridad.
+### Por qué las tarifas dispersas confunden tanto al equipo como a la máquina
+
+En muchas pequeñas empresas y talleres los precios reales viven repartidos entre hojas de cálculo de hace dos campañas, correos enviados a clientes habituales, catálogos en formato imagen y notas personales. Esa fragmentación provoca errores incluso dentro del propio equipo cuando dos compañeros manejan listados distintos.
+
+Si una persona nueva entra al despacho y duda ante una partida concreta, al menos puede preguntar en voz alta antes de enviar el presupuesto. En cambio, un modelo conversacional sin fuentes claras rellena el hueco con lo más probable según textos generales de internet y redacta un importe incorrecto con absoluta seguridad.
+
+Antes de probar ningún programa técnico, reunir toda la verdad comercial vigente en una carpeta limpia ahorra decenas de aclaraciones posteriores con clientes y colaboradores. Ese orden documental funciona bien incluso si mañana decides prescindir por completo de herramientas automáticas.
 
 | Enfoque de consulta comercial | Responder de memoria general | Responder con manual abierto vigente |
 | :--- | :--- | :--- |
@@ -548,21 +554,55 @@ En muchas pequeñas empresas y talleres los precios reales viven repartidos entr
 | Actualización cuando suben materiales | Exige corregir respuestas una a una | Basta editar una fila en tu documento maestro |
 | Esfuerzo de implantación | Ninguno inicial, muchas correcciones después | Bricolaje guiado de una tarde sin cuotas extra |
 
-**Cómo preparar el libro abierto de tu negocio en menos de una hora**
+### Cómo preparar el libro abierto de tu negocio en menos de una hora
 
-- **Un único archivo limpio vale más que cien carpetas dispersas:** reunir las tarifas, exclusiones frecuentes y condiciones de garantía vigentes en un solo documento estructurado por apartados claros equivale a ordenar el banco de trabajo antes de enchufar ninguna herramienta. Conviene usar texto limpio o tablas sencillas en formato abierto, evitando capturas escaneadas donde los números puedan leerse mal.
-- **La regla de oro de citar el apartado origen:** al preparar la instrucción de trabajo o conectar esa carpeta mediante un puente local seguro, incluye siempre una norma firme: junto a cada importe o plazo propuesto en el borrador, el asistente debe indicar entre paréntesis el apartado exacto de tu manual del que ha extraído el dato. Si no encuentra coincidencia literal, debe escribir «requiere valoración humana».
-- **Separación estricta respecto a datos privados de clientes:** tu documento de precios y condiciones de catálogo no necesita incluir nombres de clientes, direcciones ni descuentos confidenciales pactados por contrato. Mantener ese manual limpio facilita trabajar en local y protege el cumplimiento de privacidad.
+Reunir las tarifas, exclusiones frecuentes y condiciones de garantía vigentes en un solo documento estructurado por apartados claros equivale a ordenar el banco de trabajo antes de enchufar ninguna herramienta. Conviene usar texto limpio o tablas sencillas en formato abierto, evitando capturas escaneadas donde los números puedan leerse mal o columnas combinadas imposibles de interpretar.
+
+Incluye siempre una fecha visible de entrada en vigor en las tres primeras líneas del archivo y un índice sencillo por familias de trabajo o producto. Cuando el catálogo distingue claramente entre tarifa base, suplementos de desplazamiento, mano de obra por tramos y exclusiones habituales, el margen de malentendidos disminuye desde el primer día.
+
+### La regla de oro de citar el apartado origen y exigir respuesta negativa honesta
+
+Al preparar la instrucción de trabajo o conectar esa carpeta mediante un puente local seguro, incluye siempre una norma firme: junto a cada importe o plazo propuesto en el borrador, el asistente debe indicar entre paréntesis el apartado exacto de tu manual del que ha extraído el dato.
+
+Igual de importante es instruir qué hacer cuando una partida o medida especial no aparece escrita. En lugar de aproximar cifras por semejanza, debe escribir de forma visible «requiere valoración humana» para que el profesional revise el caso concreto con plano, visita o proveedor.
+
+Pedir que cite el origen literal tarda dos segundos al revisar un borrador y convierte una posible fuente de errores en una lista verificable sobre tu propia tarifa oficial. Nunca delegues el envío directo de precios hacia fuera sin esa última comprobación personal.
+
+### Separación estricta entre catálogo público y datos privados de clientes
+
+Tu documento maestro de precios, tiempos orientativos y garantías generales no necesita incluir nombres de clientes, direcciones ni descuentos confidenciales pactados por contrato individual. Mantener limpia esa separación protege el cumplimiento del Reglamento General de Protección de Datos desde la raíz del sistema.
+
+Cuando el catálogo público vive separado de facturas, nóminas y expedientes nominativos, puedes realizar pruebas tranquilas tanto en modelos compactos locales como en flujos internos auditables sin exponer información sensible ni mezclar condiciones exclusivas de un cliente con otro.
+
+### Cómo actualizar precios cuando cambian materiales o proveedores sin romper respuestas
+
+En sectores sujetos a variaciones frecuentes de materia prima o recambios, el peligro silencioso reside en dejar versiones antiguas circulando por subcarpetas. Fija una única persona responsable o un momento concreto cada mes —por ejemplo, el último viernes antes de cambiar el mes— para actualizar el archivo vigente y mover el anterior a una carpeta llamada «histórico cerrado» fuera del alcance de consulta.
+
+Cada actualización limpia tarda apenas diez minutos si solo registras el precio nuevo y anotas qué partidas quedan anuladas. Evitar duplicidades en el repositorio garantiza que ninguna respuesta comercial recupere importes caducados del trimestre anterior.
+
+### Qué hacer ante presupuestos a medida o condiciones excepcionales
+
+No todo trabajo de un autónomo o una pyme cabe dentro de una tarifa cerrada. En reparaciones complejas, obras con patologías ocultas o servicios de consultoría a medida, el manual abierto sirve para redactar con claridad la base común, explicar el método de visita o toma de datos y enumerar qué variables definirán el importe definitivo tras tu inspección.
+
+Lejos de restar valor artesanal, esa transparencia inicial demuestra seriedad frente al cliente desde el primer correo, evita promesas irreales en frío y reserva tu criterio experto para valorar lo verdaderamente singular del encargo.
+
+### Supervisión sencilla y revisión de calidad antes de responder al cliente
+
+Preparar este manual abierto mejora incluso la coordinación interna entre personas del propio negocio antes de conectar ningún programa. Cuando todo el equipo y las herramientas consultan la misma verdad vigente y cada propuesta sale únicamente tras tu lectura final, ganas rapidez comercial sin comprometer ni un solo céntimo ni tu reputación profesional.
+
+Dedica los primeros diez días a anotar qué preguntas de clientes no encontraban respuesta clara en tu archivo inicial y añade esos puntos al documento maestro. En menos de dos semanas habrás construido el activo más valioso de tu área comercial: memoria compartida, ordenada y verificable.
+
+### Cómo probar el manual abierto con una persona recién llegada al equipo
+
+Una prueba excelente para comprobar si tu archivo maestro resulta verdaderamente claro consiste en pedir a alguien nuevo en tu taller o despacho —o incluso a un conocido ajeno al sector— que lea un presupuesto dudoso apoyándose únicamente en ese documento. Si logra encontrar el importe base, los suplementos aplicables y las exclusiones en menos de un minuto, el texto está maduro para trabajar con cualquier asistente local.
+
+Si en cambio esa persona duda entre dos epígrafes parecidos o necesita llamarte para aclarar una excepción habitual, significa que ese apartado todavía guarda conocimiento tácito que conviene dejar escrito en lenguaje llano antes de automatizar borradores.
 
 **Pasos accionables para aplicar hoy:**
 
 1. Crea un archivo maestro de texto limpio con fecha de vigencia donde recojas las veinte preguntas de tarifas, plazos de entrega, desplazamientos y exclusiones que más se repiten en tu oficio.
 2. Retira de la carpeta de consulta activa cualquier catálogo antiguo o lista de temporadas pasadas para evitar contradicciones silenciosas entre documentos.
-3. Haz tres pruebas seguidas solicitando borradores para encargos habituales y otro encargo atípico fuera de catálogo, verificando que el sistema cita exactamente tus apartados y pide ayuda humana en el caso no contemplado.
-
-**Supervisión sencilla antes de responder**
-
-Preparar este manual abierto mejora incluso la coordinación interna entre personas del propio negocio antes de conectar ningún programa. Cuando todo el equipo y las herramientas consultan la misma verdad vigente y cada propuesta sale únicamente tras tu lectura final, ganas rapidez comercial sin comprometer ni un solo céntimo ni tu reputación profesional.`,
+3. Haz tres pruebas seguidas solicitando borradores para encargos habituales y otro encargo atípico fuera de catálogo, verificando que el sistema cita exactamente tus apartados y pide ayuda humana en el caso no contemplado.`,
     actionableChecklist: [
       "Unificar tarifas, plazos y garantías vigentes en un único documento limpio y fechable",
       "Retirar versiones antiguas de catálogos de la carpeta de consulta activa",
@@ -659,9 +699,13 @@ Preparar este manual abierto mejora incluso la coordinación interna entre perso
       "Prohibir las herramientas digitales no prepara a los más jóvenes; enseñarles a detectar errores, formular mejores preguntas y comprobar fuentes los vuelve autónomos.",
     body: `**Cuando un estudiante o un aprendiz entra por primera vez ante un asistente conversacional, la tentación inicial casi siempre es la misma: copiar el enunciado del ejercicio, recoger la respuesta pulida y entregarla tal cual.** Sin embargo, delegar por completo la redacción y la síntesis priva a la persona precisamente de aquello que necesita entrenar: la capacidad de ordenar ideas, detectar fisuras lógicas y defender un criterio propio ante un cliente, un profesor o un problema técnico inesperado.
 
-**El riesgo silencioso de aceptar respuestas fluidas sin verificar**
+Aprender bien exige cierta fricción mental constructiva, igual que entrenar un músculo o dominar un oficio manual en el taller. Si cedemos esa gimnasia previa a una máquina desde el primer minuto, ganamos un papel entregado rápido hoy a cambio de perder seguridad y autonomía mañana cuando la pantalla no pueda decidir por nosotros.
 
-Los modelos actuales redactan con un tono seguro y ordenado incluso cuando cometen errores graves o rellenan lagunas con afirmaciones probables pero falsas. En lenguaje cotidiano, ocurre como con un conocido muy elocuente que habla sin dudas sobre un tema que apenas conoce: su seguridad verbal puede engañar a quien todavía está aprendiendo las bases del oficio o de la asignatura. Por eso, el primer hábito que conviene cultivar desde edades tempranas es la sospecha sana: toda respuesta automática es un borrador discutible, nunca una verdad definitiva.
+### El riesgo silencioso de aceptar respuestas fluidas sin verificar
+
+Los modelos actuales redactan con un tono seguro y ordenado incluso cuando fabrican respuestas verosímiles o rellenan lagunas con afirmaciones probables pero falsas. En lenguaje cotidiano, ocurre como con un conocido muy elocuente que habla sin dudas sobre un tema que apenas conoce: su seguridad verbal puede engañar a quien todavía está aprendiendo las bases del oficio o de la asignatura.
+
+Por eso, el primer hábito que conviene cultivar desde edades tempranas es la sospecha sana: toda respuesta automática es un borrador discutible, nunca una verdad definitiva ni una fuente científica por sí misma. Distinguir elegancia formal de rigor factual protege a niños, adolescentes y aprendices adultos por igual.
 
 | Hábito al estudiar o aprender | Delegación pasiva (lo que conviene evitar) | Entrenamiento crítico (el método AIEvolutio) |
 | :--- | :--- | :--- |
@@ -670,21 +714,49 @@ Los modelos actuales redactan con un tono seguro y ordenado incluso cuando comet
 | Ante un dato concreto | Dar por válida cualquier fecha, cifra o cita legal | Exigir comprobación en manuales oficiales, libros o normativa |
 | Frente a una duda compleja | Quedarse con el primer enfoque ofrecido | Solicitar los argumentos a favor y los fallos más probables |
 
-**Tres dinámicas prácticas para transformar la relación con la máquina**
+### Tres dinámicas prácticas para transformar la relación con la máquina
 
-- **Invertir los papeles (el método del aprendiz exigente):** en lugar de pedir a la herramienta que explique toda la lección, el joven redacta cinco líneas explicando el concepto con sus propias palabras y solicita al asistente que busque posibles confusiones o huecos en ese razonamiento. Así, el esfuerzo intelectual previo sigue perteneciendo íntegramente a la persona.
-- **Cazar alucinaciones como ejercicio consciente:** conviene proponer de vez en cuando retos breves donde el estudiante pregunta por un hecho cercano, una norma municipal o un detalle de su sector y comprueba después qué parte del resultado era exacta y qué parte estaba deformada. Descubrir por uno mismo dónde falla una máquina inmuniza frente a la credulidad ciega mucho mejor que cualquier sermón teórico.
-- **Cuidar la privacidad desde el primer día:** del mismo modo que enseñamos a no entregar llaves de casa a desconocidos, resulta esencial explicar por qué nunca se suben fotografías familiares, historiales académicos completos, expedientes médicos ni datos personales a cuentas gratuitas abiertas.
+La primera dinámica consiste en invertir los papeles siguiendo el método del aprendiz exigente. En lugar de pedir a la herramienta que explique toda la lección, el joven redacta primero cinco líneas explicando el concepto con sus propias palabras y solicita al asistente que busque posibles confusiones o huecos en ese razonamiento. Así, el esfuerzo intelectual previo sigue perteneciendo íntegramente a la persona.
+
+La segunda dinámica convierte la detección de fallos en un juego semanal consciente. Conviene proponer de vez en cuando retos breves donde el estudiante pregunta por un hecho cercano, una norma municipal o un detalle técnico de su sector y comprueba después qué parte del resultado era exacta y qué parte estaba deformada. Descubrir por uno mismo dónde falla una máquina inmuniza frente a la credulidad ciega mucho mejor que cualquier sermón teórico.
+
+La tercera dinámica blinda la intimidad cotidiana desde el primer día. Del mismo modo que enseñamos a no entregar llaves de casa a desconocidos ni publicar direcciones privadas, resulta esencial explicar por qué nunca se suben fotografías familiares, historiales académicos completos, expedientes médicos ni datos personales reales a cuentas abiertas.
+
+### Del diálogo socrático en casa al aprendizaje real de oficios en pequeñas empresas
+
+Este mismo enfoque aplica directamente cuando un autónomo o una pyme forma a un oficial joven, a personal en prácticas o a una nueva incorporación. En lugar de entregar respuestas cerradas o pedir que busque soluciones automáticas sin contexto, el tutor profesional enseña primero qué preguntar, cómo detectar si una pieza o norma real contradice al texto sugerido y dónde consultar el manual oficial del fabricante.
+
+Un aprendiz que aprende a hacer buenas preguntas, verificar medidas en obra y argumentar por qué descarta una propuesta incorrecta avanza mucho más rápido y gana respeto profesional ante clientes reales que quien repite textos memorizados sin base práctica.
+
+### Acuerdos claros de uso en familia sin convertir el hogar en una aduana
+
+Prohibir de plano las herramientas digitales en casa suele empujar al uso oculto o improvisado sin acompañamiento adulto. Funciona mucho mejor pactar reglas visibles y proporcionadas según la edad: tiempo límite frente a pantallas, primero esquema o intento escrito en cuaderno antes de abrir consulta digital y revisión conjunta de las fuentes utilizadas al terminar el trabajo.
+
+Cuando padres, madres o formadores practican también en voz alta el hábito de dudar y contrastar una noticia o un dato delante de los hijos, enseñan con el ejemplo que el criterio humano vale más que cualquier respuesta instantánea.
+
+### Cómo detectar señales tempranas de dependencia intelectual pasiva
+
+Conviene observar con cariño tres señales claras: cuando un estudiante responde siempre con frases grandilocuentes que luego no sabe resumir de palabra en veinte segundos, cuando pierde tolerancia ante ejercicios que exigen leer dos páginas seguidas en papel o cuando evita argumentar por miedo a equivocarse sin muleta digital.
+
+Ante cualquiera de estas señales, la solución no pasa por el castigo sino por proponer un reto en mesa limpia —lápiz, papel y diálogo cara a cara— donde recuperar la confianza en su propia voz y capacidad de deducción.
+
+### Mirada humana sobre el futuro cercano y autonomía intelectual
+
+La tecnología puede abaratar el acceso a resúmenes y borradores, pero no sustituye la paciencia de quien escucha, el ejemplo cotidiano ni la satisfacción profunda de comprender algo por mérito propio. Acompañar a los más jóvenes en el desarrollo de su pensamiento crítico protege su libertad intelectual y convierte una herramienta ruidosa en un trampolín honesto para crear y preguntar mejor.
+
+### Biblioteca compartida de preguntas de comprobación para el aula o el taller
+
+Conviene crear juntos una hoja breve con cinco preguntas de contraste que cualquiera pueda aplicar ante un resultado llamativo antes de darlo por bueno: quién firma el dato original, en qué fecha se publicó el documento citado, si existe una fuente primaria oficial en español que lo respalde, qué argumento contrario suele olvidarse y qué ocurriría en la práctica si esa respuesta resultara errónea en obra o examen.
+
+Repasar estas cinco preguntas de forma natural convierte la verificación crítica en reflejo automático, igual que mirar antes de cruzar la calle. No exige conocimientos informáticos avanzados ni software especial, solo constancia tranquila y conversación abierta en casa o en el trabajo.
+
+Con el tiempo, niños y aprendices descubren por sí mismos que las mejores respuestas no salen del primer clic apresurado, sino de saber distinguir entre el dato comprobado, la opinión discutible y el vacío que conviene investigar con calma.
 
 **Pasos accionables para aplicar hoy:**
 
 1. Si tienes hijos o aprendices cerca, siéntate veinte minutos con ellos esta semana y pídeles que te muestren cómo formulan sus consultas habituales frente a la pantalla.
 2. Acordad una regla sencilla de verificación: ninguna afirmación cuantitativa, cita histórica ni consejo técnico procedente de un chat se acepta sin contrastarlo antes en dos fuentes reconocidas o con un manual de referencia.
-3. Proponed un debate breve pidiendo a la herramienta dos posturas opuestas sobre un mismo tema para analizar juntos qué argumentos se sostienen y cuáles carecen de base real.
-
-**Mirada humana sobre el futuro cercano**
-
-La tecnología puede abaratar el acceso a resúmenes y borradores, pero no sustituye la paciencia de quien escucha, el ejemplo cotidiano ni la satisfacción profunda de comprender algo por mérito propio. Acompañar a los más jóvenes en el desarrollo de su pensamiento crítico protege su libertad intelectual y convierte una herramienta ruidosa en un trampolín honesto para crear y preguntar mejor.`,
+3. Proponed un debate breve pidiendo a la herramienta dos posturas opuestas sobre un mismo tema para analizar juntos qué argumentos se sostienen y cuáles carecen de base real.`,
     actionableChecklist: [
       "Exigir siempre un esquema o borrador propio antes de consultar cualquier asistente",
       "Contrastar al menos una fuente primaria o manual real por cada tema trabajado",
@@ -711,11 +783,15 @@ La tecnología puede abaratar el acceso a resúmenes y borradores, pero no susti
       "En 30 segundos: antes de pagar cuotas mensuales por programas que prometen contabilidad automática, ordena tus facturas por fecha y proveedor y usa un modelo ligero local como ayuda de clasificación bajo tu revisión final (estantería sencilla, 0 € en licencias extra).",
     excerpt:
       "El desorden documental cuesta más tiempo que la propia tecnología. Aprende a estructurar tus albaranes y revisar borradores contables en tu propio ordenador sin cuotas fijas.",
-    body: `**Al acercarse cada cierre trimestral, miles de autónomos y pequeñas empresas reviven exactamente la misma escena:** carpetas llenas de archivos descargados con nombres crípticos, tickets arrugados en el salpicadero y correos con facturas adjuntas perdidas entre hilos comerciales. Ante ese agotamiento, resulta comprensible sentirse tentado por aplicaciones que prometen automatizar todo mediante nuevas cuotas mensuales elevadas. Sin embargo, cuando el archivo de origen está desordenado, añadir herramientas caras solo traslada el caos a un recibo bancario más largo.
+    body: `**Al acercarse cada cierre trimestral, miles de autónomos y pequeñas empresas reviven exactamente la misma escena:** carpetas llenas de archivos descargados con nombres crípticos, tickets arrugados en el salpicadero y correos con facturas adjuntas perdidas entre hilos comerciales. Ante ese agotamiento, resulta comprensible sentirse tentado por aplicaciones que prometen automatizar todo mediante nuevas cuotas mensuales elevadas.
 
-**Separar el orden básico del apoyo automático ligero**
+Sin embargo, cuando el archivo de origen está desordenado, añadir herramientas caras solo traslada el caos a un recibo bancario más largo. Ordenar primero la base documental cuesta exactamente cero euros en licencias y resuelve la mayor parte de la fricción administrativa antes incluso de abrir cualquier programa inteligente.
 
-En ingeniería práctica distinguimos siempre entre el orden de trabajo y el motor que lee el texto. En una carpintería o taller, nadie compra una sierra nueva para arreglar un banco cubierto de virutas y herramientas mezcladas: primero se limpia la mesa y se etiquetan los cajones. Con las facturas ocurre exactamente lo mismo. Una vez fijada una estructura clara de carpetas y nombres, cualquier herramienta ligera —incluso un modelo compacto ejecutado en tu propio ordenador sin conexión externa— lee importes, fechas y números de identificación fiscal con mucha mayor fiabilidad y sin coste fijo mensual.
+### Separar el orden básico del apoyo automático ligero
+
+En ingeniería práctica distinguimos siempre entre el orden de trabajo y el motor que lee el texto. En una carpintería o taller, nadie compra una sierra nueva para arreglar un banco cubierto de virutas y herramientas mezcladas: primero se limpia la mesa y se etiquetan los cajones.
+
+Con las facturas ocurre exactamente lo mismo. Una vez fijada una estructura clara de carpetas y nombres homogéneos, cualquier herramienta ligera —incluso un modelo compacto ejecutado en tu propio ordenador sin conexión externa— lee importes, fechas y números de identificación fiscal con mucha mayor fiabilidad y sin coste fijo mensual.
 
 | Pieza del proceso administrativo | Qué hace la persona (criterio indispensable) | Qué prepara el asistente local (ahorro mecánico) |
 | :--- | :--- | :--- |
@@ -724,21 +800,53 @@ En ingeniería práctica distinguimos siempre entre el orden de trabajo y el mot
 | Casuística especial (devoluciones) | Decidir cómo se imputa el gasto o rectificativa | Marcar el documento para revisión manual prioritaria |
 | Envío final a gestoría | Validar el listado definitivo antes de remitirlo | Generar el borrador ordenado para contraste rápido |
 
-**Arquitectura prudente con modelos locales y privacidad estricta**
+### Arquitectura prudente con modelos locales y privacidad estricta
 
-- **Por qué evitar cuentas gratuitas en la nube para facturas:** un archivo de facturas contiene nombres de clientes, direcciones fiscales, precios pactados y cuentas bancarias de terceros. Introducir esos documentos en herramientas abiertas en línea vulnera la prudencia básica que exige el Reglamento General de Protección de Datos. Al trabajar con herramientas instaladas dentro del propio equipo o mediante programas locales sin retención de datos, ningún documento sale de tu despacho.
-- **Regla de lotes cortos para evitar errores silenciosos:** nunca conviene procesar de golpe cientos de albaranes esperando que todo cuadre a la primera. Es mucho más seguro trabajar con tandas breves —por ejemplo, las diez últimas facturas recibidas— y verificar frente al archivo original que ningún decimal ni tipo impositivo ha sido mal interpretado por el reconocimiento de texto.
-- **Formato abierto frente a formatos cerrados:** exportar el borrador resultante a una tabla estándar compatible con cualquier hoja de cálculo libre evita depender de un único proveedor si algún día decides cambiar de programa de gestión.
+Un archivo de facturas contiene nombres de clientes, direcciones fiscales, precios pactados y cuentas bancarias de terceros. Introducir esos documentos completos en herramientas gratuitas abiertas en línea vulnera la prudencia básica que exige el Reglamento General de Protección de Datos y expone relaciones comerciales confidenciales.
+
+Al trabajar con utilidades instaladas dentro del propio ordenador o mediante programas locales sin retención ni envío a servidores externos, ningún documento fiscal sale de tu despacho. Además, conviene acostumbrarse a verificar siempre que tu programa de gestión habitual conserva copias limpias en formatos abiertos estándar como CSV, hoja de cálculo o PDF legible.
+
+### Regla de lotes cortos para evitar desviaciones silenciosas en el reconocimiento de texto
+
+Nunca conviene procesar de golpe cientos de albaranes esperando que todo cuadre a la primera sin vigilancia. Resulta mucho más seguro trabajar con tandas breves —por ejemplo, las diez últimas facturas recibidas— y verificar frente al documento original que ningún decimal, retención ni tipo impositivo ha sido mal interpretado por la lectura automática.
+
+Cuando detectas que un proveedor concreto utiliza un diseño difícil o columnas desplazadas, anótalo en una pequeña ficha de revisión prioritaria para mirarlo directamente a ojo en dos segundos, sin intentar forzar ajustes complejos que roban más tiempo que leer el PDF original.
+
+### Convención limpia de carpetas y nombres sin depender de software propietario
+
+Una regla sencilla que funciona en cualquier sistema operativo consiste en crear una carpeta por año, dentro cuatro carpetas por trimestre y dentro tres subcarpetas: emitidas, recibidas y movimientos bancarios. Para el nombre de cada archivo nuevo basta seguir el patrón año-mes-día seguido del proveedor breve sin tildes ni espacios complejos.
+
+Con este orden tan sobrio, encontrar un recibo concreto en medio de una inspección o ante una reclamación de garantía tarda cinco segundos con el buscador nativo de cualquier ordenador, incluso sin abrir programas contables. Además, tu gestoría recibirá los lotes clasificados de inmediato, evitando preguntas repetitivas de última hora antes de cada liquidación fiscal.
+
+### Cómo preparar la transición hacia facturación verificable con calma y sin sobrecostes
+
+Las pymes y los autónomos españoles afrontan calendarios normativos concretos en materia de sistemas informáticos de facturación y trazabilidad tributaria verificables en la sede oficial de la Agencia Tributaria. Contar desde hoy con carpetas limpias, numeración correlativa sin saltos y criterios claros de revisión protege al negocio de prisas innecesarias y de comprar módulos sobredimensionados bajo presión comercial.
+
+Antes de cambiar de herramienta o firmar permanencias anuales, consulta primero con tu asesor fiscal habitual qué exige exactamente tu epígrafe y qué exportaciones simples en formato abierto acepta directamente su programa contable.
+
+### Criterio humano por encima de la prisa trimestral
+
+La verdadera utilidad de estas herramientas no consiste en firmar contabilidad a ciegas, sino en quitar de delante la parte repetitiva de copiar números uno a uno desde decenas de papeles sueltos. Mantener el orden propio, elegir soluciones sobrias y revisar siempre el resultado devuelve tiempo real para cuidar tu negocio y descansar al terminar la jornada.
+
+### Qué hacer con los justificantes en papel arrugado y tickets térmicos que se borran
+
+En comercios, bares, reparaciones a domicilio o desplazamientos diarios abundan pequeños recibos en papel térmico cuya tinta desaparece en pocos meses dentro de una caja. En lugar de dejarlos acumularse hasta final de trimestre, fija una rutina mínima de dos minutos al cerrar la semana: fotografía los tickets de gasto deducible con buena luz sobre una superficie neutra y guárdalos directamente dentro de la carpeta mensual de recibos junto al nombre del proveedor.
+
+Conservar esa copia digital legible evita perder deducciones legítimas por deterioro físico del papel y permite que cualquier extracción ligera en local reconozca fecha e importe sin necesidad de adivinar cifras borrosas meses después.
+
+### Señales de que tu sistema administrativo actual es ya suficiente sin comprar software nuevo
+
+Muchos autónomos creen erróneamente que necesitan un programa contable caro solo porque escuchan publicidad constante en internet. Si emites menos de treinta facturas al mes, tardas menos de una hora semanal en conciliar tus movimientos y tu gestoría recibe las carpetas limpias sin pedir aclaraciones repetidas, tu flujo actual cumple perfectamente su objetivo con coste casi nulo.
+
+Invertir únicamente cuando aparece un cuello de botella medible —por ejemplo un volumen elevado de albaranes diarios o requisitos técnicos de facturación obligatoria— protege tu caja y evita migrar datos sin necesidad real. Reservar el presupuesto para herramientas verdaderamente útiles mantiene sana la economía de tu pequeña empresa durante todo el año.
+
+Al comparar alternativas comerciales, pregunta siempre antes de contratar si puedes exportar todos tus historiales en formatos abiertos estándar y cuánto tardarías en recuperar tu archivo completo si decidieras cambiar de proveedor en el futuro sin pagar recargos de salida.
 
 **Pasos accionables para aplicar hoy:**
 
 1. Crea una estructura de carpetas sencilla para el trimestre actual separando facturas emitidas, facturas recibidas y justificantes bancarios en tres directorios limpios.
 2. Acuerda una convención fija de nombres para los archivos nuevos, empezando por el año, el mes, el día y el nombre breve del proveedor sin acentos ni espacios raros.
-3. Toma diez documentos recientes ya archivados y cronometra cuánto tardas en extraer manualmente los campos clave frente a preparar el borrador asistido y revisarlo con calma línea por línea.
-
-**Criterio por encima de la prisa**
-
-La verdadera utilidad de estas herramientas no consiste en firmar contabilidad a ciegas, sino en quitar de delante la parte repetitiva de copiar números uno a uno. Mantener el orden propio, elegir soluciones sobrias y revisar siempre el resultado devuelve tiempo real para cuidar tu negocio y descansar al terminar la jornada.`,
+3. Toma diez documentos recientes ya archivados y cronometra cuánto tardas en extraer manualmente los campos clave frente a preparar el borrador asistido y revisarlo con calma línea por línea.`,
     actionableChecklist: [
       "Separar emitidas, recibidas y recibos en tres carpetas limpias antes de automatizar nada",
       "Probar la lectura asistida únicamente en lotes breves de prueba y en entorno local",
@@ -765,11 +873,15 @@ La verdadera utilidad de estas herramientas no consiste en firmar contabilidad a
       "En 30 segundos: la tecnología puede traducir una carta oficial confusa a tres frases claras en letra grande para ayudar a una persona mayor, siempre borrando antes nombres y documentos y sin intentar sustituir nunca la compañía humana (lista básica de comprobación, 0 €).",
     excerpt:
       "La burocracia digital y los formularios opacos generan exclusión y angustia. Analizamos límites éticos claros para ayudar en lo cotidiano sin deshumanizar el cuidado.",
-    body: `**Pocas cosas generan tanta impotencia cotidiana en una persona mayor —y en quienes la cuidan— como abrir una carta administrativa redactada con siglas, artículos encadenados y plazos confusos, o quedar atrapado en una sede electrónica diseñada únicamente para especialistas.** Ante esta barrera real, las herramientas de lenguaje pueden aportar un alivio práctico considerable si actúan como lupa y traductor llano. Sin embargo, también esconden riesgos evidentes de privacidad, vulnerabilidad emocional y deshumanización si se emplean sin fronteras firmes.
+    body: `**Pocas cosas generan tanta impotencia cotidiana en una persona mayor —y en quienes la cuidan— como abrir una carta administrativa redactada con siglas, artículos encadenados y plazos confusos, o quedar atrapado en una sede electrónica diseñada únicamente para especialistas.** Ante esta barrera real, las herramientas de lenguaje pueden aportar un alivio práctico considerable si actúan como lupa y traductor llano.
 
-**Traducir la burocracia sin entregar la intimidad de nadie**
+Sin embargo, también esconden riesgos evidentes de privacidad, vulnerabilidad emocional y deshumanización si se emplean sin fronteras firmes. Separar claramente qué parte del trámite admite apoyo mecánico y qué parte exige presencia humana protege tanto derechos legales como la tranquilidad diaria de las familias.
 
-Cuando una notificación municipal, bancaria o sanitaria resulta incomprensible, un asistente conversacional puede explicar qué trámite solicita exactamente, qué plazo orientativo figura en el texto y qué documento conviene preparar. Ahora bien, el guardarraíl de AIJuris fija una condición previa innegociable: jamás se sube la imagen completa de la carta ni se copian el nombre, el domicilio, el número de documento oficial o datos médicos en plataformas públicas de terceros. Basta con transcribir únicamente el párrafo genérico de la norma o sustituir cualquier dato identificativo por etiquetas genéricas como «persona titular» o «entidad emisora» antes de pedir una explicación clara.
+### Traducir la burocracia oficial sin entregar la intimidad de nadie
+
+Cuando una notificación municipal, bancaria o sanitaria resulta incomprensible, un asistente conversacional puede explicar qué trámite solicita exactamente, qué plazo orientativo figura en el texto y qué documento conviene preparar antes de pedir cita.
+
+Ahora bien, el guardarraíl de protección de datos fija una condición previa innegociable: jamás se sube la imagen completa de la carta ni se copian el nombre, el domicilio, el número de documento oficial o datos médicos en plataformas públicas de terceros. Basta con transcribir únicamente el párrafo genérico de la resolución o sustituir cualquier dato identificativo por etiquetas neutras como «persona titular» o «entidad emisora» antes de pedir una explicación en lenguaje llano.
 
 | Situación en el cuidado o gestión diaria | Uso prudente y respetuoso de apoyo digital | Límite ético innegociable (lo que no debe hacerse) |
 | :--- | :--- | :--- |
@@ -778,21 +890,53 @@ Cuando una notificación municipal, bancaria o sanitaria resulta incomprensible,
 | Soledad o escucha cotidiana | Usar ayudas prácticas para liberar tiempo del familiar | Sustituir visitas, llamadas y afecto por avatares simulados |
 | Reclamaciones ante servicios básicos | Preparar borradores ordenados que revisa un familiar | Firmar o presentar escritos sin lectura ni consentimiento real |
 
-**El riesgo de simular compañía afectiva mediante máquinas**
+### El riesgo ético y legal de simular compañía afectiva mediante máquinas
 
-- **Honestidad frente a simulación emocional:** bajo el argumento de aliviar la soledad no deseada, proliferan servicios que presentan avatares conversacionales con voz cálida como si fueran amigos o cuidadores permanentes. Para una persona mayor con deterioro cognitivo o en situación de vulnerabilidad, disimular la naturaleza mecánica de un programa compromete su dignidad y puede generar dependencia o confusión sobre con quién habla realmente.
-- **Transparencia exigida también por el marco europeo:** el Reglamento europeo de Inteligencia Artificial establece obligaciones claras de transparencia cuando una persona interactúa con un sistema automatizado. En el ámbito familiar y comunitario, ese principio legal coincide con el sentido común más básico: decir siempre con serenidad qué hace una herramienta y qué sigue haciendo la familia o el profesional sanitario o social.
-- **Tecnología al servicio del tiempo cercano:** si traducir un impreso confuso o redactar una solicitud clara ahorra cuarenta minutos de pelea burocrática, ese tiempo recuperado sirve precisamente para sentarse a tomar un café con calma, escuchar historias y compartir presencia real.
+Bajo el argumento de aliviar la soledad no deseada, proliferan servicios que presentan avatares conversacionales con voz cálida como si fueran amigos o cuidadores permanentes. Para una persona mayor con deterioro cognitivo o en situación de vulnerabilidad, disimular la naturaleza mecánica de un programa compromete su dignidad, interfiere en su confianza cotidiana y puede generar confusión real sobre con quién habla.
+
+Además, el Reglamento europeo de Inteligencia Artificial establece obligaciones claras de transparencia cuando una persona interactúa con un sistema automatizado. En el ámbito familiar y comunitario, ese principio legal coincide con el sentido común más básico: explicar siempre con serenidad qué hace una herramienta y qué sigue haciendo la familia, el vecindario o el profesional sanitario y social.
+
+### Accesibilidad real en formato papel y digital para evitar la brecha silenciosa
+
+Muchas veces el problema no reside en la falta de voluntad para entender un trámite, sino en textos impresos con cuerpo diminuto, enlaces enrevesados o formularios que caducan a los cinco minutos por pantalla. Convertir la explicación obtenida en una ficha impresa breve con letra grande, alto contraste y pasos numerados devuelve serenidad y protagonismo a la persona mayor.
+
+En lugar de hacer todas las gestiones en silencio como si el mayor hubiera perdido criterio, leer juntos esa hoja clara permite que siga decidiendo sobre sus cuentas, sus citas médicas y sus preferencias personales con autonomía respetada.
+
+### Cómo preparar una lista de comprobación segura para familiares y asociaciones locales
+
+En asociaciones vecinales, centros de mayores o familias que reparten cuidados entre varios hermanos, ayuda enormemente acordar tres normas escritas muy breves junto al teléfono de asistencia de confianza: qué datos jamás se comparten en herramientas digitales abiertas, qué organismo oficial confirma plazos vigentes y quién revisa cualquier escrito antes de enviarlo por sede electrónica o correo certificado.
+
+Este orden sencillo evita duplicar gestiones, reduce discusiones sobre quién llamó a dónde y deja constancia clara de citas pendientes en un cuaderno común fácil de consultar por todos.
+
+### Tecnología al servicio del tiempo cercano y el cuidado presencial
+
+Si traducir un impreso confuso o redactar una solicitud clara ahorra cuarenta minutos de pelea burocrática, ese tiempo recuperado sirve precisamente para sentarse a tomar un café con calma, escuchar historias y compartir presencia real. Ningún resumen inteligente supera el valor de llegar sin prisas ni ansiedad a una visita familiar.
+
+Las herramientas sirven para allanar obstáculos mecánicos, nunca para reemplazar el calor de una mano cercana ni la responsabilidad hacia quienes nos precedieron. Mantener esa línea clara protege los derechos de nuestros mayores y orienta el progreso técnico hacia una vida más humana y accesible.
+
+### Preguntas prácticas para probar cualquier dispositivo de ayuda pensado para mayores
+
+Antes de comprar tabletas especiales, altavoces inteligentes o suscripciones de teleasistencia basadas en voz automática para un familiar mayor, somete cada opción a cuatro pruebas sencillas en casa junto a la propia persona interesada. Comprueba primero si la interfaz exige contraseñas complejas o menús escondidos tras pequeños iconos poco visibles cuando falla la conexión doméstica.
+
+Verifica después si la empresa responsable detalla con claridad en español dónde se almacenan grabaciones de voz, quién puede borrar el historial completo en un clic y qué ocurre si decides darte de baja sin penalizaciones ocultas ni permanencias largas. Ninguna facilidad tecnológica compensa instalar un sistema intrusivo que registre conversaciones privadas del hogar sin consentimiento informado real.
+
+### Colaboración honesta entre centros de barrio, comercios cercanos y administración
+
+La inclusión tecnológica digna no depende únicamente del ámbito familiar privado; también florece cuando farmacias, comercios de confianza, bibliotecas públicas y trabajadores sociales ofrecen explicaciones claras y alternativas presenciales dignas para quien no domina las sedes electrónicas. Apoyar iniciativas municipales de ventanilla humana asistida complementa perfectamente el uso prudente de traductores claros de texto en casa.
+
+Recordar que ningún ciudadano mayor debería quedarse sin una ayuda pública o sin una cita médica por no entender un código digital nos compromete a utilizar estas herramientas para tender puentes accesibles en el vecindario, preservando siempre el respeto, la escucha tranquila y el trato personal cercano.
+
+Cuando una familia prueba primero qué formato de resumen entiende mejor su mayor —ya sea una lista impresa de pasos grandes, una tabla sencilla de teléfonos útiles o un recordatorio de calendario en voz alta— descubre pronto que la tecnología más valiosa es aquella que desaparece discretamente detrás de la tranquilidad cotidiana.
+
+### Compromiso de transparencia intergeneracional en el hogar
+
+Explicar sin paternalismo qué ayuda se ha utilizado para resumir un trámite complejo refuerza la confianza mutua y evita que la persona mayor sienta que deciden por ella a espaldas suyas.
 
 **Pasos accionables para aplicar hoy:**
 
-1. Si ayudas a un familiar con gestiones administrativas, prepara una hoja sencilla donde antes de usar cualquier herramienta taches o omitas siempre nombres, direcciones, teléfonos y números identificativos.
+1. Si ayudas a un familiar con gestiones administrativas, prepara una hoja sencilla donde antes de usar cualquier herramienta taches u omitas siempre nombres, direcciones, teléfonos y números identificativos.
 2. Utiliza la ayuda automática únicamente para resumir requisitos en puntos numerados con letra grande y legible que podáis leer juntos antes de pedir cita presencial o telefónica.
-3. Ante cualquier duda sanitaria, bancaria o de derechos sociales, contrasta siempre el resumen obtenido directamente con el centro de salud, la trabajadora social o el teléfono oficial del organismo correspondiente.
-
-**Cuidado humano como medida de todo avance**
-
-Las herramientas sirven para allanar obstáculos mecánicos, nunca para reemplazar el calor de una mano cercana ni la responsabilidad hacia quienes nos precedieron. Mantener esa línea clara protege los derechos de nuestros mayores y orienta el progreso técnico hacia una vida más humana y accesible.`,
+3. Ante cualquier duda sanitaria, bancaria o de derechos sociales, contrasta siempre el resumen obtenido directamente con el centro de salud, la trabajadora social o el teléfono oficial del organismo correspondiente.`,
     actionableChecklist: [
       "Anonimizar siempre nombres, DNI, direcciones y datos médicos antes de traducir cualquier escrito",
       "Confirmar plazos, requisitos y citas en organismos o profesionales reales antes de actuar",
@@ -1629,9 +1773,9 @@ Señales EmoInsight recientes: Claridad=${emoInsights?.summary?.emoDimensions?.c
 Títulos ya publicados o en reserva (PROHIBIDO repetir): ${JSON.stringify(syntheticCorpus.map((p) => p.title))}
 
 Requisitos estrictos:
-1. Título RAE sentence case (solo mayúscula inicial y siglas como IA, AI Act, RGPD, SLM, MCP, AIEvolutio, AIDux, AIJuris; "pyme"/"pymes" en minúscula).
-2. clarityNote: resumen en 1 frase empezando por "En 30 segundos:" con analogía cotidiana y nivel de esfuerzo real.
-3. body: 600-900 palabras en español claro, incluyendo al menos una tabla comparativa en formato Markdown (| Columna | ... |) y una lista numerada "**Pasos accionables para aplicar hoy:**".
+1. Título RAE sentence case (solo mayúscula inicial y siglas como IA, AI Act, RGPD, SLM, MCP, AIEvolutio, AIDux, AIJuris; "pyme"/"pymes" en minúscula). Prohibido usar jerga interna o fórmulas autoinculpatorias («pueden cometer errores»).
+2. clarityNote: resumen en 1 frase empezando por "En 30 segundos:" con 3 ideas clave, analogía cotidiana y nivel de esfuerzo real.
+3. body: 1200-1600 palabras en español claro siguiendo el patrón Bite-Snack-Meal: subencabezados \`### \` cada 250-300 palabras, párrafos breves de 3-4 líneas (40-60 palabras), al menos una tabla comparativa en formato Markdown (| Columna | ... |) y una lista numerada "**Pasos accionables para aplicar hoy:**".
 4. PROHIBICIÓN ABSOLUTA DE ALUCINACIONES: cero porcentajes, ahorros en euros o leyes inventadas. Si citas un dato cuantitativo o normativo real, debe venir de la búsqueda web en vivo; si no, redacta una guía estrictamente conceptual y práctica sin cifras inventadas.
 5. Responde SOLO con JSON válido:
 {"title":"...","slug":"...","category":"Estrategia|Operaciones|Legal","effortLevel":"basic|intermediate|advanced","readerNeed":"...","angle":"...","actionType":"...","readerProfile":"...","clarityNote":"...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."],"seedQuestion":"..."}`;
@@ -2043,8 +2187,8 @@ async function runEditorialWriter(telemetry, briefing, targetDate) {
   const articleFormat = isSundayPillarDate(targetDate) ? "pillar" : "tactical";
   const lengthTarget =
     articleFormat === "pillar"
-      ? "1000-1500 palabras (guía pilar semanal en profundidad)"
-      : "600-900 palabras (artículo táctico diario)";
+      ? "1400-1800 palabras (guía pilar semanal Bite-Snack-Meal en profundidad)"
+      : "1200-1600 palabras (artículo táctico diario Bite-Snack-Meal)";
   console.log(
     `--- [Comité Editorial: ${author}] Redactando artículo (${articleFormat}) bajo Briefing de AIVisio ---`,
   );
@@ -2069,10 +2213,10 @@ ${briefing.suggestedTitle ? `- Título sugerido: ${briefing.suggestedTitle}` : "
 PROHIBIDO REPETIR CUALQUIERA DE ESTOS TÍTULOS EXISTENTES:
 ${JSON.stringify(telemetry.allExistingTitles)}
 
-Normas editoriales de 3 capas, RAE y veracidad estricta:
-1. Título en sentence case según la RAE (solo primera letra y siglas como IA, AI Act, RGPD, SLM, MCP, AIVisio, AIDux, AIJuris en mayúscula; "pyme"/"pymes" en minúscula). Prohibido usar jerga interna ("volante", "curva exponencial", "máquina biológica") o emojis.
-2. Capa 1 (clarityNote): empieza exactamente con "En 30 segundos:" explicando la idea con una analogía cotidiana y el nivel de esfuerzo real (estantería sencilla, bricolaje guiado o técnica).
-3. Capa 2 (body): ${lengthTarget}. Estructura escaneable con párrafos definidos citables, al menos una tabla comparativa en formato Markdown (| Columna A | Columna B | ...), viñetas claras y cierre "**Pasos accionables para aplicar hoy:**" con 3 pasos numerados.
+Normas editoriales Bite-Snack-Meal de 3 capas, RAE y veracidad estricta:
+1. Título en sentence case según la RAE (solo primera letra y siglas como IA, AI Act, RGPD, SLM, MCP, AIVisio, AIDux, AIJuris en mayúscula; "pyme"/"pymes" en minúscula). Prohibido usar jerga interna ("volante", "curva exponencial", "máquina biológica"), emojis o fórmulas autoinculpatorias («pueden cometer errores»).
+2. Capa 1 (clarityNote): empieza exactamente con "En 30 segundos:" explicando la idea con 3 puntos clave, una analogía cotidiana y el nivel de esfuerzo real (estantería sencilla, bricolaje guiado o técnica).
+3. Capa 2 (body): ${lengthTarget}. Estructura escaneable Bite-Snack-Meal con subencabezados Markdown \`### \` cada 250-300 palabras, párrafos breves de 3-4 líneas (40-60 palabras), definiciones citables, al menos una tabla comparativa en formato Markdown (| Columna A | Columna B | ...), viñetas claras y cierre "**Pasos accionables para aplicar hoy:**" con 3 pasos numerados.
 4. PROHIBICIÓN ABSOLUTA DE ALUCINACIONES: queda prohibido inventar porcentajes, ahorros en euros, encuestas, estadísticas o artículos de leyes. Solo cita hechos cuantitativos o normas verificadas con la búsqueda web en vivo; si no hay fuentes verificables para una cifra, publica una guía exclusivamente conceptual y práctica sin estadísticas ni casos simulados.
 5. actionableChecklist: exactamente 3 pasos concretos.
 6. seedQuestion: una pregunta directa al lector para abrir el hilo de comentarios EmoInsight al final del artículo.
@@ -2105,7 +2249,7 @@ Normas editoriales de 3 capas, RAE y veracidad estricta:
         console.log(
           `[Guardián Editorial] Aplicando recalibración elástica (${lengthCheck.wordCount} palabras -> objetivo ${lengthCheck.minWords}-${lengthCheck.maxWords})...`,
         );
-        const recalibratePrompt = `Ajusta ÚNICAMENTE la extensión del siguiente artículo para que el campo "body" tenga estrictamente entre ${lengthCheck.minWords} y ${lengthCheck.maxWords} palabras (${articleFormat === "pillar" ? "guía pilar semanal" : "artículo táctico diario"}), manteniendo intacta la tabla Markdown, la ausencia total de cifras inventadas y los 3 pasos accionables finales.
+        const recalibratePrompt = `Ajusta ÚNICAMENTE la extensión del siguiente artículo para que el campo "body" tenga estrictamente entre ${lengthCheck.minWords} y ${lengthCheck.maxWords} palabras (${articleFormat === "pillar" ? "guía pilar semanal" : "artículo táctico diario"}), manteniendo los subencabezados ### cada 250-300 palabras, la tabla Markdown, la ausencia total de cifras inventadas y los 3 pasos accionables finales.
 JSON actual: ${JSON.stringify(parsed)}
 Responde SOLO con el JSON completo actualizado.`;
         const recalRaw = await callLLM(recalibratePrompt);
