@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: "23 5 * * *" # Ciclo evolutivo diario (05:23 UTC, fuera del minuto 00 para evitar cola de GitHub Actions)
   push:
-    branches: [main] # Despliegue en cada avance a main
+    branches: [main] # Verificación y despliegue en cada avance a main
   workflow_dispatch: # Disparador manual para forzar ciclos de contenido o técnicos bajo demanda
     inputs:
       mode:
@@ -46,6 +46,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "npm"
+
+      - name: 2B. Instalar Dependencias Verificables
+        run: npm ci
 
       - name: Autenticar en Google Cloud con Workload Identity Federation
         id: google-auth
@@ -73,13 +77,70 @@ jobs:
           git config user.email "autonomous@aievolutio.com"
           if [ "$INPUT_MODE" = "audit-only" ]; then
             node scripts/autonomous-evolution.mjs --audit-only
+            exit 0
+          fi
+
+          set +e
+          {
+            node scripts/autonomous-evolution.mjs --phase=tech &&
+            npm run build:site &&
+            npm test &&
+            npm run format &&
+            node scripts/self-heal-check.mjs &&
+            npm run lint:js &&
+            npm run lint:css &&
+            npm run lint:html
+          } > /tmp/phase-tech.log 2>&1
+          STATUS=$?
+          set -e
+
+          cat /tmp/phase-tech.log
+          if [ -f "docs/daily-digest.md" ]; then
+            cp "docs/daily-digest.md" /tmp/daily-digest-latest.md
+          fi
+
+          if [ "$STATUS" -ne 0 ]; then
+            echo "TECH_FAILED=true" >> "$GITHUB_ENV"
+            {
+              echo "## Bloqueo en Fase 1 (Tech)"
+              echo "- Ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              echo "- Acción tomada: subida a \`main\` bloqueada y cambios restaurados."
+              echo ""
+              echo "\`\`\`text"
+              tail -n 60 /tmp/phase-tech.log
+              echo "\`\`\`"
+              echo ""
+            } >> /tmp/ci-failures.md
+            git reset --hard HEAD
+            git clean -fd
           else
-            node scripts/autonomous-evolution.mjs --phase=tech
-            npx --yes prettier --write "**/*.{html,css,js,json,md}" || true
-            node scripts/self-heal-check.mjs
             git add -A
             if ! git diff --staged --quiet; then
               git commit -m "feat(roadmap-tech): avance autónomo del roadmap, investigación de frontera y sincronización EmoInsight"
+              set +e
+              {
+                git fetch origin main &&
+                (git rebase -X theirs origin/main || (git rebase --abort && git merge --strategy-option=theirs origin/main -m "evo(merge): reconciliación automática fase técnica")) &&
+                git push origin HEAD:main
+              } > /tmp/push-tech.log 2>&1
+              PUSH_STATUS=$?
+              set -e
+              cat /tmp/push-tech.log
+              if [ "$PUSH_STATUS" -ne 0 ]; then
+                echo "TECH_FAILED=true" >> "$GITHUB_ENV"
+                {
+                  echo "## Bloqueo al sincronizar Fase 1 con main"
+                  echo "- Ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  echo ""
+                  echo "\`\`\`text"
+                  tail -n 40 /tmp/push-tech.log
+                  echo "\`\`\`"
+                  echo ""
+                } >> /tmp/ci-failures.md
+                git fetch origin main || true
+                git reset --hard origin/main
+                git clean -fd
+              fi
             else
               echo "Fase 1 sin cambios pendientes en el árbol de trabajo."
             fi
@@ -100,55 +161,170 @@ jobs:
           ARGS="--phase=content"
           if [ "$INPUT_MODE" = "force-content" ]; then ARGS="$ARGS --force-content"; fi
           if [ -n "$INPUT_AUTHOR" ]; then ARGS="$ARGS --author=$INPUT_AUTHOR"; fi
-          node scripts/autonomous-evolution.mjs $ARGS
-          npx --yes prettier --write "**/*.{html,css,js,json,md}" || true
-          node scripts/self-heal-check.mjs
-          git add -A
-          if ! git diff --staged --quiet; then
-            git commit -m "feat(editorial): publicación autónoma diaria y parte de bitácora verificados"
-          else
-            echo "Fase 2 sin cambios pendientes en el árbol de trabajo."
+
+          set +e
+          {
+            node scripts/autonomous-evolution.mjs $ARGS &&
+            npm run build:site &&
+            npm test &&
+            npm run format &&
+            node scripts/self-heal-check.mjs &&
+            npm run lint:js &&
+            npm run lint:css &&
+            npm run lint:html
+          } > /tmp/phase-content.log 2>&1
+          STATUS=$?
+          set -e
+
+          cat /tmp/phase-content.log
+          if [ -f "docs/daily-digest.md" ]; then
+            cp "docs/daily-digest.md" /tmp/daily-digest-latest.md
           fi
 
-      - name: 4. Autorreparación Final de Integridad y Antiduplicados
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'audit-only')
-        run: |
-          node scripts/self-heal-check.mjs
-
-      - name: 5. Sincronizar y Subir Commits Autónomos a Main
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'audit-only')
-        run: |
-          git fetch origin main
-          git rebase -X theirs origin/main || (git rebase --abort && git merge --strategy-option=theirs origin/main -m "evo(merge): reconciliación automática")
-          git push origin HEAD:main || true
-
-      - name: 6. Emitir o Actualizar Parte de Observabilidad (Issue Único Diario)
-        if: always() && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'audit-only'))
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ -f "docs/daily-digest.md" ]; then
-            TODAY=$(date -u +'%Y-%m-%d')
-            ISSUE_TITLE="📊 Informe Evolutivo AIEvolutio — $TODAY"
-            EXISTING_ISSUE=$(gh issue list --search "$ISSUE_TITLE in:title" --state open --json number --jq '.[0].number' || echo "")
-            if [ -n "$EXISTING_ISSUE" ]; then
-              gh issue comment "$EXISTING_ISSUE" --body-file "docs/daily-digest.md" || true
+          if [ "$STATUS" -ne 0 ]; then
+            echo "CONTENT_FAILED=true" >> "$GITHUB_ENV"
+            {
+              echo "## Bloqueo en Fase 2 (Editorial)"
+              echo "- Ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              echo "- Acción tomada: subida a \`main\` bloqueada y cambios restaurados."
+              echo ""
+              echo "\`\`\`text"
+              tail -n 60 /tmp/phase-content.log
+              echo "\`\`\`"
+              echo ""
+            } >> /tmp/ci-failures.md
+            git reset --hard HEAD
+            git clean -fd
+          else
+            git add -A
+            if ! git diff --staged --quiet; then
+              git commit -m "feat(editorial): publicación autónoma diaria y parte de bitácora verificados"
+              set +e
+              {
+                git fetch origin main &&
+                (git rebase -X theirs origin/main || (git rebase --abort && git merge --strategy-option=theirs origin/main -m "evo(merge): reconciliación automática fase editorial")) &&
+                git push origin HEAD:main
+              } > /tmp/push-content.log 2>&1
+              PUSH_STATUS=$?
+              set -e
+              cat /tmp/push-content.log
+              if [ "$PUSH_STATUS" -ne 0 ]; then
+                echo "CONTENT_FAILED=true" >> "$GITHUB_ENV"
+                {
+                  echo "## Bloqueo al sincronizar Fase 2 con main"
+                  echo "- Ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  echo ""
+                  echo "\`\`\`text"
+                  tail -n 40 /tmp/push-content.log
+                  echo "\`\`\`"
+                  echo ""
+                } >> /tmp/ci-failures.md
+                git fetch origin main || true
+                git reset --hard origin/main
+                git clean -fd
+              fi
             else
-              gh issue create --title "$ISSUE_TITLE" --body-file "docs/daily-digest.md" || true
+              echo "Fase 2 sin cambios pendientes en el árbol de trabajo."
             fi
           fi
 
-      - name: 7. Compilar Sitio Estático (dist/)
+      - name: 4. Verificación Final de Calidad en Main Antes de Desplegar
+        id: final-verify
         if: github.event_name != 'workflow_dispatch' || inputs.mode != 'audit-only'
         run: |
-          npm run build:site
-          echo > dist/.nojekyll
+          set +e
+          {
+            node scripts/self-heal-check.mjs &&
+            npm run build:site &&
+            npm test &&
+            npm run lint:js &&
+            npm run lint:css &&
+            npm run lint:html
+          } > /tmp/final-verify.log 2>&1
+          STATUS=$?
+          set -e
 
-      - name: 8. Desplegar a GitHub Pages (Rama gh-pages)
-        if: github.event_name != 'workflow_dispatch' || inputs.mode != 'audit-only'
+          cat /tmp/final-verify.log
+          if [ "$STATUS" -ne 0 ]; then
+            echo "VERIFY_FAILED=true" >> "$GITHUB_ENV"
+            {
+              echo "## Bloqueo en Verificación Previa al Despliegue"
+              echo "- Rama: \`main\` (\`$(git rev-parse --short HEAD)\`)"
+              echo "- Ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              echo "- Acción tomada: despliegue a \`gh-pages\` bloqueado hasta corregir la incidencia."
+              echo ""
+              echo "\`\`\`text"
+              tail -n 60 /tmp/final-verify.log
+              echo "\`\`\`"
+              echo ""
+            } >> /tmp/ci-failures.md
+            exit 1
+          fi
+
+      - name: 5. Observabilidad Diaria y Gestión de Incidencias ci-blocked
+        if: always() && (github.event_name != 'workflow_dispatch' || inputs.mode != 'audit-only')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TODAY=$(date -u +'%Y-%m-%d')
+
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            DIGEST_FILE="docs/daily-digest.md"
+            if [ -f "/tmp/daily-digest-latest.md" ]; then
+              DIGEST_FILE="/tmp/daily-digest-latest.md"
+            fi
+            if [ -f "$DIGEST_FILE" ]; then
+              ISSUE_TITLE="📊 Informe Evolutivo AIEvolutio — $TODAY"
+              EXISTING_ISSUE=$(gh issue list --search "$ISSUE_TITLE in:title" --state open --json number --jq '.[0].number' || echo "")
+              if [ -n "$EXISTING_ISSUE" ]; then
+                gh issue comment "$EXISTING_ISSUE" --body-file "$DIGEST_FILE" || true
+              else
+                gh issue create --title "$ISSUE_TITLE" --body-file "$DIGEST_FILE" || true
+              fi
+            fi
+          fi
+
+          if [ "$TECH_FAILED" = "true" ] || [ "$CONTENT_FAILED" = "true" ] || [ "$VERIFY_FAILED" = "true" ] || [ "${{ steps.final-verify.outcome }}" = "failure" ]; then
+            gh label create "ci-blocked" --color "B60205" --description "Bloqueo CI que requiere corrección antes de publicar" --force || true
+            if [ ! -f /tmp/ci-failures.md ]; then
+              echo "## Bloqueo CI detectado el $TODAY" > /tmp/ci-failures.md
+              echo "- Ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> /tmp/ci-failures.md
+            fi
+            {
+              echo "### Criterio de cierre"
+              echo "- [ ] Reproducir en local con \`npm run build:site && npm test && npm run lint:js && npm run lint:css && npm run lint:html\`"
+              echo "- [ ] Corregir la causa raíz; se cerrará automáticamente en la siguiente ejecución verde de \`evolution-loop.yml\`."
+            } >> /tmp/ci-failures.md
+
+            OPEN_BLOCK_ISSUE=$(gh issue list --label "ci-blocked" --state open --json number --jq '.[0].number' || echo "")
+            if [ -n "$OPEN_BLOCK_ISSUE" ]; then
+              gh issue comment "$OPEN_BLOCK_ISSUE" --body-file /tmp/ci-failures.md || true
+            else
+              gh issue create --title "🔧 Corrección CI requerida — $TODAY" --label "ci-blocked" --body-file /tmp/ci-failures.md || true
+            fi
+          elif [ "${{ steps.final-verify.outcome }}" = "success" ]; then
+            OPEN_ISSUES=$(gh issue list --label "ci-blocked" --state open --json number --jq '.[].number' || echo "")
+            SHORT_SHA=$(git rev-parse --short HEAD)
+            for ISS in $OPEN_ISSUES; do
+              gh issue close "$ISS" --comment "✅ Verificación CI superada y despliegue validado en \`$SHORT_SHA\` (ejecución ${{ github.run_id }}). Incidencia resuelta automáticamente." || true
+            done
+          fi
+
+      - name: 6. Preparar Sitio Estático (dist/.nojekyll)
+        if: steps.final-verify.outcome == 'success' && (github.event_name != 'workflow_dispatch' || inputs.mode != 'audit-only')
+        run: touch dist/.nojekyll
+
+      - name: 7. Desplegar a GitHub Pages (Rama gh-pages)
+        if: steps.final-verify.outcome == 'success' && (github.event_name != 'workflow_dispatch' || inputs.mode != 'audit-only')
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist
           exclude_assets: ".github,docs,*.md,*.yml,*.yaml"
           force_orphan: true
+
+      - name: 8. Evaluar Resultado Global de las Fases Autónomas
+        if: always() && (env.TECH_FAILED == 'true' || env.CONTENT_FAILED == 'true')
+        run: |
+          echo "Una o más fases autónomas quedaron bloqueadas para proteger main y gh-pages. Revisa la incidencia ci-blocked abierta." >&2
+          exit 1

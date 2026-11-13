@@ -1,11 +1,18 @@
-flowchart LR
-    A[Commit en pre] --> B[GitHub Actions: CI]
-    B -->|Checks correctos| C[Deploy site]
-    C --> D[Checkout de pre]
-    D --> E[Publica en gh-pages]
-    E --> F[GitHub Pages]
-    F --> G[https://aievolutio.com]
-    A --> H[Auto PR pre a main]
-    H --> I[Revisión y merge a main]
-    I --> J[Deploy site desde main]
-    J --> E
+flowchart TD
+    T["Cron diario o dispatch en main"] --> C1["Fase 1: Tech, Frontera y EmoInsight"]
+    P["Push directo a main"] --> VF["Verificación final (build, test, linters, self-heal)"]
+    C1 --> G1{"Pasa gate técnico"}
+    G1 -->|Sí| M1["Commit 1 y push a main"]
+    G1 -->|No| R1["Revertir árbol local y marcar TECH_FAILED"]
+    M1 --> C2["Fase 2: Redacción y buffer editorial"]
+    R1 --> C2
+    C2 --> G2{"Pasa gate editorial"}
+    G2 -->|Sí| M2["Commit 2 y push a main"]
+    G2 -->|No| R2["Revertir árbol local y marcar CONTENT_FAILED"]
+    M2 --> VF
+    R2 --> VF
+    VF -->|Pasa| D["Publicar dist/ en gh-pages"]
+    VF -->|Falla| B["Bloquear despliegue y abrir issue ci-blocked"]
+    D --> C["Cerrar issues ci-blocked si ciclo íntegro limpio"]
+    B --> O["Emitir diario en GitHub Issues"]
+    C --> O

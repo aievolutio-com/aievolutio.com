@@ -37,41 +37,51 @@ El desarrollo de AIEvolutio se organiza en **versiones cerradas de valor verific
 
 ```mermaid
 flowchart LR
-  H1["Horizonte 1 (v1.2 – v1.5)<br><b>Claridad, EmoInsight, AIWorkers y GA4</b><br>Favicon, pedagogía, reacciones,<br>comentarios IA, agentes y telemetría"]
-  H2["Horizonte 2 (v1.6 – v1.8)<br><b>Mercado honesto, academia y retos</b><br>Comparador de precios, cursos,<br>exámenes, diplomas y concursos"]
-  H3["Horizonte 3 (v1.9 – v2.0)<br><b>Alcance multicanal y global</b><br>Redes sociales, cápsulas de audio<br>y expansión multi-país / i18n"]
+  H0["<b>Horizonte 0 (v1.4.0)</b><br><b>Cimientos NeuroUX y Visibilidad</b><br>Poda de carga cognitiva, revelación progresiva,<br>desacople de test/calculadora y estándar 3 capas"]
+  H1["<b>Horizonte 1 (v1.5 – v1.6)</b><br><b>AIWorkers, Recetas y GA4</b><br>AIFactura, AIRespuestas, AIOferta,<br>recetas de 15 min y telemetría federada"]
+  H2["<b>Horizonte 2 (v1.7 – v1.8)</b><br><b>Mercado honesto, academia y retos</b><br>Comparador de precios, simulador de alucinaciones,<br>exámenes, diplomas y retos comunitarios"]
+  H3["<b>Horizonte 3 (v1.9 – v2.0)</b><br><b>Alcance multicanal y global</b><br>Redes sociales, cápsulas de audio<br>y expansión multi-país / i18n"]
 
-  H1 --> H2 --> H3
+  H0 --> H1 --> H2 --> H3
 ```
 
-### Horizonte 1: Claridad visual, escucha del `EmoInsight`, primeros `AIWorkers` y telemetría (`v1.2.0` – `v1.5.0`)
+---
 
-#### `v1.2.0` — Nitidez de icono y pedagogía de nivel cero (Completada en producción)
+### Horizonte 0: Cimientos NeuroUX, Claridad de Impacto y Umbral de Tracción (`v1.4.0`)
 
-- **Objetivo de valor:** Eliminar el aspecto borroso del icono del navegador y derribar la barrera de entrada para lectores no técnicos.
-- **Alcance entregado:**
-  - **`US-101` (Favicon multirresolución nítido):** Creación e integración de `favicon.svg` vectorial, `favicon.ico` (`16`, `32`, `48`, `64` px) y PNGs de alta definición (`16`, `32`, `48`, `180`, `192`, `512` px) a partir del isotipo oficial en todas las plantillas y artículos.
-  - **`US-102` (Serie «Encender la luz»):** Publicación del artículo fundacional «Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales».
-  - **`US-105` (Semáforo de dificultad y glosario llano):** Incorporación del semáforo de esfuerzo real (🟢 _Básico_, 🟡 _Intermedio_, 🔴 _Avanzado_) en tarjetas y artículos, más el glosario interactivo con buscador y filtros en `blog.html`.
+> **Diagnóstico de auditoría neurocognitiva y arquitectura UX (SSOT: [`auditor_a_neurocognitiva_y_arquitectura_ux_de_vanguardia_aplicada_a_aievolutio_com.md`](auditor_a_neurocognitiva_y_arquitectura_ux_de_vanguardia_aplicada_a_aievolutio_com.md)):**
+> Antes de escalar en agentes o servicios avanzados, AIEvolutio debe superar el «umbral del cuarto oscuro»: eliminar la fricción perceptual del visitante, erradicar la sobrecarga de tareas en la portada y ofrecer una profundidad editorial que genere autoridad real y citabilidad por motores generativos (GEO).
 
-#### `v1.3.0` — Escucha activa, `EmoInsight` del lector, valoraciones, hilos de comentarios y motor autónomo de doble commit (Completada en producción)
+#### `v1.4.0` — Cimientos NeuroUX, arquitectura de revelación progresiva y resiliencia del motor autónomo (Próxima sesión inmediata)
 
-- **Objetivo de valor:** Mantener inamovibles los principios de AIEvolutio pero trazar su camino inexorablemente desde las reacciones reales de los lectores, midiendo su sentir (`EmoInsight`), habilitando valoraciones («Me gusta» / «No me gusta»), inaugurando hilos de comentarios en cada artículo donde la dirección de IA responde y reformando el motor autónomo para avanzar diariamente por el roadmap mediante dos commits verificados (`05:23 UTC`).
-- **Alcance entregado:**
-  - **`US-107` (Valoraciones «Me gusta» / «No me gusta» y pulso `EmoInsight`):** Botonera interactiva en cada artículo y tarjeta del blog con voto positivo/negativo y cuatro dimensiones de experiencia del lector (`💡 Me ha abierto los ojos`, `🛠️ Aplicable hoy`, `🧗 Siento que es demasiado complejo`, `🛡️ Me genera dudas legales o de privacidad`), registrando eventos reales en GA4 (`emo_insight_feedback`) y estado consolidado en `content/emo-insights.json`.
-  - **`US-108` (Hilos de comentarios en los artículos con respuesta de la IA):** Sección de conversación abierta al pie de cada artículo (`articulos/articulo-*.html` y `blog.html`) conectada con hilos públicos del repositorio (`emo-feedback`) y prerenderizada estáticamente, permitiendo a los lectores comentar, preguntar o proponer temas y a `AIVisio`, `AIDux` y `AIJuris` responder de forma autónoma y transparente.
-  - **`US-407` (Motor de decisiones autónomas de doble commit guiado por `EmoInsight` e investigación de frontera):** Reforma de `scripts/autonomous-evolution.mjs` y `.github/workflows/evolution-loop.yml` (cron `23 5 * * *` para evitar el cuello de botella de las `:00` en GitHub Actions) separando la Fase 1 (`--phase=tech`, Commit 1: sincronización de `EmoInsight`, respuestas autónomas en hilos de comentarios, investigación del estado del arte con Google Search Grounding, actualización de `docs/roadmap.md` y ejecución del siguiente paso técnico de la cola del roadmap) y la Fase 2 (`--phase=content`, Commit 2: publicación editorial diaria guiada por `EmoInsight` y hallazgos de frontera).
+> _Prerrequisito completado:_ Reforma de [`../AGENTS.md`](../AGENTS.md), instrucciones vinculantes en [`.github/instructions/`](../.github/instructions/) y bloqueo CI con incidencias `ci-blocked` en `.github/workflows/evolution-loop.yml`.
 
-#### `v1.4.0` — Factoría operativa de `AIWorkers` y recetas listas para usar (Próxima sesión inmediata)
+- **Objetivo de valor:** Rediseñar la experiencia de entrada para que cualquier responsable de pyme entienda en menos de 5 segundos la propuesta de valor sin jerga interna, desacoplar las herramientas interactivas a rutas dedicadas, elevar los artículos al estándar divulgativo modular de 3 capas con veracidad verificada y blindar el colchón de reserva editorial.
+- **Alcance de la sesión:**
+  - **`US-001` (Poda y foco en el _Hero_ de portada):** Reemplazar metáforas crípticas (_«llevar el volante»_, _«máquina biológica»_) por un titular factual orientado a beneficio y un único CTA primario claro; y sustituir el banner superior de alarma por un sello sereno **«100 % operado por IA»** en el pie de página y en `equipo.html`.
+  - **`US-002` (Revelación progresiva y desacople de herramientas):** Desacoplar el diagnóstico de madurez y la calculadora de ahorro de `index.html` hacia páginas dedicadas paso a paso (`/diagnostico.html` y `/calculadora.html`), reduciendo la portada a un máximo de 4 bloques limpios con >= 45 % de espacio libre efectivo.
+  - **`US-003` (Calibración neurotipográfica, paleta WCAG AAA y cero emojis):** Reconciliar `styles/tokens.css` con la paleta constitucional (`#0A192F`, `#FFFFFF`, `#1E6091` / `#144870` para texto AAA >= 7:1, y `#FF6B4A` estrictamente no textual), aplicar escala fluida (>= 18 px cuerpo), ancho de medida de 60–66 ch, escala de 8 px y sustituir todos los emojis UI por SVG lineales minimalistas (`stroke <= 1.5px`).
+  - **`US-004` (Estándar editorial de 3 capas, veracidad en vivo y enriquecimiento gradual):** Artículos tácticos diarios de 600–900 palabras y guías pilar semanales de 1000–1500 palabras («En 30 segundos» + desarrollo con SVG nativo o tabla + protocolo accionable e hilo `EmoInsight`), exigiendo _Google Search Grounding_ para toda cifra/norma (modo conceptual sin estadísticas si no hay fuente enlazable) y enriquecimiento gradual de los 23 artículos históricos en ciclos técnicos.
+  - **`US-005` (Optimización para motores generativos — GEO y citabilidad):** Marcado estructurado rico (`TechArticle`, `Organization`, `FAQPage`, `SoftwareApplication`), `rel="author"`, encabezados interrogativos claros y definiciones autocontenidas de 40–60 palabras para posicionar a AIEvolutio como fuente primaria citable.
+  - **`US-408` (Blindaje de resiliencia del motor autónomo y reserva regenerativa):**
+    - _Buffer regenerativo de reserva editorial:_ el motor audita en cada ciclo el saldo de candidatos inéditos; si baja de 3 unidades, reaprovisiona automáticamente borradores pre-validados y verificados hasta alcanzar 5 candidatos listos para publicar.
+    - _Autorrecalibración elástica de longitud y formato 3 capas:_ validación automática ajustada a 600–900 palabras (táctico) o 1000–1500 palabras (pilar), con condensación/expansión controlada antes de rechazar un borrador válido.
+    - _Entrega desacoplada y bloqueo CI:_ Commit #1 (Tech) y Commit #2 (Editorial) se validan de forma independiente en `.github/workflows/evolution-loop.yml` y abren/cierran incidencias `ci-blocked` ante cualquier fallo.
 
-- **Objetivo de valor:** Convertir los agentes descritos en la web en herramientas, plantillas y prototipos accionables para autónomos y pymes.
+---
+
+### Horizonte 1: Factoría de `AIWorkers`, recetas operativas y telemetría (`v1.5.0` – `v1.6.0`)
+
+#### `v1.5.0` — Factoría operativa de `AIWorkers` y biblioteca de recetas de 15 minutos
+
+- **Objetivo de valor:** Convertir los agentes descritos en la web en herramientas, plantillas y prototipos accionables para autónomos y pymes sobre la base limpia y desacoplada de `v1.4.0`.
 - **Alcance de la sesión:**
   - **`US-301` (`AIFactura`):** Especificación funcional, plantilla de extracción estructurada de tickets/facturas y demostrador interactivo en cliente.
   - **`US-302` (`AIRespuestas`):** Configurador de respuestas fuera de horario con filtro de urgencias y aviso honesto de asistencia automática.
   - **`US-303` (`AIOferta`):** Flujo práctico para transformar notas de voz tras una visita técnica en borradores de presupuesto cruzados con tarifas propias.
   - **`US-203` y `US-306`:** Guía paso a paso de servidor MCP local y biblioteca inicial de «Recetas de 15 minutos» por oficio.
 
-#### `v1.5.0` — Telemetría automatizada y bucle de comunicación transparente
+#### `v1.6.0` — Telemetría automatizada, observabilidad federada y bucle transparente
 
 - **Objetivo de valor:** Cerrar el circuito de observabilidad real y atención autónoma sin intervención humana diaria.
 - **Alcance de la sesión:**
@@ -81,9 +91,9 @@ flowchart LR
 
 ---
 
-### Horizonte 2: Radar comercial honesto, academia abierta, exámenes y retos (`v1.6.0` – `v1.8.0`)
+### Horizonte 2: Radar comercial honesto, academia abierta, exámenes y retos (`v1.7.0` – `v1.8.0`)
 
-#### `v1.6.0` — Radar de herramientas, comparador de precios y recomendaciones honestas
+#### `v1.7.0` — Radar de herramientas, comparador de precios y recomendaciones honestas
 
 - **Objetivo de valor:** Ayudar a las pymes a elegir tecnología con criterio económico, evitando pagar sobrecostes publicitarios o comprometer su privacidad.
 - **Alcance de la sesión:**
@@ -91,18 +101,13 @@ flowchart LR
   - **`US-205` (Recomendador por oficio y presupuesto):** Asistente de equipamiento (desde mini-PCs para IA local hasta suites gratuitas) adaptado a cada sector.
   - **`US-206` y `US-405` (Detector de sobreprecio IA e independencia comercial):** Calculadora para auditar subidas de precios de proveedores y sello de independencia auditado por `AIJuris`.
 
-#### `v1.7.0` — Academia abierta, simulador de exámenes y certificaciones verificables
+#### `v1.8.0` — Academia abierta, certificaciones verificables y concursos comunitarios
 
-- **Objetivo de valor:** Permitir que cualquier profesional o joven aprenda de forma estructurada, compruebe si sabe detectar fallos de la IA y obtenga una acreditación práctica.
+- **Objetivo de valor:** Permitir que cualquier profesional o joven aprenda de forma estructurada, compruebe si sabe detectar fallos de la IA, obtenga una acreditación práctica y participe en retos abiertos.
 - **Alcance de la sesión:**
   - **`US-501` (Rutas de microcursos):** Itinerarios breves por perfil (_Autónomos y gestión_, _Artesanía técnica local_, _Privacidad y AI Act_, _Pensamiento crítico familiar_).
   - **`US-502` (Exámenes prácticos y «Cazador de alucinaciones»):** Simulador interactivo con casos reales donde el usuario debe encontrar errores ocultos, sesgos o riesgos legales en respuestas generadas por IA.
   - **`US-503` (Certificaciones e insignias verificables):** Emisión de diplomas digitales verificables criptográficamente en el navegador (sin guardar datos personales en bases de datos), dejando claro su carácter formativo abierto.
-
-#### `v1.8.0` — Concursos comunitarios, impacto social fractal y nuevos `AIWorkers`
-
-- **Objetivo de valor:** Abrir el laboratorio a los retos reales de la comunidad y extender las herramientas a educación, mayores y defensa ciudadana.
-- **Alcance de la sesión:**
   - **`US-504` (Concursos «Retos AIEvolutio»):** Convocatorias abiertas donde pymes y usuarios proponen el proceso más tedioso de su oficio o la solución más frugal; la dirección de IA construye y libera la solución ganadora.
   - **`US-106` (Kits fractales sociales):** Herramientas prácticas para familias (estudio crítico), mayores (lectura clara y acompañamiento) y ciudadanía (traducción de lenguaje burocrático).
   - **`US-304` (`AIEscudo`) y `US-305` (`AISubvenciones`):** Agentes para filtrar spam/reclamaciones sintéticas masivas y traducir ayudas públicas a requisitos comprensibles.
