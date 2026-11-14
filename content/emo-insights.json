@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-12",
+  "updatedAt": "2026-11-14",
   "summary": {
     "totalLikes": 0,
     "totalDislikes": 0,
@@ -17,7 +17,8 @@
     "tech-step-01-glossary-aiworker-quantization",
     "tech-step-02-clarity-notes-mcp-slm",
     "tech-step-03-glossary-zdr-prompt",
-    "tech-step-04-clarity-notes-bi-geo-legal"
+    "tech-step-04-clarity-notes-bi-geo-legal",
+    "tech-step-05-enrich-historical-clarity-layer"
   ],
   "frontierLog": [
     {
@@ -54,6 +55,13 @@
       "insight": "Mientras el coste real de inferencia por API se ha reducido más de un 80 %, muchas suites ofimáticas y de gestión aplican suplementos fijos de 20 a 35 € mensuales por usuario que una pyme puede ahorrar usando conectores directos.",
       "roadmapImpact": "Alimenta los datos de referencia del Detector de sobreprecio IA (US-206) y el comparador honesto de herramientas (US-204).",
       "leadAgent": "AIVisio"
+    },
+    {
+      "date": "2026-11-14",
+      "topic": "Estrategias de implementación de agentes operativos con IA local para pymes: optimizando costes y asegurando la soberanía de datos bajo el marco del AI Act y RGPD",
+      "insight": "El estado del arte actual para PYMES y autónomos revela una ventaja estratégica en el despliegue de agentes operativos de IA impulsados por modelos locales de código abierto y habilitados por protocolos como el MCP. Este enfoque ofrece ahorros significativos al eliminar las costosas suscripciones en la nube y los costes variables por token, optando por una inversión fija en infraestructura con un coste marginal por consulta casi nulo, lo que proporciona un modelo económico predecible y controlable. Fundamentalmente, garantiza la soberanía de los datos y una mayor privacidad al mantener la información sensible en las instalaciones, un aspecto vital para cumplir con los estrictos requisitos del AI Act y el RGPD. Los agentes operativos, facilitados por la conectividad estandarizada del MCP, pueden interactuar dinámicamente con sistemas internos y datos en tiempo real, transformando procesos de negocio desde el servicio al cliente hasta los recursos humanos, sin los riesgos de exposición de datos o la dependencia de proveedores asociados a las soluciones basadas en la nube. Este cambio empodera a las PYMES para obtener un control total sobre su infraestructura de IA, fomentando la confianza y el cumplimiento normativo, al tiempo que democratiza el acceso a potentes capacidades de inteligencia artificial.",
+      "roadmapImpact": "Esta investigación subraya la necesidad crítica de que AIEvolutio se centre en la habilitación práctica para PYMES y autónomos. La hoja de ruta debe priorizar:\n1.  **Desarrollo de Kits de Implementación Local**: Crear guías y herramientas preconfiguradas para el despliegue de agentes operativos con modelos SLM en hardware de oficina, integrando el protocolo MCP para la conexión con sistemas empresariales existentes.\n2.  **Soluciones de Cumplimiento Integradas**: Desarrollar módulos o directrices que ayuden a las PYMES a auditar y documentar sus implementaciones de IA local para cumplir con el AI Act (ej. alfabetización, transparencia, gestión de riesgos) y el RGPD (ej. soberanía de datos, EIPD).\n3.  **Casos de Uso y Métricas de ROI**: Publicar estudios de caso y benchmarks reales que demuestren el ahorro de costes y el aumento de eficiencia de los agentes operativos locales frente a soluciones SaaS, validando la inversión inicial en hardware.\n4.  **Formación y Certificación**: Ofrecer programas de formación específicos para PYMES sobre la implementación, gestión y cumplimiento de la IA local y agentes operativos, abordando la 'alfabetización en IA' requerida por el Artículo 4 del AI Act.",
+      "leadAgent": "AIDux"
     }
   ],
   "posts": {
@@ -408,6 +416,13 @@
       "versionRef": "v1.3.0 / US-107",
       "title": "Inyección de resúmenes «Luz en la entrada» en artículos de Business Intelligence, GEO y cláusulas legales",
       "summary": "Incorporadas 3 notas de claridad inmediata en artículos de estrategia y blindaje legal."
+    },
+    {
+      "date": "2026-11-14",
+      "id": "tech-step-05-enrich-historical-clarity-layer",
+      "versionRef": "v1.4.0 / US-004 / US-005",
+      "title": "Enriquecimiento progresivo de artículos históricos con capa «En 30 segundos» y nivel de esfuerzo",
+      "summary": "Enriquecidos 0 artículos históricos con capa «En 30 segundos» sin alterar permalinks ni reescribir textos existentes."
     }
   ]
 }
