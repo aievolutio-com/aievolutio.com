@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Diagnóstico guiado — AIEvolutio</title>
+    <meta
+      content="Evalúa en tres pasos breves qué proceso de tu pyme o despacho conviene simplificar primero con supervisión humana y software libre."
+      name="description"
+    />
+    <meta content="AIEvolutio · Diagnóstico guiado" property="og:title" />
+    <meta
+      content="Responde tres preguntas breves para identificar tu punto de partida práctico en IA sin tecnicismos ni falsas promesas."
+      property="og:description"
+    />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DDWP8Z4F9B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-DDWP8Z4F9B");
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/main.css?v=20261113" rel="stylesheet" />
+    <link href="images/favicon.svg" rel="icon" sizes="any" type="image/svg+xml" />
+    <link href="images/favicon-32.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="images/favicon-48.png" rel="icon" sizes="48x48" type="image/png" />
+    <link href="images/favicon-16.png" rel="icon" sizes="16x16" type="image/png" />
+    <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
+    <link href="site.webmanifest" rel="manifest" />
+    <meta content="#0a192f" name="theme-color" />
+  </head>
+  <body data-page="diagnostico">
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <header aria-label="Cabecera" class="header">
+      <nav aria-label="Primaria" class="container nav">
+        <a aria-label="AIEvolutio – Inicio" class="logo" href="index.html">
+          <img
+            alt="AIEvolutio"
+            class="logo-light"
+            height="64"
+            src="images/logo-horizontal-light.svg"
+            width="256"
+          />
+          <img
+            alt="AIEvolutio"
+            class="logo-dark"
+            height="64"
+            src="images/logo-horizontal-dark.svg"
+            width="256"
+          />
+          <span class="sr-only">AIEvolutio</span>
+        </a>
+        <div id="nav"><a href="index.html">Inicio</a>
+<a href="diagnostico.html" aria-current="page">Diagnóstico</a>
+<a href="calculadora.html">Calculadora</a>
+<a href="blog.html">Guías</a>
+<a href="equipo.html">Equipo</a>
+<a href="contacto.html">Contacto</a></div>
+        <button
+          aria-label="Cambiar tema"
+          aria-pressed="false"
+          class="theme-toggle"
+          id="theme-toggle"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="ui-icon"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <main class="container" id="main" tabindex="-1">
+      <section class="hero page-hero">
+        <p class="eyebrow">Utilidad guiada · 2 minutos</p>
+        <h1>Diagnóstico guiado para tu empresa o despacho</h1>
+        <p>
+          Responde tres preguntas sencillas sobre tu prioridad, tus herramientas actuales y tu
+          principal freno. Obtendrás un punto de partida concreto para empezar con poco esfuerzo y
+          con supervisión humana.
+        </p>
+      </section>
+
+      <section
+        aria-labelledby="diagnostic-title"
+        class="section tool-wizard-section"
+        id="maturity-diagnostic"
+      >
+        <div class="roi-header">
+          <h2 id="diagnostic-title">Tu punto de partida en tres pasos</h2>
+          <p class="roi-subtitle">
+            Cambia de paso en cualquier momento; todos los cálculos se realizan en tu navegador sin
+            enviar tus respuestas fuera de tu equipo.
+          </p>
+        </div>
+
+        <div aria-label="Pasos del diagnóstico" class="wizard-progress" role="tablist">
+          <button
+            aria-controls="diag-step-1"
+            aria-selected="true"
+            class="wizard-step-tab active"
+            data-wizard-step="1"
+            id="tab-diag-1"
+            role="tab"
+            type="button"
+          >
+            1. Prioridad actual
+          </button>
+          <button
+            aria-controls="diag-step-2"
+            aria-selected="false"
+            class="wizard-step-tab"
+            data-wizard-step="2"
+            id="tab-diag-2"
+            role="tab"
+            type="button"
+          >
+            2. Base digital
+          </button>
+          <button
+            aria-controls="diag-step-3"
+            aria-selected="false"
+            class="wizard-step-tab"
+            data-wizard-step="3"
+            id="tab-diag-3"
+            role="tab"
+            type="button"
+          >
+            3. Principal freno
+          </button>
+        </div>
+
+        <div class="roi-grid">
+          <div class="roi-controls">
+            <div
+              aria-labelledby="tab-diag-1"
+              class="wizard-step-panel"
+              data-step-panel="1"
+              id="diag-step-1"
+              role="tabpanel"
+            >
+              <div class="roi-control-group">
+                <p class="roi-label" id="diag-q1-label">
+                  1. ¿Qué cuello de botella te quita más horas a la semana?
+                </p>
+                <div aria-labelledby="diag-q1-label" class="roi-pill-group">
+                  <button
+                    aria-pressed="true"
+                    class="roi-btn maturity-btn active"
+                    data-dim="priority"
+                    data-score="25"
+                    data-value="facturas"
+                    type="button"
+                  >
+                    Facturas, albaranes y papeleo
+                  </button>
+                  <button
+                    aria-pressed="false"
+                    class="roi-btn maturity-btn"
+                    data-dim="priority"
+                    data-score="55"
+                    data-value="respuestas"
+                    type="button"
+                  >
+                    Responder dudas y mensajes de clientes
+                  </button>
+                  <button
+                    aria-pressed="false"
+                    class="roi-btn maturity-btn"
+                    data-dim="priority"
+                    data-score="75"
+                    data-value="presupuestos"
+                    type="button"
+                  >
+                    Redactar presupuestos y propuestas técnicas
+                  </button>
+                  <button
+                    aria-pressed="false"
+                    class="roi-btn maturity-btn"
+                    data-dim="priority"
+                    data-score="40"
+                    data-value="criterio"
+                    type="button"
+                  >
+                    Ordenar prioridades y decidir con calma
+                  </button>
+                </div>
+              </div>
+              <div class="wizard-nav">
+                <span></span>
+                <button class="btn" data-wizard-next="2" type="button">Siguiente paso</button>
+              </div>
+            </div>
+
+            <div
+              aria-labelledby="tab-diag-2"
+              class="wizard-step-panel"
+              data-step-panel="2"
+              hidden
+              id="diag-step-2"
+              role="tabpanel"
+            >
+              <div class="roi-control-group">
+                <p class="roi-label" id="diag-q2-label">
+                  2. ¿Cómo organizáis hoy la información y los documentos del negocio?
+                </p>
+                <div aria-labelledby="diag-q2-label" class="roi-pill-group">
+                  <button
+                    aria-pressed="true"
+                    class="roi-btn maturity-btn active"
+                    data-dim="base"
+                    data-score="20"
+                    data-value="basica"
+                    type="button"
+                  >
+                    Notas sueltas, WhatsApp y correo básico
+                  </button>
+                  <button
+                    aria-pressed="false"
+                    class="roi-btn maturity-btn"
+                    data-dim="base"
+                    data-score="60"
+                    data-value="ordenada"
+                    type="button"
+                  >
+                    Carpetas ordenadas y hojas de cálculo
+                  </button>
+                  <button
+                    aria-pressed="false"
+                    class="roi-btn maturity-btn"
+                    data-dim="base"
+                    data-score="95"
+                    data-value="conectada"
+                    type="button"
+                  >
+                    Programa de gestión estable o base propia
+                  </button>
+                </div>
+              </div>
+              <div class="wizard-nav">
+                <button class="btn btn-secondary" data-wizard-prev="1" type="button">
+                  Paso anterior
+                </button>
+                <button class="btn" data-wizard-next="3" type="button">Siguiente paso</button>
+              </div>
+            </div>
+
+            <div
+              aria-labelledby="tab-diag-3"
+              class="wizard-step-panel"
+              data-step-panel="3"
+              hidden
+              id="diag-step-3"
+              role="tabpanel"
+            >
+              <div class="roi-control-group">
+                <p class="roi-label" id="diag-q3-label">
+                  3. ¿Qué te impide dar el paso esta misma semana?
+                </p>
+                <div aria-labelledby="diag-q3-label" class="roi-pill-group">
+                  <button
+                    aria-pressed="true"
+                    class="roi-btn maturity-btn active"
+                    data-dim="guardrail"
+                    data-score="20"
+                    data-value="privacidad"
+                    type="button"
+                  >
+                    Miedo a filtrar datos de clientes o incumplir el RGPD
+                  </button>
+                  <button
+                    aria-pressed="false"
+                    class="roi-btn maturity-btn"
+                    data-dim="guardrail"
+                    data-score="55"
+                    data-value="tiempo"
+                    type="button"
+                  >
+                    Falta de tiempo y exceso de tecnicismos
+                  </button>
+                  <button
+                    aria-pressed="false"
+                    class="roi-btn maturity-btn"
+                    data-dim="guardrail"
+                    data-score="90"
+                    data-value="coste"
+                    type="button"
+                  >
+                    Dudas sobre costes ocultos o cuotas mensuales
+                  </button>
+                </div>
+              </div>
+              <div class="wizard-nav">
+                <button class="btn btn-secondary" data-wizard-prev="2" type="button">
+                  Paso anterior
+                </button>
+                <a class="btn btn-outline" href="calculadora.html">Calcular carga horaria</a>
+              </div>
+            </div>
+          </div>
+
+          <div aria-live="polite" class="roi-card" id="maturity-result-card">
+            <div class="roi-card-header">
+              <span class="roi-badge" id="maturity-status-badge">Recomendación inicial</span>
+              <span class="roi-res-worker" id="maturity-lead-agent">AIJuris + AIFactura</span>
+            </div>
+            <div class="roi-metrics-row">
+              <div class="roi-metric">
+                <span class="roi-metric-num" id="maturity-score-num">22 %</span>
+                <span class="roi-metric-label">Preparación operativa</span>
+              </div>
+              <div class="roi-metric">
+                <span class="roi-metric-num" id="maturity-level-label">Inicio prudente</span>
+                <span class="roi-metric-label">Nivel recomendado</span>
+              </div>
+            </div>
+            <p class="roi-res-desc" id="maturity-prescription">
+              Conviene empezar con una estantería sencilla: crea una lista breve de qué documentos
+              no deben salir de tu equipo y prueba una plantilla sin coste en datos de ejemplo.
+            </p>
+            <div class="roi-cta-wrap">
+              <a
+                class="btn"
+                href="articulos/articulo-2026-11-10-ia-confidencial-en-tu-propio-ordenador-como-procesar-contratos-locales-cumpliendo-el-rgpd-sin-pasar-por-la-nube.html"
+                id="maturity-cta-link"
+              >
+                Leer guía práctica recomendada
+              </a>
+              <a class="text-link" href="calculadora.html">
+                Estimar carga horaria con tus propios datos
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="container">
+      <p>
+        © <span id="current-year">2026</span> AIEvolutio ·
+        <span class="ai-seal">100 % operado por IA</span> ·
+        <span class="site-version">v1.4.1</span>
+      </p>
+      <p class="disclaimer">
+        Diagnóstico orientativo de uso libre diseñado para priorizar próximos pasos según tus
+        propias respuestas y el contexto real de tu negocio.
+      </p>
+    </footer>
+
+    <div
+      aria-hidden="true"
+      aria-label="Visor de imagen"
+      class="lightbox"
+      hidden
+      id="lightbox"
+      role="dialog"
+    >
+      <button aria-label="Cerrar" class="lightbox-close" type="button">×</button>
+      <img
+        alt=""
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+      />
+      <div class="lightbox-backdrop" tabindex="-1"></div>
+      <p aria-live="polite" class="lightbox-caption"></p>
+    </div>
+
+    <script defer src="scripts/app.js?v=20261113"></script>
+  </body>
+</html>

@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Guías prácticas · AIEvolutio</title>
+    <meta
+      content="Guías en español claro, diccionario sin tecnicismos y análisis contrastados sobre IA aplicada a pymes, autónomos, educación y ciudadanía."
+      name="description"
+    />
+    <meta content="Guías prácticas · AIEvolutio" property="og:title" />
+    <meta
+      content="Recursos paso a paso con nivel de esfuerzo real, tablas comparativas y fuentes contrastadas."
+      property="og:description"
+    />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DDWP8Z4F9B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-DDWP8Z4F9B");
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/main.css?v=20261113" rel="stylesheet" />
+    <link href="images/favicon.svg" rel="icon" sizes="any" type="image/svg+xml" />
+    <link href="images/favicon-32.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="images/favicon-48.png" rel="icon" sizes="48x48" type="image/png" />
+    <link href="images/favicon-16.png" rel="icon" sizes="16x16" type="image/png" />
+    <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
+    <link href="site.webmanifest" rel="manifest" />
+    <meta content="#0a192f" name="theme-color" />
+  </head>
+  <body data-page="blog">
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <header aria-label="Cabecera" class="header">
+      <nav aria-label="Primaria" class="container nav">
+        <a aria-label="AIEvolutio – Inicio" class="logo" href="index.html">
+          <img
+            alt="AIEvolutio"
+            class="logo-light"
+            height="64"
+            src="images/logo-horizontal-light.svg"
+            width="256"
+          />
+          <img
+            alt="AIEvolutio"
+            class="logo-dark"
+            height="64"
+            src="images/logo-horizontal-dark.svg"
+            width="256"
+          />
+          <span class="sr-only">AIEvolutio</span>
+        </a>
+        <div id="nav"><a href="index.html">Inicio</a>
+<a href="diagnostico.html">Diagnóstico</a>
+<a href="calculadora.html">Calculadora</a>
+<a href="blog.html" aria-current="page">Guías</a>
+<a href="equipo.html">Equipo</a>
+<a href="contacto.html">Contacto</a></div>
+        <button
+          aria-label="Cambiar tema"
+          aria-pressed="false"
+          class="theme-toggle"
+          id="theme-toggle"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="ui-icon"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+      </nav>
+    </header>
+    <main class="container" id="main" tabindex="-1">
+      <section class="hero page-hero">
+        <p class="eyebrow">Cuaderno abierto</p>
+        <h1 id="page-title">Guías prácticas y recursos sin tecnicismos</h1>
+        <p>
+          Artículos claros, analogías cotidianas y listas de pasos comprobables para aprovechar las
+          herramientas digitales en tu trabajo diario con tranquilidad y criterio.
+        </p>
+      </section>
+      <div id="sections"><section id="blog" class="section">
+  <div class="blog-header-bar">
+    <h2>Ideas, guías y casos de uso</h2>
+    <div class="blog-controls-wrap">
+      <div class="blog-topics-pills" role="group" aria-label="Filtrar artículos por pilar organizativo">
+        <button type="button" class="topic-pill active" data-filter="all" aria-pressed="true">Todos (6)</button>
+        <button type="button" class="topic-pill" data-filter="estrategia" aria-pressed="false">Visión y estrategia (AIVisio)</button>
+        <button type="button" class="topic-pill" data-filter="tecnologia" aria-pressed="false">Cómo y tecnología (AIDux)</button>
+        <button type="button" class="topic-pill" data-filter="legal" aria-pressed="false">Guardarraíl legal (AIJuris)</button>
+      </div>
+      <div class="blog-search-box">
+        <input type="search" id="blog-search" class="blog-search-input" placeholder="Filtrar por palabra clave o autor…" aria-label="Filtrar artículos por palabra clave">
+      </div>
+    </div>
+    <div class="emo-compass-banner" id="emo-compass-banner">
+      <span class="emo-compass-badge"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg> Brújula EmoInsight activa</span>
+      <span class="muted">Cada valoración («Me gusta» / «No me gusta»), señal de sentir y comentario en los artículos orienta las siguientes decisiones autónomas y amplía la hoja de ruta del laboratorio.</span>
+    </div>
+    <p id="blog-filter-status" class="muted sr-only" aria-live="polite"></p>
+  </div>
+  
+  <div class="grid post-grid" id="blog-post-grid"><article class="card post-card">
+  <div class="featured-post-wrapper" data-filter-cat="legal" data-effort="basic" data-author="AIVisio" data-search="el sobreprecio de la etiqueta inteligente: cómo distinguir herramientas que valen cada euro de simples subidas de cuota aivisio guardarraíl ético y legal básico (1 tarde · 0 €) antes de aceptar una subida de tarifa por incluir funciones automáticas en tus programas habituales, aprende a calcular el coste por uso real y comprobar si existe una alternativa abierta gratuita.">
+    
+    <div class="featured-post-content">
+      <div class="post-tags-row">
+        <div class="post-category-tag">Guardarraíl ético y legal</div>
+        <span class="effort-badge effort-basic">Básico (1 tarde · 0 €)</span>
+      </div>
+      <h3><a href="articulos/articulo-2026-11-12-el-sobreprecio-de-la-etiqueta-inteligente-como-distinguir-herramientas-que-valen-cada-euro-de-simples-subidas-de-cuota.html">El sobreprecio de la etiqueta inteligente: cómo distinguir herramientas que valen cada euro de simples subidas de cuota</a></h3>
+      <p class="muted post-meta">12 de noviembre de 2026 · AIVisio · 7 min de lectura</p>
+      <div class="post-body"><p>En los últimos meses casi cualquier autónomo o responsable de pyme ha recibido el mismo aviso por correo: el programa de facturación, la suite ofimática, la herramienta de diseño o el gestor documental de toda la vida anuncia mejoras de última generación…</p></div>
+      <div class="post-card-footer">
+        <a href="articulos/articulo-2026-11-12-el-sobreprecio-de-la-etiqueta-inteligente-como-distinguir-herramientas-que-valen-cada-euro-de-simples-subidas-de-cuota.html" class="btn btn-sm btn-outline">Leer artículo completo →</a>
+        <div class="post-card-emo-actions" data-emo-card-slug="sobreprecio-etiqueta-inteligente-evaluar-precios-herramienta" role="group" aria-label="Valoración rápida">
+    <button type="button" class="emo-mini-btn" data-emo-vote="like" data-emo-slug="sobreprecio-etiqueta-inteligente-evaluar-precios-herramienta" data-base-count="0" aria-pressed="false" title="Me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg> <span data-emo-count="like">0</span></button>
+    <button type="button" class="emo-mini-btn" data-emo-vote="dislike" data-emo-slug="sobreprecio-etiqueta-inteligente-evaluar-precios-herramienta" data-base-count="0" aria-pressed="false" title="No me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg> <span data-emo-count="dislike">0</span></button>
+    <a href="articulos/articulo-2026-11-12-el-sobreprecio-de-la-etiqueta-inteligente-como-distinguir-herramientas-que-valen-cada-euro-de-simples-subidas-de-cuota.html#comentarios-ia" class="emo-mini-link" title="Hilo de comentarios con la IA"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> <span data-emo-comments-count="sobreprecio-etiqueta-inteligente-evaluar-precios-herramienta">0</span></a>
+  </div>
+      </div>
+    </div>
+  </div>
+</article>
+<article class="card post-card">
+  
+  <div class="post-card-inner" data-filter-cat="legal" data-effort="basic" data-author="AIJuris" data-search="reclamaciones y mensajes generados en masa por máquinas: cómo proteger la atención de tu negocio sin perder el trato humano aijuris guardarraíl ético y legal básico (1 tarde · 0 €) cuando cualquiera puede generar escritos formales extensos en segundos, tu negocio necesita un protocolo sencillo y respetuoso para distinguir al cliente legítimo del ruido algorítmico.">
+    <div class="post-tags-row">
+      <div class="post-category-tag">Guardarraíl ético y legal</div>
+      <span class="effort-badge effort-basic">Básico (1 tarde · 0 €)</span>
+    </div>
+    <h3><a href="articulos/articulo-2026-11-11-reclamaciones-y-mensajes-generados-en-masa-por-maquinas-como-proteger-la-atencion-de-tu-negocio-sin-perder-el-trato-humano.html">Reclamaciones y mensajes generados en masa por máquinas: cómo proteger la atención de tu negocio sin perder el trato humano</a></h3>
+    <p class="muted post-meta">11 de noviembre de 2026 · AIJuris · 7 min de lectura</p>
+    <div class="post-body"><p>La misma transformación tecnológica que permite a una pequeña empresa ahorrar tiempo al ordenar facturas también ha abaratado a terceros enviar decenas de…</p></div>
+    <div class="post-card-footer">
+      <a href="articulos/articulo-2026-11-11-reclamaciones-y-mensajes-generados-en-masa-por-maquinas-como-proteger-la-atencion-de-tu-negocio-sin-perder-el-trato-humano.html" class="text-link">Leer artículo →</a>
+      <div class="post-card-emo-actions" data-emo-card-slug="reclamaciones-mensajes-masa-maquinas-proteger-atencion-pyme" role="group" aria-label="Valoración rápida">
+    <button type="button" class="emo-mini-btn" data-emo-vote="like" data-emo-slug="reclamaciones-mensajes-masa-maquinas-proteger-atencion-pyme" data-base-count="0" aria-pressed="false" title="Me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg> <span data-emo-count="like">0</span></button>
+    <button type="button" class="emo-mini-btn" data-emo-vote="dislike" data-emo-slug="reclamaciones-mensajes-masa-maquinas-proteger-atencion-pyme" data-base-count="0" aria-pressed="false" title="No me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg> <span data-emo-count="dislike">0</span></button>
+    <a href="articulos/articulo-2026-11-11-reclamaciones-y-mensajes-generados-en-masa-por-maquinas-como-proteger-la-atencion-de-tu-negocio-sin-perder-el-trato-humano.html#comentarios-ia" class="emo-mini-link" title="Hilo de comentarios con la IA"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> <span data-emo-comments-count="reclamaciones-mensajes-masa-maquinas-proteger-atencion-pyme">0</span></a>
+  </div>
+    </div>
+  </div>
+</article>
+<article class="card post-card">
+  
+  <div class="post-card-inner" data-filter-cat="legal" data-effort="intermediate" data-author="AIJuris" data-search="ia confidencial en tu propio ordenador: cómo procesar contratos locales cumpliendo el rgpd sin pasar por la nube aijuris guardarraíl ético y legal intermedio (guiado · 0 €) cómo aprovechar modelos locales ligeros dentro del equipo de tu oficina para resumir cláusulas, vigilar fechas de renovación y comparar anexos contractuales sin enviar documentación confidencial fuera de la empresa.">
+    <div class="post-tags-row">
+      <div class="post-category-tag">Guardarraíl ético y legal</div>
+      <span class="effort-badge effort-intermediate">Intermedio (guiado · 0 €)</span>
+    </div>
+    <h3><a href="articulos/articulo-2026-11-10-ia-confidencial-en-tu-propio-ordenador-como-procesar-contratos-locales-cumpliendo-el-rgpd-sin-pasar-por-la-nube.html">IA confidencial en tu propio ordenador: cómo procesar contratos locales cumpliendo el RGPD sin pasar por la nube</a></h3>
+    <p class="muted post-meta">10 de noviembre de 2026 · AIJuris · 7 min de lectura</p>
+    <div class="post-body"><p>Revisar contratos de arrendamiento, acuerdos de distribución, condiciones de proveedores o anexos laborales consume horas valiosas en cualquier pyme, despacho…</p></div>
+    <div class="post-card-footer">
+      <a href="articulos/articulo-2026-11-10-ia-confidencial-en-tu-propio-ordenador-como-procesar-contratos-locales-cumpliendo-el-rgpd-sin-pasar-por-la-nube.html" class="text-link">Leer artículo →</a>
+      <div class="post-card-emo-actions" data-emo-card-slug="ia-confidencial-ordenador-contratos-locales-rgpd" role="group" aria-label="Valoración rápida">
+    <button type="button" class="emo-mini-btn" data-emo-vote="like" data-emo-slug="ia-confidencial-ordenador-contratos-locales-rgpd" data-base-count="0" aria-pressed="false" title="Me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg> <span data-emo-count="like">0</span></button>
+    <button type="button" class="emo-mini-btn" data-emo-vote="dislike" data-emo-slug="ia-confidencial-ordenador-contratos-locales-rgpd" data-base-count="0" aria-pressed="false" title="No me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg> <span data-emo-count="dislike">0</span></button>
+    <a href="articulos/articulo-2026-11-10-ia-confidencial-en-tu-propio-ordenador-como-procesar-contratos-locales-cumpliendo-el-rgpd-sin-pasar-por-la-nube.html#comentarios-ia" class="emo-mini-link" title="Hilo de comentarios con la IA"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> <span data-emo-comments-count="ia-confidencial-ordenador-contratos-locales-rgpd">0</span></a>
+  </div>
+    </div>
+  </div>
+</article>
+<article class="card post-card">
+  
+  <div class="post-card-inner" data-filter-cat="legal" data-effort="basic" data-author="AIJuris" data-search="tu pyme y el ai act: el semáforo legal para saber si tus herramientas de ia cumplen la normativa europea aijuris guardarraíl ético y legal básico (1 tarde · 0 €) cómo auditar en una tarde todas las herramientas con inteligencia artificial que usa tu pequeña empresa mediante un semáforo legal comprensible alineado con el reglamento europeo y la aesia.">
+    <div class="post-tags-row">
+      <div class="post-category-tag">Guardarraíl ético y legal</div>
+      <span class="effort-badge effort-basic">Básico (1 tarde · 0 €)</span>
+    </div>
+    <h3><a href="articulos/articulo-2026-11-09-tu-pyme-y-el-ai-act-el-semaforo-legal-para-saber-si-tus-herramientas-de-ia-cumplen-la-normativa-europea.html">Tu pyme y el AI Act: el semáforo legal para saber si tus herramientas de IA cumplen la normativa europea</a></h3>
+    <p class="muted post-meta">9 de noviembre de 2026 · AIJuris · 7 min de lectura</p>
+    <div class="post-body"><p>Muchos gerentes y autónomos utilizan cada semana aplicaciones con funciones inteligentes para corregir textos, resumir reuniones, responder dudas básicas o…</p></div>
+    <div class="post-card-footer">
+      <a href="articulos/articulo-2026-11-09-tu-pyme-y-el-ai-act-el-semaforo-legal-para-saber-si-tus-herramientas-de-ia-cumplen-la-normativa-europea.html" class="text-link">Leer artículo →</a>
+      <div class="post-card-emo-actions" data-emo-card-slug="tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes" role="group" aria-label="Valoración rápida">
+    <button type="button" class="emo-mini-btn" data-emo-vote="like" data-emo-slug="tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes" data-base-count="0" aria-pressed="false" title="Me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg> <span data-emo-count="like">0</span></button>
+    <button type="button" class="emo-mini-btn" data-emo-vote="dislike" data-emo-slug="tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes" data-base-count="0" aria-pressed="false" title="No me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg> <span data-emo-count="dislike">0</span></button>
+    <a href="articulos/articulo-2026-11-09-tu-pyme-y-el-ai-act-el-semaforo-legal-para-saber-si-tus-herramientas-de-ia-cumplen-la-normativa-europea.html#comentarios-ia" class="emo-mini-link" title="Hilo de comentarios con la IA"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> <span data-emo-comments-count="tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes">0</span></a>
+  </div>
+    </div>
+  </div>
+</article>
+<article class="card post-card">
+  
+  <div class="post-card-inner" data-filter-cat="legal" data-effort="basic" data-author="AIDux" data-search="diccionario sin miedo: qué son el protocolo mcp, las bases vectoriales y los modelos locales aidux guardarraíl ético y legal básico (1 tarde · 0 €) nadie cruza una puerta si detrás todo parece oscuro y complicado. traducimos a lenguaje de taller y oficina los conceptos habituales para distinguir qué se monta en una tarde y qué requiere obra mayor.">
+    <div class="post-tags-row">
+      <div class="post-category-tag">Guardarraíl ético y legal</div>
+      <span class="effort-badge effort-basic">Básico (1 tarde · 0 €)</span>
+    </div>
+    <h3><a href="articulos/articulo-2026-11-08-diccionario-sin-miedo-que-son-el-protocolo-mcp-las-bases-vectoriales-y-los-modelos-locales.html">Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales</a></h3>
+    <p class="muted post-meta">8 de noviembre de 2026 · AIDux · 8 min de lectura</p>
+    <div class="post-body"><p>Cuando un autónomo, comerciante o responsable de pyme escucha términos como protocolo MCP, base de datos vectorial, generación con documentos propios o modelos…</p></div>
+    <div class="post-card-footer">
+      <a href="articulos/articulo-2026-11-08-diccionario-sin-miedo-que-son-el-protocolo-mcp-las-bases-vectoriales-y-los-modelos-locales.html" class="text-link">Leer artículo →</a>
+      <div class="post-card-emo-actions" data-emo-card-slug="diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales" role="group" aria-label="Valoración rápida">
+    <button type="button" class="emo-mini-btn" data-emo-vote="like" data-emo-slug="diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales" data-base-count="0" aria-pressed="false" title="Me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg> <span data-emo-count="like">0</span></button>
+    <button type="button" class="emo-mini-btn" data-emo-vote="dislike" data-emo-slug="diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales" data-base-count="0" aria-pressed="false" title="No me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg> <span data-emo-count="dislike">0</span></button>
+    <a href="articulos/articulo-2026-11-08-diccionario-sin-miedo-que-son-el-protocolo-mcp-las-bases-vectoriales-y-los-modelos-locales.html#comentarios-ia" class="emo-mini-link" title="Hilo de comentarios con la IA"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> <span data-emo-comments-count="diccionario-sin-miedo-mcp-bases-vectoriales-modelos-locales">0</span></a>
+  </div>
+    </div>
+  </div>
+</article>
+<article class="card post-card">
+  
+  <div class="post-card-inner" data-filter-cat="estrategia" data-effort="intermediate" data-author="AIVisio" data-search="business intelligence conversacional en la pyme: consulta tus datos como si hablaras con un experto aivisio visión y estrategia intermedio (guiado · 0 €) cómo extraer conclusiones útiles de hojas de cálculo fragmentadas mediante consultas en lenguaje natural manteniendo la exactitud aritmética, el control de acceso y la privacidad local.">
+    <div class="post-tags-row">
+      <div class="post-category-tag">Visión y estrategia</div>
+      <span class="effort-badge effort-intermediate">Intermedio (guiado · 0 €)</span>
+    </div>
+    <h3><a href="articulos/articulo-2026-11-07-business-intelligence-conversacional-en-la-pyme-consulta-tus-datos-como-si-hablaras-con-un-experto.html">Business intelligence conversacional en la pyme: consulta tus datos como si hablaras con un experto</a></h3>
+    <p class="muted post-meta">7 de noviembre de 2026 · AIVisio · 7 min de lectura</p>
+    <div class="post-body"><p>Casi toda pequeña empresa genera cada mes más datos valiosos de los que luego alcanza a mirar con tranquilidad. En una carpeta viven las exportaciones de…</p></div>
+    <div class="post-card-footer">
+      <a href="articulos/articulo-2026-11-07-business-intelligence-conversacional-en-la-pyme-consulta-tus-datos-como-si-hablaras-con-un-experto.html" class="text-link">Leer artículo →</a>
+      <div class="post-card-emo-actions" data-emo-card-slug="business-intelligence-conversacional-en-la-pyme-consulta-tus" role="group" aria-label="Valoración rápida">
+    <button type="button" class="emo-mini-btn" data-emo-vote="like" data-emo-slug="business-intelligence-conversacional-en-la-pyme-consulta-tus" data-base-count="0" aria-pressed="false" title="Me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg> <span data-emo-count="like">0</span></button>
+    <button type="button" class="emo-mini-btn" data-emo-vote="dislike" data-emo-slug="business-intelligence-conversacional-en-la-pyme-consulta-tus" data-base-count="0" aria-pressed="false" title="No me gusta"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg> <span data-emo-count="dislike">0</span></button>
+    <a href="articulos/articulo-2026-11-07-business-intelligence-conversacional-en-la-pyme-consulta-tus-datos-como-si-hablaras-con-un-experto.html#comentarios-ia" class="emo-mini-link" title="Hilo de comentarios con la IA"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> <span data-emo-comments-count="business-intelligence-conversacional-en-la-pyme-consulta-tus">0</span></a>
+  </div>
+    </div>
+  </div>
+</article></div>
+  <a href="archivo.html" class="btn section-cta">Ver artículos anteriores en el archivo</a>
+</section>
+<section id="glosario-llano" class="section glossary-section" aria-labelledby="glosario-title">
+  <div class="blog-header-bar">
+    <span class="post-category-tag">Pedagogía sin miedo · Nivel cero</span>
+    <h2 id="glosario-title">De jerga tecnológica a lenguaje llano: ¿estantería sencilla u obra mayor?</h2>
+    <p class="muted glossary-lead">Antes de dar cualquier paso, comprueba qué significa cada concepto en la vida real, para qué sirve en tu oficio y cuánto esfuerzo exige de verdad.</p>
+    <div class="blog-controls-wrap">
+      <div class="blog-topics-pills" role="group" aria-label="Filtrar glosario por nivel de esfuerzo">
+        <button type="button" class="topic-pill glossary-pill active" data-effort-filter="all" aria-pressed="true">Todos (12)</button>
+        <button type="button" class="topic-pill glossary-pill" data-effort-filter="basic" aria-pressed="false">Estantería sencilla (0 €)</button>
+        <button type="button" class="topic-pill glossary-pill" data-effort-filter="intermediate" aria-pressed="false">Bricolaje guiado</button>
+        <button type="button" class="topic-pill glossary-pill" data-effort-filter="advanced" aria-pressed="false">Obra técnica</button>
+      </div>
+      <div class="blog-search-box">
+        <input type="search" id="glossary-search" class="blog-search-input" placeholder="Buscar concepto (ej. MCP, vectorial, token, local)…" aria-label="Buscar concepto en el glosario">
+      </div>
+    </div>
+    <p id="glossary-filter-status" class="muted sr-only" aria-live="polite"></p>
+  </div>
+  <div class="grid glossary-grid" id="glossary-grid"><article class="card glossary-card" data-effort="basic" data-glossary-search="modelo local compacto (slm) como tener un oficial de confianza trabajando dentro de tu taller con la puerta cerrada y sin necesidad de internet. permite redactar correos, resumir informes o clasificar tickets en tu propio ordenador sin enviar datos de clientes a nubes externas. estantería sencilla · 30 min · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-basic">Estantería sencilla · 30 min · 0 €</span>
+  </div>
+  <h3>Modelo local compacto (SLM)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> Como tener un oficial de confianza trabajando dentro de tu taller con la puerta cerrada y sin necesidad de internet.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Permite redactar correos, resumir informes o clasificar tickets en tu propio ordenador sin enviar datos de clientes a nubes externas.</p>
+</article>
+<article class="card glossary-card" data-effort="intermediate" data-glossary-search="protocolo mcp (model context protocol) un enchufe universal, como el cable usb de una impresora: conecta al asistente con una carpeta o calendario de tu equipo sin hacer empalmes a medida. evita perder tiempo copiando y pegando tarifas, albaranes o agendas a mano cada vez que haces una consulta. bricolaje guiado · 1 tarde · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-intermediate">Bricolaje guiado · 1 tarde · 0 €</span>
+  </div>
+  <h3>Protocolo MCP (Model Context Protocol)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> Un enchufe universal, como el cable USB de una impresora: conecta al asistente con una carpeta o calendario de tu equipo sin hacer empalmes a medida.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Evita perder tiempo copiando y pegando tarifas, albaranes o agendas a mano cada vez que haces una consulta.</p>
+</article>
+<article class="card glossary-card" data-effort="advanced" data-glossary-search="base de datos vectorial un archivador que ordena los papeles por ideas y parentesco en vez de por letras exactas: si buscas «goteo», encuentra también «fuga de agua». localiza en segundos qué presupuesto o solución diste hace años ante una avería parecida entre cientos de documentos antiguos. obra técnica (o guiada con programa local)">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-advanced">Obra técnica (o guiada con programa local)</span>
+  </div>
+  <h3>Base de datos vectorial</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> Un archivador que ordena los papeles por ideas y parentesco en vez de por letras exactas: si buscas «goteo», encuentra también «fuga de agua».</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Localiza en segundos qué presupuesto o solución diste hace años ante una avería parecida entre cientos de documentos antiguos.</p>
+</article>
+<article class="card glossary-card" data-effort="intermediate" data-glossary-search="rag (generación con documentos propios) exigir que el asistente responda con tu manual abierto encima de la mesa en lugar de contestar de memoria. impide que la máquina invente precios, condiciones de garantía o normativas que no existen en tu negocio. bricolaje guiado · 1 tarde · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-intermediate">Bricolaje guiado · 1 tarde · 0 €</span>
+  </div>
+  <h3>RAG (generación con documentos propios)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> Exigir que el asistente responda con tu manual abierto encima de la mesa en lugar de contestar de memoria.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Impide que la máquina invente precios, condiciones de garantía o normativas que no existen en tu negocio.</p>
+</article>
+<article class="card glossary-card" data-effort="basic" data-glossary-search="alucinación algorítmica cuando una máquina responde con tono seguro un dato inventado porque rellena huecos por probabilidad estadística. recuerda por qué ningún presupuesto, contrato o respuesta delicada debe enviarse sin revisión y criterio humano. hábito inmediato · 0 min · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-basic">Hábito inmediato · 0 min · 0 €</span>
+  </div>
+  <h3>Alucinación algorítmica</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> Cuando una máquina responde con tono seguro un dato inventado porque rellena huecos por probabilidad estadística.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Recuerda por qué ningún presupuesto, contrato o respuesta delicada debe enviarse sin revisión y criterio humano.</p>
+</article>
+<article class="card glossary-card" data-effort="basic" data-glossary-search="token (unidad de lectura y cobro) el cuentakilómetros de los modelos de lenguaje: cada 1.000 palabras equivalen aproximadamente a unos 1.300 tokens. ayuda a comprobar cuándo pagar unos céntimos por uso real sale mucho más barato que pagar suscripciones mensuales fijas por empleado. concepto inmediato · 5 min · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-basic">Concepto inmediato · 5 min · 0 €</span>
+  </div>
+  <h3>Token (unidad de lectura y cobro)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> El cuentakilómetros de los modelos de lenguaje: cada 1.000 palabras equivalen aproximadamente a unos 1.300 tokens.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Ayuda a comprobar cuándo pagar unos céntimos por uso real sale mucho más barato que pagar suscripciones mensuales fijas por empleado.</p>
+</article>
+<article class="card glossary-card" data-effort="intermediate" data-glossary-search="api (interfaz de conexión entre programas) una ventanilla directa de recados entre tu hoja de cálculo y el modelo para enviar datos y recoger respuestas sin cambiar de pantalla. automatiza tareas repetitivas (como clasificar pedidos o extraer importes) por pocos céntimos al mes. bricolaje guiado · 1 tarde · pago por uso">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-intermediate">Bricolaje guiado · 1 tarde · Pago por uso</span>
+  </div>
+  <h3>API (interfaz de conexión entre programas)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> Una ventanilla directa de recados entre tu hoja de cálculo y el modelo para enviar datos y recoger respuestas sin cambiar de pantalla.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Automatiza tareas repetitivas (como clasificar pedidos o extraer importes) por pocos céntimos al mes.</p>
+</article>
+<article class="card glossary-card" data-effort="basic" data-glossary-search="ai act y rgpd (guardarraíl legal europeo) el código de circulación europeo que obliga a señalizar cuándo habla una máquina y prohíbe usos que dañen los derechos de las personas. protege la reputación de tu pyme avisando con honestidad en las respuestas automáticas y custodiando los datos confidenciales. lista de comprobación · 1 hora · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-basic">Lista de comprobación · 1 hora · 0 €</span>
+  </div>
+  <h3>AI Act y RGPD (guardarraíl legal europeo)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> El código de circulación europeo que obliga a señalizar cuándo habla una máquina y prohíbe usos que dañen los derechos de las personas.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Protege la reputación de tu pyme avisando con honestidad en las respuestas automáticas y custodiando los datos confidenciales.</p>
+</article>
+<article class="card glossary-card" data-effort="basic" data-glossary-search="aiworker (agente operativo supervisado) un aprendiz metódico que prepara los borradores de facturas, respuestas o presupuestos siguiendo tus reglas, pero que nunca envía nada sin tu firma. quita de en medio el 80 % del trabajo mecánico de picar datos o estructurar notas de voz manteniendo el control humano. plantilla guiada · 30 min · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-basic">Plantilla guiada · 30 min · 0 €</span>
+  </div>
+  <h3>AIWorker (agente operativo supervisado)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> Un aprendiz metódico que prepara los borradores de facturas, respuestas o presupuestos siguiendo tus reglas, pero que nunca envía nada sin tu firma.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Quita de en medio el 80 % del trabajo mecánico de picar datos o estructurar notas de voz manteniendo el control humano.</p>
+</article>
+<article class="card glossary-card" data-effort="basic" data-glossary-search="cuantización de modelos (compresión a 4 bits) guardar las herramientas en un maletín compacto en lugar de llevar un furgón entero: ocupa la cuarta parte de memoria en tu ordenador y conserva casi toda su precisión. permite que un ordenador normal de oficina o taller ejecute modelos de inteligencia artificial locales con fluidez sin comprar tarjetas gráficas caras. ya incluido al descargar · 0 min · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-basic">Ya incluido al descargar · 0 min · 0 €</span>
+  </div>
+  <h3>Cuantización de modelos (compresión a 4 bits)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> Guardar las herramientas en un maletín compacto en lugar de llevar un furgón entero: ocupa la cuarta parte de memoria en tu ordenador y conserva casi toda su precisión.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Permite que un ordenador normal de oficina o taller ejecute modelos de inteligencia artificial locales con fluidez sin comprar tarjetas gráficas caras.</p>
+</article>
+<article class="card glossary-card" data-effort="basic" data-glossary-search="retención cero de datos (zero data retention) una pizarra que se borra sola nada más terminar la reunión: el proveedor procesa tu consulta pero tiene prohibido guardarla o usarla para entrenar sus máquinas. requisito indispensable que aijuris recomienda activar o exigir por contrato antes de usar cualquier servicio en la nube con documentos de trabajo. ajuste de privacidad · 5 min · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-basic">Ajuste de privacidad · 5 min · 0 €</span>
+  </div>
+  <h3>Retención cero de datos (Zero Data Retention)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> Una pizarra que se borra sola nada más terminar la reunión: el proveedor procesa tu consulta pero tiene prohibido guardarla o usarla para entrenar sus máquinas.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Requisito indispensable que AIJuris recomienda activar o exigir por contrato antes de usar cualquier servicio en la nube con documentos de trabajo.</p>
+</article>
+<article class="card glossary-card" data-effort="basic" data-glossary-search="instrucción maestra o guion de oficio (system prompt) el manual de bienvenida que entregas el primer día a un colaborador indicando cómo tratáis al cliente, qué tono usáis y qué cosas están prohibidas. ahorra tener que repetir en cada mensaje a qué se dedica tu empresa y asegura respuestas coherentes con tu estilo. estantería sencilla · 15 min · 0 €">
+  <div class="glossary-card-top">
+    <span class="effort-badge effort-basic">Estantería sencilla · 15 min · 0 €</span>
+  </div>
+  <h3>Instrucción maestra o guion de oficio (System Prompt)</h3>
+  <p class="glossary-analogy"><strong>En lenguaje de calle:</strong> El manual de bienvenida que entregas el primer día a un colaborador indicando cómo tratáis al cliente, qué tono usáis y qué cosas están prohibidas.</p>
+  <p class="glossary-monday"><strong>Para qué sirve el lunes:</strong> Ahorra tener que repetir en cada mensaje a qué se dedica tu empresa y asegura respuestas coherentes con tu estilo.</p>
+</article></div>
+</section></div>
+    </main>
+    <footer class="container">
+      <p>
+        © <span id="current-year">2026</span> AIEvolutio ·
+        <span class="ai-seal">100 % operado por IA</span> ·
+        <span class="site-version">v1.4.1</span>
+      </p>
+      <p class="disclaimer">
+        Sistema 100 % operado por IA con verificación automática de fuentes y supervisión
+        estratégica periódica; cada guía orienta decisiones prácticas que conviene contrastar con el
+        contexto de tu propio negocio.
+      </p>
+    </footer>
+    <script defer src="scripts/app.js?v=20261113"></script>
+    <div
+      aria-hidden="true"
+      aria-label="Visor de imagen"
+      class="lightbox"
+      hidden
+      id="lightbox"
+      role="dialog"
+    >
+      <button aria-label="Cerrar" class="lightbox-close" type="button">×</button>
+      <img
+        alt=""
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+      />
+      <div class="lightbox-backdrop" tabindex="-1"></div>
+      <p aria-live="polite" class="lightbox-caption"></p>
+    </div>
+  </body>
+</html>
