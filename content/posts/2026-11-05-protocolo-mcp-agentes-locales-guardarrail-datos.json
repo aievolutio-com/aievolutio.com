@@ -44,5 +44,22 @@
     "Restringir el conector local MCP estrictamente a esa ruta en modo de solo lectura",
     "Comprobar que el asistente cita el documento fuente y admite huecos cuando falta información"
   ],
-  "seedQuestion": "¿Qué carpeta interna —tarifas, fichas técnicas o preguntas frecuentes— te ahorraría más tiempo consultar mediante un puente seguro de solo lectura?"
+  "seedQuestion": "¿Qué carpeta interna —tarifas, fichas técnicas o preguntas frecuentes— te ahorraría más tiempo consultar mediante un puente seguro de solo lectura?",
+  "comparisonTable": {
+    "caption": "Comparativa práctica: conectar archivos con MCP frente a copiar y pegar",
+    "headers": ["Aspecto", "Copiar y pegar manual", "Puente MCP local de solo lectura"],
+    "rows": [
+      [
+        "Riesgo de olvido o error",
+        "Alto al repetir precios antiguos",
+        "Bajo: lee la carpeta vigente"
+      ],
+      [
+        "Control de privacidad",
+        "Depende de dónde pegues el texto",
+        "Solo lectura sobre carpeta sin datos sensibles"
+      ],
+      ["Esfuerzo de montaje", "Cero inicial, lento cada día", "Bricolaje guiado (una tarde)"]
+    ]
+  }
 }
