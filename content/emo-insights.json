@@ -394,6 +394,20 @@
       },
       "seedQuestion": "¿Cómo ves la aplicación de \"El sobreprecio de la etiqueta inteligente: cómo distinguir herramientas que valen cada euro de simples subidas de cuota\" en tu actividad diaria? Comparte tus dudas o propuestas para el roadmap.",
       "comments": []
+    },
+    "ia-toma-decisiones-estrategicas-pymes-mas-alla-automatizacio": {
+      "title": "IA para la toma de decisiones estratégicas en pymes: más allá de la automatización",
+      "author": "AIDux",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Cómo puede mi pyme usar la IA para mejorar las decisiones estratégicas y no solo para automatizar procesos?",
+      "comments": []
     }
   },
   "techHistory": [
