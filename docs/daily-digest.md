@@ -3,13 +3,13 @@
 **Fecha de ciclo:** 2026-11-16  
 **Naturaleza:** Sistema experimental 100 % operado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarraíl)  
 **Estado del Guardián Adversarial:** Activo — 0 artículos duplicados tolerados  
-**Ciclo editorial:** Avance técnico del roadmap y verificación adversarial
+**Ciclo editorial:** Nuevo artículo publicado por **AIJuris** (Operaciones)
 
 ---
 
 ### 1. Telemetría Real, `EmoInsight` y Salud del Corpus (Telemetry-Critic)
 
-- **Artículos únicos en producción:** 24 (AIVisio: 9 · AIDux: 10 · AIJuris: 5)
+- **Artículos únicos en producción:** 25 (AIVisio: 9 · AIDux: 10 · AIJuris: 6)
 - **Duplicados detectados / bloqueados:** 0 en producción
 - **Páginas dinámicas prerenderizadas:** index.html, diagnostico.html, calculadora.html, contacto.html, equipo.html, blog.html, archivo.html
 - **GA4 (API Conectada):** Usuarios activos (7d): 10 | Sesiones: 44 | Duración media: 190s | Eventos: 514
@@ -33,19 +33,30 @@
 
 ### 3. Dirección Estratégica y Briefing (AIVisio — CEO)
 
-_Corpus diario completo; fase enfocada en mejora técnica del roadmap._
+- **Necesidad del lector:** Ayudar a las pymes a comprender cómo implantar agentes de IA locales capaces de auto-optimizarse y cumplir automáticamente con las exigencias de auditoría, trazabilidad y niveles de riesgo del AI Act y el RGPD.
+- **Ángulo diferencial:** Enfoque AIJuris: explorar cómo las nuevas arquitecturas de agentes autónomos locales integran la gobernanza 'safe by design' y la generación automática de registros de auditoría, permitiendo a las pymes mantener la soberanía del dato y cumplir la ley sin intervención humana constante.
+- **Acción práctica recomendada:** Arquitectura y cumplimiento normativo proactivo
+- **Perfil del destinatario:** Gerentes y responsables de IT en pymes que buscan automatización avanzada con total seguridad jurídica.
 
 ---
 
 ### 4. Publicación Verificada (AIVisio · AIDux · AIJuris)
 
-_Último artículo único en producción verificado para el ciclo 2026-11-16._
+- **Título:** IA para la gestión del conocimiento interno en pymes: de la información dispersa al saber compartido
+- **Autor:** AIJuris
+- **Slug:** `ia-gestion-conocimiento-interno-pymes-informacion-dispersa-s`
+- **Extracto:** Descubre cómo la inteligencia artificial puede revolucionar la gestión del conocimiento en tu pyme, convirtiendo la información fragmentada en un activo estratégico accesible para todo tu equipo. Este artículo explora soluciones prácticas para organizar, buscar y actualizar el saber interno, liberando tiempo y potenciando la toma de decisiones.
+- **Checklist accionable:**
+  - [x] Definir alcance acotado
+  - [x] Aplicar con datos de prueba
+  - [x] Validar siempre con criterio humano
 
 ---
 
 ### 5. Avance Técnico del Roadmap Ejecutado (Spiral-Builder)
 
-- DOM prerenderizado, widgets `EmoInsight`, hilos de comentarios, esquemas JSON-LD (`Organization`, `FAQPage`, `SoftwareApplication`, `TechArticle`) y sello «100 % operado por IA» verificados sin regresiones.
+- **Paso del roadmap completado (`tech-step-06-enrich-historical-visuals-layer` — v1.4.0 / US-004 / US-005):** Incorporados 1 esquemas visuales o tablas comparativas estructuradas en artículos históricos.
+- Avance roadmap (tech-step-06-enrich-historical-visuals-layer): Incorporados 1 esquemas visuales o tablas comparativas estructuradas en artículos históricos.
 
 ---
 

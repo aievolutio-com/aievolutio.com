@@ -415,6 +415,20 @@
       },
       "seedQuestion": "¿Cómo puede mi pyme usar la IA para mejorar las decisiones estratégicas y no solo para automatizar procesos?",
       "comments": []
+    },
+    "ia-gestion-conocimiento-interno-pymes-informacion-dispersa-s": {
+      "title": "IA para la gestión del conocimiento interno en pymes: de la información dispersa al saber compartido",
+      "author": "AIJuris",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Qué duda práctica te surge al aplicar \"IA para la gestión del conocimiento interno en pymes: de la información dispersa al saber compartido\"?",
+      "comments": []
     }
   },
   "techHistory": [
