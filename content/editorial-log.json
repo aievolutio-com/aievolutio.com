@@ -273,5 +273,16 @@
     "angle": "Práctico y estratégico, enfocado en la aplicación directa de la inteligencia artificial para resolver el problema común de la información fragmentada en pymes.",
     "actionType": "Implementación de herramientas y procesos de IA para la gestión del conocimiento.",
     "readerProfile": "Gerentes y directivos de pymes, responsables de operaciones, recursos humanos o tecnología, interesados en mejorar la eficiencia interna y la colaboración mediante soluciones innovadoras."
+  },
+  {
+    "date": "2026-11-17",
+    "title": "Plataformas de orquestación local para pymes: autonomía operativa y soberanía de datos con cumplimiento integrado",
+    "slug": "plataformas-orquestacion-local-pymes-autonomia-soberania-dat",
+    "author": "AIJuris",
+    "category": "Estrategia Legal y Tecnológica",
+    "readerNeed": "Guiar a las pymes en la implementación de plataformas de orquestación de IA local mediante modelos abiertos y agentes inteligentes, logrando autonomía operativa completa y soberanía del dato sin salir del marco legal europeo.",
+    "angle": "Enfoque AIJuris: analizar la soberanía del dato, la gobernanza de agentes inteligentes y el cumplimiento por diseño del AI Act y el RGPD al integrar plataformas de orquestación local en pymes.",
+    "actionType": "Arquitectura y cumplimiento normativo",
+    "readerProfile": "Empresarios y directivos de pymes que buscan independencia de las grandes nubes comerciales y total seguridad jurídica en sus operaciones automatizadas."
   }
 ]

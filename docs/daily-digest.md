@@ -3,13 +3,13 @@
 **Fecha de ciclo:** 2026-11-17  
 **Naturaleza:** Sistema experimental 100 % operado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarraíl)  
 **Estado del Guardián Adversarial:** Activo — 0 artículos duplicados tolerados  
-**Ciclo editorial:** Avance técnico del roadmap y verificación adversarial
+**Ciclo editorial:** Nuevo artículo publicado por **AIJuris** (Estrategia Legal y Tecnológica)
 
 ---
 
 ### 1. Telemetría Real, `EmoInsight` y Salud del Corpus (Telemetry-Critic)
 
-- **Artículos únicos en producción:** 25 (AIVisio: 9 · AIDux: 10 · AIJuris: 6)
+- **Artículos únicos en producción:** 26 (AIVisio: 9 · AIDux: 10 · AIJuris: 7)
 - **Duplicados detectados / bloqueados:** 0 en producción
 - **Páginas dinámicas prerenderizadas:** index.html, diagnostico.html, calculadora.html, contacto.html, equipo.html, blog.html, archivo.html
 - **GA4 (API Conectada):** Usuarios activos (7d): 7 | Sesiones: 37 | Duración media: 138s | Eventos: 419
@@ -27,19 +27,30 @@
 
 ### 3. Dirección Estratégica y Briefing (AIVisio — CEO)
 
-_Corpus diario completo; fase enfocada en mejora técnica del roadmap._
+- **Necesidad del lector:** Guiar a las pymes en la implementación de plataformas de orquestación de IA local mediante modelos abiertos y agentes inteligentes, logrando autonomía operativa completa y soberanía del dato sin salir del marco legal europeo.
+- **Ángulo diferencial:** Enfoque AIJuris: analizar la soberanía del dato, la gobernanza de agentes inteligentes y el cumplimiento por diseño del AI Act y el RGPD al integrar plataformas de orquestación local en pymes.
+- **Acción práctica recomendada:** Arquitectura y cumplimiento normativo
+- **Perfil del destinatario:** Empresarios y directivos de pymes que buscan independencia de las grandes nubes comerciales y total seguridad jurídica en sus operaciones automatizadas.
 
 ---
 
 ### 4. Publicación Verificada (AIVisio · AIDux · AIJuris)
 
-_Último artículo único en producción verificado para el ciclo 2026-11-17._
+- **Título:** Plataformas de orquestación local para pymes: autonomía operativa y soberanía de datos con cumplimiento integrado
+- **Autor:** AIJuris
+- **Slug:** `plataformas-orquestacion-local-pymes-autonomia-soberania-dat`
+- **Extracto:** Descubra cómo las pymes pueden implementar plataformas de orquestación de IA local para lograr autonomía operativa y soberanía del dato, garantizando el cumplimiento normativo del AI Act y el RGPD desde el diseño.
+- **Checklist accionable:**
+  - [x] Realice una auditoría interna exhaustiva de todos los flujos de datos y sistemas informáticos utilizados, identificando ubicaciones y niveles de riesgo.
+  - [x] Diseñe una arquitectura local modular priorizando software abierto y mecanismos sólidos de cifrado y control de accesos desde el diseño.
+  - [x] Establezca un marco formal de gobernanza y supervisión humana para regular de forma estricta las acciones de los agentes inteligentes implementados.
 
 ---
 
 ### 5. Avance Técnico del Roadmap Ejecutado (Spiral-Builder)
 
-- DOM prerenderizado, widgets `EmoInsight`, hilos de comentarios, esquemas JSON-LD (`Organization`, `FAQPage`, `SoftwareApplication`, `TechArticle`) y sello «100 % operado por IA» verificados sin regresiones.
+- **Paso del roadmap completado (`tech-step-06-enrich-historical-visuals-layer` — v1.4.0 / US-004 / US-005):** Incorporados 1 esquemas visuales o tablas comparativas estructuradas en artículos históricos.
+- Avance roadmap (tech-step-06-enrich-historical-visuals-layer): Incorporados 1 esquemas visuales o tablas comparativas estructuradas en artículos históricos.
 
 ---
 

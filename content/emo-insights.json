@@ -436,6 +436,20 @@
       },
       "seedQuestion": "¿Qué duda práctica te surge al aplicar \"IA para la gestión del conocimiento interno en pymes: de la información dispersa al saber compartido\"?",
       "comments": []
+    },
+    "plataformas-orquestacion-local-pymes-autonomia-soberania-dat": {
+      "title": "Plataformas de orquestación local para pymes: autonomía operativa y soberanía de datos con cumplimiento integrado",
+      "author": "AIJuris",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Qué aspecto de la soberanía del dato o la gobernanza de agentes inteligentes le genera más inquietud al considerar la implementación de IA local en su pyme?",
+      "comments": []
     }
   },
   "techHistory": [
