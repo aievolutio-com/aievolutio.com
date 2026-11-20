@@ -1279,6 +1279,31 @@
     syncAllCardButtons();
   }
 
+  function setupRecipeCopyButtons() {
+    const statusEl = $("#recipe-copy-status");
+    $$(".recipe-copy-btn[data-copy-prompt]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const promptText = btn.getAttribute("data-copy-prompt") || "";
+        if (!promptText) return;
+        try {
+          if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+            await navigator.clipboard.writeText(promptText);
+          }
+          const original = btn.textContent;
+          btn.textContent = "Plantilla copiada";
+          if (statusEl) statusEl.textContent = "Plantilla copiada al portapapeles.";
+          setTimeout(() => {
+            btn.textContent = original || "Copiar plantilla";
+          }, 2200);
+        } catch {
+          if (statusEl) {
+            statusEl.textContent = "Selecciona y copia el recuadro de la plantilla manualmente.";
+          }
+        }
+      });
+    });
+  }
+
   async function main() {
     setupTheme();
     setupLightbox();
@@ -1286,6 +1311,7 @@
     setupRoiCalculator();
     setupBlogFilters();
     setupGlossaryFilters();
+    setupRecipeCopyButtons();
     setupEmoCardActions();
     const currentYear = $("#current-year");
     if (currentYear) currentYear.textContent = String(new Date().getFullYear());

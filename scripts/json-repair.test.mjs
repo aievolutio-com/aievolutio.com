@@ -34,9 +34,11 @@ test("repairTruncatedJson repara JSON truncado con comas colgantes y arrays anid
 
 test("extractFieldsFallback extrae campos por regex si todo falla", () => {
   const input =
-    'random text before {"title": "Título Seguro", "slug": "titulo-seguro", "author": "AIDux"} junk after';
+    'random text before {"title": "Título Seguro", "slug": "titulo-seguro", "author": "AIDux", "body": "Intro.\\n\\n### Sección uno\\n\\nTexto con \\"comillas\\"."} junk after';
   const extracted = extractFieldsFallback(input);
   assert.equal(extracted.title, "Título Seguro");
   assert.equal(extracted.slug, "titulo-seguro");
   assert.equal(extracted.author, "AIDux");
+  assert.match(extracted.body, /^### Sección uno$/m);
+  assert.ok(extracted.body.includes('Texto con "comillas".'));
 });

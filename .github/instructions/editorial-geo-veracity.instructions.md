@@ -29,7 +29,9 @@ Todo contenido generado en `content/posts/*.json`, `content/content.es.json`, `s
 - Usar `@type: "TechArticle"` (y `"FAQPage"`, `"Organization"`, `"SoftwareApplication"` donde corresponda) en JSON-LD, incluyendo `author` con enlace `rel="author"` hacia `equipo.html` y definiciones breves autónomas fácilmente citables por motores generativos.
 - Respetar la **ortotipografía de la RAE** en español de España: sin capitalización anglosajona en títulos ni epígrafes.
 
-## 4. Reserva editorial regenerativa y deduplicación
+## 4. Doble cola regenerativa semanal (`>= 7`), autorreparación y deduplicación
 
-- Vigilar que la reserva de propuestas editoriales verificadas no baje de **3 artículos pendientes**; si baja de 3, el sistema debe reaprovisionar hasta **5 propuestas inéditas** ancladas en `EmoInsight`, GA4 y búsqueda de frontera.
+- **Buffer editorial (`content/editorial-buffer.json`):** mantener siempre al menos **7 artículos pendientes verificados** (`minThreshold: 7`, `targetSize: 7`). Cada vez que se consume un artículo, reponer inmediatamente uno nuevo anclado en `EmoInsight`, GA4 y búsqueda de frontera.
+- **Buffer técnico (`content/tech-buffer.json`):** mantener siempre al menos **7 mejoras técnicas ejecutables y verificables** en cola (`minThreshold: 7`, `targetSize: 7`: recetas `AIWorkers`, términos de glosario llano, diagramas SVG y bloques `FAQPage` GEO). Cada vez que se ejecuta una mejora técnica, generar inmediatamente su reemplazo.
+- **Validación estructural y autorreparación previa al CI:** todo borrador (nuevo o en buffer) debe superar `validateArticleQuality` (extensión `1200–1600`/`1400–1800`, `>= 3` subencabezados `### `, tabla Markdown, pasos accionables, sin `\n` doblemente escapados, sin jerga interna, sin emojis y sin avisos autoinculpatorios). Si falla, el motor invoca `repairArticleWithLLM` para corregirlo antes de guardarlo o publicarlo.
 - Ningún borrador o artículo puede publicarse si colisiona semántica o léxicamente con `content/editorial-log.json` o `content/posts/`.

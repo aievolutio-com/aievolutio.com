@@ -11,6 +11,7 @@
 
 - **Artículos únicos en producción:** 27 (AIVisio: 9 · AIDux: 10 · AIJuris: 8)
 - **Duplicados detectados / bloqueados:** 0 en producción
+- **Colas regenerativas semanales:** Buffer técnico activo: **7/7** · Buffer editorial activo: **7/7**
 - **Páginas dinámicas prerenderizadas:** index.html, diagnostico.html, calculadora.html, contacto.html, equipo.html, blog.html, archivo.html
 - **GA4 (API Conectada):** Usuarios activos (7d): 6 | Sesiones: 30 | Duración media: 144s | Eventos: 339
 - **Pulso `EmoInsight` de lectores:** Me gusta: 0 · No me gusta: 0 · Claridad: 0 · Aplicable: 0 · Complejo: 0 · Dudas legales: 0 · Comentarios: 0 (Respuestas IA: 0)
@@ -52,8 +53,8 @@ Los agentes operativos autónomos están evolucionando más allá de los chatbot
 
 ### 5. Avance Técnico del Roadmap Ejecutado (Spiral-Builder)
 
-- **Paso del roadmap completado (`tech-step-06-enrich-historical-visuals-layer` — v1.4.0 / US-004 / US-005):** Incorporados 1 esquemas visuales o tablas comparativas estructuradas en artículos históricos.
-- Avance roadmap (tech-step-06-enrich-historical-visuals-layer): Incorporados 1 esquemas visuales o tablas comparativas estructuradas en artículos históricos.
+- **Lanzamiento `v1.4.2` (doble cola regenerativa semanal y puente a Horizonte 1):** Creado `content/tech-buffer.json` (`7/7` mejoras ejecutables con reposición inmediata tras cada ejecución), elevado `content/editorial-buffer.json` a `7/7` artículos verificados con autorreparación previa al CI (`repairArticleWithLLM` + arreglo de saltos `\n` en `extractFieldsFallback`), publicada la biblioteca viva `equipo.html#recetas-aiworkers` (3 recetas iniciales de 15 minutos) y activado el renderizado `FAQPage` JSON-LD en artículos.
+- **Último paso autónomo completado (`tech-step-06-enrich-historical-visuals-layer` — v1.4.0 / US-004 / US-005):** Incorporados 1 esquemas visuales o tablas comparativas estructuradas en artículos históricos.
 
 ---
 

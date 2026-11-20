@@ -1,0 +1,198 @@
+{
+  "updatedAt": "2026-11-20",
+  "minThreshold": 7,
+  "targetSize": 7,
+  "items": [
+    {
+      "id": "tech-h1-diagram-decisiones-estrategicas",
+      "versionRef": "v1.4.2 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIDux",
+      "title": "Diagrama SVG nativo para la guía de decisiones estratégicas con IA en pymes",
+      "rationale": "Añadir apoyo visual escaneable al artículo del 2026-11-15 sin alterar su texto ni permalink.",
+      "payload": {
+        "slug": "ia-toma-decisiones-estrategicas-pymes-mas-alla-automatizacio",
+        "visualDiagram": {
+          "title": "De los datos dispersos a una decisión estratégica supervisada",
+          "nodes": [
+            {
+              "title": "1. Tus cifras reales",
+              "note": "Ventas, costes y notas sin salir de casa"
+            },
+            {
+              "title": "2. Síntesis asistida",
+              "note": "Patrones y escenarios claros en local"
+            },
+            {
+              "title": "3. Criterio humano",
+              "note": "Contraste de márgenes y decisión final"
+            }
+          ]
+        }
+      },
+      "used": false,
+      "queuedAt": "2026-11-20"
+    },
+    {
+      "id": "tech-h1-recipe-mcp-carpeta-tarifas",
+      "versionRef": "v1.5.0 / US-203 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Receta de 15 minutos: conectar tu carpeta de tarifas en modo solo lectura con MCP",
+      "rationale": "Aterrizar la investigación de frontera sobre MCP y manual abierto en una plantilla ejecutable en equipo.html.",
+      "payload": {
+        "id": "receta-aidux-mcp-tarifas-solo-lectura",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-203",
+        "title": "Consultar tarifas vigentes desde una carpeta local en modo solo lectura",
+        "effortKey": "intermediate",
+        "effortLabel": "Bricolaje guiado · 20 min · 0 €",
+        "problem": "Evitar que un asistente invente precios desactualizados o mezcle condiciones de temporadas anteriores.",
+        "promptTemplate": "Actúa en modo solo lectura consultando únicamente el archivo tarifas-vigentes.md dentro de la carpeta autorizada. Responde a la consulta comercial citando entre paréntesis el apartado exacto de origen. Si una partida, medida o descuento no figura literalmente en el documento, escribe REQUIERE_VALORACION_HUMANA y no estimes cifras.",
+        "humanCheck": "Verifica cada apartado citado frente a tu tarifa vigente y comprueba que ninguna versión obsoleta sigue dentro de la carpeta consultada.",
+        "privacyGuard": "No incluyas nombres de clientes, NIF ni descuentos confidenciales individuales dentro de la carpeta conectada por MCP."
+      },
+      "used": false,
+      "queuedAt": "2026-11-20"
+    },
+    {
+      "id": "tech-h1-diagram-conocimiento-interno",
+      "versionRef": "v1.4.2 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIJuris",
+      "title": "Diagrama SVG nativo para la guía de gestión del conocimiento interno en pymes",
+      "rationale": "Completar la capa visual Bite-Snack-Meal del artículo del 2026-11-16.",
+      "payload": {
+        "slug": "ia-gestion-conocimiento-interno-pymes-informacion-dispersa-s",
+        "visualDiagram": {
+          "title": "Del archivo disperso al conocimiento compartido bajo control RGPD",
+          "nodes": [
+            {
+              "title": "1. Carpeta limpia",
+              "note": "Manuales vigentes sin datos personales"
+            },
+            {
+              "title": "2. Índice local",
+              "note": "Búsqueda semántica en tu propia red"
+            },
+            {
+              "title": "3. Consulta citada",
+              "note": "Respuesta con enlace al documento origen"
+            }
+          ]
+        }
+      },
+      "used": false,
+      "queuedAt": "2026-11-20"
+    },
+    {
+      "id": "tech-h1-glossary-autogobernanza-edge",
+      "versionRef": "v1.5.0 / US-105 / Frontier",
+      "kind": "glossary_expansion",
+      "leadAgent": "AIDux",
+      "title": "Ampliación del glosario llano con «Agente autogobernado» e «Inferencia en oficina (Edge AI)»",
+      "rationale": "Traducir a lenguaje cotidiano los hallazgos recientes del radar de frontera del 18 al 20 de noviembre.",
+      "payload": {
+        "terms": [
+          {
+            "id": "agente-local-autogobernado",
+            "term": "Agente local con autoverificación (autogobernado)",
+            "effortKey": "intermediate",
+            "effortLabel": "Bricolaje guiado · 1 tarde · 0 €",
+            "analogy": "Un colaborador metódico que, antes de entregarte un borrador, repasa él mismo su propia lista de comprobación legal y te señala cualquier hueco pendiente.",
+            "mondayUse": "Reduce errores de formato y garantiza que ningún documento incluya datos sensibles o promesas fuera de protocolo antes de tu revisión final."
+          },
+          {
+            "id": "edge-ai-oficina",
+            "term": "IA en el propio equipo de oficina (Edge AI)",
+            "effortKey": "basic",
+            "effortLabel": "Estantería sencilla · 30 min · 0 €",
+            "analogy": "Cocinar en tu propia cocina en lugar de pedir siempre comida a domicilio: controlas los ingredientes, pagas una sola vez los utensilios y nada sale por la puerta.",
+            "mondayUse": "Permite procesar actas, contratos y presupuestos en un ordenador de oficina o mini-PC sin depender de cuotas por usuario ni conexión continua."
+          }
+        ]
+      },
+      "used": false,
+      "queuedAt": "2026-11-20"
+    },
+    {
+      "id": "tech-h1-diagram-orquestacion-local",
+      "versionRef": "v1.4.2 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIDux",
+      "title": "Diagrama SVG nativo para plataformas de orquestación local en pymes",
+      "rationale": "Dotar de esquema de arquitectura sobria al artículo del 2026-11-17.",
+      "payload": {
+        "slug": "plataformas-orquestacion-local-pymes-autonomia-soberania-dat",
+        "visualDiagram": {
+          "title": "Orquestación local sobria: carpetas, conector MCP y revisión humana",
+          "nodes": [
+            {
+              "title": "1. Reglas y carpetas",
+              "note": "Permisos de solo lectura por área"
+            },
+            {
+              "title": "2. Orquestador local",
+              "note": "Enlaza modelo abierto y plantillas"
+            },
+            {
+              "title": "3. Registro auditable",
+              "note": "Trazabilidad y aprobación personal"
+            }
+          ]
+        }
+      },
+      "used": false,
+      "queuedAt": "2026-11-20"
+    },
+    {
+      "id": "tech-h1-faq-ai-act-semaforo-pymes",
+      "versionRef": "v1.5.0 / US-005 / AIJuris",
+      "kind": "article_faq_enrichment",
+      "leadAgent": "AIJuris",
+      "title": "Bloque FAQPage GEO verificado para el semáforo legal del AI Act en pymes",
+      "rationale": "Activar marcado estructurado FAQPage JSON-LD en una guía jurídica clave de alta demanda.",
+      "payload": {
+        "slug": "tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes",
+        "faq": [
+          {
+            "q": "¿El Reglamento europeo de IA prohíbe a una pyme usar asistentes para redactar correos o resumir textos?",
+            "a": "No. Las herramientas de apoyo interno revisadas por personas se sitúan en riesgo mínimo; basta con respetar el RGPD, evitar datos confidenciales en cuentas abiertas y mantener supervisión humana."
+          },
+          {
+            "q": "¿Cuándo obliga el AI Act a avisar explícitamente al cliente de que interactúa con una IA?",
+            "a": "Cuando el cliente conversa con un asistente automático visible en la web o recibe respuestas generadas automáticamente sin edición previa, conforme a las obligaciones de transparencia del reglamento europeo."
+          },
+          {
+            "q": "¿Qué exige la obligación de alfabetización en IA para pequeñas empresas?",
+            "a": "Que las personas que manejan herramientas de IA en la empresa reciban orientación práctica proporcional a su puesto sobre límites, verificación de resultados y protección de datos."
+          }
+        ]
+      },
+      "used": false,
+      "queuedAt": "2026-11-20"
+    },
+    {
+      "id": "tech-h1-recipe-aijuris-revision-clausulas",
+      "versionRef": "v1.5.0 / US-304 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIJuris",
+      "title": "Receta de 15 minutos: revisar cláusulas de confidencialidad y proveedores IA en local",
+      "rationale": "Convertir el escudo contractual de AIJuris en plantilla ejecutable dentro de equipo.html.",
+      "payload": {
+        "id": "receta-aijuris-auditoria-clausulas-proveedor",
+        "worker": "AIJuris",
+        "versionRef": "v1.5.0 / US-306",
+        "title": "Detectar riesgos de privacidad y permanencia en condiciones de proveedores digitales",
+        "effortKey": "basic",
+        "effortLabel": "Estantería sencilla · 15 min · 0 €",
+        "problem": "Aceptar actualizaciones de software con funciones de IA sin detectar si usan datos de la empresa para entrenar modelos o imponen permanencias ocultas.",
+        "promptTemplate": "Analiza en entorno local el texto adjunto de condiciones de servicio o anexo RGPD. Crea una tabla con cuatro columnas: aspecto_revisado, cita_literal_del_documento, riesgo_para_pyme (bajo/medio/alto) y pregunta_para_el_proveedor. Revisa expresamente: entrenamiento con datos de cliente, subencargados fuera del Espacio Económico Europeo, plazo de borrado tras baja y derecho de exportación en formato abierto. Si un punto no aparece en el texto, escribe NO_CONSTA_EN_CONTRATO.",
+        "humanCheck": "Coteja cada cita literal en el documento original y consulta con tu asesoría jurídica antes de firmar contratos de importe relevante o datos sensibles.",
+        "privacyGuard": "Ejecuta este análisis en local o elimina previamente nombres de clientes, precios confidenciales y datos identificativos de terceros."
+      },
+      "used": false,
+      "queuedAt": "2026-11-20"
+    }
+  ]
+}

@@ -321,6 +321,58 @@ function renderWorker(worker, withAnchor = false, compact = false) {
 </article>`;
 }
 
+export function getAiWorkerRecipes() {
+  try {
+    const recipesPath = path.join(repoRoot, "content/aiworker-recipes.json");
+    if (existsSync(recipesPath)) {
+      const parsed = JSON.parse(readFileSync(recipesPath, "utf8"));
+      if (Array.isArray(parsed)) {
+        return parsed.filter((r) => r && r.id && r.title && r.promptTemplate);
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return [];
+}
+
+export function renderAiWorkerRecipes() {
+  const recipes = getAiWorkerRecipes();
+  if (!recipes.length) return "";
+
+  const cardsHtml = recipes
+    .map(
+      (
+        r,
+      ) => `<article class="card recipe-card" id="${escapeHtml(r.id)}" data-worker="${escapeHtml(String(r.worker || "AIWorker").toLowerCase())}">
+  <div class="glossary-card-top">
+    <span class="post-category-tag">${escapeHtml(r.worker || "AIWorker")}</span>
+    <span class="effort-badge effort-${escapeHtml(r.effortKey || "basic")}">${escapeHtml(stripLeadingEmojis(r.effortLabel || "Estantería sencilla · 15 min · 0 €"))}</span>
+  </div>
+  <h3>${escapeHtml(r.title)}</h3>
+  ${r.problem ? `<p><strong>Qué resuelve:</strong> ${escapeHtml(r.problem)}</p>` : ""}
+  <div class="recipe-prompt-wrap">
+    <p class="recipe-prompt-label"><strong>Plantilla lista para copiar (sin datos privados):</strong></p>
+    <pre class="recipe-prompt"><code>${escapeHtml(r.promptTemplate)}</code></pre>
+    <button type="button" class="btn btn-sm btn-outline recipe-copy-btn" data-copy-prompt="${escapeHtml(r.promptTemplate)}">Copiar plantilla</button>
+  </div>
+  ${r.humanCheck ? `<p class="recipe-check"><strong>Revisión humana obligatoria:</strong> ${escapeHtml(r.humanCheck)}</p>` : ""}
+  ${r.privacyGuard ? `<p class="muted recipe-guard"><strong>Guardarraíl AIJuris:</strong> ${escapeHtml(r.privacyGuard)}</p>` : ""}
+</article>`,
+    )
+    .join("\n");
+
+  return `<section id="recetas-aiworkers" class="section recipes-section" aria-labelledby="recetas-aiworkers-title">
+  <div class="blog-header-bar">
+    <span class="post-category-tag">${renderUiIcon("wrench")} Factoría práctica · Horizonte 1</span>
+    <h2 id="recetas-aiworkers-title">Recetas de 15 minutos listas para probar en tu pyme</h2>
+    <p class="muted glossary-lead">Plantillas abiertas y sobrias para estrenar nuestros AIWorkers en local o en entornos con retención cero, siempre bajo supervisión humana. Esta biblioteca crece de forma autónoma cada semana.</p>
+    <p id="recipe-copy-status" class="muted sr-only" role="status" aria-live="polite"></p>
+  </div>
+  <div class="grid recipes-grid">${cardsHtml}</div>
+</section>`;
+}
+
 export function renderTeam(content) {
   const team = content.sections.find((section) => section.id === "aiworkers");
   if (!team) throw new Error("Falta la sección aiworkers para generar la página del equipo.");
@@ -349,7 +401,8 @@ export function renderTeam(content) {
   <h2>${escapeHtml(team.title || "AIWorkers")}</h2>
   <div class="grid">${workers.map((w) => renderWorker(w, true)).join("\n")}</div>
   <script type="application/ld+json">${JSON.stringify(schemaApps)}</script>
-</section>`;
+</section>
+${renderAiWorkerRecipes()}`;
 }
 
 export function renderHomeSections(content) {
@@ -904,6 +957,42 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
   </ul>
 </aside>`
       : "";
+  const validFaq = Array.isArray(post.faq)
+    ? post.faq.filter((item) => item && item.q && item.a)
+    : [];
+  const faqHtml =
+    validFaq.length > 0
+      ? `<section id="preguntas-frecuentes" class="article-faq-box" aria-labelledby="faq-heading">
+  <h3 id="faq-heading">Preguntas frecuentes verificadas</h3>
+  <div class="faq-list">
+    ${validFaq
+      .map(
+        (item) => `<details class="faq-item">
+      <summary>${escapeHtml(item.q)}</summary>
+      <p>${escapeHtml(item.a)}</p>
+    </details>`,
+      )
+      .join("\n    ")}
+  </div>
+</section>`
+      : "";
+  const faqSchemaTag =
+    validFaq.length > 0
+      ? `\n<script type="application/ld+json">${JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: validFaq.map((item) => ({
+            "@type": "Question",
+            name: String(item.q),
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: String(item.a),
+            },
+          })),
+        })
+          .replaceAll("<", "\\u003c")
+          .replaceAll(">", "\\u003e")}</script>`
+      : "";
 
   const renderedCommentsHtml =
     emo.comments.length > 0
@@ -1102,7 +1191,7 @@ ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage
 <link href="../images/favicon-16.png" rel="icon" sizes="16x16" type="image/png">
 <link href="../images/favicon.ico" rel="icon" type="image/x-icon">
 <link href="../images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
-<script type="application/ld+json">${JSON.stringify(articleSchema).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e")}</script>
+<script type="application/ld+json">${JSON.stringify(articleSchema).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e")}</script>${faqSchemaTag}
 </head>
 <body data-page="article">
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -1142,6 +1231,7 @@ ${image}
   ${diagramHtml}
   ${sourcesHtml}
   ${checklistHtml}
+  ${faqHtml}
 </article>
 ${emoInsightSectionHtml}
 ${commentsSectionHtml}

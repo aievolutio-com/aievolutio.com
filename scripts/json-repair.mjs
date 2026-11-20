@@ -148,28 +148,49 @@ export function repairTruncatedJson(rawText) {
   }
 }
 
+function decodeJsonStringLiteral(rawValue) {
+  if (typeof rawValue !== "string") return "";
+  try {
+    return JSON.parse(`"${rawValue}"`);
+  } catch {
+    return rawValue
+      .replace(/\\r\\n/g, "\n")
+      .replace(/\\n/g, "\n")
+      .replace(/\\r/g, "\r")
+      .replace(/\\t/g, "\t")
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, "\\");
+  }
+}
+
 /**
  * Extrae campos seguros si la reparación completa fallara
  */
 export function extractFieldsFallback(text) {
   const result = {};
-  const titleMatch = text.match(/"title"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
-  if (titleMatch) result.title = titleMatch[1].replace(/\\"/g, '"');
+  const extract = (key) => {
+    const m = text.match(new RegExp(`"${key}"\\s*:\\s*"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"`));
+    return m ? decodeJsonStringLiteral(m[1]) : null;
+  };
 
-  const slugMatch = text.match(/"slug"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
-  if (slugMatch) result.slug = slugMatch[1];
-
-  const authorMatch = text.match(/"author"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
-  if (authorMatch) result.author = authorMatch[1];
-
-  const categoryMatch = text.match(/"category"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
-  if (categoryMatch) result.category = categoryMatch[1];
-
-  const excerptMatch = text.match(/"excerpt"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
-  if (excerptMatch) result.excerpt = excerptMatch[1].replace(/\\"/g, '"');
-
-  const bodyMatch = text.match(/"body"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
-  if (bodyMatch) result.body = bodyMatch[1].replace(/\\"/g, '"');
+  for (const field of [
+    "title",
+    "slug",
+    "author",
+    "category",
+    "effortLevel",
+    "readerNeed",
+    "angle",
+    "actionType",
+    "readerProfile",
+    "clarityNote",
+    "excerpt",
+    "body",
+    "seedQuestion",
+  ]) {
+    const val = extract(field);
+    if (val !== null) result[field] = val;
+  }
 
   return result;
 }

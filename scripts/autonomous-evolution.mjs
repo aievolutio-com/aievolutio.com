@@ -32,10 +32,17 @@ const repoRoot = process.cwd();
 const postsDir = path.join(repoRoot, "content/posts");
 const editorialLogPath = path.join(repoRoot, "content/editorial-log.json");
 const editorialBufferPath = path.join(repoRoot, "content/editorial-buffer.json");
+const techBufferPath = path.join(repoRoot, "content/tech-buffer.json");
+const aiworkerRecipesPath = path.join(repoRoot, "content/aiworker-recipes.json");
 const emoInsightsPath = path.join(repoRoot, "content/emo-insights.json");
 const glossaryExtraPath = path.join(repoRoot, "content/glossary-extra.json");
 const roadmapPath = path.join(repoRoot, "docs/roadmap.md");
 const dailyDigestPath = path.join(repoRoot, "docs/daily-digest.md");
+
+export const EDITORIAL_BUFFER_MIN = 7;
+export const EDITORIAL_BUFFER_TARGET = 7;
+export const TECH_BUFFER_MIN = 7;
+export const TECH_BUFFER_TARGET = 7;
 
 // ─── CLI ARGS ────────────────────────────────────────────────────────────────
 
@@ -768,7 +775,7 @@ Con el tiempo, niños y aprendices descubren por sí mismos que las mejores resp
   {
     title:
       "Ordenar facturas y albaranes sin suscripciones fijas: guía local paso a paso para autónomos",
-    slug: "ordenar-facturas-albaranes-sin-suscripciones-fijas-guia-local",
+    slug: "ordenar-facturas-albaranes-sin-suscripciones-guia-local",
     author: "AIDux",
     category: "Operaciones",
     effortLevel: "basic",
@@ -858,7 +865,7 @@ Al comparar alternativas comerciales, pregunta siempre antes de contratar si pue
   {
     title:
       "Acompañamiento a mayores y trámites administrativos: dónde ayuda la tecnología y dónde es irremplazable la persona",
-    slug: "acompanamiento-mayores-tramites-administrativos-tecnologia-persona",
+    slug: "acompanamiento-mayores-tramites-tecnologia-persona",
     author: "AIJuris",
     category: "Legal",
     effortLevel: "basic",
@@ -1666,7 +1673,159 @@ export const ROADMAP_TECH_QUEUE = [
   },
 ];
 
-// ─── BUFFER EDITORIAL REGENERATIVO (US-408) ──────────────────────────────────
+// ─── VALIDACIÓN ESTRUCTURAL Y AUTORREPARACIÓN EDITORIAL (BITE-SNACK-MEAL) ────
+
+export function normalizeMarkdownBody(rawBody) {
+  let body = String(rawBody || "");
+  const realNewlines = (body.match(/\n/g) || []).length;
+  const escapedNewlines = (body.match(/\\n/g) || []).length;
+  if (escapedNewlines >= 4 && realNewlines < 3) {
+    body = body
+      .replace(/\\r\\n/g, "\n")
+      .replace(/\\n/g, "\n")
+      .replace(/\\t/g, "\t")
+      .replace(/\\"/g, '"');
+  }
+  return body.replace(/\r\n/g, "\n").trim();
+}
+
+export function validateArticleQuality(article, format = "tactical") {
+  const normalizedBody = normalizeMarkdownBody(article?.body || "");
+  const lengthCheck = validateArticleBodyLength(normalizedBody, format);
+  const h3Count = (normalizedBody.match(/^###\s+/gm) || []).length;
+  const hasMdTable = /\n\|[^\n]+\|\n\|[\s:|-]+\|/.test(normalizedBody);
+  const hasStructuredTable =
+    Array.isArray(article?.comparisonTable?.rows) && article.comparisonTable.rows.length >= 2;
+  const hasTable = hasMdTable || hasStructuredTable;
+  const hasActionSteps = /\*\*Pasos accionables para aplicar hoy:\*\*/i.test(normalizedBody);
+  const combinedText = `${article?.title || ""} ${article?.excerpt || ""} ${article?.clarityNote || ""} ${normalizedBody}`;
+  const hasTrustGap = /pueden cometer errores|no sustituyen el criterio/i.test(combinedText);
+  const hasJargon = /\b(volante|curva exponencial|m[aá]quina biol[oó]gica)\b/i.test(combinedText);
+  const hasEmoji = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(combinedText);
+
+  const issues = [];
+  if (!lengthCheck.valid) {
+    issues.push(
+      `Extensión fuera de rango (${lengthCheck.wordCount} palabras; requerido ${lengthCheck.minWords}-${lengthCheck.maxWords}).`,
+    );
+  }
+  if (h3Count < 3) {
+    issues.push(
+      `Faltan subencabezados Markdown ### (detectados ${h3Count}; mínimo 3 cada 250-300 palabras).`,
+    );
+  }
+  if (!hasTable) {
+    issues.push(
+      "Falta una tabla comparativa en formato Markdown (| Columna A | Columna B |) o comparisonTable.",
+    );
+  }
+  if (!hasActionSteps) {
+    issues.push(
+      'Falta el cierre "**Pasos accionables para aplicar hoy:**" seguido de 3 pasos numerados.',
+    );
+  }
+  if (hasTrustGap) {
+    issues.push(
+      "Contiene fórmulas defensivas prohibidas (Trust Gap: «pueden cometer errores» / «no sustituyen el criterio»).",
+    );
+  }
+  if (hasJargon) {
+    issues.push(
+      "Contiene jerga interna prohibida («volante», «curva exponencial», «máquina biológica»).",
+    );
+  }
+  if (hasEmoji) {
+    issues.push("Contiene emojis estructurales prohibidos en texto editorial.");
+  }
+
+  return {
+    valid: issues.length === 0,
+    issues,
+    wordCount: lengthCheck.wordCount,
+    minWords: lengthCheck.minWords,
+    maxWords: lengthCheck.maxWords,
+    h3Count,
+    hasTable,
+    normalizedBody,
+  };
+}
+
+export async function repairArticleWithLLM(article, format = "tactical", options = {}) {
+  const llmFn = options.llmFn || callLLM;
+  const maxAttempts = Number(options.maxAttempts ?? 2);
+  let current = { ...article, body: normalizeMarkdownBody(article?.body || "") };
+  let quality = validateArticleQuality(current, format);
+  let repaired = current.body !== String(article?.body || "");
+
+  if (quality.valid) {
+    return { article: current, quality, repaired };
+  }
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    console.log(
+      `[Autorreparación Editorial] Intento ${attempt}/${maxAttempts} para "${current.title || "borrador"}": ${quality.issues.join(" | ")}`,
+    );
+    const repairPrompt = `Corrige ÚNICAMENTE los defectos detectados en el siguiente artículo JSON de AIEvolutio sin inventar cifras, porcentajes ni normas:
+
+DEFECTOS DETECTADOS (OBLIGATORIO CORREGIR TODOS):
+${quality.issues.map((issue, idx) => `${idx + 1}. ${issue}`).join("\n")}
+
+REGLAS OBLIGATORIAS:
+- Extensión del campo "body": estrictamente entre ${quality.minWords} y ${quality.maxWords} palabras (${format === "pillar" ? "guía pilar semanal" : "artículo táctico diario"}).
+- Estructura Bite-Snack-Meal: párrafos breves (3-4 líneas) separados por doble salto de línea real, entre 4 y 7 subencabezados Markdown empezando exactamente por "### " al inicio de línea (uno cada 250-300 palabras).
+- Incluye al menos una tabla comparativa en formato Markdown (| Columna A | Columna B | ...).
+- Cierra con "**Pasos accionables para aplicar hoy:**" seguido de 3 pasos numerados.
+- Prohibido usar emojis, jerga interna («volante», «curva exponencial», «máquina biológica») o avisos autoinculpatorios («pueden cometer errores»).
+- Prohibido inventar estadísticas, ahorros en euros o leyes.
+
+JSON ACTUAL:
+${JSON.stringify({
+  title: current.title,
+  slug: current.slug,
+  category: current.category,
+  effortLevel: current.effortLevel,
+  clarityNote: current.clarityNote,
+  excerpt: current.excerpt,
+  body: current.body,
+  actionableChecklist: current.actionableChecklist,
+  seedQuestion: current.seedQuestion,
+})}
+
+Responde SOLO con el JSON completo corregido y válido.`;
+
+    const raw = await llmFn(repairPrompt);
+    if (!raw) break;
+    const rawText = typeof raw === "string" ? raw : raw.text;
+    if (!rawText) continue;
+
+    let parsed = null;
+    try {
+      parsed = repairTruncatedJson(rawText);
+    } catch {
+      const fb = extractFieldsFallback(rawText);
+      if (fb.body) parsed = fb;
+    }
+    if (!parsed || !parsed.body) continue;
+
+    const merged = {
+      ...current,
+      ...parsed,
+      title: applyRaeTitleCase(parsed.title || current.title),
+      body: normalizeMarkdownBody(parsed.body),
+    };
+    const nextQuality = validateArticleQuality(merged, format);
+    if (nextQuality.issues.length < quality.issues.length || nextQuality.valid) {
+      current = merged;
+      quality = nextQuality;
+      repaired = true;
+    }
+    if (quality.valid) break;
+  }
+
+  return { article: current, quality, repaired };
+}
+
+// ─── BUFFER EDITORIAL REGENERATIVO (US-408 — MÍNIMO 7 EN COLA SEMANAL) ───────
 
 export async function loadEditorialBuffer(targetPath = editorialBufferPath) {
   try {
@@ -1675,8 +1834,14 @@ export async function loadEditorialBuffer(targetPath = editorialBufferPath) {
       if (parsed && Array.isArray(parsed.items)) {
         return {
           updatedAt: parsed.updatedAt || "",
-          minThreshold: Number(parsed.minThreshold || 3),
-          targetSize: Number(parsed.targetSize || 5),
+          minThreshold: Math.max(
+            EDITORIAL_BUFFER_MIN,
+            Number(parsed.minThreshold || EDITORIAL_BUFFER_MIN),
+          ),
+          targetSize: Math.max(
+            EDITORIAL_BUFFER_TARGET,
+            Number(parsed.targetSize || EDITORIAL_BUFFER_TARGET),
+          ),
           items: parsed.items,
         };
       }
@@ -1686,8 +1851,8 @@ export async function loadEditorialBuffer(targetPath = editorialBufferPath) {
   }
   return {
     updatedAt: "",
-    minThreshold: 3,
-    targetSize: 5,
+    minThreshold: EDITORIAL_BUFFER_MIN,
+    targetSize: EDITORIAL_BUFFER_TARGET,
     items: [],
   };
 }
@@ -1699,60 +1864,94 @@ export async function saveEditorialBuffer(buffer, targetPath = editorialBufferPa
 
 export function getActiveBufferedCandidates(buffer, existingPosts, editorialLog) {
   const seenBufferSlugs = new Set();
-  return (buffer?.items || []).filter((item) => {
-    if (!item || item.used) return false;
-    const slugKey = String(item.slug || slugify(item.title || "")).toLowerCase();
-    if (!slugKey || seenBufferSlugs.has(slugKey)) return false;
-    seenBufferSlugs.add(slugKey);
-    const lengthOk = validateArticleBodyLength(item.body, item.format || "tactical").valid;
-    const briefingOk = validateEditorialBriefing(
-      {
-        suggestedTitle: item.title,
-        readerNeed: item.readerNeed,
-        angle: item.angle,
-      },
-      existingPosts,
-      editorialLog,
-    ).allowed;
-    return lengthOk && briefingOk && !isDuplicatePost(item, existingPosts).duplicate;
-  });
+  return (buffer?.items || [])
+    .map((item) =>
+      item && typeof item.body === "string"
+        ? { ...item, body: normalizeMarkdownBody(item.body) }
+        : item,
+    )
+    .filter((item) => {
+      if (!item || item.used) return false;
+      const slugKey = String(item.slug || slugify(item.title || "")).toLowerCase();
+      if (!slugKey || seenBufferSlugs.has(slugKey)) return false;
+      seenBufferSlugs.add(slugKey);
+      const qualityOk = validateArticleQuality(item, item.format || "tactical").valid;
+      const briefingOk = validateEditorialBriefing(
+        {
+          suggestedTitle: item.title,
+          readerNeed: item.readerNeed,
+          angle: item.angle,
+        },
+        existingPosts,
+        editorialLog,
+      ).allowed;
+      return qualityOk && briefingOk && !isDuplicatePost(item, existingPosts).duplicate;
+    });
 }
 
 export async function ensureEditorialBuffer(telemetry, emoInsights, targetDate, options = {}) {
   const bufferPath = options.bufferPath || editorialBufferPath;
-  const minThreshold = Number(options.minThreshold || 3);
-  const targetSize = Number(options.targetSize || 5);
+  const minThreshold = Number(options.minThreshold ?? EDITORIAL_BUFFER_MIN);
+  const targetSize = Math.max(minThreshold, Number(options.targetSize ?? EDITORIAL_BUFFER_TARGET));
   const generatorFn = options.generatorFn || callLLMWithSearchGrounded;
+  const repairFn = options.repairFn || callLLM;
 
   const buffer = await loadEditorialBuffer(bufferPath);
-  let active = getActiveBufferedCandidates(
-    buffer,
-    telemetry.existingPosts || [],
-    telemetry.editorialLog || [],
-  );
+  const existingPosts = telemetry.existingPosts || [];
+  const editorialLog = telemetry.editorialLog || [];
 
-  // Conservar únicamente los usados o vigentes válidos para no acumular descartes obsoletos
-  const retainedItems = [...buffer.items.filter((i) => i && i.used).slice(-20), ...active];
+  // 1. Auto-reparar cualquier borrador en cola que tenga defectos estructurales (ej. \n escapado o <3 H3)
+  let repairedCount = 0;
+  for (let idx = 0; idx < buffer.items.length; idx++) {
+    const item = buffer.items[idx];
+    if (!item || item.used) continue;
+    if (isDuplicatePost(item, existingPosts).duplicate) continue;
+    const normalized = { ...item, body: normalizeMarkdownBody(item.body) };
+    const initialQuality = validateArticleQuality(normalized, normalized.format || "tactical");
+    if (initialQuality.valid) {
+      if (normalized.body !== item.body) {
+        buffer.items[idx] = normalized;
+        repairedCount++;
+      }
+      continue;
+    }
+    if (!options.skipRepair) {
+      const fix = await repairArticleWithLLM(normalized, normalized.format || "tactical", {
+        llmFn: repairFn,
+        maxAttempts: 2,
+      });
+      if (fix.quality.valid) {
+        buffer.items[idx] = fix.article;
+        repairedCount++;
+        console.log(`[Buffer Editorial] Borrador defectuoso autorreparado: "${fix.article.title}"`);
+      }
+    }
+  }
 
-  if (active.length >= minThreshold) {
-    buffer.items = retainedItems;
+  let active = getActiveBufferedCandidates(buffer, existingPosts, editorialLog);
+  const retainedUsed = buffer.items.filter((i) => i && i.used).slice(-20);
+
+  if (active.length >= minThreshold && active.length >= targetSize) {
+    buffer.items = [...retainedUsed, ...active];
+    buffer.minThreshold = minThreshold;
+    buffer.targetSize = targetSize;
     buffer.updatedAt = targetDate;
-    if (options.writeIfSufficient) {
+    if (options.writeIfSufficient || repairedCount > 0) {
       await saveEditorialBuffer(buffer, bufferPath);
     }
-    return { buffer, activeCount: active.length, added: 0 };
+    return { buffer, activeCount: active.length, added: 0, repairedCount };
   }
 
   console.log(
-    `[Buffer Editorial] Reserva disponible (${active.length}) < ${minThreshold}; aprovisionando hasta ${targetSize} artículos verificados...`,
+    `[Buffer Editorial] Reserva disponible (${active.length}) < ${targetSize}; reaprovisionando inmediatamente hasta ${targetSize} artículos verificados...`,
   );
 
   const syntheticCorpus = [
-    ...(telemetry.existingPosts || []),
+    ...existingPosts,
     ...active.map((a) => ({ title: a.title, slug: a.slug })),
   ];
   const syntheticLog = [
-    ...(telemetry.editorialLog || []),
+    ...editorialLog,
     ...active.map((a) => ({
       title: a.title,
       readerNeed: a.readerNeed,
@@ -1763,7 +1962,7 @@ export async function ensureEditorialBuffer(telemetry, emoInsights, targetDate, 
   const authorsCycle = ["AIVisio", "AIDux", "AIJuris"];
   let added = 0;
   let attempts = 0;
-  const maxAttempts = (targetSize - active.length) * 2;
+  const maxAttempts = (targetSize - active.length) * 3;
 
   while (active.length < targetSize && attempts < maxAttempts) {
     attempts++;
@@ -1775,7 +1974,7 @@ Títulos ya publicados o en reserva (PROHIBIDO repetir): ${JSON.stringify(synthe
 Requisitos estrictos:
 1. Título RAE sentence case (solo mayúscula inicial y siglas como IA, AI Act, RGPD, SLM, MCP, AIEvolutio, AIDux, AIJuris; "pyme"/"pymes" en minúscula). Prohibido usar jerga interna o fórmulas autoinculpatorias («pueden cometer errores»).
 2. clarityNote: resumen en 1 frase empezando por "En 30 segundos:" con 3 ideas clave, analogía cotidiana y nivel de esfuerzo real.
-3. body: 1200-1600 palabras en español claro siguiendo el patrón Bite-Snack-Meal: subencabezados \`### \` cada 250-300 palabras, párrafos breves de 3-4 líneas (40-60 palabras), al menos una tabla comparativa en formato Markdown (| Columna | ... |) y una lista numerada "**Pasos accionables para aplicar hoy:**".
+3. body: 1200-1600 palabras en español claro siguiendo el patrón Bite-Snack-Meal: entre 5 y 7 subencabezados Markdown \`### \` al inicio de línea (uno cada 250-300 palabras), párrafos breves de 3-4 líneas (40-60 palabras), al menos una tabla comparativa en formato Markdown (| Columna | ... |) y una lista numerada "**Pasos accionables para aplicar hoy:**".
 4. PROHIBICIÓN ABSOLUTA DE ALUCINACIONES: cero porcentajes, ahorros en euros o leyes inventadas. Si citas un dato cuantitativo o normativo real, debe venir de la búsqueda web en vivo; si no, redacta una guía estrictamente conceptual y práctica sin cifras inventadas.
 5. Responde SOLO con JSON válido:
 {"title":"...","slug":"...","category":"Estrategia|Operaciones|Legal","effortLevel":"basic|intermediate|advanced","readerNeed":"...","angle":"...","actionType":"...","readerProfile":"...","clarityNote":"...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."],"seedQuestion":"..."}`;
@@ -1797,7 +1996,7 @@ Requisitos estrictos:
     if (!parsed || !parsed.title || !parsed.body) continue;
 
     const normalizedTitle = applyRaeTitleCase(parsed.title);
-    const candidate = {
+    let candidate = {
       bufferId: `buf-${targetDate}-${slugify(parsed.slug || normalizedTitle)}`,
       title: normalizedTitle,
       slug: slugify(parsed.slug || normalizedTitle),
@@ -1816,7 +2015,7 @@ Requisitos estrictos:
       readerProfile: parsed.readerProfile || "Autónomos y pymes",
       clarityNote: parsed.clarityNote || `En 30 segundos: ${parsed.excerpt || normalizedTitle}`,
       excerpt: parsed.excerpt || String(parsed.body).slice(0, 140) + "…",
-      body: parsed.body,
+      body: normalizeMarkdownBody(parsed.body),
       actionableChecklist:
         Array.isArray(parsed.actionableChecklist) && parsed.actionableChecklist.length >= 1
           ? parsed.actionableChecklist.slice(0, 3)
@@ -1832,7 +2031,6 @@ Requisitos estrictos:
       bufferedAt: targetDate,
     };
 
-    const lenCheck = validateArticleBodyLength(candidate.body, "tactical");
     const dupCheck = isDuplicatePost(candidate, syntheticCorpus);
     const briefCheck = validateEditorialBriefing(
       {
@@ -1843,8 +2041,19 @@ Requisitos estrictos:
       syntheticCorpus,
       syntheticLog,
     );
+    if (dupCheck.duplicate || !briefCheck.allowed) continue;
 
-    if (lenCheck.valid && !dupCheck.duplicate && briefCheck.allowed) {
+    let quality = validateArticleQuality(candidate, "tactical");
+    if (!quality.valid && !options.skipRepair) {
+      const fixed = await repairArticleWithLLM(candidate, "tactical", {
+        llmFn: repairFn,
+        maxAttempts: 2,
+      });
+      candidate = fixed.article;
+      quality = fixed.quality;
+    }
+
+    if (quality.valid) {
       active.push(candidate);
       syntheticCorpus.push({ title: candidate.title, slug: candidate.slug });
       syntheticLog.push({
@@ -1854,20 +2063,899 @@ Requisitos estrictos:
       });
       added++;
       console.log(
-        `[Buffer Editorial] Añadido candidato verificado (${active.length}/${targetSize}): "${candidate.title}" (${lenCheck.wordCount} palabras).`,
+        `[Buffer Editorial] Añadido candidato verificado (${active.length}/${targetSize}): "${candidate.title}" (${quality.wordCount} palabras, H3=${quality.h3Count}).`,
       );
     }
   }
 
-  buffer.items = [...retainedItems.filter((i) => i.used), ...active];
+  // Respaldo determinista si la API LLM no pudo completar los 7 cupos: aprovechar entradas inéditas válidas del banco curado
+  if (active.length < targetSize && !options.disableCuratedFallback) {
+    for (const curated of CURATED_EDITORIAL_BANK) {
+      if (active.length >= targetSize) break;
+      const normalizedTitle = applyRaeTitleCase(curated.title);
+      const candidate = {
+        bufferId: `buf-${targetDate}-${slugify(curated.slug || normalizedTitle)}`,
+        ...curated,
+        title: normalizedTitle,
+        slug: slugify(curated.slug || normalizedTitle),
+        format: "tactical",
+        body: normalizeMarkdownBody(curated.body),
+        used: false,
+        bufferedAt: targetDate,
+      };
+      const quality = validateArticleQuality(candidate, "tactical");
+      const dupCheck = isDuplicatePost(candidate, syntheticCorpus);
+      const briefCheck = validateEditorialBriefing(
+        {
+          suggestedTitle: candidate.title,
+          readerNeed: candidate.readerNeed,
+          angle: candidate.angle,
+        },
+        syntheticCorpus,
+        syntheticLog,
+      );
+      if (quality.valid && !dupCheck.duplicate && briefCheck.allowed) {
+        active.push(candidate);
+        syntheticCorpus.push({ title: candidate.title, slug: candidate.slug });
+        syntheticLog.push({
+          title: candidate.title,
+          readerNeed: candidate.readerNeed,
+          angle: candidate.angle,
+        });
+        added++;
+        console.log(
+          `[Buffer Editorial] Respaldo curado incorporado (${active.length}/${targetSize}): "${candidate.title}".`,
+        );
+      }
+    }
+  }
+
+  buffer.items = [...retainedUsed, ...active];
+  buffer.minThreshold = minThreshold;
+  buffer.targetSize = targetSize;
   buffer.updatedAt = targetDate;
   await saveEditorialBuffer(buffer, bufferPath);
+  return { buffer, activeCount: active.length, added, repairedCount };
+}
+
+// ─── BUFFER TÉCNICO REGENERATIVO (MÍNIMO 7 MEJORAS EN COLA SEMANAL) ──────────
+
+export const CURATED_TECH_RESERVE = [
+  {
+    id: "tech-h1-diagram-decisiones-estrategicas",
+    versionRef: "v1.4.2 / US-004 / US-005",
+    kind: "article_diagram_enrichment",
+    leadAgent: "AIDux",
+    title: "Diagrama SVG nativo para la guía de decisiones estratégicas con IA en pymes",
+    rationale:
+      "Añadir apoyo visual escaneable al artículo del 2026-11-15 sin alterar su texto ni permalink.",
+    payload: {
+      slug: "ia-toma-decisiones-estrategicas-pymes-mas-alla-automatizacio",
+      visualDiagram: {
+        title: "De los datos dispersos a una decisión estratégica supervisada",
+        nodes: [
+          { title: "1. Tus cifras reales", note: "Ventas, costes y notas sin salir de casa" },
+          { title: "2. Síntesis asistida", note: "Patrones y escenarios claros en local" },
+          { title: "3. Criterio humano", note: "Contraste de márgenes y decisión final" },
+        ],
+      },
+    },
+  },
+  {
+    id: "tech-h1-recipe-mcp-carpeta-tarifas",
+    versionRef: "v1.5.0 / US-203 / US-306",
+    kind: "aiworker_recipe",
+    leadAgent: "AIDux",
+    title: "Receta de 15 minutos: conectar tu carpeta de tarifas en modo solo lectura con MCP",
+    rationale:
+      "Aterrizar la investigación de frontera sobre MCP y manual abierto en una plantilla ejecutable en equipo.html.",
+    payload: {
+      id: "receta-aidux-mcp-tarifas-solo-lectura",
+      worker: "AIDux",
+      versionRef: "v1.5.0 / US-203",
+      title: "Consultar tarifas vigentes desde una carpeta local en modo solo lectura",
+      effortKey: "intermediate",
+      effortLabel: "Bricolaje guiado · 20 min · 0 €",
+      problem:
+        "Evitar que un asistente invente precios desactualizados o mezcle condiciones de temporadas anteriores.",
+      promptTemplate:
+        "Actúa en modo solo lectura consultando únicamente el archivo tarifas-vigentes.md dentro de la carpeta autorizada. Responde a la consulta comercial citando entre paréntesis el apartado exacto de origen. Si una partida, medida o descuento no figura literalmente en el documento, escribe REQUIERE_VALORACION_HUMANA y no estimes cifras.",
+      humanCheck:
+        "Verifica cada apartado citado frente a tu tarifa vigente y comprueba que ninguna versión obsoleta sigue dentro de la carpeta consultada.",
+      privacyGuard:
+        "No incluyas nombres de clientes, NIF ni descuentos confidenciales individuales dentro de la carpeta conectada por MCP.",
+    },
+  },
+  {
+    id: "tech-h1-diagram-conocimiento-interno",
+    versionRef: "v1.4.2 / US-004 / US-005",
+    kind: "article_diagram_enrichment",
+    leadAgent: "AIJuris",
+    title: "Diagrama SVG nativo para la guía de gestión del conocimiento interno en pymes",
+    rationale: "Completar la capa visual Bite-Snack-Meal del artículo del 2026-11-16.",
+    payload: {
+      slug: "ia-gestion-conocimiento-interno-pymes-informacion-dispersa-s",
+      visualDiagram: {
+        title: "Del archivo disperso al conocimiento compartido bajo control RGPD",
+        nodes: [
+          { title: "1. Carpeta limpia", note: "Manuales vigentes sin datos personales" },
+          { title: "2. Índice local", note: "Búsqueda semántica en tu propia red" },
+          { title: "3. Consulta citada", note: "Respuesta con enlace al documento origen" },
+        ],
+      },
+    },
+  },
+  {
+    id: "tech-h1-glossary-autogobernanza-edge",
+    versionRef: "v1.5.0 / US-105 / Frontier",
+    kind: "glossary_expansion",
+    leadAgent: "AIDux",
+    title:
+      "Ampliación del glosario llano con «Agente autogobernado» e «Inferencia en oficina (Edge AI)»",
+    rationale:
+      "Traducir a lenguaje cotidiano los hallazgos recientes del radar de frontera del 18 al 20 de noviembre.",
+    payload: {
+      terms: [
+        {
+          id: "agente-local-autogobernado",
+          term: "Agente local con autoverificación (autogobernado)",
+          effortKey: "intermediate",
+          effortLabel: "Bricolaje guiado · 1 tarde · 0 €",
+          analogy:
+            "Un colaborador metódico que, antes de entregarte un borrador, repasa él mismo su propia lista de comprobación legal y te señala cualquier hueco pendiente.",
+          mondayUse:
+            "Reduce errores de formato y garantiza que ningún documento incluya datos sensibles o promesas fuera de protocolo antes de tu revisión final.",
+        },
+        {
+          id: "edge-ai-oficina",
+          term: "IA en el propio equipo de oficina (Edge AI)",
+          effortKey: "basic",
+          effortLabel: "Estantería sencilla · 30 min · 0 €",
+          analogy:
+            "Cocinar en tu propia cocina en lugar de pedir siempre comida a domicilio: controlas los ingredientes, pagas una sola vez los utensilios y nada sale por la puerta.",
+          mondayUse:
+            "Permite procesar actas, contratos y presupuestos en un ordenador de oficina o mini-PC sin depender de cuotas por usuario ni conexión continua.",
+        },
+      ],
+    },
+  },
+  {
+    id: "tech-h1-diagram-orquestacion-local",
+    versionRef: "v1.4.2 / US-004 / US-005",
+    kind: "article_diagram_enrichment",
+    leadAgent: "AIDux",
+    title: "Diagrama SVG nativo para plataformas de orquestación local en pymes",
+    rationale: "Dotar de esquema de arquitectura sobria al artículo del 2026-11-17.",
+    payload: {
+      slug: "plataformas-orquestacion-local-pymes-autonomia-soberania-dat",
+      visualDiagram: {
+        title: "Orquestación local sobria: carpetas, conector MCP y revisión humana",
+        nodes: [
+          { title: "1. Reglas y carpetas", note: "Permisos de solo lectura por área" },
+          { title: "2. Orquestador local", note: "Enlaza modelo abierto y plantillas" },
+          { title: "3. Registro auditable", note: "Trazabilidad y aprobación personal" },
+        ],
+      },
+    },
+  },
+  {
+    id: "tech-h1-faq-ai-act-semaforo-pymes",
+    versionRef: "v1.5.0 / US-005 / AIJuris",
+    kind: "article_faq_enrichment",
+    leadAgent: "AIJuris",
+    title: "Bloque FAQPage GEO verificado para el semáforo legal del AI Act en pymes",
+    rationale:
+      "Activar marcado estructurado FAQPage JSON-LD en una guía jurídica clave de alta demanda.",
+    payload: {
+      slug: "tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes",
+      faq: [
+        {
+          q: "¿El Reglamento europeo de IA prohíbe a una pyme usar asistentes para redactar correos o resumir textos?",
+          a: "No. Las herramientas de apoyo interno revisadas por personas se sitúan en riesgo mínimo; basta con respetar el RGPD, evitar datos confidenciales en cuentas abiertas y mantener supervisión humana.",
+        },
+        {
+          q: "¿Cuándo obliga el AI Act a avisar explícitamente al cliente de que interactúa con una IA?",
+          a: "Cuando el cliente conversa con un asistente automático visible en la web o recibe respuestas generadas automáticamente sin edición previa, conforme a las obligaciones de transparencia del reglamento europeo.",
+        },
+        {
+          q: "¿Qué exige la obligación de alfabetización en IA para pequeñas empresas?",
+          a: "Que las personas que manejan herramientas de IA en la empresa reciban orientación práctica proporcional a su puesto sobre límites, verificación de resultados y protección de datos.",
+        },
+      ],
+    },
+  },
+  {
+    id: "tech-h1-recipe-aijuris-revision-clausulas",
+    versionRef: "v1.5.0 / US-304 / US-306",
+    kind: "aiworker_recipe",
+    leadAgent: "AIJuris",
+    title: "Receta de 15 minutos: revisar cláusulas de confidencialidad y proveedores IA en local",
+    rationale:
+      "Convertir el escudo contractual de AIJuris en plantilla ejecutable dentro de equipo.html.",
+    payload: {
+      id: "receta-aijuris-auditoria-clausulas-proveedor",
+      worker: "AIJuris",
+      versionRef: "v1.5.0 / US-306",
+      title: "Detectar riesgos de privacidad y permanencia en condiciones de proveedores digitales",
+      effortKey: "basic",
+      effortLabel: "Estantería sencilla · 15 min · 0 €",
+      problem:
+        "Aceptar actualizaciones de software con funciones de IA sin detectar si usan datos de la empresa para entrenar modelos o imponen permanencias ocultas.",
+      promptTemplate:
+        "Analiza en entorno local el texto adjunto de condiciones de servicio o anexo RGPD. Crea una tabla con cuatro columnas: aspecto_revisado, cita_literal_del_documento, riesgo_para_pyme (bajo/medio/alto) y pregunta_para_el_proveedor. Revisa expresamente: entrenamiento con datos de cliente, subencargados fuera del Espacio Económico Europeo, plazo de borrado tras baja y derecho de exportación en formato abierto. Si un punto no aparece en el texto, escribe NO_CONSTA_EN_CONTRATO.",
+      humanCheck:
+        "Coteja cada cita literal en el documento original y consulta con tu asesoría jurídica antes de firmar contratos de importe relevante o datos sensibles.",
+      privacyGuard:
+        "Ejecuta este análisis en local o elimina previamente nombres de clientes, precios confidenciales y datos identificativos de terceros.",
+    },
+  },
+  {
+    id: "tech-h1-diagram-agentes-autogobernados",
+    versionRef: "v1.4.2 / US-004 / US-005",
+    kind: "article_diagram_enrichment",
+    leadAgent: "AIJuris",
+    title: "Diagrama SVG nativo para agentes locales autogobernados con AI Act y RGPD",
+    rationale: "Completar el apoyo visual escaneable del artículo publicado el 2026-11-20.",
+    payload: {
+      slug: "agentes-locales-auto-gobernados-autonomia-operativa-pymes-cu",
+      visualDiagram: {
+        title: "Ciclo de control en un agente local autogobernado",
+        nodes: [
+          { title: "1. Regla previa", note: "Límites RGPD y permisos por carpeta" },
+          { title: "2. Autoverificación", note: "Comprueba fuentes y formato antes de salir" },
+          { title: "3. Firma humana", note: "Registro auditable y validación final" },
+        ],
+      },
+    },
+  },
+  {
+    id: "tech-h1-faq-slm-locales-oficina",
+    versionRef: "v1.5.0 / US-005 / US-205",
+    kind: "article_faq_enrichment",
+    leadAgent: "AIDux",
+    title: "Bloque FAQPage GEO verificado sobre modelos locales compactos (SLM) en oficina",
+    rationale:
+      "Mejorar citabilidad en motores generativos de la guía sobre hardware local sin GPU dedicada.",
+    payload: {
+      slug: "modelos-slm-locales-alto-rendimiento-pymes",
+      faq: [
+        {
+          q: "¿Necesito comprar tarjetas gráficas caras para probar un modelo de IA local en mi despacho?",
+          a: "No para tareas cotidianas de texto, clasificación o resumen: los modelos compactos cuantizados funcionan en ordenadores de oficina actuales con memoria suficiente y sin cuotas mensuales.",
+        },
+        {
+          q: "¿Un modelo ejecutado en local sigue funcionando si falla internet en el taller o la oficina?",
+          a: "Sí. Una vez descargado el modelo abierto en el equipo, todo el procesamiento ocurre en local sin depender de conexión externa ni de servidores de terceros.",
+        },
+        {
+          q: "¿Por qué la ejecución local facilita el cumplimiento del RGPD?",
+          a: "Porque los borradores, facturas y documentos internos permanecen dentro de tu propia infraestructura, minimizando transferencias internacionales de datos y riesgos de entrenamiento no autorizado.",
+        },
+      ],
+    },
+  },
+  {
+    id: "tech-h1-recipe-aiescudo-reclamaciones-masa",
+    versionRef: "v1.5.0 / US-304 / US-306",
+    kind: "aiworker_recipe",
+    leadAgent: "AIJuris",
+    title:
+      "Receta de 15 minutos: filtrar reclamaciones generadas en masa sin descuidar al cliente real",
+    rationale:
+      "Anticipar utilidades prácticas de AIEscudo (US-304) directamente en la biblioteca de equipo.html.",
+    payload: {
+      id: "receta-aiescudo-filtro-reclamaciones",
+      worker: "AIJuris",
+      versionRef: "v1.5.0 / US-304",
+      title: "Protocolo de tres filtros ante escritos extensos o reclamaciones automatizadas",
+      effortKey: "basic",
+      effortLabel: "Estantería sencilla · 15 min · 0 €",
+      problem:
+        "Perder horas contestando escritos intimidatorios largos sin datos verificables de compra mientras clientes reales esperan respuesta.",
+      promptTemplate:
+        "Lee el mensaje adjunto (sin datos personales sensibles) y extrae únicamente hechos verificables: número de factura o pedido mencionado, fecha de servicio, incidencia concreta descrita y tono de urgencia. Si no aporta ninguna referencia de operación real, redacta un acuse de recibo cortés de tres líneas solicitando número de factura o fecha aproximada para poder atender el caso con rigor.",
+      humanCheck:
+        "Comprueba siempre primero en tu registro de ventas si el pedido existe realmente; si es una incidencia real, prioriza la llamada o atención humana cercana.",
+      privacyGuard:
+        "Conserva el resguardo fechado del acuse de recibo en tu carpeta de atención al cliente y nunca expongas datos de terceros en plantillas externas.",
+    },
+  },
+  {
+    id: "tech-h1-glossary-alfabetizacion-tco",
+    versionRef: "v1.5.0 / US-105 / US-206",
+    kind: "glossary_expansion",
+    leadAgent: "AIVisio",
+    title:
+      "Ampliación del glosario llano con «Alfabetización en IA (art. 4 AI Act)» y «Coste real por uso»",
+    rationale:
+      "Aterrizar conceptos recurrentes en las auditorías de costes y cumplimiento de pymes.",
+    payload: {
+      terms: [
+        {
+          id: "alfabetizacion-ia-art4",
+          term: "Alfabetización en IA (artículo 4 del AI Act)",
+          effortKey: "basic",
+          effortLabel: "Hábito en equipo · 1 hora · 0 €",
+          analogy:
+            "Explicar las normas básicas de seguridad antes de estrenar una máquina en el taller: no hace falta fabricar el motor, pero sí saber dónde está el botón de parada y qué no introducir dentro.",
+          mondayUse:
+            "Consiste en dar a tu equipo una guía breve de una página sobre qué datos nunca subir, cómo comprobar resultados y cuándo pedir revisión humana.",
+        },
+        {
+          id: "coste-real-por-uso",
+          term: "Coste real por uso frente a suscripción fija",
+          effortKey: "basic",
+          effortLabel: "Hoja de cálculo · 15 min · 0 €",
+          analogy:
+            "Comparar pagar un abono mensual caro de gimnasio al que vas dos tardes frente a pagar una entrada sencilla o entrenar en casa con tu propio material.",
+          mondayUse:
+            "Permite auditar si el recargo mensual «con IA» de tu software habitual compensa el número real de usos semanales de tu plantilla.",
+        },
+      ],
+    },
+  },
+  {
+    id: "tech-h1-faq-sobreprecio-etiqueta-ia",
+    versionRef: "v1.5.0 / US-005 / US-206",
+    kind: "article_faq_enrichment",
+    leadAgent: "AIVisio",
+    title:
+      "Bloque FAQPage GEO verificado para detectar sobreprecios en herramientas «inteligentes»",
+    rationale:
+      "Reforzar la utilidad económica del artículo del 2026-11-12 y enlazarlo con calculadora.html.",
+    payload: {
+      slug: "sobreprecio-etiqueta-inteligente-evaluar-precios-herramienta",
+      faq: [
+        {
+          q: "¿Cómo saber si el suplemento de IA de mi programa habitual compensa a mi empresa?",
+          a: "Divide el importe mensual extra entre el número real de veces que tu equipo utiliza esa función durante dos semanas y comprueba si libera tiempo medible o se resuelve con una plantilla limpia sin cuota.",
+        },
+        {
+          q: "¿Qué debo preguntar al proveedor antes de aceptar una subida de plan por funciones inteligentes?",
+          a: "Confirma por escrito si puedes mantener tu plan anterior, dónde se procesan los datos, si quedan excluidos de entrenamiento y si podrás exportar tus historiales en formatos abiertos estándar.",
+        },
+      ],
+    },
+  },
+];
+
+export async function loadTechBuffer(targetPath = techBufferPath) {
+  try {
+    if (existsSync(targetPath)) {
+      const parsed = JSON.parse(await readFile(targetPath, "utf8"));
+      if (parsed && Array.isArray(parsed.items)) {
+        return {
+          updatedAt: parsed.updatedAt || "",
+          minThreshold: Math.max(TECH_BUFFER_MIN, Number(parsed.minThreshold || TECH_BUFFER_MIN)),
+          targetSize: Math.max(TECH_BUFFER_TARGET, Number(parsed.targetSize || TECH_BUFFER_TARGET)),
+          items: parsed.items,
+        };
+      }
+    }
+  } catch {
+    // fallback limpio
+  }
+  return {
+    updatedAt: "",
+    minThreshold: TECH_BUFFER_MIN,
+    targetSize: TECH_BUFFER_TARGET,
+    items: [],
+  };
+}
+
+export async function saveTechBuffer(buffer, targetPath = techBufferPath) {
+  await mkdir(path.dirname(targetPath), { recursive: true });
+  await writeFile(targetPath, JSON.stringify(buffer, null, 2) + "\n", "utf8");
+}
+
+async function loadTechExecutionContext(options = {}) {
+  const targetPostsDir = options.postsDir || postsDir;
+  const targetGlossaryPath = options.glossaryPath || glossaryExtraPath;
+  const targetRecipesPath = options.recipesPath || aiworkerRecipesPath;
+
+  const postsBySlug = new Map();
+  if (existsSync(targetPostsDir)) {
+    const files = (await readdir(targetPostsDir)).filter((f) => f.endsWith(".json")).sort();
+    for (const file of files) {
+      try {
+        const post = JSON.parse(await readFile(path.join(targetPostsDir, file), "utf8"));
+        const slug = String(
+          post.slug || file.replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/\.json$/, ""),
+        );
+        postsBySlug.set(slug, { file, post });
+      } catch {
+        // ignorar archivos ilegibles
+      }
+    }
+  }
+
+  let existingGlossaryIds = new Set();
+  if (existsSync(targetGlossaryPath)) {
+    try {
+      const arr = JSON.parse(await readFile(targetGlossaryPath, "utf8"));
+      if (Array.isArray(arr))
+        existingGlossaryIds = new Set(arr.map((x) => x && x.id).filter(Boolean));
+    } catch {
+      // ignorar
+    }
+  }
+
+  let existingRecipeIds = new Set();
+  if (existsSync(targetRecipesPath)) {
+    try {
+      const arr = JSON.parse(await readFile(targetRecipesPath, "utf8"));
+      if (Array.isArray(arr))
+        existingRecipeIds = new Set(arr.map((x) => x && x.id).filter(Boolean));
+    } catch {
+      // ignorar
+    }
+  }
+
+  return {
+    postsBySlug,
+    existingGlossaryIds,
+    existingRecipeIds,
+    postsDir: targetPostsDir,
+    glossaryPath: targetGlossaryPath,
+    recipesPath: targetRecipesPath,
+  };
+}
+
+export function validateTechProposal(item, context, completedIds = new Set()) {
+  if (!item || typeof item !== "object") return { valid: false, reason: "Propuesta vacía" };
+  const validKinds = [
+    "aiworker_recipe",
+    "glossary_expansion",
+    "article_diagram_enrichment",
+    "article_faq_enrichment",
+  ];
+  if (
+    !item.id ||
+    !item.title ||
+    !item.versionRef ||
+    !validKinds.includes(item.kind) ||
+    !item.payload
+  ) {
+    return { valid: false, reason: "Faltan campos obligatorios o tipo de mejora no soportado" };
+  }
+  if (completedIds.has(item.id)) {
+    return { valid: false, reason: "Paso técnico ya ejecutado" };
+  }
+  const serialized = JSON.stringify(item);
+  if (
+    /pueden cometer errores|no sustituyen el criterio|\b(volante|curva exponencial|m[aá]quina biol[oó]gica)\b/i.test(
+      serialized,
+    )
+  ) {
+    return { valid: false, reason: "Contiene jerga prohibida o aviso autoinculpatorio" };
+  }
+  if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(serialized)) {
+    return { valid: false, reason: "Contiene emojis prohibidos" };
+  }
+
+  if (item.kind === "aiworker_recipe") {
+    const p = item.payload;
+    if (!p.id || !p.worker || !p.title || !p.promptTemplate || !p.humanCheck || !p.privacyGuard) {
+      return { valid: false, reason: "Receta AIWorker incompleta" };
+    }
+    if (context?.existingRecipeIds?.has(p.id)) {
+      return { valid: false, reason: "Receta AIWorker ya publicada" };
+    }
+    return { valid: true, reason: null };
+  }
+
+  if (item.kind === "glossary_expansion") {
+    const terms = Array.isArray(item.payload.terms) ? item.payload.terms : [];
+    const validTerms = terms.filter(
+      (t) =>
+        t &&
+        t.id &&
+        t.term &&
+        t.effortKey &&
+        t.effortLabel &&
+        t.analogy &&
+        t.mondayUse &&
+        !context?.existingGlossaryIds?.has(t.id),
+    );
+    if (validTerms.length === 0) {
+      return { valid: false, reason: "Sin términos nuevos válidos para el glosario" };
+    }
+    return { valid: true, reason: null };
+  }
+
+  if (item.kind === "article_diagram_enrichment") {
+    const p = item.payload;
+    const entry = context?.postsBySlug?.get(p.slug);
+    if (!entry) return { valid: false, reason: `Artículo destino no encontrado (${p.slug})` };
+    if (entry.post.visualDiagram && Array.isArray(entry.post.visualDiagram.nodes)) {
+      return { valid: false, reason: `El artículo ${p.slug} ya tiene diagrama visual` };
+    }
+    if (
+      !p.visualDiagram?.title ||
+      !Array.isArray(p.visualDiagram?.nodes) ||
+      p.visualDiagram.nodes.length < 3
+    ) {
+      return { valid: false, reason: "Diagrama SVG incompleto (mínimo 3 nodos)" };
+    }
+    return { valid: true, reason: null };
+  }
+
+  if (item.kind === "article_faq_enrichment") {
+    const p = item.payload;
+    const entry = context?.postsBySlug?.get(p.slug);
+    if (!entry) return { valid: false, reason: `Artículo destino no encontrado (${p.slug})` };
+    if (Array.isArray(entry.post.faq) && entry.post.faq.length > 0) {
+      return { valid: false, reason: `El artículo ${p.slug} ya cuenta con FAQPage` };
+    }
+    const validFaq = Array.isArray(p.faq) ? p.faq.filter((x) => x && x.q && x.a) : [];
+    if (validFaq.length < 2) {
+      return { valid: false, reason: "Se requieren al menos 2 preguntas frecuentes verificadas" };
+    }
+    return { valid: true, reason: null };
+  }
+
+  return { valid: false, reason: "Tipo no reconocido" };
+}
+
+export function getActiveTechProposals(buffer, context, completedIds = new Set()) {
+  const seenIds = new Set();
+  const seenTargets = new Set();
+  return (buffer?.items || []).filter((item) => {
+    if (!item || item.used) return false;
+    if (seenIds.has(item.id)) return false;
+    const targetKey =
+      item.kind === "article_diagram_enrichment"
+        ? `diag:${item.payload?.slug}`
+        : item.kind === "article_faq_enrichment"
+          ? `faq:${item.payload?.slug}`
+          : item.kind === "aiworker_recipe"
+            ? `recipe:${item.payload?.id}`
+            : `item:${item.id}`;
+    if (seenTargets.has(targetKey)) return false;
+    if (!validateTechProposal(item, context, completedIds).valid) return false;
+    seenIds.add(item.id);
+    seenTargets.add(targetKey);
+    return true;
+  });
+}
+
+function buildDynamicArticleTechCandidates(
+  context,
+  completedIds,
+  queuedIds,
+  queuedTargets,
+  targetDate,
+) {
+  const generated = [];
+  for (const [slug, { post }] of context.postsBySlug.entries()) {
+    const hasDiag = post.visualDiagram && Array.isArray(post.visualDiagram.nodes);
+    const diagId = `tech-auto-diag-${slug.slice(0, 42)}`;
+    if (
+      !hasDiag &&
+      !completedIds.has(diagId) &&
+      !queuedIds.has(diagId) &&
+      !queuedTargets.has(`diag:${slug}`)
+    ) {
+      const checklist = Array.isArray(post.actionableChecklist) ? post.actionableChecklist : [];
+      generated.push({
+        id: diagId,
+        versionRef: "v1.4.2 / US-004 / US-005",
+        kind: "article_diagram_enrichment",
+        leadAgent: post.author || "AIDux",
+        title: `Esquema SVG de flujo práctico para «${post.title}»`,
+        rationale:
+          "Completar el apoyo visual escaneable Bite-Snack-Meal en un artículo publicado sin diagrama nativo.",
+        payload: {
+          slug,
+          visualDiagram: {
+            title: `Ruta práctica: ${String(post.title || "").slice(0, 68)}`,
+            nodes: [
+              {
+                title: "1. Punto de partida",
+                note: String(checklist[0] || "Definir alcance acotado").slice(0, 56),
+              },
+              {
+                title: "2. Aplicación guiada",
+                note: String(checklist[1] || "Probar en lote corto seguro").slice(0, 56),
+              },
+              {
+                title: "3. Criterio humano",
+                note: String(checklist[2] || "Validar antes de consolidar").slice(0, 56),
+              },
+            ],
+          },
+        },
+        used: false,
+        queuedAt: targetDate,
+      });
+    }
+
+    const hasFaq = Array.isArray(post.faq) && post.faq.length > 0;
+    const faqId = `tech-auto-faq-${slug.slice(0, 42)}`;
+    if (
+      !hasFaq &&
+      !completedIds.has(faqId) &&
+      !queuedIds.has(faqId) &&
+      !queuedTargets.has(`faq:${slug}`)
+    ) {
+      const checklist = Array.isArray(post.actionableChecklist) ? post.actionableChecklist : [];
+      const summaryLine = String(post.clarityNote || post.excerpt || post.title)
+        .replace(/^En 30 segundos:\s*/i, "")
+        .trim();
+      generated.push({
+        id: faqId,
+        versionRef: "v1.5.0 / US-005 (GEO FAQPage)",
+        kind: "article_faq_enrichment",
+        leadAgent: post.author || "AIVisio",
+        title: `Bloque FAQPage JSON-LD verificable para «${post.title}»`,
+        rationale:
+          "Activar esquema Schema.org FAQPage y respuestas directas citables en el archivo editorial.",
+        payload: {
+          slug,
+          faq: [
+            {
+              q: `¿Qué problema práctico resuelve «${post.title}» en una pyme?`,
+              a: summaryLine,
+            },
+            {
+              q: "¿Cuál es el primer paso seguro para probar este enfoque sin riesgo?",
+              a: checklist[0]
+                ? `${checklist[0]}. Siempre con revisión humana previa y sin introducir datos confidenciales en servicios abiertos.`
+                : "Empezar por una prueba acotada con datos no sensibles y validar cada resultado con criterio humano.",
+            },
+          ],
+        },
+        used: false,
+        queuedAt: targetDate,
+      });
+    }
+  }
+  return generated;
+}
+
+export async function ensureTechBuffer(
+  telemetry,
+  emoInsights,
+  frontierFinding,
+  targetDate,
+  options = {},
+) {
+  const bufferPath = options.bufferPath || techBufferPath;
+  const minThreshold = Number(options.minThreshold ?? TECH_BUFFER_MIN);
+  const targetSize = Math.max(minThreshold, Number(options.targetSize ?? TECH_BUFFER_TARGET));
+  const generatorFn = options.generatorFn || callLLM;
+
+  const context = await loadTechExecutionContext(options);
+  const completedIds = new Set(emoInsights?.completedTechSteps || []);
+  const buffer = await loadTechBuffer(bufferPath);
+
+  let active = getActiveTechProposals(buffer, context, completedIds);
+  const retainedUsed = buffer.items.filter((i) => i && i.used).slice(-25);
+
+  if (active.length >= minThreshold && active.length >= targetSize) {
+    buffer.items = [...retainedUsed, ...active];
+    buffer.minThreshold = minThreshold;
+    buffer.targetSize = targetSize;
+    buffer.updatedAt = targetDate;
+    if (options.writeIfSufficient) {
+      await saveTechBuffer(buffer, bufferPath);
+    }
+    return { buffer, activeCount: active.length, added: 0 };
+  }
+
+  console.log(
+    `[Buffer Técnico] Mejoras en cola (${active.length}) < ${targetSize}; generando nuevas oportunidades técnicas hasta ${targetSize}...`,
+  );
+
+  const queuedIds = new Set(active.map((i) => i.id));
+  const queuedTargets = new Set(
+    active.map((i) =>
+      i.kind === "article_diagram_enrichment"
+        ? `diag:${i.payload?.slug}`
+        : i.kind === "article_faq_enrichment"
+          ? `faq:${i.payload?.slug}`
+          : i.kind === "aiworker_recipe"
+            ? `recipe:${i.payload?.id}`
+            : `item:${i.id}`,
+    ),
+  );
+  let added = 0;
+
+  // 1. Intentar generar oportunidades técnicas frescas con el LLM guiadas por Frontier-Scout y EmoInsight
+  const postsMissingFaq = [...context.postsBySlug.entries()]
+    .filter(
+      ([slug, { post }]) =>
+        (!Array.isArray(post.faq) || post.faq.length === 0) && !queuedTargets.has(`faq:${slug}`),
+    )
+    .slice(0, 6)
+    .map(([slug, { post }]) => ({ slug, title: post.title }));
+  const llmMaxAttempts = Math.min((targetSize - active.length) * 2, 6);
+  let attempts = 0;
+
+  while (active.length < targetSize && attempts < llmMaxAttempts) {
+    attempts++;
+    const techPrompt = `Eres AIDux (CIO) junto con AIJuris de AIEvolutio. Diseña UNA mejora técnica ejecutable e inédita para la cola regenerativa del roadmap (Horizonte 1).
+Hallazgo de frontera reciente: ${frontierFinding ? `${frontierFinding.topic} — ${frontierFinding.roadmapImpact}` : "Modelos locales SLM, protocolo MCP, recetas de 15 minutos y cumplimiento AI Act/RGPD."}
+IDs ya completados o en cola (PROHIBIDO repetir): ${JSON.stringify([...completedIds, ...queuedIds])}
+Artículos sin FAQPage disponibles: ${JSON.stringify(postsMissingFaq)}
+
+Elige UNO de estos 3 tipos ejecutables ("kind"):
+1. "aiworker_recipe": añade una nueva receta práctica de 15 minutos a content/aiworker-recipes.json (payload: {id, worker:"AIFactura|AIRespuestas|AIOferta|AIJuris|AIDux|AIVisio", versionRef:"v1.5.0 / US-306", title, effortKey:"basic|intermediate", effortLabel, problem, promptTemplate, humanCheck, privacyGuard}).
+2. "glossary_expansion": añade 2 términos nuevos en lenguaje llano a content/glossary-extra.json (payload: {terms:[{id, term, effortKey, effortLabel, analogy, mondayUse}]}).
+3. "article_faq_enrichment": añade 2-3 preguntas frecuentes verificadas FAQPage a uno de los slugs listados arriba (payload: {slug, faq:[{q, a}]}).
+
+Reglas estrictas: español de España RAE, CERO emojis, CERO cifras o porcentajes inventados, CERO jerga interna o avisos autoinculpatorios.
+Responde SOLO con JSON válido:
+{"id":"tech-h1-...","versionRef":"v1.5.0 / US-...","kind":"...","leadAgent":"AIDux|AIJuris|AIVisio","title":"...","rationale":"...","payload":{...}}`;
+
+    const raw = await generatorFn(techPrompt);
+    if (!raw) break;
+    const rawText = typeof raw === "string" ? raw : raw.text;
+    if (!rawText) continue;
+
+    let parsed = null;
+    try {
+      parsed = repairTruncatedJson(rawText);
+    } catch {
+      continue;
+    }
+    if (!parsed || !parsed.id || queuedIds.has(parsed.id)) continue;
+
+    const candidate = {
+      ...parsed,
+      id: slugify(parsed.id),
+      used: false,
+      queuedAt: targetDate,
+    };
+    const targetKey =
+      candidate.kind === "article_faq_enrichment"
+        ? `faq:${candidate.payload?.slug}`
+        : candidate.kind === "article_diagram_enrichment"
+          ? `diag:${candidate.payload?.slug}`
+          : candidate.kind === "aiworker_recipe"
+            ? `recipe:${candidate.payload?.id}`
+            : `item:${candidate.id}`;
+    if (queuedIds.has(candidate.id) || queuedTargets.has(targetKey)) continue;
+
+    if (validateTechProposal(candidate, context, completedIds).valid) {
+      active.push(candidate);
+      queuedIds.add(candidate.id);
+      queuedTargets.add(targetKey);
+      added++;
+      console.log(
+        `[Buffer Técnico] Nueva oportunidad técnica generada (${active.length}/${targetSize}): ${candidate.id}`,
+      );
+    }
+  }
+
+  // 2. Respaldo curado de Horizonte 1 si aún faltan cupos para llegar a 7
+  if (active.length < targetSize) {
+    for (const curated of CURATED_TECH_RESERVE) {
+      if (active.length >= targetSize) break;
+      if (completedIds.has(curated.id) || queuedIds.has(curated.id)) continue;
+      const targetKey =
+        curated.kind === "article_diagram_enrichment"
+          ? `diag:${curated.payload?.slug}`
+          : curated.kind === "article_faq_enrichment"
+            ? `faq:${curated.payload?.slug}`
+            : curated.kind === "aiworker_recipe"
+              ? `recipe:${curated.payload?.id}`
+              : `item:${curated.id}`;
+      if (queuedTargets.has(targetKey)) continue;
+      const candidate = { ...curated, used: false, queuedAt: targetDate };
+      if (validateTechProposal(candidate, context, completedIds).valid) {
+        active.push(candidate);
+        queuedIds.add(candidate.id);
+        queuedTargets.add(targetKey);
+        added++;
+      }
+    }
+  }
+
+  // 3. Síntesis determinista de mejoras GEO (diagramas SVG / FAQPage) sobre el corpus vivo si aún < 7
+  if (active.length < targetSize) {
+    const dynamicCandidates = buildDynamicArticleTechCandidates(
+      context,
+      completedIds,
+      queuedIds,
+      queuedTargets,
+      targetDate,
+    );
+    for (const dyn of dynamicCandidates) {
+      if (active.length >= targetSize) break;
+      if (validateTechProposal(dyn, context, completedIds).valid) {
+        active.push(dyn);
+        queuedIds.add(dyn.id);
+        added++;
+      }
+    }
+  }
+
+  buffer.items = [...retainedUsed, ...active];
+  buffer.minThreshold = minThreshold;
+  buffer.targetSize = targetSize;
+  buffer.updatedAt = targetDate;
+  await saveTechBuffer(buffer, bufferPath);
   return { buffer, activeCount: active.length, added };
 }
 
-async function updateRoadmapWithFrontierAndTech(emoInsights, _frontierFinding, _techStepRecord) {
-  if (!existsSync(roadmapPath)) return;
-  let roadmapMd = await readFile(roadmapPath, "utf8");
+export async function executeTechBufferItem(item, options = {}) {
+  const context = await loadTechExecutionContext(options);
+
+  if (item.kind === "aiworker_recipe") {
+    let recipes = [];
+    if (existsSync(context.recipesPath)) {
+      try {
+        recipes = JSON.parse(await readFile(context.recipesPath, "utf8"));
+      } catch {
+        recipes = [];
+      }
+    }
+    if (!recipes.some((r) => r && r.id === item.payload.id)) {
+      recipes.push(item.payload);
+      await writeFile(context.recipesPath, JSON.stringify(recipes, null, 2) + "\n", "utf8");
+    }
+    return `Añadida nueva receta operativa «${item.payload.title}» (${item.payload.worker}) a equipo.html#recetas-aiworkers.`;
+  }
+
+  if (item.kind === "glossary_expansion") {
+    let glossary = [];
+    if (existsSync(context.glossaryPath)) {
+      try {
+        glossary = JSON.parse(await readFile(context.glossaryPath, "utf8"));
+      } catch {
+        glossary = [];
+      }
+    }
+    let count = 0;
+    for (const term of item.payload.terms || []) {
+      if (term && term.id && !glossary.some((g) => g && g.id === term.id)) {
+        glossary.push(term);
+        count++;
+      }
+    }
+    await writeFile(context.glossaryPath, JSON.stringify(glossary, null, 2) + "\n", "utf8");
+    return `Añadidos ${count} nuevos términos en lenguaje llano al glosario interactivo (#glosario-llano).`;
+  }
+
+  if (item.kind === "article_diagram_enrichment") {
+    const entry = context.postsBySlug.get(item.payload.slug);
+    if (!entry) throw new Error(`Artículo no encontrado para diagrama: ${item.payload.slug}`);
+    const fullPath = path.join(context.postsDir, entry.file);
+    entry.post.visualDiagram = item.payload.visualDiagram;
+    await writeFile(fullPath, JSON.stringify(entry.post, null, 2) + "\n", "utf8");
+    return `Incorporado diagrama SVG nativo «${item.payload.visualDiagram.title}» en ${entry.file}.`;
+  }
+
+  if (item.kind === "article_faq_enrichment") {
+    const entry = context.postsBySlug.get(item.payload.slug);
+    if (!entry) throw new Error(`Artículo no encontrado para FAQPage: ${item.payload.slug}`);
+    const fullPath = path.join(context.postsDir, entry.file);
+    entry.post.faq = item.payload.faq;
+    await writeFile(fullPath, JSON.stringify(entry.post, null, 2) + "\n", "utf8");
+    return `Activado bloque interactivo y JSON-LD FAQPage (${item.payload.faq.length} preguntas) en ${entry.file}.`;
+  }
+
+  throw new Error(`Tipo de mejora técnica no soportado: ${item.kind}`);
+}
+
+function sanitizeMdCell(value) {
+  return String(value || "")
+    .replace(/\s*\r?\n+\s*/g, " ")
+    .replace(/\|/g, "·")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+export async function updateRoadmapWithFrontierAndTech(
+  emoInsights,
+  _frontierFinding,
+  _techStepRecord,
+  options = {},
+) {
+  const targetRoadmapPath = options.roadmapPath || roadmapPath;
+  if (!existsSync(targetRoadmapPath)) return;
+  let roadmapMd = await readFile(targetRoadmapPath, "utf8");
 
   const sectionHeader =
     "## 5. Radar de frontera e iteraciones autónomas guiadas por `EmoInsight` y métricas";
@@ -1875,13 +2963,40 @@ async function updateRoadmapWithFrontierAndTech(emoInsights, _frontierFinding, _
     .slice(-8)
     .map(
       (f) =>
-        `| ${f.date} | **${f.leadAgent || "AIVisio"}** | ${f.topic} | ${f.insight} | ${f.roadmapImpact} |`,
+        `| ${sanitizeMdCell(f.date)} | **${sanitizeMdCell(f.leadAgent || "AIVisio")}** | ${sanitizeMdCell(f.topic)} | ${sanitizeMdCell(f.insight)} | ${sanitizeMdCell(f.roadmapImpact)} |`,
     )
     .join("\n");
 
   const techStepsRows = (emoInsights.techHistory || [])
-    .slice(-8)
-    .map((t) => `| ${t.date} | \`${t.id}\` | ${t.versionRef} | ${t.summary} |`)
+    .slice(-10)
+    .map(
+      (t) =>
+        `| ${sanitizeMdCell(t.date)} | \`${sanitizeMdCell(t.id)}\` | ${sanitizeMdCell(t.versionRef)} | ${sanitizeMdCell(t.summary)} |`,
+    )
+    .join("\n");
+
+  const techBuf =
+    options.techBuffer || (await loadTechBuffer(options.techBufferPath || techBufferPath));
+  const editorialBuf =
+    options.editorialBuffer ||
+    (await loadEditorialBuffer(options.editorialBufferPath || editorialBufferPath));
+  const activeTechItems = (techBuf.items || []).filter((i) => i && !i.used);
+  const activeEditorialItems = (editorialBuf.items || []).filter((i) => i && !i.used);
+
+  const techQueueRows = activeTechItems
+    .slice(0, 10)
+    .map(
+      (t, idx) =>
+        `| ${idx + 1} | \`${sanitizeMdCell(t.id)}\` | ${sanitizeMdCell(t.versionRef)} | **${sanitizeMdCell(t.leadAgent || "AIDux")}** | ${sanitizeMdCell(t.title)} |`,
+    )
+    .join("\n");
+
+  const editorialQueueRows = activeEditorialItems
+    .slice(0, 10)
+    .map(
+      (e, idx) =>
+        `| ${idx + 1} | **${sanitizeMdCell(e.author || "AIVisio")}** | ${sanitizeMdCell(e.category || "Operaciones")} | ${sanitizeMdCell(e.title)} |`,
+    )
     .join("\n");
 
   const dynamicSection = `${sectionHeader}
@@ -1899,6 +3014,23 @@ ${frontierRows || "| 2026-11-09 | **AIVisio** | Escucha activa `EmoInsight` | In
 | Fecha | ID de paso técnico | Referencia del roadmap | Mejora verificable aplicada en producción |
 | :--- | :--- | :--- | :--- |
 ${techStepsRows || "| 2026-11-09 | `v1.3.0-emo-insight-core` | `v1.3.0` (`US-107`, `US-108`, `US-407`) | Despliegue de valoraciones, termómetro `EmoInsight`, hilos de comentarios con respuesta de IA y ciclo diario de doble commit. |"}
+
+### 5.3. Colas regenerativas activas para revisión semanal (objetivo >= 7 técnico y >= 7 editorial)
+
+- **Cola técnica activa (\`content/tech-buffer.json\`):** **${activeTechItems.length}/${techBuf.targetSize || TECH_BUFFER_TARGET}** mejoras ejecutables listas (reposición inmediata al consumir).
+- **Cola editorial activa (\`content/editorial-buffer.json\`):** **${activeEditorialItems.length}/${editorialBuf.targetSize || EDITORIAL_BUFFER_TARGET}** artículos verificados listos (reposición inmediata al consumir).
+
+#### Próximas mejoras técnicas en cola
+
+| # | ID | Referencia | Agente | Mejora técnica preparada |
+| :--- | :--- | :--- | :--- | :--- |
+${techQueueRows || "| — | — | — | — | Pendiente de reposición automática |"}
+
+#### Próximos artículos editoriales en cola
+
+| # | Autor | Categoría | Artículo verificado (Bite-Snack-Meal 1200–1600 palabras) |
+| :--- | :--- | :--- | :--- |
+${editorialQueueRows || "| — | — | — | Pendiente de reposición automática |"}
 `;
 
   if (roadmapMd.includes(sectionHeader)) {
@@ -1908,10 +3040,16 @@ ${techStepsRows || "| 2026-11-09 | `v1.3.0-emo-insight-core` | `v1.3.0` (`US-107
     roadmapMd = roadmapMd.trimEnd() + "\n\n---\n\n" + dynamicSection;
   }
 
-  await writeFile(roadmapPath, roadmapMd, "utf8");
+  await writeFile(targetRoadmapPath, roadmapMd, "utf8");
 }
 
-export async function runRoadmapTechnicalStep(telemetry, emoInsights, targetDate) {
+export async function runRoadmapTechnicalStep(
+  telemetry,
+  emoInsights,
+  targetDate,
+  frontierFinding = null,
+  options = {},
+) {
   console.log(
     "--- [Spiral-Builder] Extrayendo y ejecutando mejora técnica pendiente del roadmap ---",
   );
@@ -1920,63 +3058,86 @@ export async function runRoadmapTechnicalStep(telemetry, emoInsights, targetDate
     : [];
   emoInsights.techHistory = Array.isArray(emoInsights.techHistory) ? emoInsights.techHistory : [];
 
-  const nextStep = ROADMAP_TECH_QUEUE.find((s) => !emoInsights.completedTechSteps.includes(s.id));
-  let stepRecord = null;
+  // 1. Asegurar cola técnica regenerativa >= 7 antes de consumir
+  const initialBufferState = await ensureTechBuffer(
+    telemetry,
+    emoInsights,
+    frontierFinding,
+    targetDate,
+    options,
+  );
 
-  if (nextStep) {
-    const summary = await nextStep.apply();
-    emoInsights.completedTechSteps.push(nextStep.id);
+  let stepRecord = null;
+  const legacyStep = ROADMAP_TECH_QUEUE.find((s) => !emoInsights.completedTechSteps.includes(s.id));
+
+  if (legacyStep && !options.preferTechBuffer) {
+    const summary = await legacyStep.apply();
+    emoInsights.completedTechSteps.push(legacyStep.id);
     stepRecord = {
       date: targetDate,
-      id: nextStep.id,
-      versionRef: nextStep.versionRef,
-      title: nextStep.title,
+      id: legacyStep.id,
+      versionRef: legacyStep.versionRef,
+      title: legacyStep.title,
       summary,
     };
-    emoInsights.techHistory.push(stepRecord);
-    await saveEmoInsights(emoInsights);
-    await updateRoadmapWithFrontierAndTech(emoInsights, null, stepRecord);
-    console.log(
-      `[Spiral-Builder] Paso técnico del roadmap completado: ${nextStep.id} — ${summary}`,
+  } else {
+    const context = await loadTechExecutionContext(options);
+    const completedIds = new Set(emoInsights.completedTechSteps);
+    const activeProposals = getActiveTechProposals(
+      initialBufferState.buffer,
+      context,
+      completedIds,
     );
-    return stepRecord;
-  }
+    const nextProposal = activeProposals[0];
 
-  // Paso dinámico cuando la cola base se completa: enriquecer artículos históricos sin reescribir su contenido
-  if (existsSync(postsDir)) {
-    const files = (await readdir(postsDir))
-      .filter((f) => f.endsWith(".json"))
-      .sort()
-      .reverse();
-    for (const file of files) {
-      const fullPath = path.join(postsDir, file);
-      const post = JSON.parse(await readFile(fullPath, "utf8"));
-      const stepId = `tech-clarity-${post.slug || file.replace(".json", "")}`;
-      if (!post.clarityNote && !emoInsights.completedTechSteps.includes(stepId)) {
-        const firstCheck = Array.isArray(post.actionableChecklist)
-          ? post.actionableChecklist[0]
-          : "";
-        post.clarityNote = `En 30 segundos: ${post.excerpt || post.title} Primer paso recomendado hoy: ${firstCheck || "aplicar en una tarea acotada con supervisión humana."}`;
-        await writeFile(fullPath, JSON.stringify(post, null, 2) + "\n", "utf8");
-        emoInsights.completedTechSteps.push(stepId);
-        stepRecord = {
-          date: targetDate,
-          id: stepId,
-          versionRef: "US-004 / US-005 (Enriquecimiento continuo)",
-          title: `Síntesis «En 30 segundos» para "${post.title}"`,
-          summary: `Añadida capa inicial «En 30 segundos» al artículo ${file}.`,
-        };
-        emoInsights.techHistory.push(stepRecord);
-        await saveEmoInsights(emoInsights);
-        await updateRoadmapWithFrontierAndTech(emoInsights, null, stepRecord);
-        console.log(`[Spiral-Builder] Mejora dinámica aplicada en ${file}`);
-        return stepRecord;
+    if (nextProposal) {
+      const summary = await executeTechBufferItem(nextProposal, options);
+      const targetItem = initialBufferState.buffer.items.find(
+        (i) => i && i.id === nextProposal.id && !i.used,
+      );
+      if (targetItem) {
+        targetItem.used = true;
+        targetItem.executedAt = targetDate;
       }
+      await saveTechBuffer(initialBufferState.buffer, options.bufferPath || techBufferPath);
+      emoInsights.completedTechSteps.push(nextProposal.id);
+      stepRecord = {
+        date: targetDate,
+        id: nextProposal.id,
+        versionRef: nextProposal.versionRef,
+        title: nextProposal.title,
+        summary,
+      };
     }
   }
 
-  await updateRoadmapWithFrontierAndTech(emoInsights, null, null);
-  return null;
+  if (stepRecord) {
+    emoInsights.techHistory.push(stepRecord);
+    if (!options.skipSaveEmo) {
+      await saveEmoInsights(emoInsights);
+    }
+    console.log(
+      `[Spiral-Builder] Paso técnico del roadmap completado: ${stepRecord.id} — ${stepRecord.summary}`,
+    );
+  }
+
+  // 2. Reponer inmediatamente el hueco consumido para mantener siempre >= 7 mejoras técnicas en cola
+  const replenished = await ensureTechBuffer(
+    telemetry,
+    emoInsights,
+    frontierFinding,
+    targetDate,
+    options,
+  );
+
+  if (!options.skipRoadmapUpdate) {
+    await updateRoadmapWithFrontierAndTech(emoInsights, frontierFinding, stepRecord, {
+      ...options,
+      techBuffer: replenished.buffer,
+    });
+  }
+
+  return stepRecord;
 }
 
 // ─── SKILL 1: TELEMETRY-CRITIC (HONESTIDAD Y AUDITORÍA ADVERSARIAL) ──────────
@@ -2237,36 +3398,20 @@ Normas editoriales Bite-Snack-Meal de 3 capas, RAE y veracidad estricta:
     }
 
     if (parsed && parsed.title && parsed.body) {
-      let lengthCheck = validateArticleBodyLength(parsed.body, articleFormat);
+      parsed.body = normalizeMarkdownBody(parsed.body);
       const normalizedTitle = applyRaeTitleCase(parsed.title);
       const preliminaryDup = isDuplicatePost(
         { title: normalizedTitle, slug: slugify(parsed.slug || normalizedTitle) },
         telemetry.existingPosts,
       );
 
-      // Recalibración elástica de 1 intento si el texto no está duplicado pero se desvió del rango de palabras
-      if (!lengthCheck.valid && !preliminaryDup.duplicate) {
-        console.log(
-          `[Guardián Editorial] Aplicando recalibración elástica (${lengthCheck.wordCount} palabras -> objetivo ${lengthCheck.minWords}-${lengthCheck.maxWords})...`,
-        );
-        const recalibratePrompt = `Ajusta ÚNICAMENTE la extensión del siguiente artículo para que el campo "body" tenga estrictamente entre ${lengthCheck.minWords} y ${lengthCheck.maxWords} palabras (${articleFormat === "pillar" ? "guía pilar semanal" : "artículo táctico diario"}), manteniendo los subencabezados ### cada 250-300 palabras, la tabla Markdown, la ausencia total de cifras inventadas y los 3 pasos accionables finales.
-JSON actual: ${JSON.stringify(parsed)}
-Responde SOLO con el JSON completo actualizado.`;
-        const recalRaw = await callLLM(recalibratePrompt);
-        if (recalRaw) {
-          try {
-            const recalParsed = repairTruncatedJson(recalRaw);
-            if (recalParsed && recalParsed.body) {
-              const recalLen = validateArticleBodyLength(recalParsed.body, articleFormat);
-              if (recalLen.valid) {
-                parsed = { ...parsed, ...recalParsed };
-                lengthCheck = recalLen;
-              }
-            }
-          } catch {
-            // conservar validación original si falla parseo de recalibración
-          }
-        }
+      let quality = validateArticleQuality(parsed, articleFormat);
+
+      // Autorreparación elástica (hasta 2 intentos) si hay defectos de extensión, falta de H3, tabla o tono
+      if (!quality.valid && !preliminaryDup.duplicate) {
+        const fix = await repairArticleWithLLM(parsed, articleFormat, { maxAttempts: 2 });
+        parsed = { ...parsed, ...fix.article };
+        quality = fix.quality;
       }
 
       const finalTitle = applyRaeTitleCase(parsed.title);
@@ -2283,7 +3428,7 @@ Responde SOLO con el JSON completo actualizado.`;
           parsed.clarityNote ||
           `En 30 segundos: ${parsed.excerpt || String(parsed.body).slice(0, 180)}`,
         excerpt: parsed.excerpt || parsed.body.substring(0, 140) + "…",
-        body: parsed.body,
+        body: quality.normalizedBody,
         ...(groundedSources.length > 0 ? { sources: groundedSources } : {}),
         actionableChecklist:
           Array.isArray(parsed.actionableChecklist) && parsed.actionableChecklist.length >= 1
@@ -2303,20 +3448,18 @@ Responde SOLO con el JSON completo actualizado.`;
       };
 
       const dupCheck = isDuplicatePost(candidate, telemetry.existingPosts);
-      if (lengthCheck.valid && !dupCheck.duplicate) {
+      if (quality.valid && !dupCheck.duplicate) {
         console.log(
-          `[Comité Editorial] Artículo inédito verificado: "${candidate.title}" (${lengthCheck.wordCount} palabras, fuentes=${groundedSources.length})`,
+          `[Comité Editorial] Artículo inédito verificado: "${candidate.title}" (${quality.wordCount} palabras, H3=${quality.h3Count}, fuentes=${groundedSources.length})`,
         );
         return candidate;
       }
-      const rejectionReason = dupCheck.duplicate
-        ? dupCheck.reason
-        : `body de ${lengthCheck.wordCount} palabras; se exigen entre ${lengthCheck.minWords} y ${lengthCheck.maxWords}`;
+      const rejectionReason = dupCheck.duplicate ? dupCheck.reason : quality.issues.join(" | ");
       console.warn(`[Guardián Adversarial] Candidato LLM descartado: ${rejectionReason}`);
     }
   }
 
-  // Fallback 1: buffer editorial regenerativo persistente
+  // Fallback 1: buffer editorial regenerativo persistente (con validación y autorreparación previa)
   const buffer = await loadEditorialBuffer();
   const validBuffered = getActiveBufferedCandidates(
     buffer,
@@ -2324,27 +3467,39 @@ Responde SOLO con el JSON completo actualizado.`;
     telemetry.editorialLog,
   );
   const bufferedPick =
+    (articleFormat === "pillar"
+      ? validBuffered.find((c) => validateArticleQuality(c, "pillar").valid)
+      : null) ||
     validBuffered.find((c) => c.slug === briefing.bufferSlug) ||
     validBuffered.find((c) => c.author === author) ||
     validBuffered[0];
 
   if (bufferedPick) {
-    const targetItem = buffer.items.find((i) => i.slug === bufferedPick.slug && !i.used);
-    if (targetItem) targetItem.used = true;
-    await saveEditorialBuffer(buffer);
-    const normalizedTitle = applyRaeTitleCase(bufferedPick.title);
-    console.log(
-      `[Buffer Editorial] Publicando candidato prevalidado: "${normalizedTitle}" (${bufferedPick.author})`,
-    );
-    return {
-      ...bufferedPick,
-      title: normalizedTitle,
-      slug: slugify(bufferedPick.slug || normalizedTitle),
-      date: targetDate,
-    };
+    let finalPick = { ...bufferedPick, body: normalizeMarkdownBody(bufferedPick.body) };
+    let pickQuality = validateArticleQuality(finalPick, articleFormat);
+    if (!pickQuality.valid) {
+      const fixed = await repairArticleWithLLM(finalPick, articleFormat, { maxAttempts: 2 });
+      finalPick = fixed.article;
+      pickQuality = fixed.quality;
+    }
+    if (pickQuality.valid || validateArticleQuality(finalPick, "tactical").valid) {
+      const targetItem = buffer.items.find((i) => i.slug === bufferedPick.slug && !i.used);
+      if (targetItem) targetItem.used = true;
+      await saveEditorialBuffer(buffer);
+      const normalizedTitle = applyRaeTitleCase(finalPick.title);
+      console.log(
+        `[Buffer Editorial] Publicando candidato verificado: "${normalizedTitle}" (${finalPick.author}, ${pickQuality.wordCount} palabras, H3=${pickQuality.h3Count})`,
+      );
+      return {
+        ...finalPick,
+        title: normalizedTitle,
+        slug: slugify(finalPick.slug || normalizedTitle),
+        date: targetDate,
+      };
+    }
   }
 
-  // Fallback 2: banco curado estático (siempre validado 600-900 palabras y cero duplicados)
+  // Fallback 2: banco curado estático (siempre validado Bite-Snack-Meal y cero duplicados)
   const availableCandidates = CURATED_EDITORIAL_BANK.filter((candidate) => {
     const briefingCheck = validateEditorialBriefing(
       {
@@ -2355,7 +3510,7 @@ Responde SOLO con el JSON completo actualizado.`;
       telemetry.existingPosts,
       telemetry.editorialLog,
     );
-    return briefingCheck.allowed && validateArticleBodyLength(candidate.body, "tactical").valid;
+    return briefingCheck.allowed && validateArticleQuality(candidate, "tactical").valid;
   });
   const curatedCandidate =
     availableCandidates.find((candidate) => candidate.slug === briefing.curatedSlug) ||
@@ -2523,6 +3678,7 @@ async function runSelfHealer(
   emoInsights = null,
   frontierFinding = null,
   techStepRecord = null,
+  bufferStats = null,
 ) {
   console.log("--- [Skill 4: Self-Healer] Verificando salud y actualizando Daily Digest ---");
 
@@ -2534,6 +3690,13 @@ async function runSelfHealer(
   const emoSummaryLine = emoInsights?.summary
     ? `Me gusta: ${emoInsights.summary.totalLikes} · No me gusta: ${emoInsights.summary.totalDislikes} · Claridad: ${emoInsights.summary.emoDimensions?.clarity || 0} · Aplicable: ${emoInsights.summary.emoDimensions?.actionable || 0} · Complejo: ${emoInsights.summary.emoDimensions?.too_complex || 0} · Dudas legales: ${emoInsights.summary.emoDimensions?.legal_doubt || 0} · Comentarios: ${emoInsights.summary.totalComments} (Respuestas IA: ${emoInsights.summary.aiRepliesCount})`
     : "Brújula EmoInsight activa en todos los artículos";
+
+  const techBufCount =
+    bufferStats?.techActiveCount ??
+    ((await loadTechBuffer()).items || []).filter((i) => i && !i.used).length;
+  const editorialBufCount =
+    bufferStats?.editorialActiveCount ??
+    ((await loadEditorialBuffer()).items || []).filter((i) => i && !i.used).length;
 
   const digestContent = `# Informe de Evolución Autónoma — AIEvolutio
 
@@ -2547,6 +3710,7 @@ async function runSelfHealer(
 ### 1. Telemetría Real, \`EmoInsight\` y Salud del Corpus (Telemetry-Critic)
 - **Artículos únicos en producción:** ${spiralResult.buildResult.articles} (${authorsSummary})
 - **Duplicados detectados / bloqueados:** 0 en producción
+- **Colas regenerativas semanales:** Buffer técnico activo: **${techBufCount}/${TECH_BUFFER_TARGET}** · Buffer editorial activo: **${editorialBufCount}/${EDITORIAL_BUFFER_TARGET}**
 - **Páginas dinámicas prerenderizadas:** ${getRenderedPageList(spiralResult.buildResult.pages).join(", ")}
 - **GA4 (${process.env.GA4_PROPERTY_ID ? "API Conectada" : "Etiqueta G-DDWP8Z4F9B en web"}):** ${
     telemetry.ga4
@@ -2647,11 +3811,23 @@ async function main() {
 
     const runTechPhase = flags.phase === "tech" || flags.phase === "auto";
     const runContentPhase = flags.phase === "content" || flags.phase === "auto";
+    let techBufferState = null;
+    let editorialBufferState = null;
 
     if (runTechPhase) {
       frontierFinding = await runFrontierStateOfTheArtResearch(telemetry, emoInsights, targetDate);
-      techStepRecord = await runRoadmapTechnicalStep(telemetry, emoInsights, targetDate);
-      await ensureEditorialBuffer(telemetry, emoInsights, targetDate);
+      techStepRecord = await runRoadmapTechnicalStep(
+        telemetry,
+        emoInsights,
+        targetDate,
+        frontierFinding,
+      );
+      editorialBufferState = await ensureEditorialBuffer(telemetry, emoInsights, targetDate);
+      techBufferState = await ensureTechBuffer(telemetry, emoInsights, frontierFinding, targetDate);
+      await updateRoadmapWithFrontierAndTech(emoInsights, frontierFinding, techStepRecord, {
+        techBuffer: techBufferState.buffer,
+        editorialBuffer: editorialBufferState.buffer,
+      });
     } else if (Array.isArray(emoInsights.frontierLog) && emoInsights.frontierLog.length > 0) {
       frontierFinding = emoInsights.frontierLog[emoInsights.frontierLog.length - 1];
       if (Array.isArray(emoInsights.techHistory) && emoInsights.techHistory.length > 0) {
@@ -2660,7 +3836,7 @@ async function main() {
     }
 
     if (runContentPhase) {
-      await ensureEditorialBuffer(telemetry, emoInsights, targetDate);
+      editorialBufferState = await ensureEditorialBuffer(telemetry, emoInsights, targetDate);
       const existingDatePost = telemetry.existingPosts.find((p) => p.date === targetDate);
       const shouldPublishContent = flags.forceContent || !existingDatePost;
 
@@ -2677,6 +3853,18 @@ async function main() {
           throw new Error(`El artículo "${candidate.title}" fue rechazado al guardarlo.`);
         }
         newPost = candidate;
+        // Reposición inmediata del buffer editorial tras consumir o publicar para mantener siempre >= 7 en cola
+        const refreshedPosts = await loadModularPosts();
+        const refreshedLog = await loadEditorialLog();
+        editorialBufferState = await ensureEditorialBuffer(
+          { ...telemetry, existingPosts: refreshedPosts, editorialLog: refreshedLog },
+          emoInsights,
+          targetDate,
+          { writeIfSufficient: true },
+        );
+        await updateRoadmapWithFrontierAndTech(emoInsights, frontierFinding, techStepRecord, {
+          editorialBuffer: editorialBufferState.buffer,
+        });
       } else {
         console.log(
           `[Editorial] Ya existe artículo verificado para ${targetDate}; se mantiene el corpus sin duplicados.`,
@@ -2702,6 +3890,10 @@ async function main() {
       emoInsights,
       frontierFinding,
       techStepRecord,
+      {
+        techActiveCount: techBufferState?.activeCount,
+        editorialActiveCount: editorialBufferState?.activeCount,
+      },
     );
 
     console.log("=== CICLO EVOLUTIVO COMPLETADO CON ÉXITO ===");

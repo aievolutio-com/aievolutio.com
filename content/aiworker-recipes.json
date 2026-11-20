@@ -1,0 +1,38 @@
+[
+  {
+    "id": "receta-aifactura-extraccion-lotes",
+    "worker": "AIFactura",
+    "versionRef": "v1.5.0 / US-301",
+    "title": "Extraer datos clave de diez facturas a una tabla CSV en local",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 15 min · 0 €",
+    "problem": "Copiar a mano fechas, bases imponibles e IVA de facturas recibidas antes del cierre trimestral con la gestoría.",
+    "promptTemplate": "Actúa como asistente contable local en modo solo lectura. Extrae de las facturas adjuntas una tabla CSV con las columnas: fecha_emision;proveedor;nif_proveedor;base_imponible;cuota_iva;total_factura;observaciones. Si algún campo no es legible o presenta duda, escribe literalmente REQUIERE_REVISION en lugar de estimarlo.",
+    "humanCheck": "Comprueba frente al PDF original que la suma de bases e impuestos de los diez documentos coincide exactamente antes de enviar el archivo a tu gestoría.",
+    "privacyGuard": "Ejecuta esta plantilla únicamente en un modelo local sin conexión o en una cuenta profesional con retención cero y cláusula RGPD (art. 28)."
+  },
+  {
+    "id": "receta-airespuestas-aviso-fuera-horario",
+    "worker": "AIRespuestas",
+    "versionRef": "v1.5.0 / US-302",
+    "title": "Aviso transparente fuera de horario con filtro de urgencias reales",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 15 min · 0 €",
+    "problem": "Recibir mensajes comerciales o de clientes por la noche que interrumpen el descanso cuando casi ninguno constituye una urgencia real.",
+    "promptTemplate": "Redacta un mensaje automático breve y cercano en español de España para un negocio cuyo horario de atención es de lunes a viernes de 09:00 a 18:00. Indica claramente que se trata de un aviso automático (cumplimiento AI Act), ofrece el enlace a nuestras preguntas frecuentes y solicita un código de cliente o teléfono únicamente si existe una avería crítica en curso.",
+    "humanCheck": "Lee en voz alta el texto final para comprobar que suena exactamente como hablas con tus clientes y que el horario y teléfono de guardia son correctos.",
+    "privacyGuard": "Declara siempre la naturaleza automática del aviso (art. 50 del Reglamento europeo de IA) y evita solicitar DNI ni datos médicos por mensajería instantánea."
+  },
+  {
+    "id": "receta-aioferta-voz-a-presupuesto",
+    "worker": "AIOferta",
+    "versionRef": "v1.5.0 / US-303",
+    "title": "Convertir una nota de voz de visita técnica en borrador de presupuesto",
+    "effortKey": "intermediate",
+    "effortLabel": "Bricolaje guiado · 20 min · 0 €",
+    "problem": "Posponer presupuestos técnicos durante varios días tras volver de una obra o visita por falta de tiempo para redactar partidas y exclusiones.",
+    "promptTemplate": "A partir de la transcripción de mi visita y utilizando únicamente la tabla de tarifas vigentes adjunta, redacta un borrador de presupuesto con: 1) descripción clara del trabajo en lenguaje llano, 2) desglose de partidas citando el código de mi tarifa, 3) apartado de exclusiones expresas y plazo de validez. Para cualquier partida que no figure en mi tarifa, indica literalmente VALORAR_MANUALMENTE.",
+    "humanCheck": "Revisa mediciones, materiales especiales, desplazamientos y sumas finales antes de convertir el borrador en documento oficial enviado al cliente.",
+    "privacyGuard": "Elimina el audio original del teléfono una vez cerrado el presupuesto y evita dictar apellidos o direcciones privadas si utilizas herramientas en línea."
+  }
+]

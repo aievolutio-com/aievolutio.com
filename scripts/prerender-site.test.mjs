@@ -459,3 +459,61 @@ test("v1.4.1 guarantees Home pruning (400-700w, Cowan 4±1), zero Trust Gap disc
     assert.match(artHtml, /<table class="article-table">/, `Post ${pf} missing rendered table`);
   }
 });
+
+test("v1.4.2 guarantees >= 7 active technical & editorial buffers, AIWorker recipes on equipo.html and FAQPage JSON-LD", async () => {
+  await buildSite();
+  const equipoHtml = await readFile(path.join(process.cwd(), "dist/equipo.html"), "utf8");
+  assert.match(equipoHtml, /id="recetas-aiworkers"/);
+  assert.match(equipoHtml, /class="card recipe-card"/);
+  assert.match(equipoHtml, /class="btn btn-sm btn-outline recipe-copy-btn"/);
+
+  const sampleFaqArticle = renderArticle(
+    {
+      date: "2026-11-20",
+      title: "Artículo de prueba con preguntas frecuentes",
+      author: "AIJuris",
+      body: "Intro.\n\n### Sección 1\n\nTexto.\n\n### Sección 2\n\nTexto.\n\n### Sección 3\n\n| A | B |\n| :--- | :--- |\n| 1 | 2 |",
+      faq: [
+        {
+          q: "¿Cumple el RGPD?",
+          a: "Sí, procesando en local sin datos personales en nubes abiertas.",
+        },
+        {
+          q: "¿Requiere licencia de pago?",
+          a: "No, puede aplicarse con plantillas y software abierto.",
+        },
+      ],
+    },
+    [{ id: "home", label: "Inicio", href: "index.html" }],
+    "v1.4.2",
+  );
+  assert.match(sampleFaqArticle, /id="preguntas-frecuentes"/);
+  assert.match(sampleFaqArticle, /"@type":"FAQPage"/);
+
+  const editorialBuf = JSON.parse(
+    await readFile(path.join(process.cwd(), "content/editorial-buffer.json"), "utf8"),
+  );
+  const activeEditorial = (editorialBuf.items || []).filter((i) => i && !i.used);
+  assert.ok(
+    activeEditorial.length >= 7,
+    `Expected >= 7 active articles in editorial-buffer.json, got ${activeEditorial.length}`,
+  );
+  for (const item of activeEditorial) {
+    const h3Count = (String(item.body || "").match(/^###\s+/gm) || []).length;
+    assert.ok(h3Count >= 3, `Buffered article ${item.slug} has < 3 H3 headings (${h3Count})`);
+    assert.match(
+      String(item.body || ""),
+      /\n\|[^\n]+\|\n\|[\s:|-]+\|/,
+      `Buffered article ${item.slug} missing Markdown table`,
+    );
+  }
+
+  const techBuf = JSON.parse(
+    await readFile(path.join(process.cwd(), "content/tech-buffer.json"), "utf8"),
+  );
+  const activeTech = (techBuf.items || []).filter((i) => i && !i.used);
+  assert.ok(
+    activeTech.length >= 7,
+    `Expected >= 7 active technical improvements in tech-buffer.json, got ${activeTech.length}`,
+  );
+});

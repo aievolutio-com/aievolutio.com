@@ -2327,3 +2327,95 @@ figure.quote figcaption {
 .calc-number-input {
   max-width: 120px;
 }
+
+/* ==========================================================================
+   Horizonte 1: biblioteca de recetas AIWorkers y bloques FAQ GEO
+   ========================================================================== */
+.recipes-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.recipe-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.recipe-card h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.recipe-prompt-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.recipe-prompt-label {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.recipe-prompt {
+  margin: 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--brand-tech) 5%, var(--bg));
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.recipe-copy-btn {
+  align-self: flex-start;
+}
+
+.recipe-check,
+.recipe-guard {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.article-faq-box {
+  margin-top: var(--space-6);
+  padding: var(--space-6);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  max-width: var(--reading-measure);
+}
+
+.article-faq-box h3 {
+  margin: 0 0 var(--space-4);
+  font-size: 1.15rem;
+  color: var(--brand-primary);
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--brand-primary);
+}
+
+.faq-item p {
+  margin: var(--space-3) 0 0;
+  font-size: 0.96rem;
+}

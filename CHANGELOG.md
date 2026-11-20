@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [1.4.2](https://github.com/aievolutio-com/aievolutio.com/compare/v1.4.1...v1.4.2) (2026-11-20)
+
+### Features
+
+- **Doble colchón regenerativo semanal (`>= 7` técnico y `>= 7` editorial):** Elevación de `content/editorial-buffer.json` a `minThreshold: 7` / `targetSize: 7` con reposición inmediata tras cada publicación, y creación del nuevo buffer técnico ejecutable `content/tech-buffer.json` (`minThreshold: 7` / `targetSize: 7`) para garantizar al menos 7 mejoras técnicas y 7 artículos verificados en cola en cada revisión semanal (`AGENTS.md`, `scripts/autonomous-evolution.mjs`).
+- **Autorreparación editorial previa al CI y corrección de `extractFieldsFallback`:** Arreglo del escape de saltos de línea `\n` en `scripts/json-repair.mjs` (causa raíz del bloqueo de los días 18–19 de noviembre) e incorporación de `normalizeMarkdownBody`, `validateArticleQuality` (`1200–1600`/`1400–1800` palabras, `>= 3` `### `, tabla Markdown, pasos accionables, cero jerga/emojis/Trust Gap) y `repairArticleWithLLM` antes de guardar en el buffer o publicar.
+- **Biblioteca viva de recetas `AIWorkers` (`equipo.html#recetas-aiworkers`) y bloques `FAQPage` JSON-LD (`US-005`, `US-301`–`US-306`):** Nueva capa declarativa en `content/aiworker-recipes.json` con 3 recetas iniciales de 15 minutos (`AIFactura`, `AIRespuestas`, `AIOferta`) y botón de copia accesible, soporte nativo de `post.faq` con marcado `FAQPage` en `scripts/prerender-site.mjs`, y saneamiento de tablas Markdown en la sección 5 de `docs/roadmap.md` (nueva subsección `5.3` con ambas colas activas).
+
 ## [1.4.1](https://github.com/aievolutio-com/aievolutio.com/compare/v1.4.0...v1.4.1) (2026-11-14)
 
 ### Features
