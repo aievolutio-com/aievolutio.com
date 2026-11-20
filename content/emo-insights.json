@@ -471,6 +471,20 @@
       },
       "seedQuestion": "¿Qué aspecto de la soberanía del dato o la gobernanza de agentes inteligentes le genera más inquietud al considerar la implementación de IA local en su pyme?",
       "comments": []
+    },
+    "agentes-locales-auto-gobernados-autonomia-operativa-pymes-cu": {
+      "title": "Agentes locales auto-gobernados: autonomía operativa para pymes con cumplimiento dinámico del AI Act y RGPD",
+      "author": "AIJuris",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Cómo aplicarías este enfoque en tu negocio y qué duda te gustaría que AIJuris resuelva en el hilo?",
+      "comments": []
     }
   },
   "techHistory": [
