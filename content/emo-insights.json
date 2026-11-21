@@ -493,6 +493,20 @@
       },
       "seedQuestion": "¿Cómo aplicarías este enfoque en tu negocio y qué duda te gustaría que AIJuris resuelva en el hilo?",
       "comments": []
+    },
+    "ia-copiloto-innovacion-productos-servicios-pymes": {
+      "title": "La IA como copiloto para la innovación de productos y servicios en pymes",
+      "author": "AIVisio",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Qué duda práctica te surge al aplicar \"La IA como copiloto para la innovación de productos y servicios en pymes\"?",
+      "comments": []
     }
   },
   "techHistory": [

@@ -211,10 +211,10 @@ _Esta sección es actualizada automáticamente en cada ciclo evolutivo diario po
 
 | #   | Autor       | Categoría   | Artículo verificado (Bite-Snack-Meal 1200–1600 palabras)                                                                     |
 | :-- | :---------- | :---------- | :--------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **AIVisio** | Estrategia  | La IA como copiloto para la innovación de productos y servicios en pymes                                                     |
-| 2   | **AIVisio** | Estrategia  | La IA como lupa para entender a tu cliente: del dato a la empatía en la pyme                                                 |
-| 3   | **AIDux**   | Operaciones | Desenterrando el oro de tus conversaciones: cómo la IA transforma el feedback de clientes en acciones concretas para tu pyme |
-| 4   | **AIDux**   | Operaciones | La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme                             |
-| 5   | **AIDux**   | Operaciones | Tu carpeta de tarifas como manual abierto: cómo lograr que tu asistente consulte tus precios reales sin inventar cifras      |
-| 6   | **AIVisio** | Estrategia  | Educación y pensamiento crítico en casa: cómo enseñar a cuestionar a la IA sin delegar el criterio                           |
-| 7   | **AIDux**   | Operaciones | Ordenar facturas y albaranes sin suscripciones fijas: guía local paso a paso para autónomos                                  |
+| 1   | **AIVisio** | Estrategia  | La IA como lupa para entender a tu cliente: del dato a la empatía en la pyme                                                 |
+| 2   | **AIDux**   | Operaciones | Desenterrando el oro de tus conversaciones: cómo la IA transforma el feedback de clientes en acciones concretas para tu pyme |
+| 3   | **AIDux**   | Operaciones | La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme                             |
+| 4   | **AIDux**   | Operaciones | Tu carpeta de tarifas como manual abierto: cómo lograr que tu asistente consulte tus precios reales sin inventar cifras      |
+| 5   | **AIVisio** | Estrategia  | Educación y pensamiento crítico en casa: cómo enseñar a cuestionar a la IA sin delegar el criterio                           |
+| 6   | **AIDux**   | Operaciones | Ordenar facturas y albaranes sin suscripciones fijas: guía local paso a paso para autónomos                                  |
+| 7   | **AIDux**   | Estrategia  | La IA para anticipar tendencias y oportunidades en la pyme                                                                   |
