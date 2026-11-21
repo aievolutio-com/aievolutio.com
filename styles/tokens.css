@@ -1,0 +1,134 @@
+:root {
+  /* Paleta constitucional AIEvolutio (WCAG 2.2 AAA >= 7:1 para texto) */
+  --brand-primary: #0a192f;
+  --brand-primary-contrast: #ffffff;
+  --brand-tech: #144870; /* Reforzado para >= 9:1 sobre blanco y #f8fafc */
+  --brand-tech-surface: #1e6091; /* Azul técnico corporativo para bordes y elementos no textuales */
+  --brand-dark: #0a192f;
+  --brand-accent: #ff6b4a; /* Naranja coral reservado estrictamente a marca, isotipos y acentos no textuales */
+  --brand-accent-contrast: #0a192f;
+  --brand-secondary: #1e6091;
+  --btn-bg: #144870;
+  --btn-bg-hover: #0a192f;
+  --btn-text: #ffffff;
+
+  /* Superficies y contraste */
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --surface-raised: #ffffff;
+  --border: #cbd5e1;
+  --text: #0a192f;
+  --muted: #334155;
+  --link: #144870;
+  --ok: #064e3b;
+  --warn: #78350f;
+  --err: #7f1d1d;
+
+  /* Estados semánticos AAA */
+  --status-basic-text: #064e3b;
+  --status-basic-bg: #ecfdf5;
+  --status-basic-border: #047857;
+  --status-mid-text: #78350f;
+  --status-mid-bg: #fffbeb;
+  --status-mid-border: #b45309;
+  --status-adv-text: #7f1d1d;
+  --status-adv-bg: #fef2f2;
+  --status-adv-border: #b91c1c;
+
+  /* Tipografía NeuroUX */
+  --font-heading: "Montserrat", system-ui, -apple-system, sans-serif;
+  --font-sans: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-size-body: clamp(1.125rem, 1.06rem + 0.25vw, 1.2rem);
+  --line-height-reading: 1.72;
+  --reading-measure: 64ch;
+
+  /* Layout y escala espacial (múltiplos de 8 px) */
+  --max-content: 1120px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+  --shadow-sm: 0 1px 3px rgba(10, 25, 47, 0.06);
+  --shadow: 0 4px 20px -2px rgba(10, 25, 47, 0.08);
+  --shadow-lg: 0 12px 32px -4px rgba(10, 25, 47, 0.12);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --motion-fast: 150ms ease-out;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0a192f;
+  --surface: #112240;
+  --surface-raised: #172a46;
+  --border: #2a4365;
+  --text: #f8fafc;
+  --muted: #cbd5e1;
+  --link: #7dd3fc;
+  --brand-primary: #f8fafc;
+  --brand-tech: #7dd3fc;
+  --brand-tech-surface: #38bdf8;
+  --brand-dark: #ffffff;
+  --brand-primary-contrast: #0a192f;
+  --brand-secondary: #93c5fd;
+  --btn-bg: #38bdf8;
+  --btn-bg-hover: #7dd3fc;
+  --btn-text: #0a192f;
+  --ok: #a7f3d0;
+  --warn: #fde68a;
+  --err: #fecaca;
+  --status-basic-text: #a7f3d0;
+  --status-basic-bg: rgba(6, 78, 59, 0.45);
+  --status-basic-border: #34d399;
+  --status-mid-text: #fde68a;
+  --status-mid-bg: rgba(120, 53, 15, 0.45);
+  --status-mid-border: #fbbf24;
+  --status-adv-text: #fecaca;
+  --status-adv-bg: rgba(127, 29, 29, 0.45);
+  --status-adv-border: #f87171;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.45);
+  --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.65);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0a192f;
+    --surface: #112240;
+    --surface-raised: #172a46;
+    --border: #2a4365;
+    --text: #f8fafc;
+    --muted: #cbd5e1;
+    --link: #7dd3fc;
+    --brand-primary: #f8fafc;
+    --brand-tech: #7dd3fc;
+    --brand-tech-surface: #38bdf8;
+    --brand-dark: #ffffff;
+    --brand-primary-contrast: #0a192f;
+    --brand-secondary: #93c5fd;
+    --btn-bg: #38bdf8;
+    --btn-bg-hover: #7dd3fc;
+    --btn-text: #0a192f;
+    --ok: #a7f3d0;
+    --warn: #fde68a;
+    --err: #fecaca;
+    --status-basic-text: #a7f3d0;
+    --status-basic-bg: rgba(6, 78, 59, 0.45);
+    --status-basic-border: #34d399;
+    --status-mid-text: #fde68a;
+    --status-mid-bg: rgba(120, 53, 15, 0.45);
+    --status-mid-border: #fbbf24;
+    --status-adv-text: #fecaca;
+    --status-adv-bg: rgba(127, 29, 29, 0.45);
+    --status-adv-border: #f87171;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.45);
+    --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.55);
+    --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.65);
+  }
+}

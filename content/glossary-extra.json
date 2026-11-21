@@ -1,0 +1,34 @@
+[
+  {
+    "id": "aiworker-agente-supervisado",
+    "term": "AIWorker (agente operativo supervisado)",
+    "effortKey": "basic",
+    "effortLabel": "Plantilla guiada · 30 min · 0 €",
+    "analogy": "Un aprendiz metódico que prepara los borradores de facturas, respuestas o presupuestos siguiendo tus reglas, pero que nunca envía nada sin tu firma.",
+    "mondayUse": "Quita de en medio el 80 % del trabajo mecánico de picar datos o estructurar notas de voz manteniendo el control humano."
+  },
+  {
+    "id": "cuantizacion-4bits",
+    "term": "Cuantización de modelos (compresión a 4 bits)",
+    "effortKey": "basic",
+    "effortLabel": "Ya incluido al descargar · 0 min · 0 €",
+    "analogy": "Guardar las herramientas en un maletín compacto en lugar de llevar un furgón entero: ocupa la cuarta parte de memoria en tu ordenador y conserva casi toda su precisión.",
+    "mondayUse": "Permite que un ordenador normal de oficina o taller ejecute modelos de inteligencia artificial locales con fluidez sin comprar tarjetas gráficas caras."
+  },
+  {
+    "id": "zero-data-retention",
+    "term": "Retención cero de datos (Zero Data Retention)",
+    "effortKey": "basic",
+    "effortLabel": "Ajuste de privacidad · 5 min · 0 €",
+    "analogy": "Una pizarra que se borra sola nada más terminar la reunión: el proveedor procesa tu consulta pero tiene prohibido guardarla o usarla para entrenar sus máquinas.",
+    "mondayUse": "Requisito indispensable que AIJuris recomienda activar o exigir por contrato antes de usar cualquier servicio en la nube con documentos de trabajo."
+  },
+  {
+    "id": "instruccion-sistema-prompt",
+    "term": "Instrucción maestra o guion de oficio (System Prompt)",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 15 min · 0 €",
+    "analogy": "El manual de bienvenida que entregas el primer día a un colaborador indicando cómo tratáis al cliente, qué tono usáis y qué cosas están prohibidas.",
+    "mondayUse": "Ahorra tener que repetir en cada mensaje a qué se dedica tu empresa y asegura respuestas coherentes con tu estilo."
+  }
+]
