@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-20",
+  "updatedAt": "2026-11-21",
   "minThreshold": 7,
   "targetSize": 7,
   "items": [
@@ -30,8 +30,9 @@
           ]
         }
       },
-      "used": false,
-      "queuedAt": "2026-11-20"
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-21"
     },
     {
       "id": "tech-h1-recipe-mcp-carpeta-tarifas",
@@ -193,6 +194,28 @@
       },
       "used": false,
       "queuedAt": "2026-11-20"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-mcp-local",
+      "versionRef": "v1.5.0 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Receta MCP de AIDux: Conexión de Agente Local con Repositorio Interno",
+      "rationale": "Implementa una pauta operativa mediante el protocolo Model Context Protocol (MCP) para que un modelo local acceda de forma segura a carpetas internas de la pyme sin depender de la nube, cumpliendo los criterios de gobernanza y privacidad del Reglamento General de Protección de Datos.",
+      "payload": {
+        "id": "receta-aidux-mcp-local",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-306",
+        "title": "Configuración rápida de servidor MCP local para acceso a documentos",
+        "effortKey": "intermediate",
+        "effortLabel": "Intermedio (15 minutos)",
+        "problem": "La pyme necesita que su modelo local de lenguaje consulte normativas y plantillas internas almacenadas en un servidor local sin exponer datos confidenciales a proveedores externos.",
+        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Configura el archivo de conexión JSON para el protocolo MCP en el entorno local, estableciendo una ruta de lectura restringida a la carpeta de procesos internos y aplicando los filtros de privacidad necesarios.",
+        "humanCheck": "Verificar que la ruta asignada al servidor MCP sea estrictamente local y que no existan credenciales de servicios en la nube expuestas en el archivo de configuración.",
+        "privacyGuard": "Garantizar que todo el tráfico de contexto permanezca en la infraestructura local bajo el marco de minimización de datos del AI Act."
+      },
+      "used": false,
+      "queuedAt": "2026-11-21"
     }
   ]
 }

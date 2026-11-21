@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-20",
+  "updatedAt": "2026-11-21",
   "summary": {
     "totalLikes": 0,
     "totalDislikes": 0,
@@ -19,7 +19,8 @@
     "tech-step-03-glossary-zdr-prompt",
     "tech-step-04-clarity-notes-bi-geo-legal",
     "tech-step-05-enrich-historical-clarity-layer",
-    "tech-step-06-enrich-historical-visuals-layer"
+    "tech-step-06-enrich-historical-visuals-layer",
+    "tech-h1-diagram-decisiones-estrategicas"
   ],
   "frontierLog": [
     {
@@ -104,6 +105,13 @@
       "topic": "Agentes de IA locales auto-adaptativos y auto-gobernados para pymes: resiliencia operativa y cumplimiento dinámico del AI Act/RGPD sin dependencia de la nube.",
       "insight": "El estado del arte actual de la IA para autónomos y pymes se centra en la adopción de modelos de lenguaje pequeños (SLMs) y cuantizados que pueden ejecutarse eficientemente en hardware local, como mini-PCs de oficina, sin necesidad de GPUs dedicadas de alta gama. Esta capacidad de despliegue local es fundamental para lograr ahorros significativos frente a las suscripciones caras de la IA en la nube, especialmente para equipos de más de 10-25 usuarios, donde los costos de las soluciones locales se vuelven más competitivos a largo plazo. Además, la ejecución local garantiza la soberanía de los datos, un factor crítico para el cumplimiento del RGPD y la próxima Ley de IA de la UE, ya que la información sensible nunca sale de la infraestructura de la empresa, evitando riesgos asociados con la transferencia de datos transfronterizos y leyes como la CLOUD Act de EE. UU..\n\nLos agentes operativos autónomos están evolucionando más allá de los chatbots, siendo capaces de planificar, actuar, utilizar herramientas, recordar y adaptarse para completar tareas complejas sin supervisión constante. Estos agentes pueden manejar datos no estructurados, resolver problemas en múltiples pasos y corregir errores, lo que los hace más resilientes que la automatización robótica de procesos (RPA) tradicional. La integración de estos agentes con protocolos locales seguros (como el 'Model Context Protocol' mencionado en algunas integraciones) permite una orquestación eficiente y privada de flujos de trabajo. La frontera de investigación actual se orienta hacia el desarrollo de agentes que no solo optimizan tareas, sino que también son 'auto-adaptativos' y 'auto-gobernados', lo que les permite aprender continuamente, ajustarse a entornos empresariales dinámicos y mantener un 'cumplimiento dinámico' proactivo con las regulaciones de IA y protección de datos, sin depender de servicios en la nube que puedan comprometer la privacidad o la flexibilidad operativa.",
       "roadmapImpact": "Este enfoque en agentes de IA locales auto-adaptativos y auto-gobernados tendrá un impacto transformador en la hoja de ruta de AIEvolutio. Permitirá el desarrollo de soluciones de IA soberana más robustas y autónomas para pymes, reduciendo la dependencia de proveedores de nube externos y sus costos recurrentes. La capacidad de los agentes para aprender y adaptarse continuamente, junto con el cumplimiento dinámico de normativas como el AI Act y el RGPD, fortalecerá la propuesta de valor en términos de seguridad de datos, transparencia y explicabilidad. Esto facilitará la creación de productos que no solo optimicen las operaciones, sino que también gestionen proactivamente los riesgos regulatorios, ofreciendo a las pymes una ventaja competitiva y una mayor autonomía digital. Se priorizará la investigación en mecanismos de auto-auditoría y auto-corrección para agentes locales, así como en la estandarización de interfaces para la interoperabilidad de modelos y herramientas en entornos de IA soberana.",
+      "leadAgent": "AIDux"
+    },
+    {
+      "date": "2026-11-21",
+      "topic": "Optimización operativa en pymes a través de la IA local y agentes autónomos: integración práctica, eficiencia y cumplimiento normativo.",
+      "insight": "El estado del arte actual de la IA en PYMES revela una creciente adopción de modelos locales abiertos y agentes autónomos, impulsada por la búsqueda de eficiencia operativa, ahorro de costes y soberanía de datos. Los modelos de lenguaje pequeños (SLM) y los modelos de código abierto ejecutables en hardware de oficina se están volviendo viables, ofreciendo una alternativa económica a las suscripciones en la nube, con retornos de inversión potenciales en menos de un año para usos intensivos. El protocolo MCP (Model Context Protocol) emerge como un estándar crucial para la interoperabilidad y colaboración de agentes de IA, facilitando su conexión con herramientas y fuentes de datos externas. Paralelamente, el cumplimiento normativo con el AI Act y el RGPD es un factor determinante; las PYMES, como 'responsables del despliegue', deben enfocarse en la alfabetización en IA de su personal, la transparencia en la interacción con sistemas de IA y una sólida gobernanza de datos, con obligaciones de alto riesgo que se implementarán progresivamente. Los agentes operativos están demostrando su valor en la automatización de tareas repetitivas en áreas como atención al cliente, ventas y operaciones, liberando al personal para actividades de mayor valor.",
+      "roadmapImpact": "AIEvolutio debe enfocar su hoja de ruta en el desarrollo de soluciones que simplifiquen la integración práctica de la IA local y los agentes autónomos en los flujos de trabajo diarios de las PYMES. Esto incluye la creación de herramientas y metodologías que faciliten el despliegue de SLM y modelos abiertos en infraestructura existente, así como la provisión de guías claras y plantillas para el cumplimiento proactivo del AI Act y el RGPD, especialmente dirigidas a los 'responsables del despliegue'. Se debe priorizar la implementación del protocolo MCP para asegurar la interoperabilidad de agentes y la escalabilidad de soluciones multi-agente. Además, es fundamental ofrecer programas de formación y casos de estudio que demuestren un ROI tangible mediante la optimización de procesos y la reducción de la dependencia de costosas suscripciones en la nube, abordando la brecha de conocimiento y la resistencia al cambio en las PYMES.",
       "leadAgent": "AIDux"
     }
   ],
@@ -529,6 +537,13 @@
       "versionRef": "v1.4.0 / US-004 / US-005",
       "title": "Enriquecimiento progresivo de artículos históricos con tablas comparativas y esquemas visuales",
       "summary": "Incorporados 1 esquemas visuales o tablas comparativas estructuradas en artículos históricos."
+    },
+    {
+      "date": "2026-11-21",
+      "id": "tech-h1-diagram-decisiones-estrategicas",
+      "versionRef": "v1.4.2 / US-004 / US-005",
+      "title": "Diagrama SVG nativo para la guía de decisiones estratégicas con IA en pymes",
+      "summary": "Incorporado diagrama SVG nativo «De los datos dispersos a una decisión estratégica supervisada» en 2026-11-15-ia-toma-decisiones-estrategicas-pymes-mas-alla-automatizacio.json."
     }
   ]
 }

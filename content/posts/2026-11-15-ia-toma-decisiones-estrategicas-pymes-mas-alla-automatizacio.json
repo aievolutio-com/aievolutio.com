@@ -13,5 +13,22 @@
     "Investigar y seleccionar herramientas de IA accesibles y diseñadas para pymes que puedan procesar y analizar esos datos."
   ],
   "sources": [],
-  "date": "2026-11-15"
+  "date": "2026-11-15",
+  "visualDiagram": {
+    "title": "De los datos dispersos a una decisión estratégica supervisada",
+    "nodes": [
+      {
+        "title": "1. Tus cifras reales",
+        "note": "Ventas, costes y notas sin salir de casa"
+      },
+      {
+        "title": "2. Síntesis asistida",
+        "note": "Patrones y escenarios claros en local"
+      },
+      {
+        "title": "3. Criterio humano",
+        "note": "Contraste de márgenes y decisión final"
+      }
+    ]
+  }
 }
