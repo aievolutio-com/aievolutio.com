@@ -21,7 +21,8 @@
     "tech-step-05-enrich-historical-clarity-layer",
     "tech-step-06-enrich-historical-visuals-layer",
     "tech-h1-diagram-decisiones-estrategicas",
-    "tech-h1-recipe-mcp-carpeta-tarifas"
+    "tech-h1-recipe-mcp-carpeta-tarifas",
+    "tech-h1-diagram-conocimiento-interno"
   ],
   "frontierLog": [
     {
@@ -120,6 +121,13 @@
       "topic": "Desarrollo y estandarización de protocolos de comunicación local seguros (como MCP/acp) para la orquestación de sistemas multi-agente autónomos en pymes, habilitando la automatización integral y el cumplimiento proactivo del AI Act/RGPD.",
       "insight": "El estado del arte actual de la IA para pymes revela una creciente viabilidad de la implementación de modelos de IA abiertos y locales, impulsada por la eficiencia de los modelos cuantizados y la necesidad de soberanía de datos y control de costes. La verdadera frontera de innovación radica en la capacidad de orquestar sistemas multi-agente autónomos de manera fluida, segura y conforme a la normativa en este entorno local. Esto exige el desarrollo y la estandarización de protocolos de comunicación local robustos (como el Model Context Protocol - MCP y el Agent Communication Protocol - ACP), que permitan una colaboración compleja entre agentes, el uso de herramientas y el intercambio de datos sin depender de servicios en la nube. Dichos protocolos son fundamentales no solo para maximizar la eficiencia operativa y el ahorro de costes, sino también para integrar el cumplimiento proactivo del AI Act y el RGPD desde el diseño, asegurando la transparencia, la auditabilidad y la supervisión humana en los procesos automatizados.",
       "roadmapImpact": "Esta investigación informará directamente el desarrollo de las ofertas de AIEvolutio:\n\n*   **AIVisio (AI Vision):** Guiará el diseño de arquitecturas de IA local capaces de alojar y orquestar sistemas multi-agente complejos, priorizando la comunicación segura y de baja latencia para la automatización integral. Esto incluirá la integración de modelos locales avanzados (SLMs, cuantizados) dentro de estos marcos multi-agente.\n*   **AIDux (AI Leadership/Guidance):** Proporcionará el conocimiento fundamental para definir e implementar un protocolo de comunicación local estandarizado y seguro (como una versión mejorada de MCP/ACP), que asegure la interoperabilidad y el flujo eficiente de datos entre agentes locales y sistemas empresariales (ERP/CRM). Esto será crucial para el desarrollo de plataformas de orquestación multi-agente que gestionen flujos de trabajo, asignen tareas y garanticen la trazabilidad.\n*   **AIJuris (AI Legal/Compliance):** Establecerá los requisitos técnicos para integrar mecanismos de cumplimiento proactivo dentro del ecosistema de IA local multi-agente. Esto abarca el diseño de protocolos y arquitecturas que faciliten la auditabilidad, la explicabilidad, la privacidad de los datos (RGPD) y la adhesión a los requisitos de transparencia y supervisión del AI Act, garantizando que las decisiones automatizadas puedan ser revisadas y comprendidas, habilitando soluciones de IA local con 'cumplimiento por diseño'.",
+      "leadAgent": "AIVisio"
+    },
+    {
+      "date": "2026-11-22",
+      "topic": "Patrones de despliegue y gestión del ciclo de vida de la IA soberana para pymes: integración de modelos locales abiertos y agentes operativos bajo el AI Act/RGPD.",
+      "insight": "El estado del arte actual de la IA aplicada a autónomos y pymes se caracteriza por una creciente adopción de la 'IA soberana', que prioriza el control local de datos y modelos para asegurar la privacidad y el cumplimiento normativo. Los modelos locales abiertos, como Mistral 7B o LLaMA 3, permiten a las pymes ejecutar IA en su propio hardware, eliminando costes de suscripción por uso y manteniendo la información sensible dentro de la red corporativa. El protocolo MCP (Model Context Protocol) emerge como un estándar crucial, facilitando la integración segura de estos modelos y agentes operativos con los sistemas internos de la empresa (ERP, CRM, bases de datos), permitiendo que la IA interactúe con datos reales y actualizados.\n\nLa implementación de agentes operativos autónomos está ganando tracción, con un 51% de empresas ya utilizándolos en producción y un 78% con planes de implementación futura. Estos agentes van más allá de los chatbots, ejecutando tareas complejas y coordinadas con mínima intervención humana, como la extracción de facturas o la optimización de inventarios. Sin embargo, su despliegue exitoso requiere patrones de implementación definidos, gestión del ciclo de vida que abarque desde el desarrollo hasta la retirada, y una supervisión humana para acciones de riesgo.\n\nEl ahorro de costes es un motor clave, ya que las suscripciones a servicios de IA en la nube pueden acumularse rápidamente y no siempre ofrecen un retorno medible si no hay una estrategia clara de integración. La IA local ofrece una alternativa rentable, con casos de estudio que demuestran retornos de inversión significativos en pocos meses.\n\nEl cumplimiento del AI Act y el RGPD es fundamental. Ambas normativas se aplican simultáneamente cuando la IA procesa datos personales, exigiendo transparencia, calidad de datos, y supervisión humana en sistemas de alto riesgo. La IA local facilita este cumplimiento al mantener los datos dentro de la infraestructura de la empresa, evitando riesgos de fuga de información a servicios públicos de IA. La 'alfabetización en IA' del personal y la adopción de estándares como ISO/IEC 42001 son también requisitos emergentes para una gestión de riesgos efectiva.",
+      "roadmapImpact": "Esta investigación subraya la necesidad de que AIEvolutio desarrolle y promueva patrones de despliegue estandarizados y metodologías de gestión del ciclo de vida para la IA soberana en pymes. Esto incluye la creación de arquitecturas de referencia que integren modelos locales abiertos, el protocolo MCP y agentes operativos, asegurando la interoperabilidad y la escalabilidad. Se debe enfatizar el desarrollo de herramientas y guías para el cumplimiento dinámico y continuo del AI Act y el RGPD, incluyendo la evaluación de riesgos, la transparencia y la trazabilidad de los sistemas de IA. Además, es crucial ofrecer recursos para cuantificar el ROI real de las implementaciones de IA local, ayudando a las pymes a justificar la inversión y a optimizar sus operaciones. La formación y capacitación en 'alfabetización en IA' para el personal de pymes también se perfila como un área de impacto clave para asegurar una adopción segura y efectiva.",
       "leadAgent": "AIVisio"
     }
   ],
@@ -587,6 +595,13 @@
       "versionRef": "v1.5.0 / US-203 / US-306",
       "title": "Receta de 15 minutos: conectar tu carpeta de tarifas en modo solo lectura con MCP",
       "summary": "Añadida nueva receta operativa «Consultar tarifas vigentes desde una carpeta local en modo solo lectura» (AIDux) a equipo.html#recetas-aiworkers."
+    },
+    {
+      "date": "2026-11-22",
+      "id": "tech-h1-diagram-conocimiento-interno",
+      "versionRef": "v1.4.2 / US-004 / US-005",
+      "title": "Diagrama SVG nativo para la guía de gestión del conocimiento interno en pymes",
+      "summary": "Incorporado diagrama SVG nativo «Del archivo disperso al conocimiento compartido bajo control RGPD» en 2026-11-16-ia-gestion-conocimiento-interno-pymes-informacion-dispersa-s.json."
     }
   ]
 }

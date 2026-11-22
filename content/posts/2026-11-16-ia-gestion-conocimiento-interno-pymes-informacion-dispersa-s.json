@@ -34,5 +34,22 @@
       "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEFRidIhIDJICsPqr6Fh2gSKQqGfGfUH6lS7H8saCXPUTQ53346g_7c5NvFNbUawj1CGbm3c6aqeN9cMA6N6ovhLohXMDbQx5xT_kbZNEXULXTsI03yoYlRgZSauy0fT_b6O6fc4TbUlfMU1btJtdseGQ=="
     }
   ],
-  "date": "2026-11-16"
+  "date": "2026-11-16",
+  "visualDiagram": {
+    "title": "Del archivo disperso al conocimiento compartido bajo control RGPD",
+    "nodes": [
+      {
+        "title": "1. Carpeta limpia",
+        "note": "Manuales vigentes sin datos personales"
+      },
+      {
+        "title": "2. Índice local",
+        "note": "Búsqueda semántica en tu propia red"
+      },
+      {
+        "title": "3. Consulta citada",
+        "note": "Respuesta con enlace al documento origen"
+      }
+    ]
+  }
 }
