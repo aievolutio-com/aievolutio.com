@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-22",
   "summary": {
     "totalLikes": 0,
     "totalDislikes": 0,
@@ -20,7 +20,8 @@
     "tech-step-04-clarity-notes-bi-geo-legal",
     "tech-step-05-enrich-historical-clarity-layer",
     "tech-step-06-enrich-historical-visuals-layer",
-    "tech-h1-diagram-decisiones-estrategicas"
+    "tech-h1-diagram-decisiones-estrategicas",
+    "tech-h1-recipe-mcp-carpeta-tarifas"
   ],
   "frontierLog": [
     {
@@ -113,6 +114,13 @@
       "insight": "El estado del arte actual de la IA en PYMES revela una creciente adopción de modelos locales abiertos y agentes autónomos, impulsada por la búsqueda de eficiencia operativa, ahorro de costes y soberanía de datos. Los modelos de lenguaje pequeños (SLM) y los modelos de código abierto ejecutables en hardware de oficina se están volviendo viables, ofreciendo una alternativa económica a las suscripciones en la nube, con retornos de inversión potenciales en menos de un año para usos intensivos. El protocolo MCP (Model Context Protocol) emerge como un estándar crucial para la interoperabilidad y colaboración de agentes de IA, facilitando su conexión con herramientas y fuentes de datos externas. Paralelamente, el cumplimiento normativo con el AI Act y el RGPD es un factor determinante; las PYMES, como 'responsables del despliegue', deben enfocarse en la alfabetización en IA de su personal, la transparencia en la interacción con sistemas de IA y una sólida gobernanza de datos, con obligaciones de alto riesgo que se implementarán progresivamente. Los agentes operativos están demostrando su valor en la automatización de tareas repetitivas en áreas como atención al cliente, ventas y operaciones, liberando al personal para actividades de mayor valor.",
       "roadmapImpact": "AIEvolutio debe enfocar su hoja de ruta en el desarrollo de soluciones que simplifiquen la integración práctica de la IA local y los agentes autónomos en los flujos de trabajo diarios de las PYMES. Esto incluye la creación de herramientas y metodologías que faciliten el despliegue de SLM y modelos abiertos en infraestructura existente, así como la provisión de guías claras y plantillas para el cumplimiento proactivo del AI Act y el RGPD, especialmente dirigidas a los 'responsables del despliegue'. Se debe priorizar la implementación del protocolo MCP para asegurar la interoperabilidad de agentes y la escalabilidad de soluciones multi-agente. Además, es fundamental ofrecer programas de formación y casos de estudio que demuestren un ROI tangible mediante la optimización de procesos y la reducción de la dependencia de costosas suscripciones en la nube, abordando la brecha de conocimiento y la resistencia al cambio en las PYMES.",
       "leadAgent": "AIDux"
+    },
+    {
+      "date": "2026-11-22",
+      "topic": "Desarrollo y estandarización de protocolos de comunicación local seguros (como MCP/acp) para la orquestación de sistemas multi-agente autónomos en pymes, habilitando la automatización integral y el cumplimiento proactivo del AI Act/RGPD.",
+      "insight": "El estado del arte actual de la IA para pymes revela una creciente viabilidad de la implementación de modelos de IA abiertos y locales, impulsada por la eficiencia de los modelos cuantizados y la necesidad de soberanía de datos y control de costes. La verdadera frontera de innovación radica en la capacidad de orquestar sistemas multi-agente autónomos de manera fluida, segura y conforme a la normativa en este entorno local. Esto exige el desarrollo y la estandarización de protocolos de comunicación local robustos (como el Model Context Protocol - MCP y el Agent Communication Protocol - ACP), que permitan una colaboración compleja entre agentes, el uso de herramientas y el intercambio de datos sin depender de servicios en la nube. Dichos protocolos son fundamentales no solo para maximizar la eficiencia operativa y el ahorro de costes, sino también para integrar el cumplimiento proactivo del AI Act y el RGPD desde el diseño, asegurando la transparencia, la auditabilidad y la supervisión humana en los procesos automatizados.",
+      "roadmapImpact": "Esta investigación informará directamente el desarrollo de las ofertas de AIEvolutio:\n\n*   **AIVisio (AI Vision):** Guiará el diseño de arquitecturas de IA local capaces de alojar y orquestar sistemas multi-agente complejos, priorizando la comunicación segura y de baja latencia para la automatización integral. Esto incluirá la integración de modelos locales avanzados (SLMs, cuantizados) dentro de estos marcos multi-agente.\n*   **AIDux (AI Leadership/Guidance):** Proporcionará el conocimiento fundamental para definir e implementar un protocolo de comunicación local estandarizado y seguro (como una versión mejorada de MCP/ACP), que asegure la interoperabilidad y el flujo eficiente de datos entre agentes locales y sistemas empresariales (ERP/CRM). Esto será crucial para el desarrollo de plataformas de orquestación multi-agente que gestionen flujos de trabajo, asignen tareas y garanticen la trazabilidad.\n*   **AIJuris (AI Legal/Compliance):** Establecerá los requisitos técnicos para integrar mecanismos de cumplimiento proactivo dentro del ecosistema de IA local multi-agente. Esto abarca el diseño de protocolos y arquitecturas que faciliten la auditabilidad, la explicabilidad, la privacidad de los datos (RGPD) y la adhesión a los requisitos de transparencia y supervisión del AI Act, garantizando que las decisiones automatizadas puedan ser revisadas y comprendidas, habilitando soluciones de IA local con 'cumplimiento por diseño'.",
+      "leadAgent": "AIVisio"
     }
   ],
   "posts": {
@@ -558,6 +566,13 @@
       "versionRef": "v1.4.2 / US-004 / US-005",
       "title": "Diagrama SVG nativo para la guía de decisiones estratégicas con IA en pymes",
       "summary": "Incorporado diagrama SVG nativo «De los datos dispersos a una decisión estratégica supervisada» en 2026-11-15-ia-toma-decisiones-estrategicas-pymes-mas-alla-automatizacio.json."
+    },
+    {
+      "date": "2026-11-22",
+      "id": "tech-h1-recipe-mcp-carpeta-tarifas",
+      "versionRef": "v1.5.0 / US-203 / US-306",
+      "title": "Receta de 15 minutos: conectar tu carpeta de tarifas en modo solo lectura con MCP",
+      "summary": "Añadida nueva receta operativa «Consultar tarifas vigentes desde una carpeta local en modo solo lectura» (AIDux) a equipo.html#recetas-aiworkers."
     }
   ]
 }

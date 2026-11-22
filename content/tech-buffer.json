@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-22",
   "minThreshold": 7,
   "targetSize": 7,
   "items": [
@@ -53,8 +53,9 @@
         "humanCheck": "Verifica cada apartado citado frente a tu tarifa vigente y comprueba que ninguna versión obsoleta sigue dentro de la carpeta consultada.",
         "privacyGuard": "No incluyas nombres de clientes, NIF ni descuentos confidenciales individuales dentro de la carpeta conectada por MCP."
       },
-      "used": false,
-      "queuedAt": "2026-11-20"
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-22"
     },
     {
       "id": "tech-h1-diagram-conocimiento-interno",
@@ -216,6 +217,28 @@
       },
       "used": false,
       "queuedAt": "2026-11-21"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-mcp-rgpd",
+      "versionRef": "v1.5.0 / US-307",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Receta AIDux: Orquestación local segura y cumplimiento RGPD mediante protocolo MCP",
+      "rationale": "Implementación práctica para coordinar agentes locales en pymes utilizando un protocolo de comunicación estandarizado, asegurando la trazabilidad de datos y el alineamiento con el AI Act y el RGPD desde el diseño.",
+      "payload": {
+        "id": "receta-aidux-mcp-rgpd",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-307",
+        "title": "Orquestación y validación de cumplimiento normativo local con MCP",
+        "effortKey": "intermediate",
+        "effortLabel": "Esfuerzo moderado (15 minutos)",
+        "problem": "Las pymes necesitan automatizar procesos mediante agentes de inteligencia artificial locales, pero deben garantizar que el intercambio de datos entre sistemas cumpla estrictamente con la privacidad del RGPD y las directrices del AI Act sin depender de nubes externas.",
+        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Revisa la siguiente solicitud de intercambio de datos entre el agente local y el ERP utilizando el protocolo de comunicación local seguro (MCP). Verifica que los campos contengan únicamente información estrictamente necesaria, aplicando minimización de datos según el RGPD, y redacta el registro de auditoría técnico para supervisión humana.",
+        "humanCheck": "Verificar que el registro de auditoría generado refleje con precisión los datos intercambiados y que ningún dato personal innecesario haya transitado por la red local.",
+        "privacyGuard": "Procesamiento 100 por ciento local en el servidor de la pyme, sin salida de datos a servidores externos y almacenamiento cifrado de los registros de auditoría."
+      },
+      "used": false,
+      "queuedAt": "2026-11-22"
     }
   ]
 }

@@ -34,5 +34,17 @@
     "promptTemplate": "A partir de la transcripción de mi visita y utilizando únicamente la tabla de tarifas vigentes adjunta, redacta un borrador de presupuesto con: 1) descripción clara del trabajo en lenguaje llano, 2) desglose de partidas citando el código de mi tarifa, 3) apartado de exclusiones expresas y plazo de validez. Para cualquier partida que no figure en mi tarifa, indica literalmente VALORAR_MANUALMENTE.",
     "humanCheck": "Revisa mediciones, materiales especiales, desplazamientos y sumas finales antes de convertir el borrador en documento oficial enviado al cliente.",
     "privacyGuard": "Elimina el audio original del teléfono una vez cerrado el presupuesto y evita dictar apellidos o direcciones privadas si utilizas herramientas en línea."
+  },
+  {
+    "id": "receta-aidux-mcp-tarifas-solo-lectura",
+    "worker": "AIDux",
+    "versionRef": "v1.5.0 / US-203",
+    "title": "Consultar tarifas vigentes desde una carpeta local en modo solo lectura",
+    "effortKey": "intermediate",
+    "effortLabel": "Bricolaje guiado · 20 min · 0 €",
+    "problem": "Evitar que un asistente invente precios desactualizados o mezcle condiciones de temporadas anteriores.",
+    "promptTemplate": "Actúa en modo solo lectura consultando únicamente el archivo tarifas-vigentes.md dentro de la carpeta autorizada. Responde a la consulta comercial citando entre paréntesis el apartado exacto de origen. Si una partida, medida o descuento no figura literalmente en el documento, escribe REQUIERE_VALORACION_HUMANA y no estimes cifras.",
+    "humanCheck": "Verifica cada apartado citado frente a tu tarifa vigente y comprueba que ninguna versión obsoleta sigue dentro de la carpeta consultada.",
+    "privacyGuard": "No incluyas nombres de clientes, NIF ni descuentos confidenciales individuales dentro de la carpeta conectada por MCP."
   }
 ]
