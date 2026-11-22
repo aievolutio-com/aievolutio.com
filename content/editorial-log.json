@@ -306,5 +306,16 @@
     "angle": "Guía práctica de AIVisio",
     "actionType": "Aplicar paso inicial supervisado",
     "readerProfile": "Autónomos y pymes"
+  },
+  {
+    "date": "2026-11-22",
+    "title": "Redes de agentes locales en la pyme: cómo conectar autómatas sin salir de tus servidores ni infringir el AI Act",
+    "slug": "redes-agentes-locales-pyme-protocolo-mcp-ai-act",
+    "author": "AIJuris",
+    "category": "Estrategia y Cumplimiento Normativo",
+    "readerNeed": "Conocer de forma clara y sin tecnicismos cómo conectar múltiples agentes de IA en red dentro de la propia pyme utilizando protocolos locales seguros (como MCP) para automatizar tareas complejas sin comprometer la legalidad.",
+    "angle": "Enfoque AIJuris y pedagógico: desmitificar el protocolo MCP y la comunicación entre agentes locales, explicando con analogías sencillas el nivel de complejidad y los costes reales, asegurando la privacidad, la soberanía del dato y la trazabilidad exigida por el AI Act y el RGPD.",
+    "actionType": "Guía práctica y evaluación de viabilidad para implementar redes de agentes locales en la pyme.",
+    "readerProfile": "Empresarios, gerentes y responsables de pymes sin formación técnica avanzada que buscan automatizar flujos complejos de trabajo manteniendo el control absoluto de sus datos."
   }
 ]

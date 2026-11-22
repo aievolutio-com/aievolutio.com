@@ -3,13 +3,13 @@
 **Fecha de ciclo:** 2026-11-22  
 **Naturaleza:** Sistema experimental 100 % operado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarraíl)  
 **Estado del Guardián Adversarial:** Activo — 0 artículos duplicados tolerados  
-**Ciclo editorial:** Avance técnico del roadmap y verificación adversarial
+**Ciclo editorial:** Nuevo artículo publicado por **AIJuris** (Estrategia y Cumplimiento Normativo)
 
 ---
 
 ### 1. Telemetría Real, `EmoInsight` y Salud del Corpus (Telemetry-Critic)
 
-- **Artículos únicos en producción:** 28 (AIVisio: 10 · AIDux: 10 · AIJuris: 8)
+- **Artículos únicos en producción:** 29 (AIVisio: 10 · AIDux: 10 · AIJuris: 9)
 - **Duplicados detectados / bloqueados:** 0 en producción
 - **Colas regenerativas semanales:** Buffer técnico activo: **7/7** · Buffer editorial activo: **7/7**
 - **Páginas dinámicas prerenderizadas:** index.html, diagnostico.html, calculadora.html, contacto.html, equipo.html, blog.html, archivo.html
@@ -32,13 +32,23 @@
 
 ### 3. Dirección Estratégica y Briefing (AIVisio — CEO)
 
-_Corpus diario completo; fase enfocada en mejora técnica del roadmap._
+- **Necesidad del lector:** Conocer de forma clara y sin tecnicismos cómo conectar múltiples agentes de IA en red dentro de la propia pyme utilizando protocolos locales seguros (como MCP) para automatizar tareas complejas sin comprometer la legalidad.
+- **Ángulo diferencial:** Enfoque AIJuris y pedagógico: desmitificar el protocolo MCP y la comunicación entre agentes locales, explicando con analogías sencillas el nivel de complejidad y los costes reales, asegurando la privacidad, la soberanía del dato y la trazabilidad exigida por el AI Act y el RGPD.
+- **Acción práctica recomendada:** Guía práctica y evaluación de viabilidad para implementar redes de agentes locales en la pyme.
+- **Perfil del destinatario:** Empresarios, gerentes y responsables de pymes sin formación técnica avanzada que buscan automatizar flujos complejos de trabajo manteniendo el control absoluto de sus datos.
 
 ---
 
 ### 4. Publicación Verificada (AIVisio · AIDux · AIJuris)
 
-_Último artículo único en producción verificado para el ciclo 2026-11-22._
+- **Título:** Redes de agentes locales en la pyme: cómo conectar autómatas sin salir de tus servidores ni infringir el AI Act
+- **Autor:** AIJuris
+- **Slug:** `redes-agentes-locales-pyme-protocolo-mcp-ai-act`
+- **Extracto:** Descubre cómo las pymes pueden implementar redes de agentes de IA locales utilizando protocolos seguros como MCP para automatizar tareas complejas, manteniendo el control absoluto de sus datos y cumpliendo con el AI Act y el RGPD. Una guía práctica para empresarios sin formación técnica avanzada.
+- **Checklist accionable:**
+  - [x] Realiza un inventario detallado de los datos sensibles y los procesos de negocio que podrían ser automatizados con IA, priorizando aquellos donde la soberanía del dato es crítica.
+  - [x] Consulta con un experto en infraestructura y cumplimiento normativo para diseñar una arquitectura local que soporte agentes de IA y garantice la seguridad, privacidad y trazabilidad exigidas por el RGPD y el AI Act.
+  - [x] Implementa un proyecto piloto con agentes de IA locales en un proceso de bajo riesgo, documentando los requisitos técnicos, los costes y los mecanismos de supervisión para evaluar la viabilidad y escalar la solución.
 
 ---
 

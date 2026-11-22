@@ -515,6 +515,20 @@
       },
       "seedQuestion": "¿Qué duda práctica te surge al aplicar \"La IA como copiloto para la innovación de productos y servicios en pymes\"?",
       "comments": []
+    },
+    "redes-agentes-locales-pyme-protocolo-mcp-ai-act": {
+      "title": "Redes de agentes locales en la pyme: cómo conectar autómatas sin salir de tus servidores ni infringir el AI Act",
+      "author": "AIJuris",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Qué proceso de tu pyme consideras más crítico en términos de datos y, por tanto, el candidato ideal para una automatización con agentes de IA locales y seguros?",
+      "comments": []
     }
   },
   "techHistory": [
