@@ -30,5 +30,21 @@
     "effortLabel": "Estantería sencilla · 15 min · 0 €",
     "analogy": "El manual de bienvenida que entregas el primer día a un colaborador indicando cómo tratáis al cliente, qué tono usáis y qué cosas están prohibidas.",
     "mondayUse": "Ahorra tener que repetir en cada mensaje a qué se dedica tu empresa y asegura respuestas coherentes con tu estilo."
+  },
+  {
+    "id": "agente-local-autogobernado",
+    "term": "Agente local con autoverificación (autogobernado)",
+    "effortKey": "intermediate",
+    "effortLabel": "Bricolaje guiado · 1 tarde · 0 €",
+    "analogy": "Un colaborador metódico que, antes de entregarte un borrador, repasa él mismo su propia lista de comprobación legal y te señala cualquier hueco pendiente.",
+    "mondayUse": "Reduce errores de formato y garantiza que ningún documento incluya datos sensibles o promesas fuera de protocolo antes de tu revisión final."
+  },
+  {
+    "id": "edge-ai-oficina",
+    "term": "IA en el propio equipo de oficina (Edge AI)",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 30 min · 0 €",
+    "analogy": "Cocinar en tu propia cocina en lugar de pedir siempre comida a domicilio: controlas los ingredientes, pagas una sola vez los utensilios y nada sale por la puerta.",
+    "mondayUse": "Permite procesar actas, contratos y presupuestos en un ordenador de oficina o mini-PC sin depender de cuotas por usuario ni conexión continua."
   }
 ]

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22",
+  "updatedAt": "2026-11-23",
   "minThreshold": 7,
   "targetSize": 7,
   "items": [
@@ -115,8 +115,9 @@
           }
         ]
       },
-      "used": false,
-      "queuedAt": "2026-11-20"
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-23"
     },
     {
       "id": "tech-h1-diagram-orquestacion-local",
@@ -262,6 +263,28 @@
       },
       "used": false,
       "queuedAt": "2026-11-22"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-plug-and-play-slm",
+      "versionRef": "v1.5.0 / US-307",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Receta MCP Plug-and-Play para Modelos Locales en Pymes",
+      "rationale": "Responde directamente al hallazgo de frontera sobre la integración heterogénea de modelos locales y agentes operativos. AIDux diseña esta receta para estandarizar la conexión de un SLM mediante Model Context Protocol (MCP) en entornos de pyme, garantizando cumplimiento normativo y sencillez operativa sin requerir alta especialización técnica.",
+      "payload": {
+        "id": "recipe-aidux-plug-and-play-slm",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-307",
+        "title": "Conexión Plug-and-Play de SLM Local mediante MCP para Pymes",
+        "effortKey": "intermediate",
+        "effortLabel": "Intermedio (15 min)",
+        "problem": "Las pymes necesitan integrar modelos de lenguaje locales abiertos de forma segura, pero la complejidad técnica de configuración y orquestación frena su adopción práctica.",
+        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Genera el archivo de configuración JSON estándar para conectar un modelo local mediante protocolo MCP, asegurando que el contexto de la pyme quede confinado estrictamente en el entorno local sin telemetría externa.",
+        "humanCheck": "Verificar que la ruta del modelo local sea accesible y que el parámetro de telemetría o envío de datos esté desactivado en la configuración.",
+        "privacyGuard": "El procesamiento se realiza de manera local en el servidor o terminal de la pyme, cumpliendo con el RGPD desde el diseño y evitando cualquier transferencia de datos a terceros."
+      },
+      "used": false,
+      "queuedAt": "2026-11-23"
     }
   ]
 }
