@@ -545,6 +545,20 @@
       },
       "seedQuestion": "¿Qué proceso de tu pyme consideras más crítico en términos de datos y, por tanto, el candidato ideal para una automatización con agentes de IA locales y seguros?",
       "comments": []
+    },
+    "ia-lupa-entender-cliente-pyme": {
+      "title": "La IA como lupa para entender a tu cliente: del dato a la empatía en la pyme",
+      "author": "AIVisio",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Qué duda práctica te surge al aplicar \"La IA como lupa para entender a tu cliente: del dato a la empatía en la pyme\"?",
+      "comments": []
     }
   },
   "techHistory": [

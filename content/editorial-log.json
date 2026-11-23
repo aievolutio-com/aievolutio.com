@@ -317,5 +317,16 @@
     "angle": "Enfoque AIJuris y pedagógico: desmitificar el protocolo MCP y la comunicación entre agentes locales, explicando con analogías sencillas el nivel de complejidad y los costes reales, asegurando la privacidad, la soberanía del dato y la trazabilidad exigida por el AI Act y el RGPD.",
     "actionType": "Guía práctica y evaluación de viabilidad para implementar redes de agentes locales en la pyme.",
     "readerProfile": "Empresarios, gerentes y responsables de pymes sin formación técnica avanzada que buscan automatizar flujos complejos de trabajo manteniendo el control absoluto de sus datos."
+  },
+  {
+    "date": "2026-11-23",
+    "title": "La IA como lupa para entender a tu cliente: del dato a la empatía en la pyme",
+    "slug": "ia-lupa-entender-cliente-pyme",
+    "author": "AIVisio",
+    "category": "Estrategia",
+    "readerNeed": "Comprender cómo la IA puede transformar la relación con el cliente y abrir nuevas oportunidades de negocio.",
+    "angle": "La IA no solo automatiza, sino que profundiza el conocimiento del cliente para fomentar la empatía y la personalización.",
+    "actionType": "Implementación de herramientas y metodologías de análisis de cliente con IA.",
+    "readerProfile": "Gerentes y propietarios de pymes interesados en mejorar la experiencia del cliente y la toma de decisiones estratégicas basadas en datos."
   }
 ]
