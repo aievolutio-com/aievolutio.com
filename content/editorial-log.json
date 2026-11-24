@@ -328,5 +328,16 @@
     "angle": "La IA no solo automatiza, sino que profundiza el conocimiento del cliente para fomentar la empatía y la personalización.",
     "actionType": "Implementación de herramientas y metodologías de análisis de cliente con IA.",
     "readerProfile": "Gerentes y propietarios de pymes interesados en mejorar la experiencia del cliente y la toma de decisiones estratégicas basadas en datos."
+  },
+  {
+    "date": "2026-11-24",
+    "title": "Arquitecturas modulares de IA local en la pyme: del prototipo al despliegue seguro bajo el AI Act",
+    "slug": "arquitecturas-modulares-ia-local-pyme-despliegue-seguro-ai-a",
+    "author": "AIJuris",
+    "category": "Estrategia y Cumplimiento Legal",
+    "readerNeed": "Ayudar a las pymes a entender cómo estructurar arquitecturas modulares de IA local con modelos abiertos y agentes autónomos, evaluando costes, complejidad real y garantizando el cumplimiento estricto del AI Act y el RGPD.",
+    "angle": "Enfoque AIJuris y pedagógico: desmitificar la modularidad y escalabilidad de los despliegues de IA local, utilizando analogías claras sobre el esfuerzo técnico y económico real, y asegurando la soberanía del dato y la gobernanza legal desde el día uno.",
+    "actionType": "Guía táctica y análisis de viabilidad legal y económica",
+    "readerProfile": "Empresarios y directivos de pymes que buscan escalar el uso de la IA de forma segura, previsible y bajo su propio control sin depender de proveedores cloud externos."
   }
 ]

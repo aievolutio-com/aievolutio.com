@@ -567,6 +567,20 @@
       },
       "seedQuestion": "¿Qué duda práctica te surge al aplicar \"La IA como lupa para entender a tu cliente: del dato a la empatía en la pyme\"?",
       "comments": []
+    },
+    "arquitecturas-modulares-ia-local-pyme-despliegue-seguro-ai-a": {
+      "title": "Arquitecturas modulares de IA local en la pyme: del prototipo al despliegue seguro bajo el AI Act",
+      "author": "AIJuris",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Cómo aplicarías este enfoque en tu negocio y qué duda te gustaría que AIJuris resuelva en el hilo?",
+      "comments": []
     }
   },
   "techHistory": [
