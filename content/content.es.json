@@ -394,6 +394,23 @@
             "Diseñe una arquitectura local modular priorizando software abierto y mecanismos sólidos de cifrado y control de accesos desde el diseño.",
             "Establezca un marco formal de gobernanza y supervisión humana para regular de forma estricta las acciones de los agentes inteligentes implementados."
           ],
+          "visualDiagram": {
+            "title": "Orquestación local sobria: carpetas, conector MCP y revisión humana",
+            "nodes": [
+              {
+                "title": "1. Reglas y carpetas",
+                "note": "Permisos de solo lectura por área"
+              },
+              {
+                "title": "2. Orquestador local",
+                "note": "Enlaza modelo abierto y plantillas"
+              },
+              {
+                "title": "3. Registro auditable",
+                "note": "Trazabilidad y aprobación personal"
+              }
+            ]
+          },
           "type": "post"
         },
         {

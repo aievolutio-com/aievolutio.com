@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-23",
+  "updatedAt": "2026-11-24",
   "minThreshold": 7,
   "targetSize": 7,
   "items": [
@@ -146,8 +146,9 @@
           ]
         }
       },
-      "used": false,
-      "queuedAt": "2026-11-20"
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-24"
     },
     {
       "id": "tech-h1-faq-ai-act-semaforo-pymes",
@@ -285,6 +286,28 @@
       },
       "used": false,
       "queuedAt": "2026-11-23"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-slm-compliance",
+      "versionRef": "v1.5.0 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Despliegue incremental de modelos abiertos locales con validación normativa integrada",
+      "rationale": "Implementar un marco operativo guiado para pymes que permita pasar de un entorno experimental con modelos locales a un despliegue productivo automatizado, asegurando la trazabilidad y el cumplimiento normativo desde el inicio.",
+      "payload": {
+        "id": "aidux-slm-compliance-recipe",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-306",
+        "title": "Despliegue incremental de modelos abiertos locales con validación normativa integrada",
+        "effortKey": "intermediate",
+        "effortLabel": "15 minutos",
+        "problem": "Las pymes experimentan dificultades para transicionar desde prototipos locales de modelos abiertos hacia entornos productivos escalables que garanticen el cumplimiento de normativas de privacidad sin sobrecostes.",
+        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Diseña un plan de despliegue incremental para un modelo abierto local en la pyme. El plan debe incluir: 1) Criterios técnicos de selección del modelo base, 2) Mecanismos de aislamiento de datos para evitar fugas de información sensible, y 3) Puntos de control humano obligatorios para cumplir con los estándares regulatorios vigentes.",
+        "humanCheck": "Validar que el plan de despliegue técnico cumpla estrictamente con la política interna de privacidad de la organización y que los puntos de control humano estén asignados a roles con capacidad de decisión.",
+        "privacyGuard": "Garantizar que todo el procesamiento se ejecute en infraestructura local o soberana, evitando cualquier transmisión de datos sensibles a proveedores externos y manteniendo registros de auditoría locales."
+      },
+      "used": false,
+      "queuedAt": "2026-11-24"
     }
   ]
 }
