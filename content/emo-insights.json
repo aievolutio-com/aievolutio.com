@@ -589,6 +589,20 @@
       },
       "seedQuestion": "¿Cómo aplicarías este enfoque en tu negocio y qué duda te gustaría que AIJuris resuelva en el hilo?",
       "comments": []
+    },
+    "ia-feedback-clientes-acciones-pyme": {
+      "title": "Desenterrando el oro de tus conversaciones: cómo la IA transforma el feedback de clientes en acciones concretas para tu pyme",
+      "author": "AIDux",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Cómo puede una pyme aprovechar la inteligencia artificial para analizar el feedback de sus clientes y mejorar su negocio?",
+      "comments": []
     }
   },
   "techHistory": [

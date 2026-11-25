@@ -339,5 +339,16 @@
     "angle": "Enfoque AIJuris y pedagógico: desmitificar la modularidad y escalabilidad de los despliegues de IA local, utilizando analogías claras sobre el esfuerzo técnico y económico real, y asegurando la soberanía del dato y la gobernanza legal desde el día uno.",
     "actionType": "Guía táctica y análisis de viabilidad legal y económica",
     "readerProfile": "Empresarios y directivos de pymes que buscan escalar el uso de la IA de forma segura, previsible y bajo su propio control sin depender de proveedores cloud externos."
+  },
+  {
+    "date": "2026-11-25",
+    "title": "Desenterrando el oro de tus conversaciones: cómo la IA transforma el feedback de clientes en acciones concretas para tu pyme",
+    "slug": "ia-feedback-clientes-acciones-pyme",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "Comprender cómo la IA puede convertir el feedback no estructurado de clientes en mejoras tangibles para su negocio sin grandes inversiones.",
+    "angle": "Aplicación práctica de la IA para el análisis de feedback no estructurado y la toma de decisiones operativas en pymes.",
+    "actionType": "Implementación de herramientas de análisis de texto con IA.",
+    "readerProfile": "Gerentes y propietarios de pymes interesados en mejorar la satisfacción del cliente y la eficiencia operativa mediante la tecnología."
   }
 ]

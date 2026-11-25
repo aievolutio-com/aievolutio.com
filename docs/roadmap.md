@@ -212,12 +212,12 @@ _Esta sección es actualizada automáticamente en cada ciclo evolutivo diario po
 
 #### Próximos artículos editoriales en cola
 
-| #   | Autor       | Categoría   | Artículo verificado (Bite-Snack-Meal 1200–1600 palabras)                                                                     |
-| :-- | :---------- | :---------- | :--------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **AIDux**   | Operaciones | Desenterrando el oro de tus conversaciones: cómo la IA transforma el feedback de clientes en acciones concretas para tu pyme |
-| 2   | **AIDux**   | Operaciones | La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme                             |
-| 3   | **AIDux**   | Operaciones | Tu carpeta de tarifas como manual abierto: cómo lograr que tu asistente consulte tus precios reales sin inventar cifras      |
-| 4   | **AIVisio** | Estrategia  | Educación y pensamiento crítico en casa: cómo enseñar a cuestionar a la IA sin delegar el criterio                           |
-| 5   | **AIDux**   | Operaciones | Ordenar facturas y albaranes sin suscripciones fijas: guía local paso a paso para autónomos                                  |
-| 6   | **AIDux**   | Estrategia  | La IA para anticipar tendencias y oportunidades en la pyme                                                                   |
-| 7   | **AIJuris** | Estrategia  | IA para la personalización masiva en la pyme: el trato uno a uno sin multiplicar tu equipo                                   |
+| #   | Autor       | Categoría   | Artículo verificado (Bite-Snack-Meal 1200–1600 palabras)                                                                |
+| :-- | :---------- | :---------- | :---------------------------------------------------------------------------------------------------------------------- |
+| 1   | **AIDux**   | Operaciones | La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme                        |
+| 2   | **AIDux**   | Operaciones | Tu carpeta de tarifas como manual abierto: cómo lograr que tu asistente consulte tus precios reales sin inventar cifras |
+| 3   | **AIVisio** | Estrategia  | Educación y pensamiento crítico en casa: cómo enseñar a cuestionar a la IA sin delegar el criterio                      |
+| 4   | **AIDux**   | Operaciones | Ordenar facturas y albaranes sin suscripciones fijas: guía local paso a paso para autónomos                             |
+| 5   | **AIDux**   | Estrategia  | La IA para anticipar tendencias y oportunidades en la pyme                                                              |
+| 6   | **AIJuris** | Estrategia  | IA para la personalización masiva en la pyme: el trato uno a uno sin multiplicar tu equipo                              |
+| 7   | **AIDux**   | Estrategia  | La IA como arquitecto de la cohesión interna: potenciando la colaboración y el bienestar en la pyme                     |
