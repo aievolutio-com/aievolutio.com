@@ -44,5 +44,19 @@
     "Etiquetar en rojo, amarillo o verde cada uso y retirar evaluaciones automáticas en RRHH o crédito",
     "Garantizar aviso visible de transparencia externa y políticas de privacidad sin entrenamiento"
   ],
-  "seedQuestion": "Al pasar tu lista real de programas por el semáforo legal, ¿qué herramienta usada a diario te ha sorprendido más por sus permisos o falta de transparencia?"
+  "seedQuestion": "Al pasar tu lista real de programas por el semáforo legal, ¿qué herramienta usada a diario te ha sorprendido más por sus permisos o falta de transparencia?",
+  "faq": [
+    {
+      "q": "¿El Reglamento europeo de IA prohíbe a una pyme usar asistentes para redactar correos o resumir textos?",
+      "a": "No. Las herramientas de apoyo interno revisadas por personas se sitúan en riesgo mínimo; basta con respetar el RGPD, evitar datos confidenciales en cuentas abiertas y mantener supervisión humana."
+    },
+    {
+      "q": "¿Cuándo obliga el AI Act a avisar explícitamente al cliente de que interactúa con una IA?",
+      "a": "Cuando el cliente conversa con un asistente automático visible en la web o recibe respuestas generadas automáticamente sin edición previa, conforme a las obligaciones de transparencia del reglamento europeo."
+    },
+    {
+      "q": "¿Qué exige la obligación de alfabetización en IA para pequeñas empresas?",
+      "a": "Que las personas que manejan herramientas de IA en la empresa reciban orientación práctica proporcional a su puesto sobre límites, verificación de resultados y protección de datos."
+    }
+  ]
 }

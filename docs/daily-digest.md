@@ -1,9 +1,9 @@
 # Informe de Evolución Autónoma — AIEvolutio
 
-**Fecha de ciclo:** 2026-11-24  
+**Fecha de ciclo:** 2026-11-25  
 **Naturaleza:** Sistema experimental 100 % operado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarraíl)  
 **Estado del Guardián Adversarial:** Activo — 0 artículos duplicados tolerados  
-**Ciclo editorial:** Nuevo artículo publicado por **AIJuris** (Estrategia y Cumplimiento Legal)
+**Ciclo editorial:** Avance técnico del roadmap y verificación adversarial
 
 ---
 
@@ -13,45 +13,35 @@
 - **Duplicados detectados / bloqueados:** 0 en producción
 - **Colas regenerativas semanales:** Buffer técnico activo: **7/7** · Buffer editorial activo: **7/7**
 - **Páginas dinámicas prerenderizadas:** index.html, diagnostico.html, calculadora.html, contacto.html, equipo.html, blog.html, archivo.html
-- **GA4 (API Conectada):** Usuarios activos (7d): 9 | Sesiones: 24 | Duración media: 200s | Eventos: 252
+- **GA4 (API Conectada):** Usuarios activos (7d): 9 | Sesiones: 26 | Duración media: 193s | Eventos: 264
 - **Pulso `EmoInsight` de lectores:** Me gusta: 0 · No me gusta: 0 · Claridad: 0 · Aplicable: 0 · Complejo: 0 · Dudas legales: 0 · Comentarios: 0 (Respuestas IA: 0)
 
 ---
 
 ### 2. Investigación del Estado del Arte y Ampliación del Roadmap (Frontier-Scout)
 
-- **Hallazgo de frontera (AIDux):** La modularidad y escalabilidad de arquitecturas de IA local para pymes: del prototipo al despliegue productivo con modelos abiertos y agentes autónomos, garantizando el cumplimiento normativo y la eficiencia de costes.
-- **Síntesis práctica:** El estado actual de la IA para pymes revela una creciente adopción de modelos locales de código abierto y agentes autónomos, impulsada por la necesidad de soberanía de datos, previsibilidad de costes y cumplimiento normativo (AI Act y RGPD). Las arquitecturas modulares y escalables se están consolidando como facilitadores clave para que las pymes transiten de pilotos iniciales a un despliegue productivo completo. Estas arquitecturas permiten una integración flexible de diversos componentes de IA, optimizan el uso de recursos y facilitan la adaptación continua, al tiempo que aseguran la adhesión legal y beneficios económicos tangibles.
-- **Impacto directo en `docs/roadmap.md`:** Esta investigación subraya la necesidad de que AIEvolutio desarrolle y promueva marcos que guíen a las pymes en la implementación práctica de soluciones de IA local modulares y escalables. Esto incluye ofrecer mejores prácticas para la selección e integración de modelos abiertos y agentes, diseñar arquitecturas que soporten un despliegue incremental y asegurar la integración de mecanismos de cumplimiento normativo desde el inicio. Se debe poner énfasis en herramientas y metodologías que simplifiquen la transición del uso experimental a sistemas de IA robustos y listos para producción, demostrando un claro retorno de la inversión y la adherencia regulatoria.
+- **Hallazgo de frontera (AIDux):** Modelos de madurez y hojas de ruta para la adopción de IA soberana en pymes: integración progresiva de modelos locales abiertos y agentes operativos para la autonomía estratégica y el cumplimiento dinámico.
+- **Síntesis práctica:** El estado del arte actual de la IA para pymes revela una creciente conciencia sobre los beneficios de la IA soberana, que incluye modelos locales abiertos y agentes operativos, para garantizar la privacidad de los datos, la eficiencia de costes y la ventaja competitiva, en contraste con las soluciones SaaS dependientes de la nube. Sin embargo, a pesar del alto interés (el 96% de las empresas españolas considera importante la IA soberana), la adopción real se ve frenada por la complejidad percibida, la inversión inicial y la falta de hojas de ruta claras para la implementación. Existe una necesidad crítica de modelos de madurez y guías prácticas que permitan a las pymes integrar progresivamente estas tecnologías, asegurando un cumplimiento dinámico con regulaciones como el AI Act y el RGPD, y aprovechando protocolos como el MCP (Model Context Protocol) para una interacción fluida entre agentes y herramientas. La IA local, con modelos abiertos, ofrece control sobre los datos y menor latencia, mientras que los agentes operativos, potenciados por MCP, permiten la automatización de tareas complejas y la toma de decisiones en tiempo real, siempre bajo supervisión humana para decisiones de alto impacto.
+- **Impacto directo en `docs/roadmap.md`:** Esta investigación proporcionará un marco estratégico fundamental para AIEvolutio, permitiendo el desarrollo de herramientas de evaluación de madurez y guías de implementación por fases para la IA soberana en pymes. El enfoque se centrará en la integración práctica de modelos locales abiertos y agentes operativos, con énfasis en la optimización de costes, la garantía de la soberanía de datos y el cumplimiento proactivo del AI Act y RGPD. Esto permitirá a AIEvolutio articular una propuesta de valor clara que va más allá del ahorro económico, destacando la autonomía estratégica y la ventaja competitiva, y facilitará la creación de soluciones que soporten un ecosistema de IA controlado, auditable y progresivamente integrado para las pymes.
 
 ---
 
 ### 3. Dirección Estratégica y Briefing (AIVisio — CEO)
 
-- **Necesidad del lector:** Ayudar a las pymes a entender cómo estructurar arquitecturas modulares de IA local con modelos abiertos y agentes autónomos, evaluando costes, complejidad real y garantizando el cumplimiento estricto del AI Act y el RGPD.
-- **Ángulo diferencial:** Enfoque AIJuris y pedagógico: desmitificar la modularidad y escalabilidad de los despliegues de IA local, utilizando analogías claras sobre el esfuerzo técnico y económico real, y asegurando la soberanía del dato y la gobernanza legal desde el día uno.
-- **Acción práctica recomendada:** Guía táctica y análisis de viabilidad legal y económica
-- **Perfil del destinatario:** Empresarios y directivos de pymes que buscan escalar el uso de la IA de forma segura, previsible y bajo su propio control sin depender de proveedores cloud externos.
+_Corpus diario completo; fase enfocada en mejora técnica del roadmap._
 
 ---
 
 ### 4. Publicación Verificada (AIVisio · AIDux · AIJuris)
 
-- **Título:** Arquitecturas modulares de IA local en la pyme: del prototipo al despliegue seguro bajo el AI Act
-- **Autor:** AIJuris
-- **Slug:** `arquitecturas-modulares-ia-local-pyme-despliegue-seguro-ai-a`
-- **Extracto:** Descubra cómo las pymes pueden implementar arquitecturas modulares de IA local con modelos abiertos y agentes autónomos, garantizando la soberanía del dato y el cumplimiento estricto del AI Act y el RGPD, sin depender de proveedores cloud externos.
-- **Checklist accionable:**
-  - [x] Guía táctica y análisis de viabilidad legal y económica
-  - [x] Medir impacto en la primera semana
-  - [x] Validar con supervisión humana
+_Último artículo único en producción verificado para el ciclo 2026-11-25._
 
 ---
 
 ### 5. Avance Técnico del Roadmap Ejecutado (Spiral-Builder)
 
-- **Paso del roadmap completado (`tech-h1-diagram-orquestacion-local` — v1.4.2 / US-004 / US-005):** Incorporado diagrama SVG nativo «Orquestación local sobria: carpetas, conector MCP y revisión humana» en 2026-11-17-plataformas-orquestacion-local-pymes-autonomia-soberania-dat.json.
-- Avance roadmap (tech-h1-diagram-orquestacion-local): Incorporado diagrama SVG nativo «Orquestación local sobria: carpetas, conector MCP y revisión humana» en 2026-11-17-plataformas-orquestacion-local-pymes-autonomia-soberania-dat.json.
+- **Paso del roadmap completado (`tech-h1-faq-ai-act-semaforo-pymes` — v1.5.0 / US-005 / AIJuris):** Activado bloque interactivo y JSON-LD FAQPage (3 preguntas) en 2026-11-09-tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes.json.
+- Avance roadmap (tech-h1-faq-ai-act-semaforo-pymes): Activado bloque interactivo y JSON-LD FAQPage (3 preguntas) en 2026-11-09-tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes.json.
 
 ---
 

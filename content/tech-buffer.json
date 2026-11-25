@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-24",
+  "updatedAt": "2026-11-25",
   "minThreshold": 7,
   "targetSize": 7,
   "items": [
@@ -174,8 +174,9 @@
           }
         ]
       },
-      "used": false,
-      "queuedAt": "2026-11-20"
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-25"
     },
     {
       "id": "tech-h1-recipe-aijuris-revision-clausulas",
@@ -308,6 +309,28 @@
       },
       "used": false,
       "queuedAt": "2026-11-24"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-madurez-soberana",
+      "versionRef": "v1.5.0 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Evaluación rápida de madurez y despliegue inicial de modelo local abierto para pymes",
+      "rationale": "Implementación de una guía práctica de 15 minutos para que el equipo directivo evalúe el nivel actual de adopción de IA soberana, identifique procesos aptos para modelos locales abiertos y establezca salvaguardas iniciales de cumplimiento normativo frente al AI Act.",
+      "payload": {
+        "id": "rec-madurez-soberana-pyme",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-306",
+        "title": "Diagnóstico exprés de madurez tecnológica y despliegue de modelo local",
+        "effortKey": "basic",
+        "effortLabel": "15 minutos",
+        "problem": "La pyme necesita iniciar su transición hacia la soberanía de datos y el uso de modelos locales abiertos, pero carece de un marco estructurado para evaluar su madurez tecnológica actual y asegurar el cumplimiento normativo sin ralentizar la operativa.",
+        "promptTemplate": "Actúa como AIDux, CIO corporativo de AIEvolutio. Analiza el siguiente contexto de nuestra pyme: [INSERTA AQUÍ EL ESTADO ACTUAL DE TUS HERRAMIENTAS Y VOLUMEN DE DATOS]. Genera un informe breve de madurez en tres niveles (básico, intermedio, avanzado), identifica un caso de uso prioritario para un modelo local abierto y detalla los controles preventivos necesarios para cumplir con el marco del AI Act y el RGPD.",
+        "humanCheck": "Revisar que la clasificación de madurez se corresponda con la infraestructura real disponible y validar que las restricciones de privacidad propuestas se ajusten a la política interna de la organización.",
+        "privacyGuard": "Ejecución estrictamente local mediante modelos abiertos. Ningún dato sensible de la pyme abandona el perímetro seguro ni es utilizado para reentrenamiento externo."
+      },
+      "used": false,
+      "queuedAt": "2026-11-25"
     }
   ]
 }
