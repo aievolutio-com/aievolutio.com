@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-25",
+  "updatedAt": "2026-11-26",
   "minThreshold": 7,
   "targetSize": 7,
   "items": [
@@ -197,8 +197,9 @@
         "humanCheck": "Coteja cada cita literal en el documento original y consulta con tu asesoría jurídica antes de firmar contratos de importe relevante o datos sensibles.",
         "privacyGuard": "Ejecuta este análisis en local o elimina previamente nombres de clientes, precios confidenciales y datos identificativos de terceros."
       },
-      "used": false,
-      "queuedAt": "2026-11-20"
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-26"
     },
     {
       "id": "tech-h1-recipe-aidux-mcp-local",
@@ -331,6 +332,28 @@
       },
       "used": false,
       "queuedAt": "2026-11-25"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-roi-estrategico",
+      "versionRef": "v1.5.0 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Evaluación Rápida de ROI Estratégico en IA Local para PYMEs",
+      "rationale": "Responde directamente al hallazgo de frontera sobre la necesidad de articular el valor estratégico de la IA local más allá de la mera eficiencia operativa, proporcionando un marco ejecutable para medir diferenciación y retorno.",
+      "payload": {
+        "id": "rec-aidux-roi-estrategico",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-306",
+        "title": "Evaluación Rápida de ROI Estratégico en IA Local",
+        "effortKey": "intermediate",
+        "effortLabel": "Intermedio (15 min)",
+        "problem": "Las PYMEs suelen medir la IA únicamente por horas ahorradas en tareas repetitivas, ignorando el valor estratégico de la soberanía de datos, la reducción de riesgos regulatorios y la creación de ventajas competitivas defensibles.",
+        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Analiza el siguiente proceso o caso de uso propuesto para IA local: [DESCRIBIR PROCESO]. Evalúa y estructura la respuesta en tres ejes: 1) Eficiencia operativa directa (horas/coste), 2) Mitigación de riesgos y cumplimiento normativo (seguridad de datos y soberanía), y 3) Ventaja competitiva diferencial (impacto en la propuesta de valor al cliente o agilidad en la toma de decisiones). Concluye con un indicador clave de rendimiento (KPI) estratégico que no sea meramente cuantitativo en costes.",
+        "humanCheck": "Verificar que el análisis estratégico no se limite a métricas de costes operativos y refleje adecuadamente la protección de activos de conocimiento propio.",
+        "privacyGuard": "Los datos introducidos sobre procesos internos no deben salir del entorno local ni ser utilizados para entrenamiento de modelos externos."
+      },
+      "used": false,
+      "queuedAt": "2026-11-26"
     }
   ]
 }
