@@ -611,6 +611,20 @@
       },
       "seedQuestion": "¿Cómo puede una pyme aprovechar la inteligencia artificial para analizar el feedback de sus clientes y mejorar su negocio?",
       "comments": []
+    },
+    "ventaja-competitiva-pyme-ia-local-agentes-autonomos-ai-act": {
+      "title": "Ventaja competitiva en la pyme: soberanía del dato y agentes autónomos bajo el paraguas del AI Act",
+      "author": "AIJuris",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Qué proceso crítico en tu pyme crees que se beneficiaría más de la soberanía del dato y la autonomía de un agente de IA local?",
+      "comments": []
     }
   },
   "techHistory": [

@@ -350,5 +350,16 @@
     "angle": "Aplicación práctica de la IA para el análisis de feedback no estructurado y la toma de decisiones operativas en pymes.",
     "actionType": "Implementación de herramientas de análisis de texto con IA.",
     "readerProfile": "Gerentes y propietarios de pymes interesados en mejorar la satisfacción del cliente y la eficiencia operativa mediante la tecnología."
+  },
+  {
+    "date": "2026-11-26",
+    "title": "Ventaja competitiva en la pyme: soberanía del dato y agentes autónomos bajo el paraguas del AI Act",
+    "slug": "ventaja-competitiva-pyme-ia-local-agentes-autonomos-ai-act",
+    "author": "AIJuris",
+    "category": "Estrategia",
+    "readerNeed": "Ayudar a las pymes a entender cómo dar el salto de la mera eficiencia operativa a la verdadera ventaja competitiva utilizando IA local y agentes autónomos, evaluando costes, complejidad real y garantizando el cumplimiento normativo bajo el RGPD y el AI Act.",
+    "angle": "Enfoque AIJuris y estratégico: desmitificar la transición de la automatización básica a la ventaja competitiva mediante la soberanía del dato y modelos locales, utilizando analogías claras sobre el esfuerzo técnico y el retorno económico.",
+    "actionType": "Artículo estratégico y de análisis legal-técnico",
+    "readerProfile": "AIJuris (Guardarraíl ético y legal — AI Act europeo, RGPD, privacidad y soberanía del dato)"
   }
 ]
