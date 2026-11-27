@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26",
+  "updatedAt": "2026-11-27",
   "summary": {
     "totalLikes": 0,
     "totalDislikes": 0,
@@ -26,7 +26,8 @@
     "tech-h1-glossary-autogobernanza-edge",
     "tech-h1-diagram-orquestacion-local",
     "tech-h1-faq-ai-act-semaforo-pymes",
-    "tech-h1-recipe-aijuris-revision-clausulas"
+    "tech-h1-recipe-aijuris-revision-clausulas",
+    "tech-h1-recipe-aidux-mcp-local"
   ],
   "frontierLog": [
     {
@@ -161,6 +162,13 @@
       "insight": "El estado del arte actual de la IA revela que las pymes pueden trascender la mera optimización de costes y el cumplimiento normativo para alcanzar una ventaja competitiva sostenible mediante la adopción estratégica de la IA local y agentes autónomos. Los modelos de lenguaje pequeños (SLM) y los modelos abiertos, ejecutables en infraestructura local, permiten a las pymes mantener la soberanía de sus datos, lo cual es crucial para el cumplimiento del RGPD y el AI Act, evitando los altos costes y la dependencia de las suscripciones en la nube. Los agentes operativos, capaces de encadenar tareas y tomar decisiones autónomas, están revolucionando la productividad al automatizar procesos repetitivos en áreas como ventas, atención al cliente y administración, liberando al personal para actividades de mayor valor estratégico y creativo. La implementación de IA local ofrece consultas ilimitadas sin costes variables, lo que se traduce en ahorros significativos y un retorno de inversión (ROI) medible en pocos meses. Además, la IA local facilita el cumplimiento del AI Act, que exige alfabetización en IA, transparencia y el respeto de prácticas no prohibidas, así como la protección de datos personales bajo el RGPD, al mantener la información dentro del perímetro de la empresa. Esta combinación de autonomía de datos, eficiencia operativa y capacidad de innovación posiciona a las pymes no solo como entidades eficientes, sino como innovadoras y competitivas en un mercado global.",
       "roadmapImpact": "Esta investigación subraya la necesidad de que AIEvolutio desarrolle soluciones y marcos que no solo faciliten la implementación técnica de IA local y agentes autónomos para pymes, sino que también articulen claramente su valor estratégico. La hoja de ruta debe incluir el desarrollo de herramientas y metodologías para evaluar el ROI estratégico, programas de formación avanzados en 'IA para la ventaja competitiva' (más allá de la alfabetización básica), y la estandarización de protocolos de integración local (como el MCP) que garanticen la interoperabilidad y la seguridad de los datos. Se priorizará la creación de casos de uso que demuestren cómo la IA local puede generar diferenciación de mercado, nuevos productos/servicios y una toma de decisiones superior, consolidando la posición de AIEvolutio como líder en la habilitación de la autonomía digital y la competitividad para pymes.",
       "leadAgent": "AIDux"
+    },
+    {
+      "date": "2026-11-27",
+      "topic": "La convergencia de la IA local abierta y agentes autónomos en pymes: un enfoque holístico para la soberanía de datos, eficiencia de costes y cumplimiento normativo.",
+      "insight": "El estado del arte actual de la IA para autónomos y pymes se caracteriza por la convergencia de modelos de lenguaje pequeños (SLM) y abiertos, ejecutables localmente en hardware asequible, con el desarrollo de agentes operativos autónomos. Estos modelos, como Llama 4 o Phi-4, ofrecen un rendimiento comparable a los modelos más grandes para tareas específicas y pueden ejecutarse en mini-PCs de oficina con cuantización a 4 bits, incluso sin GPU dedicada, o en servidores con GPU de gama media por una inversión inicial de unos 5.000€.\n\nEl protocolo MCP (Model Context Protocol) emerge como un estándar abierto crucial, actuando como un 'puerto USB-C para aplicaciones de IA', que permite a los agentes conectar de forma segura y estandarizada con archivos, bases de datos y herramientas internas, superando la necesidad de integraciones personalizadas. Esto facilita la creación de agentes operativos que no solo responden preguntas, sino que ejecutan tareas complejas de forma autónoma, como clasificar correos, redactar respuestas o generar informes, liberando tiempo para actividades de mayor valor.\n\nFinancieramente, la IA local ofrece un ahorro significativo y costes predecibles frente a las costosas suscripciones en la nube y los gastos variables por token. La inversión inicial en hardware puede amortizarse en 5-8 meses, generando ahorros acumulados de más de 28.000€ en tres años para una pyme de 25 empleados. Esto elimina la dependencia de terceros y los riesgos de costes inesperados.\n\nDesde la perspectiva regulatoria, la IA local se alinea intrínsecamente con el cumplimiento del AI Act y el RGPD, garantizando la soberanía de los datos al mantener la información confidencial dentro del perímetro de la empresa. Las pymes, principalmente como 'implementadoras' de IA, tienen obligaciones como la alfabetización en IA de su personal (Artículo 4 del AI Act, vigente desde febrero de 2025) y la transparencia en el uso de chatbots o deepfakes (Artículo 50, desde agosto de 2026), siendo la IA local una vía para gestionar estos requisitos de forma proactiva y segura.",
+      "roadmapImpact": "La adopción de este enfoque holístico de IA local y soberana transformará la hoja de ruta de AIEvolutio, impulsando el desarrollo de soluciones que permitan a las pymes:\n\n1.  **Alcanzar la Autonomía Digital:** Fomentando la implementación de infraestructuras de IA on-premise o en nubes privadas europeas, garantizando el control total sobre sus datos y operaciones, y reduciendo la dependencia de proveedores externos.\n2.  **Optimizar la Eficiencia de Costes a Largo Plazo:** Priorizando modelos de inversión inicial en hardware con costes operativos marginales nulos, lo que resultará en un TCO (Costo Total de Propiedad) significativamente menor y más predecible que las suscripciones SaaS.\n3.  **Asegurar el Cumplimiento Normativo Proactivo:** Integrando desde el diseño capacidades que faciliten la adhesión al AI Act y al RGPD, especialmente en lo referente a la soberanía de datos, la transparencia y la formación del personal en IA, minimizando riesgos legales y sanciones.\n4.  **Habilitar Agentes Operativos Inteligentes y Seguros:** Promoviendo el uso del protocolo MCP para la orquestación de sistemas multi-agente que interactúen de forma segura con los sistemas internos de la pyme, automatizando flujos de trabajo complejos y liberando recursos humanos para tareas estratégicas.\n5.  **Fomentar la Alfabetización en IA y la Transparencia:** Desarrollando programas y herramientas que ayuden a las pymes a cumplir con la obligación de formar a su personal en el uso responsable de la IA y a implementar prácticas transparentes en sus interacciones automatizadas.",
+      "leadAgent": "AIJuris"
     }
   ],
   "posts": {
@@ -718,6 +726,13 @@
       "versionRef": "v1.5.0 / US-304 / US-306",
       "title": "Receta de 15 minutos: revisar cláusulas de confidencialidad y proveedores IA en local",
       "summary": "Añadida nueva receta operativa «Detectar riesgos de privacidad y permanencia en condiciones de proveedores digitales» (AIJuris) a equipo.html#recetas-aiworkers."
+    },
+    {
+      "date": "2026-11-27",
+      "id": "tech-h1-recipe-aidux-mcp-local",
+      "versionRef": "v1.5.0 / US-306",
+      "title": "Receta MCP de AIDux: Conexión de Agente Local con Repositorio Interno",
+      "summary": "Añadida nueva receta operativa «Configuración rápida de servidor MCP local para acceso a documentos» (AIDux) a equipo.html#recetas-aiworkers."
     }
   ]
 }

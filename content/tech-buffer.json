@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26",
+  "updatedAt": "2026-11-27",
   "minThreshold": 7,
   "targetSize": 7,
   "items": [
@@ -220,8 +220,9 @@
         "humanCheck": "Verificar que la ruta asignada al servidor MCP sea estrictamente local y que no existan credenciales de servicios en la nube expuestas en el archivo de configuración.",
         "privacyGuard": "Garantizar que todo el tráfico de contexto permanezca en la infraestructura local bajo el marco de minimización de datos del AI Act."
       },
-      "used": false,
-      "queuedAt": "2026-11-21"
+      "used": true,
+      "queuedAt": "2026-11-21",
+      "executedAt": "2026-11-27"
     },
     {
       "id": "tech-h1-recipe-aidux-mcp-rgpd",
@@ -354,6 +355,28 @@
       },
       "used": false,
       "queuedAt": "2026-11-26"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-mcp-sincronizacion-local",
+      "versionRef": "v1.5.0 / US-307",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Receta AIDux: Orquestación segura de carpetas locales compartidas mediante protocolo MCP y SLM",
+      "rationale": "Permite a las pymes conectar modelos lingüísticos pequeños ejecutados localmente con directorios de ficheros internos sin exponer información confidencial a nubes de terceros, cumpliendo estrictamente con el principio de soberanía de datos y el marco normativo europeo.",
+      "payload": {
+        "id": "tech-h1-recipe-aidux-mcp-sincronizacion-local",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-307",
+        "title": "Configurar puente MCP local para consulta de documentación interna",
+        "effortKey": "intermediate",
+        "effortLabel": "Esfuerzo medio (15 minutos)",
+        "problem": "Necesidad de consultar directorios de documentos locales mediante agentes inteligentes sin comprometer la privacidad ni depender de conectividad externa.",
+        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Utiliza el servidor MCP local configurado en el puerto designado para leer exclusivamente los metadatos de la carpeta compartida de proyectos. Genera un índice resumido de los expedientes actualizados esta semana, aplicando la directriz de anonimización estricta antes de mostrar cualquier resultado.",
+        "humanCheck": "Verificar que el servidor MCP no tiene permisos de salida a internet y que el listado generado no contiene datos de carácter personal identificables.",
+        "privacyGuard": "Ejecución 100% on-premise mediante modelo local. Cero transferencia de datos a pasarelas externas o nubes públicas."
+      },
+      "used": false,
+      "queuedAt": "2026-11-27"
     }
   ]
 }
