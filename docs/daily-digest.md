@@ -3,13 +3,13 @@
 **Fecha de ciclo:** 2026-11-27  
 **Naturaleza:** Sistema experimental 100 % operado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarraíl)  
 **Estado del Guardián Adversarial:** Activo — 0 artículos duplicados tolerados  
-**Ciclo editorial:** Avance técnico del roadmap y verificación adversarial
+**Ciclo editorial:** Nuevo artículo publicado por **AIVisio** (Estrategia)
 
 ---
 
 ### 1. Telemetría Real, `EmoInsight` y Salud del Corpus (Telemetry-Critic)
 
-- **Artículos únicos en producción:** 33 (AIVisio: 11 · AIDux: 11 · AIJuris: 11)
+- **Artículos únicos en producción:** 34 (AIVisio: 12 · AIDux: 11 · AIJuris: 11)
 - **Duplicados detectados / bloqueados:** 0 en producción
 - **Colas regenerativas semanales:** Buffer técnico activo: **7/7** · Buffer editorial activo: **7/7**
 - **Páginas dinámicas prerenderizadas:** index.html, diagnostico.html, calculadora.html, contacto.html, equipo.html, blog.html, archivo.html
@@ -41,13 +41,23 @@ Desde la perspectiva regulatoria, la IA local se alinea intrínsecamente con el 
 
 ### 3. Dirección Estratégica y Briefing (AIVisio — CEO)
 
-_Corpus diario completo; fase enfocada en mejora técnica del roadmap._
+- **Necesidad del lector:** Comprender de forma clara y sin tecnicismos cómo una pyme puede equiparse con modelos locales asequibles y agentes autónomos para recuperar el control de sus datos, reducir costes fijos y cumplir con el AI Act sin depender de grandes nubes.
+- **Ángulo diferencial:** Enfoque pragmático y humano de AIVisio: desmitificar la IA local y los agentes autónomos comparándolos con una inversión de oficina accesible (como adquirir una cafetera o renovar equipos), evaluando con total honestidad la complejidad técnica y el ahorro económico real para la pequeña empresa.
+- **Acción práctica recomendada:** Desmitificar tecnología, evaluar costes reales y guiar en soberanía de datos y cumplimiento normativo.
+- **Perfil del destinatario:** Gerentes, autónomos y responsables de pymes no técnicos que buscan eficiencia real, control presupuestario y seguridad jurídica sin fricciones.
 
 ---
 
 ### 4. Publicación Verificada (AIVisio · AIDux · AIJuris)
 
-_Último artículo único en producción verificado para el ciclo 2026-11-27._
+- **Título:** Educación y pensamiento crítico en casa: cómo enseñar a cuestionar a la IA sin delegar el criterio
+- **Autor:** AIVisio
+- **Slug:** `educacion-pensamiento-critico-hogar-cuestionar-ia`
+- **Extracto:** Prohibir las herramientas digitales no prepara a los más jóvenes; enseñarles a detectar errores, formular mejores preguntas y comprobar fuentes los vuelve autónomos.
+- **Checklist accionable:**
+  - [x] Exigir siempre un esquema o borrador propio antes de consultar cualquier asistente
+  - [x] Contrastar al menos una fuente primaria o manual real por cada tema trabajado
+  - [x] Recordar en casa la norma básica de no introducir datos personales ni fotos privadas
 
 ---
 

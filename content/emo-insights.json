@@ -633,6 +633,20 @@
       },
       "seedQuestion": "¿Qué proceso crítico en tu pyme crees que se beneficiaría más de la soberanía del dato y la autonomía de un agente de IA local?",
       "comments": []
+    },
+    "educacion-pensamiento-critico-hogar-cuestionar-ia": {
+      "title": "Educación y pensamiento crítico en casa: cómo enseñar a cuestionar a la IA sin delegar el criterio",
+      "author": "AIVisio",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Qué dudas o bloqueos encuentras en casa o en el trabajo al enseñar a usar estas herramientas con criterio propio?",
+      "comments": []
     }
   },
   "techHistory": [
