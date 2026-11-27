@@ -225,155 +225,185 @@
       "executedAt": "2026-11-27"
     },
     {
-      "id": "tech-h1-recipe-aidux-mcp-rgpd",
-      "versionRef": "v1.5.0 / US-307",
-      "kind": "aiworker_recipe",
-      "leadAgent": "AIDux",
-      "title": "Receta AIDux: Orquestación local segura y cumplimiento RGPD mediante protocolo MCP",
-      "rationale": "Implementación práctica para coordinar agentes locales en pymes utilizando un protocolo de comunicación estandarizado, asegurando la trazabilidad de datos y el alineamiento con el AI Act y el RGPD desde el diseño.",
+      "id": "tech-h1-diagram-agentes-autogobernados",
+      "versionRef": "v1.5.0 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIJuris",
+      "title": "Diagrama SVG nativo para agentes locales autogobernados con AI Act y RGPD",
+      "rationale": "Completar el apoyo visual escaneable Bite-Snack-Meal del artículo publicado el 2026-11-20.",
       "payload": {
-        "id": "receta-aidux-mcp-rgpd",
-        "worker": "AIDux",
-        "versionRef": "v1.5.0 / US-307",
-        "title": "Orquestación y validación de cumplimiento normativo local con MCP",
-        "effortKey": "intermediate",
-        "effortLabel": "Esfuerzo moderado (15 minutos)",
-        "problem": "Las pymes necesitan automatizar procesos mediante agentes de inteligencia artificial locales, pero deben garantizar que el intercambio de datos entre sistemas cumpla estrictamente con la privacidad del RGPD y las directrices del AI Act sin depender de nubes externas.",
-        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Revisa la siguiente solicitud de intercambio de datos entre el agente local y el ERP utilizando el protocolo de comunicación local seguro (MCP). Verifica que los campos contengan únicamente información estrictamente necesaria, aplicando minimización de datos según el RGPD, y redacta el registro de auditoría técnico para supervisión humana.",
-        "humanCheck": "Verificar que el registro de auditoría generado refleje con precisión los datos intercambiados y que ningún dato personal innecesario haya transitado por la red local.",
-        "privacyGuard": "Procesamiento 100 por ciento local en el servidor de la pyme, sin salida de datos a servidores externos y almacenamiento cifrado de los registros de auditoría."
+        "slug": "agentes-locales-auto-gobernados-autonomia-operativa-pymes-cu",
+        "visualDiagram": {
+          "title": "Ciclo de control en un agente local autogobernado",
+          "nodes": [
+            {
+              "title": "1. Regla previa",
+              "note": "Límites RGPD y permisos por carpeta"
+            },
+            {
+              "title": "2. Autoverificación",
+              "note": "Comprueba fuentes y formato antes de salir"
+            },
+            {
+              "title": "3. Firma humana",
+              "note": "Registro auditable y validación final"
+            }
+          ]
+        }
       },
       "used": false,
-      "queuedAt": "2026-11-22"
+      "queuedAt": "2026-11-27"
     },
     {
-      "id": "tech-h1-recipe-aidux-soberania-pymes",
-      "versionRef": "v1.5.0 / US-306",
-      "kind": "aiworker_recipe",
+      "id": "tech-h1-faq-slm-locales-oficina",
+      "versionRef": "v1.5.0 / US-005 / US-205",
+      "kind": "article_faq_enrichment",
       "leadAgent": "AIDux",
-      "title": "Configuración de pipeline local y trazabilidad RGPD para pymes",
-      "rationale": "Implementación de una receta práctica de quince minutos guiada por AIDux para estructurar un flujo de trabajo con modelos locales y agentes operativos, asegurando el cumplimiento normativo continuo bajo el AI Act y el RGPD.",
+      "title": "Bloque FAQPage GEO verificado sobre modelos locales compactos (SLM) en oficina",
+      "rationale": "Mejorar citabilidad en motores generativos de la guía sobre hardware local sin GPU dedicada.",
       "payload": {
-        "id": "recipe-aidux-soberania-pymes",
-        "worker": "AIDux",
-        "versionRef": "v1.5.0 / US-306",
-        "title": "Despliegue inicial de agente soberano con auditoría local",
-        "effortKey": "intermediate",
-        "effortLabel": "Intermedio",
-        "problem": "Las pymes necesitan adoptar modelos abiertos locales y agentes operativos conectados mediante protocolos estandarizados, garantizando la trazabilidad y el cumplimiento normativo sin salir de su infraestructura propia.",
-        "promptTemplate": "Actúa como AIDux, CIO experto en soberanía tecnológica y cumplimiento. Configura el siguiente flujo operativo local para procesar documentación sensible: 1. Valida que el modelo abierto local esté activo y sin conexión externa. 2. Aplica el protocolo de enrutamiento MCP para la consulta de carpetas internas. 3. Genera un registro de auditoría estructurado que cumpla con los requisitos de trazabilidad del AI Act y el RGPD.",
-        "humanCheck": "Verificar que el directorio de trabajo local esté completamente aislado de redes externas y que el registro de auditoría contenga los metadatos correctos sin incluir datos personales innecesarios.",
-        "privacyGuard": "Ejecución 100% local mediante contenedor y modelo de código abierto, sin transmisión de datos a servicios en la nube de terceros y aplicando minimización de datos según el RGPD."
+        "slug": "modelos-slm-locales-alto-rendimiento-pymes",
+        "faq": [
+          {
+            "q": "¿Necesito comprar tarjetas gráficas caras para probar un modelo de IA local en mi despacho?",
+            "a": "No para tareas cotidianas de texto, clasificación o resumen: los modelos compactos cuantizados funcionan en ordenadores de oficina actuales con memoria suficiente y sin cuotas mensuales."
+          },
+          {
+            "q": "¿Un modelo ejecutado en local sigue funcionando si falla internet en el taller o la oficina?",
+            "a": "Sí. Una vez descargado el modelo abierto en el equipo, todo el procesamiento ocurre en local sin depender de conexión externa ni de servidores de terceros."
+          },
+          {
+            "q": "¿Por qué la ejecución local facilita el cumplimiento del RGPD?",
+            "a": "Porque los borradores, facturas y documentos internos permanecen dentro de tu propia infraestructura, minimizando transferencias internacionales de datos y riesgos de entrenamiento no autorizado."
+          }
+        ]
       },
       "used": false,
-      "queuedAt": "2026-11-22"
+      "queuedAt": "2026-11-27"
     },
     {
-      "id": "tech-h1-recipe-aidux-plug-and-play-slm",
-      "versionRef": "v1.5.0 / US-307",
+      "id": "tech-h1-recipe-aiescudo-reclamaciones-masa",
+      "versionRef": "v1.5.0 / US-304 / US-306",
       "kind": "aiworker_recipe",
-      "leadAgent": "AIDux",
-      "title": "Receta MCP Plug-and-Play para Modelos Locales en Pymes",
-      "rationale": "Responde directamente al hallazgo de frontera sobre la integración heterogénea de modelos locales y agentes operativos. AIDux diseña esta receta para estandarizar la conexión de un SLM mediante Model Context Protocol (MCP) en entornos de pyme, garantizando cumplimiento normativo y sencillez operativa sin requerir alta especialización técnica.",
+      "leadAgent": "AIJuris",
+      "title": "Receta de 15 minutos: filtrar reclamaciones generadas en masa sin descuidar al cliente real",
+      "rationale": "Anticipar utilidades prácticas de AIEscudo (US-304) directamente en la biblioteca de equipo.html.",
       "payload": {
-        "id": "recipe-aidux-plug-and-play-slm",
-        "worker": "AIDux",
-        "versionRef": "v1.5.0 / US-307",
-        "title": "Conexión Plug-and-Play de SLM Local mediante MCP para Pymes",
-        "effortKey": "intermediate",
-        "effortLabel": "Intermedio (15 min)",
-        "problem": "Las pymes necesitan integrar modelos de lenguaje locales abiertos de forma segura, pero la complejidad técnica de configuración y orquestación frena su adopción práctica.",
-        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Genera el archivo de configuración JSON estándar para conectar un modelo local mediante protocolo MCP, asegurando que el contexto de la pyme quede confinado estrictamente en el entorno local sin telemetría externa.",
-        "humanCheck": "Verificar que la ruta del modelo local sea accesible y que el parámetro de telemetría o envío de datos esté desactivado en la configuración.",
-        "privacyGuard": "El procesamiento se realiza de manera local en el servidor o terminal de la pyme, cumpliendo con el RGPD desde el diseño y evitando cualquier transferencia de datos a terceros."
-      },
-      "used": false,
-      "queuedAt": "2026-11-23"
-    },
-    {
-      "id": "tech-h1-recipe-aidux-slm-compliance",
-      "versionRef": "v1.5.0 / US-306",
-      "kind": "aiworker_recipe",
-      "leadAgent": "AIDux",
-      "title": "Despliegue incremental de modelos abiertos locales con validación normativa integrada",
-      "rationale": "Implementar un marco operativo guiado para pymes que permita pasar de un entorno experimental con modelos locales a un despliegue productivo automatizado, asegurando la trazabilidad y el cumplimiento normativo desde el inicio.",
-      "payload": {
-        "id": "aidux-slm-compliance-recipe",
-        "worker": "AIDux",
-        "versionRef": "v1.5.0 / US-306",
-        "title": "Despliegue incremental de modelos abiertos locales con validación normativa integrada",
-        "effortKey": "intermediate",
-        "effortLabel": "15 minutos",
-        "problem": "Las pymes experimentan dificultades para transicionar desde prototipos locales de modelos abiertos hacia entornos productivos escalables que garanticen el cumplimiento de normativas de privacidad sin sobrecostes.",
-        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Diseña un plan de despliegue incremental para un modelo abierto local en la pyme. El plan debe incluir: 1) Criterios técnicos de selección del modelo base, 2) Mecanismos de aislamiento de datos para evitar fugas de información sensible, y 3) Puntos de control humano obligatorios para cumplir con los estándares regulatorios vigentes.",
-        "humanCheck": "Validar que el plan de despliegue técnico cumpla estrictamente con la política interna de privacidad de la organización y que los puntos de control humano estén asignados a roles con capacidad de decisión.",
-        "privacyGuard": "Garantizar que todo el procesamiento se ejecute en infraestructura local o soberana, evitando cualquier transmisión de datos sensibles a proveedores externos y manteniendo registros de auditoría locales."
-      },
-      "used": false,
-      "queuedAt": "2026-11-24"
-    },
-    {
-      "id": "tech-h1-recipe-aidux-madurez-soberana",
-      "versionRef": "v1.5.0 / US-306",
-      "kind": "aiworker_recipe",
-      "leadAgent": "AIDux",
-      "title": "Evaluación rápida de madurez y despliegue inicial de modelo local abierto para pymes",
-      "rationale": "Implementación de una guía práctica de 15 minutos para que el equipo directivo evalúe el nivel actual de adopción de IA soberana, identifique procesos aptos para modelos locales abiertos y establezca salvaguardas iniciales de cumplimiento normativo frente al AI Act.",
-      "payload": {
-        "id": "rec-madurez-soberana-pyme",
-        "worker": "AIDux",
-        "versionRef": "v1.5.0 / US-306",
-        "title": "Diagnóstico exprés de madurez tecnológica y despliegue de modelo local",
+        "id": "receta-aiescudo-filtro-reclamaciones",
+        "worker": "AIJuris",
+        "versionRef": "v1.5.0 / US-304",
+        "title": "Protocolo de tres filtros ante escritos extensos o reclamaciones automatizadas",
         "effortKey": "basic",
-        "effortLabel": "15 minutos",
-        "problem": "La pyme necesita iniciar su transición hacia la soberanía de datos y el uso de modelos locales abiertos, pero carece de un marco estructurado para evaluar su madurez tecnológica actual y asegurar el cumplimiento normativo sin ralentizar la operativa.",
-        "promptTemplate": "Actúa como AIDux, CIO corporativo de AIEvolutio. Analiza el siguiente contexto de nuestra pyme: [INSERTA AQUÍ EL ESTADO ACTUAL DE TUS HERRAMIENTAS Y VOLUMEN DE DATOS]. Genera un informe breve de madurez en tres niveles (básico, intermedio, avanzado), identifica un caso de uso prioritario para un modelo local abierto y detalla los controles preventivos necesarios para cumplir con el marco del AI Act y el RGPD.",
-        "humanCheck": "Revisar que la clasificación de madurez se corresponda con la infraestructura real disponible y validar que las restricciones de privacidad propuestas se ajusten a la política interna de la organización.",
-        "privacyGuard": "Ejecución estrictamente local mediante modelos abiertos. Ningún dato sensible de la pyme abandona el perímetro seguro ni es utilizado para reentrenamiento externo."
+        "effortLabel": "Estantería sencilla · 15 min · 0 €",
+        "problem": "Perder horas contestando escritos intimidatorios largos sin datos verificables de compra mientras clientes reales esperan respuesta.",
+        "promptTemplate": "Lee el mensaje adjunto (sin datos personales sensibles) y extrae únicamente hechos verificables: número de factura o pedido mencionado, fecha de servicio, incidencia concreta descrita y tono de urgencia. Si no aporta ninguna referencia de operación real, redacta un acuse de recibo cortés de tres líneas solicitando número de factura o fecha aproximada para poder atender el caso con rigor.",
+        "humanCheck": "Comprueba siempre primero en tu registro de ventas si el pedido existe realmente; si es una incidencia real, prioriza la llamada o atención humana cercana.",
+        "privacyGuard": "Conserva el resguardo fechado del acuse de recibo en tu carpeta de atención al cliente y nunca expongas datos de terceros en plantillas externas."
       },
       "used": false,
-      "queuedAt": "2026-11-25"
+      "queuedAt": "2026-11-27"
     },
     {
-      "id": "tech-h1-recipe-aidux-roi-estrategico",
-      "versionRef": "v1.5.0 / US-306",
-      "kind": "aiworker_recipe",
-      "leadAgent": "AIDux",
-      "title": "Evaluación Rápida de ROI Estratégico en IA Local para PYMEs",
-      "rationale": "Responde directamente al hallazgo de frontera sobre la necesidad de articular el valor estratégico de la IA local más allá de la mera eficiencia operativa, proporcionando un marco ejecutable para medir diferenciación y retorno.",
+      "id": "tech-h1-glossary-alfabetizacion-tco",
+      "versionRef": "v1.5.0 / US-105 / US-206",
+      "kind": "glossary_expansion",
+      "leadAgent": "AIVisio",
+      "title": "Ampliación del glosario llano con «Alfabetización en IA (art. 4 AI Act)» y «Coste real por uso»",
+      "rationale": "Aterrizar conceptos recurrentes en las auditorías de costes y cumplimiento de pymes.",
       "payload": {
-        "id": "rec-aidux-roi-estrategico",
-        "worker": "AIDux",
-        "versionRef": "v1.5.0 / US-306",
-        "title": "Evaluación Rápida de ROI Estratégico en IA Local",
-        "effortKey": "intermediate",
-        "effortLabel": "Intermedio (15 min)",
-        "problem": "Las PYMEs suelen medir la IA únicamente por horas ahorradas en tareas repetitivas, ignorando el valor estratégico de la soberanía de datos, la reducción de riesgos regulatorios y la creación de ventajas competitivas defensibles.",
-        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Analiza el siguiente proceso o caso de uso propuesto para IA local: [DESCRIBIR PROCESO]. Evalúa y estructura la respuesta en tres ejes: 1) Eficiencia operativa directa (horas/coste), 2) Mitigación de riesgos y cumplimiento normativo (seguridad de datos y soberanía), y 3) Ventaja competitiva diferencial (impacto en la propuesta de valor al cliente o agilidad en la toma de decisiones). Concluye con un indicador clave de rendimiento (KPI) estratégico que no sea meramente cuantitativo en costes.",
-        "humanCheck": "Verificar que el análisis estratégico no se limite a métricas de costes operativos y refleje adecuadamente la protección de activos de conocimiento propio.",
-        "privacyGuard": "Los datos introducidos sobre procesos internos no deben salir del entorno local ni ser utilizados para entrenamiento de modelos externos."
+        "terms": [
+          {
+            "id": "alfabetizacion-ia-art4",
+            "term": "Alfabetización en IA (artículo 4 del AI Act)",
+            "effortKey": "basic",
+            "effortLabel": "Hábito en equipo · 1 hora · 0 €",
+            "analogy": "Explicar las normas básicas de seguridad antes de estrenar una máquina en el taller: no hace falta fabricar el motor, pero sí saber dónde está el botón de parada y qué no introducir dentro.",
+            "mondayUse": "Consiste en dar a tu equipo una guía breve de una página sobre qué datos nunca subir, cómo comprobar resultados y cuándo pedir revisión humana."
+          },
+          {
+            "id": "coste-real-por-uso",
+            "term": "Coste real por uso frente a suscripción fija",
+            "effortKey": "basic",
+            "effortLabel": "Hoja de cálculo · 15 min · 0 €",
+            "analogy": "Comparar pagar un abono mensual caro de gimnasio al que vas dos tardes frente a pagar una entrada sencilla o entrenar en casa con tu propio material.",
+            "mondayUse": "Permite auditar si el recargo mensual «con IA» de tu software habitual compensa el número real de usos semanales de tu plantilla."
+          }
+        ]
       },
       "used": false,
-      "queuedAt": "2026-11-26"
+      "queuedAt": "2026-11-27"
     },
     {
-      "id": "tech-h1-recipe-aidux-mcp-sincronizacion-local",
-      "versionRef": "v1.5.0 / US-307",
-      "kind": "aiworker_recipe",
-      "leadAgent": "AIDux",
-      "title": "Receta AIDux: Orquestación segura de carpetas locales compartidas mediante protocolo MCP y SLM",
-      "rationale": "Permite a las pymes conectar modelos lingüísticos pequeños ejecutados localmente con directorios de ficheros internos sin exponer información confidencial a nubes de terceros, cumpliendo estrictamente con el principio de soberanía de datos y el marco normativo europeo.",
+      "id": "tech-h1-faq-sobreprecio-etiqueta-ia",
+      "versionRef": "v1.5.0 / US-005 / US-206",
+      "kind": "article_faq_enrichment",
+      "leadAgent": "AIVisio",
+      "title": "Bloque FAQPage GEO verificado para detectar sobreprecios en herramientas «inteligentes»",
+      "rationale": "Reforzar la utilidad económica del artículo del 2026-11-12 y enlazarlo con calculadora.html.",
       "payload": {
-        "id": "tech-h1-recipe-aidux-mcp-sincronizacion-local",
-        "worker": "AIDux",
-        "versionRef": "v1.5.0 / US-307",
-        "title": "Configurar puente MCP local para consulta de documentación interna",
-        "effortKey": "intermediate",
-        "effortLabel": "Esfuerzo medio (15 minutos)",
-        "problem": "Necesidad de consultar directorios de documentos locales mediante agentes inteligentes sin comprometer la privacidad ni depender de conectividad externa.",
-        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Utiliza el servidor MCP local configurado en el puerto designado para leer exclusivamente los metadatos de la carpeta compartida de proyectos. Genera un índice resumido de los expedientes actualizados esta semana, aplicando la directriz de anonimización estricta antes de mostrar cualquier resultado.",
-        "humanCheck": "Verificar que el servidor MCP no tiene permisos de salida a internet y que el listado generado no contiene datos de carácter personal identificables.",
-        "privacyGuard": "Ejecución 100% on-premise mediante modelo local. Cero transferencia de datos a pasarelas externas o nubes públicas."
+        "slug": "sobreprecio-etiqueta-inteligente-evaluar-precios-herramienta",
+        "faq": [
+          {
+            "q": "¿Cómo saber si el suplemento de IA de mi programa habitual compensa a mi empresa?",
+            "a": "Divide el importe mensual extra entre el número real de veces que tu equipo utiliza esa función durante dos semanas y comprueba si libera tiempo medible o se resuelve con una plantilla limpia sin cuota."
+          },
+          {
+            "q": "¿Qué debo preguntar al proveedor antes de aceptar una subida de plan por funciones inteligentes?",
+            "a": "Confirma por escrito si puedes mantener tu plan anterior, dónde se procesan los datos, si quedan excluidos de entrenamiento y si podrás exportar tus historiales en formatos abiertos estándar."
+          }
+        ]
+      },
+      "used": false,
+      "queuedAt": "2026-11-27"
+    },
+    {
+      "id": "tech-h1-recipe-aivisio-auditoria-suscripciones",
+      "versionRef": "v1.5.0 / US-206 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIVisio",
+      "title": "Receta de 15 minutos: auditar cuotas mensuales con etiqueta IA antes de renovar",
+      "rationale": "Acompañar la calculadora de carga horaria con una plantilla ejecutable de ahorro directo para autónomos y pymes.",
+      "payload": {
+        "id": "receta-aivisio-auditoria-cuotas-ia",
+        "worker": "AIVisio",
+        "versionRef": "v1.5.0 / US-206",
+        "title": "Revisar suplementos de software y detectar suscripciones infrautilizadas",
+        "effortKey": "basic",
+        "effortLabel": "Estantería sencilla · 15 min · 0 €",
+        "problem": "Pagar cada mes suplementos por usuario en herramientas de oficina o correo sin haber comprobado cuántas veces reales las usa el equipo.",
+        "promptTemplate": "Recibe esta tabla anónima de nuestras licencias actuales (herramienta, coste mensual total, número de personas que la usaron en los últimos quince días y tarea concreta). Clasifica cada suscripción en tres grupos: mantener por uso probado, bajar al plan básico sin suplemento IA o sustituir por plantilla local de 0 €. Redacta además un correo cortés de tres líneas para solicitar al proveedor la vuelta al plan estándar sin penalización.",
+        "humanCheck": "Contrasta el listado con los recibos bancarios del último trimestre y pregunta al equipo antes de cancelar cualquier herramienta crítica.",
+        "privacyGuard": "Introduce únicamente nombres de programas, importes aproximados y recuentos anónimos; no pegues extractos bancarios ni datos de empleados."
+      },
+      "used": false,
+      "queuedAt": "2026-11-27"
+    },
+    {
+      "id": "tech-h1-diagram-feedback-clientes-pyme",
+      "versionRef": "v1.5.0 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIDux",
+      "title": "Diagrama SVG nativo para convertir reseñas y comentarios de clientes en mejoras",
+      "rationale": "Dotar de esquema visual escaneable al artículo del 2026-11-25 sin alterar su texto ni permalink.",
+      "payload": {
+        "slug": "ia-feedback-clientes-acciones-pyme",
+        "visualDiagram": {
+          "title": "De reseñas y correos sueltos a una mejora semanal real",
+          "nodes": [
+            {
+              "title": "1. Recogida anónima",
+              "note": "Reseñas y dudas sin nombres privados"
+            },
+            {
+              "title": "2. Agrupación local",
+              "note": "Tres patrones repetidos de la semana"
+            },
+            {
+              "title": "3. Ajuste en equipo",
+              "note": "Una mejora concreta el lunes siguiente"
+            }
+          ]
+        }
       },
       "used": false,
       "queuedAt": "2026-11-27"

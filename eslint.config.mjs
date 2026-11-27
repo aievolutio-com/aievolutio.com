@@ -25,6 +25,7 @@ export default [
         Buffer: "readonly",
         setTimeout: "readonly",
         clearTimeout: "readonly",
+        AbortController: "readonly",
       },
     },
     rules: {

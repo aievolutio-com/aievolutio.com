@@ -21,12 +21,26 @@
  */
 
 import { readFile, writeFile, mkdir, readdir, unlink } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { repairTruncatedJson, extractFieldsFallback } from "./json-repair.mjs";
 import { buildSite, loadModularPosts } from "./prerender-site.mjs";
+import {
+  DEFAULT_SPM_POLICY,
+  loadSpmPolicy,
+  selectNextSpmAssignment,
+  checkTechQueueDiversity,
+  getUnderrepresentedTechKinds,
+} from "./skills/spm-governor.mjs";
+import {
+  lintArticleAntiSlop,
+  cleanAndFilterSources,
+  resolveCleanGroundingSources,
+} from "./skills/anti-slop-linter.mjs";
+import { evaluateWithSyntheticPymeJury } from "./skills/synthetic-pyme-jury.mjs";
+import { fetchGa4ProductEvents, fetchGscDemandQueries } from "./skills/demand-sensors.mjs";
 
 const repoRoot = process.cwd();
 const postsDir = path.join(repoRoot, "content/posts");
@@ -36,8 +50,33 @@ const techBufferPath = path.join(repoRoot, "content/tech-buffer.json");
 const aiworkerRecipesPath = path.join(repoRoot, "content/aiworker-recipes.json");
 const emoInsightsPath = path.join(repoRoot, "content/emo-insights.json");
 const glossaryExtraPath = path.join(repoRoot, "content/glossary-extra.json");
+const spmPolicyPath = path.join(repoRoot, "content/spm-policy.json");
 const roadmapPath = path.join(repoRoot, "docs/roadmap.md");
 const dailyDigestPath = path.join(repoRoot, "docs/daily-digest.md");
+
+function loadSpmPolicySync() {
+  try {
+    if (existsSync(spmPolicyPath)) {
+      const parsed = JSON.parse(readFileSync(spmPolicyPath, "utf8"));
+      return {
+        ...DEFAULT_SPM_POLICY,
+        ...parsed,
+        cells: { ...DEFAULT_SPM_POLICY.cells, ...(parsed.cells || {}) },
+        authorQuotas: { ...DEFAULT_SPM_POLICY.authorQuotas, ...(parsed.authorQuotas || {}) },
+        techBufferDiversity: {
+          ...DEFAULT_SPM_POLICY.techBufferDiversity,
+          ...(parsed.techBufferDiversity || {}),
+        },
+        antiSlop: { ...DEFAULT_SPM_POLICY.antiSlop, ...(parsed.antiSlop || {}) },
+      };
+    }
+  } catch {
+    // fallback determinista
+  }
+  return DEFAULT_SPM_POLICY;
+}
+
+const ACTIVE_SPM_POLICY = loadSpmPolicySync();
 
 export const EDITORIAL_BUFFER_MIN = 7;
 export const EDITORIAL_BUFFER_TARGET = 7;
@@ -311,7 +350,8 @@ export async function callGeminiWithSearchGrounded(apiKey, prompt, fetchImpl = f
     if (res.ok) {
       const data = await res.json();
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
-      const sources = extractGroundingSources(data);
+      const rawSources = extractGroundingSources(data);
+      const sources = await resolveCleanGroundingSources(rawSources, ACTIVE_SPM_POLICY, fetchImpl);
       if (text) return { text, sources, grounded: sources.length > 0 };
     }
   } catch {
@@ -1306,36 +1346,60 @@ const CURATED_FRONTIER_RADAR_BANK = [
   {
     id: "frontier-saas-ai-surcharge-audit-2026",
     topic:
-      "Desacople entre recargos mensuales de SaaS con IA y el desplome del coste por millón de tokens",
+      "Desacople entre recargos mensuales de SaaS con IA y el descenso del coste por uso directo",
     insight:
-      "Mientras el coste real de inferencia por API se ha reducido más de un 80 %, muchas suites ofimáticas y de gestión aplican suplementos fijos de 20 a 35 € mensuales por usuario que una pyme puede ahorrar usando conectores directos.",
+      "Mientras el coste de ejecutar modelos compactos en local o por pago por uso ha bajado de forma sostenida, muchas suites ofimáticas aplican suplementos fijos por usuario que una pyme puede evitar con conectores directos y plantillas sobrias.",
     roadmapImpact:
-      "Alimenta los datos de referencia del Detector de sobreprecio IA (US-206) y el comparador honesto de herramientas (US-204).",
+      "Alimenta el criterio práctico del comparador honesto de herramientas y la calculadora de carga horaria (US-204 y US-206).",
     leadAgent: "AIVisio",
   },
 ];
 
 export async function runFrontierStateOfTheArtResearch(telemetry, emoInsights, targetDate) {
   console.log(
-    "--- [Frontier-Scout] Investigando estado del arte y cruzando con métricas y EmoInsight ---",
+    "--- [Frontier-Scout] Investigando estado del arte y cruzando con SPM, GA4/GSC y EmoInsight ---",
   );
   emoInsights.frontierLog = Array.isArray(emoInsights.frontierLog) ? emoInsights.frontierLog : [];
 
   const existingTopics = emoInsights.frontierLog.map((f) => f.topic);
+  const spm = telemetry.spmAssignment || null;
   const ga4Summary = telemetry.ga4
     ? `Usuarios 7d: ${telemetry.ga4.activeUsers}, Sesiones: ${telemetry.ga4.sessions}, Duración media: ${telemetry.ga4.avgDurationSec}s`
     : "Etiqueta GA4 activa en cliente";
+  const ga4EventsSummary = telemetry.ga4Events
+    ? `Eventos producto 7d: diagnóstico=${telemetry.ga4Events.maturity_diagnosis}, calculadora=${telemetry.ga4Events.roi_calculation}, recetas_copiadas=${telemetry.ga4Events.recipe_copy}, emo=${telemetry.ga4Events.emo_insight_feedback}`
+    : "Eventos producto pendientes de tráfico";
+  const gscSummary =
+    Array.isArray(telemetry.gscQueries) && telemetry.gscQueries.length > 0
+      ? `Consultas reales en buscadores (GSC): ${telemetry.gscQueries
+          .slice(0, 5)
+          .map((q) => `"${q.query}" (${q.impressions} imp, CTR ${q.ctr}%)`)
+          .join(", ")}`
+      : "Search Console pendiente de configuración o sin impresiones aún";
   const emoSummary = `Likes: ${emoInsights.summary?.totalLikes || 0}, Dislikes: ${emoInsights.summary?.totalDislikes || 0}, Demasiado complejo: ${emoInsights.summary?.emoDimensions?.too_complex || 0}, Dudas legales: ${emoInsights.summary?.emoDimensions?.legal_doubt || 0}, Comentarios: ${emoInsights.summary?.totalComments || 0}`;
+  const spmFocus = spm?.domain
+    ? `Ámbito prioritario asignado hoy por el Plano de Control SPM: "${spm.domain.label}" (célula ${spm.cell}, agente preferente ${spm.author}). Enfoque: ${spm.domain.focusPrompt}`
+    : "Prioriza casos cotidianos de pymes, oficios, comercio, educación, mayores o ahorro real (0 €) en lugar de repetir siempre MCP o AI Act.";
+  const allowedLeadAgents = spm?.portfolioState?.aiJurisBlocked
+    ? ["AIVisio", "AIDux"]
+    : ["AIVisio", "AIDux", "AIJuris"];
 
   const researchPrompt = `Eres el comité de investigación de frontera de AIEvolutio (AIVisio, AIDux y AIJuris).
-Investiga el estado del arte actual de la IA aplicada a autónomos y pymes (modelos locales abiertos, protocolo MCP, ahorro frente a suscripciones caras, cumplimiento del AI Act/RGPD y agentes operativos).
+Investiga UNA oportunidad concreta, práctica y verificada de IA sobria (0 € / software abierto / plantillas en local) para autónomos, pymes o ciudadanía en España.
 
-Métricas reales del sitio: ${ga4Summary}
+${spmFocus}
+Métricas reales del sitio: ${ga4Summary}. ${ga4EventsSummary}.
+${gscSummary}
 Señales de EmoInsight de los lectores: ${emoSummary}
-Temas ya registrados en el radar (NO repetir): ${JSON.stringify(existingTopics)}
+Temas ya registrados en el radar (PROHIBIDO repetir o parafrasear): ${JSON.stringify(existingTopics)}
+
+REGLAS ESTRICTAS:
+- PROHIBIDO inventar porcentajes, ahorros en euros o encuestas.
+- Habla en español de España llano (sin clichés corporativos).
+- Elige leadAgent exclusivamente entre: ${allowedLeadAgents.join(" | ")}.
 
 Devuelve SOLO un objeto JSON con:
-{"topic":"...","insight":"...","roadmapImpact":"...","leadAgent":"AIVisio|AIDux|AIJuris"}`;
+{"topic":"...","insight":"...","roadmapImpact":"...","leadAgent":"${allowedLeadAgents.join("|")}"}`;
 
   let finding = null;
   const rawFinding = await callLLMWithSearch(researchPrompt);
@@ -1354,9 +1418,9 @@ Devuelve SOLO un objeto JSON con:
           topic: applyRaeTitleCase(parsed.topic),
           insight: String(parsed.insight).trim(),
           roadmapImpact: String(parsed.roadmapImpact).trim(),
-          leadAgent: ["AIVisio", "AIDux", "AIJuris"].includes(parsed.leadAgent)
+          leadAgent: allowedLeadAgents.includes(parsed.leadAgent)
             ? parsed.leadAgent
-            : "AIDux",
+            : allowedLeadAgents[0],
         };
       }
     } catch {
@@ -1366,7 +1430,9 @@ Devuelve SOLO un objeto JSON con:
 
   if (!finding) {
     const candidate = CURATED_FRONTIER_RADAR_BANK.find(
-      (item) => !existingTopics.some((t) => computeTitleSimilarity(t, item.topic) >= 0.48),
+      (item) =>
+        allowedLeadAgents.includes(item.leadAgent) &&
+        !existingTopics.some((t) => computeTitleSimilarity(t, item.topic) >= 0.48),
     );
     if (candidate) {
       finding = {
@@ -1382,7 +1448,7 @@ Devuelve SOLO un objeto JSON con:
   if (finding) {
     emoInsights.frontierLog.push(finding);
     await saveEmoInsights(emoInsights);
-    await updateRoadmapWithFrontierAndTech(emoInsights, finding, null);
+    await updateRoadmapWithFrontierAndTech(emoInsights, finding, null, { telemetry });
     console.log(`[Frontier-Scout] Hallazgo incorporado al roadmap: "${finding.topic}"`);
   }
 
@@ -1689,7 +1755,7 @@ export function normalizeMarkdownBody(rawBody) {
   return body.replace(/\r\n/g, "\n").trim();
 }
 
-export function validateArticleQuality(article, format = "tactical") {
+export function validateArticleQuality(article, format = "tactical", policy = ACTIVE_SPM_POLICY) {
   const normalizedBody = normalizeMarkdownBody(article?.body || "");
   const lengthCheck = validateArticleBodyLength(normalizedBody, format);
   const h3Count = (normalizedBody.match(/^###\s+/gm) || []).length;
@@ -1702,6 +1768,7 @@ export function validateArticleQuality(article, format = "tactical") {
   const hasTrustGap = /pueden cometer errores|no sustituyen el criterio/i.test(combinedText);
   const hasJargon = /\b(volante|curva exponencial|m[aá]quina biol[oó]gica)\b/i.test(combinedText);
   const hasEmoji = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(combinedText);
+  const antiSlop = lintArticleAntiSlop({ ...article, body: normalizedBody }, policy);
 
   const issues = [];
   if (!lengthCheck.valid) {
@@ -1737,6 +1804,9 @@ export function validateArticleQuality(article, format = "tactical") {
   if (hasEmoji) {
     issues.push("Contiene emojis estructurales prohibidos en texto editorial.");
   }
+  for (const slopIssue of antiSlop.issues) {
+    if (!issues.includes(slopIssue)) issues.push(slopIssue);
+  }
 
   return {
     valid: issues.length === 0,
@@ -1747,31 +1817,48 @@ export function validateArticleQuality(article, format = "tactical") {
     h3Count,
     hasTable,
     normalizedBody,
+    antiSlop,
   };
 }
 
 export async function repairArticleWithLLM(article, format = "tactical", options = {}) {
   const llmFn = options.llmFn || callLLM;
   const maxAttempts = Number(options.maxAttempts ?? 2);
-  let current = { ...article, body: normalizeMarkdownBody(article?.body || "") };
-  let quality = validateArticleQuality(current, format);
-  let repaired = current.body !== String(article?.body || "");
+  const policy = options.policy || ACTIVE_SPM_POLICY;
+  const extraCritiques = Array.isArray(options.extraCritiques) ? options.extraCritiques : [];
+  const cleanedSources = cleanAndFilterSources(article?.sources || [], policy);
+  let current = {
+    ...article,
+    body: normalizeMarkdownBody(article?.body || ""),
+    ...(cleanedSources.length > 0 ? { sources: cleanedSources } : {}),
+  };
+  if (cleanedSources.length === 0 && "sources" in current) {
+    delete current.sources;
+  }
+  let quality = validateArticleQuality(current, format, policy);
+  let repaired =
+    current.body !== String(article?.body || "") ||
+    cleanedSources.length !== (Array.isArray(article?.sources) ? article.sources.length : 0);
 
-  if (quality.valid) {
+  if (quality.valid && extraCritiques.length === 0) {
     return { article: current, quality, repaired };
   }
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const combinedIssues = [...new Set([...quality.issues, ...extraCritiques])];
     console.log(
-      `[Autorreparación Editorial] Intento ${attempt}/${maxAttempts} para "${current.title || "borrador"}": ${quality.issues.join(" | ")}`,
+      `[Autorreparación Editorial] Intento ${attempt}/${maxAttempts} para "${current.title || "borrador"}": ${combinedIssues.join(" | ")}`,
     );
     const repairPrompt = `Corrige ÚNICAMENTE los defectos detectados en el siguiente artículo JSON de AIEvolutio sin inventar cifras, porcentajes ni normas:
 
 DEFECTOS DETECTADOS (OBLIGATORIO CORREGIR TODOS):
-${quality.issues.map((issue, idx) => `${idx + 1}. ${issue}`).join("\n")}
+${combinedIssues.map((issue, idx) => `${idx + 1}. ${issue}`).join("\n")}
 
 REGLAS OBLIGATORIAS:
 - Extensión del campo "body": estrictamente entre ${quality.minWords} y ${quality.maxWords} palabras (${format === "pillar" ? "guía pilar semanal" : "artículo táctico diario"}).
+- Apertura concreta: PROHIBIDO empezar con clichés ("En el dinámico ecosistema empresarial...", "En el competitivo panorama...", "La inteligencia artificial ha dejado de ser una promesa futurista..."). Abre el texto con una situación real de lunes por la mañana en un taller, comercio, despacho o familia.
+- Legibilidad llana en español de España (índice Fernández Huerta >= ${policy?.antiSlop?.minFernandezHuerta || 56}): frases claras de 15-22 palabras y cero humo corporativo.
+- Prioriza siempre herramientas gratuitas, abiertas o en local (0 €) si mencionas cualquier software comercial.
 - Estructura Bite-Snack-Meal: párrafos breves (3-4 líneas) separados por doble salto de línea real, entre 4 y 7 subencabezados Markdown empezando exactamente por "### " al inicio de línea (uno cada 250-300 palabras).
 - Incluye al menos una tabla comparativa en formato Markdown (| Columna A | Columna B | ...).
 - Cierra con "**Pasos accionables para aplicar hoy:**" seguido de 3 pasos numerados.
@@ -1813,8 +1900,12 @@ Responde SOLO con el JSON completo corregido y válido.`;
       title: applyRaeTitleCase(parsed.title || current.title),
       body: normalizeMarkdownBody(parsed.body),
     };
-    const nextQuality = validateArticleQuality(merged, format);
-    if (nextQuality.issues.length < quality.issues.length || nextQuality.valid) {
+    const nextQuality = validateArticleQuality(merged, format, policy);
+    if (
+      nextQuality.issues.length < quality.issues.length ||
+      nextQuality.valid ||
+      (quality.valid && extraCritiques.length > 0)
+    ) {
       current = merged;
       quality = nextQuality;
       repaired = true;
@@ -1946,9 +2037,24 @@ export async function ensureEditorialBuffer(telemetry, emoInsights, targetDate, 
     `[Buffer Editorial] Reserva disponible (${active.length}) < ${targetSize}; reaprovisionando inmediatamente hasta ${targetSize} artículos verificados...`,
   );
 
+  const spmPolicy = telemetry.spmPolicy || ACTIVE_SPM_POLICY;
+  const juryLlmFn =
+    options.juryFn !== undefined
+      ? options.juryFn
+      : process.env.GEMINI_API_KEY || process.env.AI_API_KEY
+        ? repairFn
+        : null;
+
   const syntheticCorpus = [
     ...existingPosts,
-    ...active.map((a) => ({ title: a.title, slug: a.slug })),
+    ...active.map((a) => ({
+      title: a.title,
+      slug: a.slug,
+      author: a.author,
+      category: a.category,
+      spmCell: a.spmCell,
+      date: a.bufferedAt || targetDate,
+    })),
   ];
   const syntheticLog = [
     ...editorialLog,
@@ -1959,31 +2065,47 @@ export async function ensureEditorialBuffer(telemetry, emoInsights, targetDate, 
     })),
   ];
 
-  const authorsCycle = ["AIVisio", "AIDux", "AIJuris"];
   let added = 0;
   let attempts = 0;
   const maxAttempts = (targetSize - active.length) * 3;
 
   while (active.length < targetSize && attempts < maxAttempts) {
     attempts++;
-    const author = authorsCycle[(active.length + attempts) % authorsCycle.length];
+    const spmAssign = selectNextSpmAssignment(syntheticCorpus, spmPolicy);
+    const author = spmAssign.author;
+    const domainPrompt = spmAssign.domain
+      ? `Ámbito cotidiano asignado hoy por SPM (${spmAssign.cell}): "${spmAssign.domain.label}". ${spmAssign.domain.focusPrompt}`
+      : `Célula SPM asignada: ${spmAssign.cell}.`;
+    const gscHint =
+      Array.isArray(telemetry.gscQueries) && telemetry.gscQueries.length > 0
+        ? `Consultas reales de usuarios (Search Console): ${telemetry.gscQueries
+            .slice(0, 4)
+            .map((q) => q.query)
+            .join(", ")}.`
+        : "";
     const prompt = `Eres ${author} de AIEvolutio. Prepara UN artículo inédito para el buffer editorial autónomo de pymes en España.
+${domainPrompt}
+${gscHint}
 Señales EmoInsight recientes: Claridad=${emoInsights?.summary?.emoDimensions?.clarity || 0}, Complejo=${emoInsights?.summary?.emoDimensions?.too_complex || 0}, Dudas legales=${emoInsights?.summary?.emoDimensions?.legal_doubt || 0}.
 Títulos ya publicados o en reserva (PROHIBIDO repetir): ${JSON.stringify(syntheticCorpus.map((p) => p.title))}
 
-Requisitos estrictos:
+Requisitos estrictos (Gate Anti-Slop y Jurado Sintético Pyme >= 0.80):
 1. Título RAE sentence case (solo mayúscula inicial y siglas como IA, AI Act, RGPD, SLM, MCP, AIEvolutio, AIDux, AIJuris; "pyme"/"pymes" en minúscula). Prohibido usar jerga interna o fórmulas autoinculpatorias («pueden cometer errores»).
-2. clarityNote: resumen en 1 frase empezando por "En 30 segundos:" con 3 ideas clave, analogía cotidiana y nivel de esfuerzo real.
-3. body: 1200-1600 palabras en español claro siguiendo el patrón Bite-Snack-Meal: entre 5 y 7 subencabezados Markdown \`### \` al inicio de línea (uno cada 250-300 palabras), párrafos breves de 3-4 líneas (40-60 palabras), al menos una tabla comparativa en formato Markdown (| Columna | ... |) y una lista numerada "**Pasos accionables para aplicar hoy:**".
-4. PROHIBICIÓN ABSOLUTA DE ALUCINACIONES: cero porcentajes, ahorros en euros o leyes inventadas. Si citas un dato cuantitativo o normativo real, debe venir de la búsqueda web en vivo; si no, redacta una guía estrictamente conceptual y práctica sin cifras inventadas.
-5. Responde SOLO con JSON válido:
+2. Apertura concreta: PROHIBIDO empezar con clichés ("En el dinámico ecosistema empresarial...", "En el competitivo panorama...", "La inteligencia artificial ha dejado de ser una promesa futurista..."). Abre directamente con un problema cotidiano de lunes por la mañana.
+3. clarityNote: resumen en 1 frase empezando por "En 30 segundos:" con 3 ideas clave, analogía cotidiana y nivel de esfuerzo real.
+4. body: 1200-1600 palabras en español llano (frases claras, sin humo corporativo, priorizando herramientas gratuitas o en local de 0 €) siguiendo el patrón Bite-Snack-Meal: entre 5 y 7 subencabezados Markdown \`### \` al inicio de línea (uno cada 250-300 palabras), párrafos breves de 3-4 líneas (40-60 palabras), al menos una tabla comparativa en formato Markdown (| Columna | ... |) y una lista numerada "**Pasos accionables para aplicar hoy:**".
+5. PROHIBICIÓN ABSOLUTA DE ALUCINACIONES: cero porcentajes, ahorros en euros o leyes inventadas. Si citas un dato cuantitativo o normativo real, debe venir de la búsqueda web en vivo; si no, redacta una guía estrictamente conceptual y práctica sin cifras inventadas.
+6. Responde SOLO con JSON válido:
 {"title":"...","slug":"...","category":"Estrategia|Operaciones|Legal","effortLevel":"basic|intermediate|advanced","readerNeed":"...","angle":"...","actionType":"...","readerProfile":"...","clarityNote":"...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."],"seedQuestion":"..."}`;
 
     const rawRes = await generatorFn(prompt);
     if (!rawRes) break;
 
     const rawText = typeof rawRes === "string" ? rawRes : rawRes.text;
-    const groundedSources = Array.isArray(rawRes?.sources) ? rawRes.sources : [];
+    const groundedSources = cleanAndFilterSources(
+      Array.isArray(rawRes?.sources) ? rawRes.sources : [],
+      spmPolicy,
+    );
     if (!rawText) continue;
 
     let parsed = null;
@@ -2001,6 +2123,7 @@ Requisitos estrictos:
       title: normalizedTitle,
       slug: slugify(parsed.slug || normalizedTitle),
       author,
+      spmCell: spmAssign.cell,
       category:
         parsed.category ||
         (author === "AIJuris" ? "Legal" : author === "AIVisio" ? "Estrategia" : "Operaciones"),
@@ -2026,7 +2149,7 @@ Requisitos estrictos:
             ],
       seedQuestion:
         parsed.seedQuestion || `¿Qué duda práctica te surge al aplicar "${normalizedTitle}"?`,
-      sources: groundedSources,
+      ...(groundedSources.length > 0 ? { sources: groundedSources } : {}),
       used: false,
       bufferedAt: targetDate,
     };
@@ -2043,19 +2166,52 @@ Requisitos estrictos:
     );
     if (dupCheck.duplicate || !briefCheck.allowed) continue;
 
-    let quality = validateArticleQuality(candidate, "tactical");
+    let quality = validateArticleQuality(candidate, "tactical", spmPolicy);
     if (!quality.valid && !options.skipRepair) {
       const fixed = await repairArticleWithLLM(candidate, "tactical", {
         llmFn: repairFn,
         maxAttempts: 2,
+        policy: spmPolicy,
       });
       candidate = fixed.article;
       quality = fixed.quality;
     }
 
-    if (quality.valid) {
+    if (!quality.valid) continue;
+
+    // Gate 2: Evaluación Adversarial con Jurado Sintético Pyme (F >= 0.80)
+    let jury = await evaluateWithSyntheticPymeJury(candidate, {
+      policy: spmPolicy,
+      llmFn: juryLlmFn,
+    });
+    if (!jury.passed && !options.skipRepair && juryLlmFn) {
+      const fixed = await repairArticleWithLLM(candidate, "tactical", {
+        llmFn: repairFn,
+        maxAttempts: 1,
+        policy: spmPolicy,
+        extraCritiques: jury.critiques,
+      });
+      candidate = fixed.article;
+      quality = fixed.quality;
+      if (quality.valid) {
+        jury = await evaluateWithSyntheticPymeJury(candidate, {
+          policy: spmPolicy,
+          llmFn: juryLlmFn,
+        });
+      }
+    }
+
+    if (quality.valid && jury.passed) {
+      candidate.fitnessScore = jury.score;
       active.push(candidate);
-      syntheticCorpus.push({ title: candidate.title, slug: candidate.slug });
+      syntheticCorpus.push({
+        title: candidate.title,
+        slug: candidate.slug,
+        author: candidate.author,
+        category: candidate.category,
+        spmCell: candidate.spmCell,
+        date: targetDate,
+      });
       syntheticLog.push({
         title: candidate.title,
         readerNeed: candidate.readerNeed,
@@ -2063,7 +2219,7 @@ Requisitos estrictos:
       });
       added++;
       console.log(
-        `[Buffer Editorial] Añadido candidato verificado (${active.length}/${targetSize}): "${candidate.title}" (${quality.wordCount} palabras, H3=${quality.h3Count}).`,
+        `[Buffer Editorial] Añadido candidato verificado (${active.length}/${targetSize}): "${candidate.title}" (${quality.wordCount} palabras, H3=${quality.h3Count}, F=${jury.score}, célula=${candidate.spmCell}).`,
       );
     }
   }
@@ -2627,6 +2783,10 @@ function buildDynamicArticleTechCandidates(
   targetDate,
 ) {
   const generated = [];
+  const diagramAgents = ["AIDux", "AIVisio", "AIJuris"];
+  const faqAgents = ["AIVisio", "AIJuris", "AIDux"];
+  let diagIdx = 0;
+  let faqIdx = 0;
   for (const [slug, { post }] of context.postsBySlug.entries()) {
     const hasDiag = post.visualDiagram && Array.isArray(post.visualDiagram.nodes);
     const diagId = `tech-auto-diag-${slug.slice(0, 42)}`;
@@ -2639,10 +2799,10 @@ function buildDynamicArticleTechCandidates(
       const checklist = Array.isArray(post.actionableChecklist) ? post.actionableChecklist : [];
       generated.push({
         id: diagId,
-        versionRef: "v1.4.2 / US-004 / US-005",
+        versionRef: "v1.5.0 / US-004 / US-005",
         kind: "article_diagram_enrichment",
-        leadAgent: post.author || "AIDux",
-        title: `Esquema SVG de flujo práctico para «${post.title}»`,
+        leadAgent: diagramAgents[diagIdx++ % diagramAgents.length],
+        title: applyRaeTitleCase(`Esquema SVG de flujo práctico para «${post.title}»`),
         rationale:
           "Completar el apoyo visual escaneable Bite-Snack-Meal en un artículo publicado sin diagrama nativo.",
         payload: {
@@ -2686,8 +2846,8 @@ function buildDynamicArticleTechCandidates(
         id: faqId,
         versionRef: "v1.5.0 / US-005 (GEO FAQPage)",
         kind: "article_faq_enrichment",
-        leadAgent: post.author || "AIVisio",
-        title: `Bloque FAQPage JSON-LD verificable para «${post.title}»`,
+        leadAgent: faqAgents[faqIdx++ % faqAgents.length],
+        title: applyRaeTitleCase(`Bloque FAQPage JSON-LD verificable para «${post.title}»`),
         rationale:
           "Activar esquema Schema.org FAQPage y respuestas directas citables en el archivo editorial.",
         payload: {
@@ -2724,6 +2884,7 @@ export async function ensureTechBuffer(
   const minThreshold = Number(options.minThreshold ?? TECH_BUFFER_MIN);
   const targetSize = Math.max(minThreshold, Number(options.targetSize ?? TECH_BUFFER_TARGET));
   const generatorFn = options.generatorFn || callLLM;
+  const spmPolicy = telemetry?.spmPolicy || ACTIVE_SPM_POLICY;
 
   const context = await loadTechExecutionContext(options);
   const completedIds = new Set(emoInsights?.completedTechSteps || []);
@@ -2744,7 +2905,7 @@ export async function ensureTechBuffer(
   }
 
   console.log(
-    `[Buffer Técnico] Mejoras en cola (${active.length}) < ${targetSize}; generando nuevas oportunidades técnicas hasta ${targetSize}...`,
+    `[Buffer Técnico] Mejoras en cola (${active.length}) < ${targetSize}; generando nuevas oportunidades técnicas diversas hasta ${targetSize}...`,
   );
 
   const queuedIds = new Set(active.map((i) => i.id));
@@ -2761,11 +2922,19 @@ export async function ensureTechBuffer(
   );
   let added = 0;
 
-  // 1. Intentar generar oportunidades técnicas frescas con el LLM guiadas por Frontier-Scout y EmoInsight
+  // 1. Intentar generar oportunidades técnicas frescas con el LLM guiadas por diversidad SPM, Frontier-Scout y EmoInsight
   const postsMissingFaq = [...context.postsBySlug.entries()]
     .filter(
       ([slug, { post }]) =>
         (!Array.isArray(post.faq) || post.faq.length === 0) && !queuedTargets.has(`faq:${slug}`),
+    )
+    .slice(0, 6)
+    .map(([slug, { post }]) => ({ slug, title: post.title }));
+  const postsMissingDiag = [...context.postsBySlug.entries()]
+    .filter(
+      ([slug, { post }]) =>
+        (!post.visualDiagram || !Array.isArray(post.visualDiagram.nodes)) &&
+        !queuedTargets.has(`diag:${slug}`),
     )
     .slice(0, 6)
     .map(([slug, { post }]) => ({ slug, title: post.title }));
@@ -2774,19 +2943,39 @@ export async function ensureTechBuffer(
 
   while (active.length < targetSize && attempts < llmMaxAttempts) {
     attempts++;
-    const techPrompt = `Eres AIDux (CIO) junto con AIJuris de AIEvolutio. Diseña UNA mejora técnica ejecutable e inédita para la cola regenerativa del roadmap (Horizonte 1).
-Hallazgo de frontera reciente: ${frontierFinding ? `${frontierFinding.topic} — ${frontierFinding.roadmapImpact}` : "Modelos locales SLM, protocolo MCP, recetas de 15 minutos y cumplimiento AI Act/RGPD."}
+    const neededKinds = getUnderrepresentedTechKinds(active, spmPolicy);
+    const kindHint =
+      neededKinds.length > 0 ? neededKinds : ["glossary_expansion", "article_faq_enrichment"];
+    const agentCounts = { AIVisio: 0, AIDux: 0, AIJuris: 0 };
+    for (const a of active) {
+      const ag = a.leadAgent || "AIDux";
+      if (ag in agentCounts) agentCounts[ag]++;
+    }
+    const maxSameAgent = Number(spmPolicy?.techBufferDiversity?.maxSameAgent || 3);
+    const allowedAgents = Object.entries(agentCounts)
+      .filter(([, c]) => c < maxSameAgent)
+      .sort((a, b) => a[1] - b[1])
+      .map(([name]) => name);
+    const preferredAgent = allowedAgents[0] || "AIVisio";
+
+    const techPrompt = `Eres el comité técnico de AIEvolutio (AIVisio, AIDux, AIJuris). Diseña UNA mejora técnica ejecutable e inédita para la cola regenerativa del roadmap (Horizonte 1).
+Hallazgo de frontera reciente: ${frontierFinding ? `${frontierFinding.topic} — ${frontierFinding.roadmapImpact}` : "Ahorro real 0 €, plantillas prácticas de oficio, glosario llano y bloques GEO."}
 IDs ya completados o en cola (PROHIBIDO repetir): ${JSON.stringify([...completedIds, ...queuedIds])}
 Artículos sin FAQPage disponibles: ${JSON.stringify(postsMissingFaq)}
+Artículos sin diagrama SVG disponibles: ${JSON.stringify(postsMissingDiag)}
 
-Elige UNO de estos 3 tipos ejecutables ("kind"):
-1. "aiworker_recipe": añade una nueva receta práctica de 15 minutos a content/aiworker-recipes.json (payload: {id, worker:"AIFactura|AIRespuestas|AIOferta|AIJuris|AIDux|AIVisio", versionRef:"v1.5.0 / US-306", title, effortKey:"basic|intermediate", effortLabel, problem, promptTemplate, humanCheck, privacyGuard}).
-2. "glossary_expansion": añade 2 términos nuevos en lenguaje llano a content/glossary-extra.json (payload: {terms:[{id, term, effortKey, effortLabel, analogy, mondayUse}]}).
-3. "article_faq_enrichment": añade 2-3 preguntas frecuentes verificadas FAQPage a uno de los slugs listados arriba (payload: {slug, faq:[{q, a}]}).
+REGLAS ESTRICTAS DE DIVERSIDAD SPM:
+- Elige "kind" OBLIGATORIAMENTE entre los tipos subrepresentados hoy: ${JSON.stringify(kindHint)} (máximo ${spmPolicy?.techBufferDiversity?.maxSameKind || 2} mejoras del mismo tipo en cola).
+- Asigna "leadAgent" preferentemente a "${preferredAgent}" (agentes con cupo disponible: ${JSON.stringify(allowedAgents)}).
+- Formatos de payload soportados según "kind":
+  * "aiworker_recipe": {id, worker:"AIFactura|AIRespuestas|AIOferta|AIJuris|AIDux|AIVisio", versionRef:"v1.5.0 / US-306", title, effortKey:"basic|intermediate", effortLabel:"Estantería sencilla · 15 min · 0 €", problem, promptTemplate, humanCheck, privacyGuard}
+  * "glossary_expansion": {terms:[{id, term, effortKey, effortLabel, analogy, mondayUse}]}
+  * "article_faq_enrichment": {slug, faq:[{q, a}, {q, a}]}
+  * "article_diagram_enrichment": {slug, visualDiagram:{title, nodes:[{title, note},{title, note},{title, note}]}}
 
-Reglas estrictas: español de España RAE, CERO emojis, CERO cifras o porcentajes inventados, CERO jerga interna o avisos autoinculpatorios.
+Reglas editoriales: español de España RAE sentence case ("pyme"/"pymes" en minúscula, cero Title Case inglés), CERO emojis, CERO cifras o porcentajes inventados, CERO jerga interna o avisos autoinculpatorios.
 Responde SOLO con JSON válido:
-{"id":"tech-h1-...","versionRef":"v1.5.0 / US-...","kind":"...","leadAgent":"AIDux|AIJuris|AIVisio","title":"...","rationale":"...","payload":{...}}`;
+{"id":"tech-h1-...","versionRef":"v1.5.0 / US-...","kind":"${kindHint[0]}","leadAgent":"${preferredAgent}","title":"...","rationale":"...","payload":{...}}`;
 
     const raw = await generatorFn(techPrompt);
     if (!raw) break;
@@ -2801,9 +2990,16 @@ Responde SOLO con JSON válido:
     }
     if (!parsed || !parsed.id || queuedIds.has(parsed.id)) continue;
 
+    const normalizedPayload =
+      parsed.kind === "aiworker_recipe" && parsed.payload?.title
+        ? { ...parsed.payload, title: applyRaeTitleCase(parsed.payload.title) }
+        : parsed.payload;
+
     const candidate = {
       ...parsed,
       id: slugify(parsed.id),
+      title: applyRaeTitleCase(parsed.title),
+      payload: normalizedPayload,
       used: false,
       queuedAt: targetDate,
     };
@@ -2817,18 +3013,26 @@ Responde SOLO con JSON válido:
             : `item:${candidate.id}`;
     if (queuedIds.has(candidate.id) || queuedTargets.has(targetKey)) continue;
 
+    const diversityCheck = checkTechQueueDiversity(active, candidate, spmPolicy);
+    if (!diversityCheck.allowed) {
+      console.log(
+        `[Buffer Técnico] Candidato LLM vetado por diversidad SPM: ${diversityCheck.reason}`,
+      );
+      continue;
+    }
+
     if (validateTechProposal(candidate, context, completedIds).valid) {
       active.push(candidate);
       queuedIds.add(candidate.id);
       queuedTargets.add(targetKey);
       added++;
       console.log(
-        `[Buffer Técnico] Nueva oportunidad técnica generada (${active.length}/${targetSize}): ${candidate.id}`,
+        `[Buffer Técnico] Nueva oportunidad técnica generada (${active.length}/${targetSize}): ${candidate.id} [${candidate.kind} · ${candidate.leadAgent}]`,
       );
     }
   }
 
-  // 2. Respaldo curado de Horizonte 1 si aún faltan cupos para llegar a 7
+  // 2. Respaldo curado de Horizonte 1 respetando diversidad SPM (maxSameKind <= 2, maxSameAgent <= 3)
   if (active.length < targetSize) {
     for (const curated of CURATED_TECH_RESERVE) {
       if (active.length >= targetSize) break;
@@ -2843,6 +3047,7 @@ Responde SOLO con JSON válido:
               : `item:${curated.id}`;
       if (queuedTargets.has(targetKey)) continue;
       const candidate = { ...curated, used: false, queuedAt: targetDate };
+      if (!checkTechQueueDiversity(active, candidate, spmPolicy).allowed) continue;
       if (validateTechProposal(candidate, context, completedIds).valid) {
         active.push(candidate);
         queuedIds.add(candidate.id);
@@ -2852,7 +3057,7 @@ Responde SOLO con JSON válido:
     }
   }
 
-  // 3. Síntesis determinista de mejoras GEO (diagramas SVG / FAQPage) sobre el corpus vivo si aún < 7
+  // 3. Síntesis determinista de mejoras GEO (diagramas SVG / FAQPage) sobre el corpus vivo respetando diversidad
   if (active.length < targetSize) {
     const dynamicCandidates = buildDynamicArticleTechCandidates(
       context,
@@ -2863,10 +3068,23 @@ Responde SOLO con JSON válido:
     );
     for (const dyn of dynamicCandidates) {
       if (active.length >= targetSize) break;
+      if (!checkTechQueueDiversity(active, dyn, spmPolicy).allowed) continue;
       if (validateTechProposal(dyn, context, completedIds).valid) {
         active.push(dyn);
         queuedIds.add(dyn.id);
         added++;
+      }
+    }
+    // Último recurso en corpus muy pequeños: garantizar invariante >= 7 sin bloquear el ciclo
+    if (active.length < targetSize) {
+      for (const dyn of dynamicCandidates) {
+        if (active.length >= targetSize) break;
+        if (queuedIds.has(dyn.id)) continue;
+        if (validateTechProposal(dyn, context, completedIds).valid) {
+          active.push(dyn);
+          queuedIds.add(dyn.id);
+          added++;
+        }
       }
     }
   }
@@ -2999,9 +3217,14 @@ export async function updateRoadmapWithFrontierAndTech(
     )
     .join("\n");
 
+  const spmState = options.telemetry?.spmAssignment?.portfolioState || null;
+  const spmLine = spmState
+    ? `- **Equilibrio SPM (últimos ${spmState.windowCount} artículos):** Grow **${spmState.cellPct.grow}%** (obj. 45%) · Transform **${spmState.cellPct.transform}%** (obj. 25%) · Modernize **${spmState.cellPct.modernize}%** (obj. 15%) · Compliance/AIJuris **${spmState.cellPct.compliance}%** (tope 15%${spmState.aiJurisBlocked ? " · bloqueo activo" : ""}).\n`
+    : "";
+
   const dynamicSection = `${sectionHeader}
 
-_Esta sección es actualizada automáticamente en cada ciclo evolutivo diario por \`Frontier-Scout\` y \`Spiral-Builder\` a partir de la investigación del estado del arte, las métricas reales de GA4 y el \`EmoInsight\` de los lectores (Likes: **${emoInsights.summary?.totalLikes || 0}** · Dislikes: **${emoInsights.summary?.totalDislikes || 0}** · Comentarios: **${emoInsights.summary?.totalComments || 0}**)._
+_Esta sección es actualizada automáticamente en cada ciclo evolutivo diario por \`Frontier-Scout\` y \`Spiral-Builder\` a partir del plano de control SPM (\`content/spm-policy.json\`), la investigación del estado del arte, las métricas reales de GA4/GSC y el \`EmoInsight\` de los lectores (Likes: **${emoInsights.summary?.totalLikes || 0}** · Dislikes: **${emoInsights.summary?.totalDislikes || 0}** · Comentarios: **${emoInsights.summary?.totalComments || 0}**)._
 
 ### 5.1. Investigación continua del estado del arte y señales de lectores
 
@@ -3015,10 +3238,10 @@ ${frontierRows || "| 2026-11-09 | **AIVisio** | Escucha activa `EmoInsight` | In
 | :--- | :--- | :--- | :--- |
 ${techStepsRows || "| 2026-11-09 | `v1.3.0-emo-insight-core` | `v1.3.0` (`US-107`, `US-108`, `US-407`) | Despliegue de valoraciones, termómetro `EmoInsight`, hilos de comentarios con respuesta de IA y ciclo diario de doble commit. |"}
 
-### 5.3. Colas regenerativas activas para revisión semanal (objetivo >= 7 técnico y >= 7 editorial)
+### 5.3. Colas regenerativas activas y gobierno SPM para revisión semanal (objetivo >= 7 técnico y >= 7 editorial)
 
-- **Cola técnica activa (\`content/tech-buffer.json\`):** **${activeTechItems.length}/${techBuf.targetSize || TECH_BUFFER_TARGET}** mejoras ejecutables listas (reposición inmediata al consumir).
-- **Cola editorial activa (\`content/editorial-buffer.json\`):** **${activeEditorialItems.length}/${editorialBuf.targetSize || EDITORIAL_BUFFER_TARGET}** artículos verificados listos (reposición inmediata al consumir).
+${spmLine}- **Cola técnica activa (\`content/tech-buffer.json\`):** **${activeTechItems.length}/${techBuf.targetSize || TECH_BUFFER_TARGET}** mejoras ejecutables listas (máx. 2 del mismo tipo, reposición inmediata).
+- **Cola editorial activa (\`content/editorial-buffer.json\`):** **${activeEditorialItems.length}/${editorialBuf.targetSize || EDITORIAL_BUFFER_TARGET}** artículos verificados listos (Anti-Slop + Jurado Pyme \`F >= 0.80\`, reposición inmediata).
 
 #### Próximas mejoras técnicas en cola
 
@@ -3133,6 +3356,7 @@ export async function runRoadmapTechnicalStep(
   if (!options.skipRoadmapUpdate) {
     await updateRoadmapWithFrontierAndTech(emoInsights, frontierFinding, stepRecord, {
       ...options,
+      telemetry,
       techBuffer: replenished.buffer,
     });
   }
@@ -3143,14 +3367,17 @@ export async function runRoadmapTechnicalStep(
 // ─── SKILL 1: TELEMETRY-CRITIC (HONESTIDAD Y AUDITORÍA ADVERSARIAL) ──────────
 
 async function runTelemetryCritic(flags = {}) {
-  console.log("--- [Skill 1: Telemetry-Critic] Evaluando estado real, corpus y telemetría ---");
+  console.log("--- [Skill 1: Telemetry-Critic] Evaluando estado real, SPM, corpus y sensores ---");
 
   let ga4Data = null;
+  let ga4Events = null;
+  let gscQueries = null;
   const propertyId = process.env.GA4_PROPERTY_ID;
   const accessToken = process.env.GA4_ACCESS_TOKEN;
 
   if (propertyId && accessToken) {
     ga4Data = await fetchRealGa4Metrics(propertyId, accessToken);
+    ga4Events = await fetchGa4ProductEvents(propertyId, accessToken);
     if (ga4Data) {
       console.log("Métricas reales GA4 (últimos 7 días):", ga4Data);
     } else {
@@ -3158,12 +3385,25 @@ async function runTelemetryCritic(flags = {}) {
         "GA4 API: Credenciales presentes pero sin respuesta válida; reportando estado honesto.",
       );
     }
+    if (ga4Events) {
+      console.log("Eventos de producto GA4 (últimos 7 días):", ga4Events);
+    }
   } else {
     console.log(
       "Telemetría GA4: etiqueta G-DDWP8Z4F9B activa; API pendiente de GA4_PROPERTY_ID y autenticación federada de GitHub Actions.",
     );
   }
 
+  const gscSiteUrl = process.env.GSC_SITE_URL || "";
+  const gscToken = process.env.GSC_ACCESS_TOKEN || accessToken || "";
+  if (gscSiteUrl && gscToken) {
+    gscQueries = await fetchGscDemandQueries(gscSiteUrl, gscToken);
+    if (gscQueries && gscQueries.length > 0) {
+      console.log(`Sensor GSC activo: ${gscQueries.length} consultas reales detectadas.`);
+    }
+  }
+
+  const spmPolicy = await loadSpmPolicy();
   const existingPosts = await loadModularPosts();
   const editorialLog = await loadEditorialLog();
 
@@ -3179,12 +3419,12 @@ async function runTelemetryCritic(flags = {}) {
     categoriesCount[cat] = (categoriesCount[cat] || 0) + 1;
   }
 
-  // Seleccionar el autor menos representado o el forzado por CLI
-  let recommendedAuthor = flags.author;
-  if (!recommendedAuthor || !["AIVisio", "AIDux", "AIJuris"].includes(recommendedAuthor)) {
-    const sortedAuthors = Object.entries(authorsCount).sort((a, b) => a[1] - b[1]);
-    recommendedAuthor = sortedAuthors[0][0];
-  }
+  // Plano de Control SPM: cuotas por célula y bloqueo estricto de AIJuris cuando >= 15 %
+  const spmAssignment = selectNextSpmAssignment(existingPosts, spmPolicy, {
+    forcedAuthor: flags.author,
+  });
+  const recommendedAuthor = spmAssignment.author;
+  console.log(`[Plano de Control SPM] Asignación de ciclo: ${spmAssignment.rationale}`);
 
   const allExistingTitles = existingPosts.map((p) => p.title);
   const allExistingSlugs = new Set([
@@ -3197,7 +3437,11 @@ async function runTelemetryCritic(flags = {}) {
     existingCount: existingPosts.length,
     authorsCount,
     recommendedAuthor,
+    spmPolicy,
+    spmAssignment,
     ga4: ga4Data,
+    ga4Events,
+    gscQueries,
     editorialLog,
     allExistingTitles,
     allExistingSlugs,
@@ -3232,13 +3476,26 @@ async function runAIVisio(telemetry, emoInsights = null, frontierFinding = null)
   const frontierContext = frontierFinding
     ? `Último hallazgo del estado del arte: "${frontierFinding.topic}" (${frontierFinding.insight}).`
     : "";
+  const spmAssign = telemetry.spmAssignment || null;
+  const spmContext = spmAssign
+    ? `Asignación obligatoria del Plano de Control SPM: célula "${spmAssign.cell}" (${spmAssign.rationale}).${spmAssign.domain ? ` Ámbito cotidiano concreto: "${spmAssign.domain.label}" — ${spmAssign.domain.focusPrompt}` : ""}`
+    : "";
+  const gscContext =
+    Array.isArray(telemetry.gscQueries) && telemetry.gscQueries.length > 0
+      ? `Consultas reales de demanda (Search Console): ${telemetry.gscQueries
+          .slice(0, 5)
+          .map((q) => `"${q.query}" (${q.impressions} imp)`)
+          .join(", ")}.`
+      : "";
 
   const briefingPrompt = `Eres AIVisio, CEO y Estratega de AIEvolutio. Define el Briefing del nuevo artículo ANTES de escribirlo.
 
 Fundamentos de AIEvolutio:
-- Nuestros principios son inquebrantables, pero nuestro camino nace inexorablemente de las reacciones reales de los lectores (EmoInsight) y de la investigación del estado del arte.
+- Nuestros principios son inquebrantables, pero nuestro camino nace inexorablemente de las reacciones reales de los lectores (EmoInsight), los sensores de demanda y la investigación del estado del arte.
 - Claridad pedagógica: ningún lector no técnico debe quedarse con dudas sobre si una propuesta equivale a montar una estantería sencilla en una tarde o a una obra de ingeniería compleja; desmitificamos la tecnología, evaluamos herramientas y precios con honestidad y exploramos su impacto en empresas, educación, mayores y ciudadanía.
 - Perfil que firmará hoy: ${authorRoleMap[telemetry.recommendedAuthor] || telemetry.recommendedAuthor}
+${spmContext}
+${gscContext}
 ${emoContext}
 ${frontierContext}
 
@@ -3374,19 +3631,24 @@ ${briefing.suggestedTitle ? `- Título sugerido: ${briefing.suggestedTitle}` : "
 PROHIBIDO REPETIR CUALQUIERA DE ESTOS TÍTULOS EXISTENTES:
 ${JSON.stringify(telemetry.allExistingTitles)}
 
-Normas editoriales Bite-Snack-Meal de 3 capas, RAE y veracidad estricta:
+Normas editoriales Bite-Snack-Meal de 3 capas, Anti-Slop, RAE y veracidad estricta:
 1. Título en sentence case según la RAE (solo primera letra y siglas como IA, AI Act, RGPD, SLM, MCP, AIVisio, AIDux, AIJuris en mayúscula; "pyme"/"pymes" en minúscula). Prohibido usar jerga interna ("volante", "curva exponencial", "máquina biológica"), emojis o fórmulas autoinculpatorias («pueden cometer errores»).
-2. Capa 1 (clarityNote): empieza exactamente con "En 30 segundos:" explicando la idea con 3 puntos clave, una analogía cotidiana y el nivel de esfuerzo real (estantería sencilla, bricolaje guiado o técnica).
-3. Capa 2 (body): ${lengthTarget}. Estructura escaneable Bite-Snack-Meal con subencabezados Markdown \`### \` cada 250-300 palabras, párrafos breves de 3-4 líneas (40-60 palabras), definiciones citables, al menos una tabla comparativa en formato Markdown (| Columna A | Columna B | ...), viñetas claras y cierre "**Pasos accionables para aplicar hoy:**" con 3 pasos numerados.
-4. PROHIBICIÓN ABSOLUTA DE ALUCINACIONES: queda prohibido inventar porcentajes, ahorros en euros, encuestas, estadísticas o artículos de leyes. Solo cita hechos cuantitativos o normas verificadas con la búsqueda web en vivo; si no hay fuentes verificables para una cifra, publica una guía exclusivamente conceptual y práctica sin estadísticas ni casos simulados.
-5. actionableChecklist: exactamente 3 pasos concretos.
-6. seedQuestion: una pregunta directa al lector para abrir el hilo de comentarios EmoInsight al final del artículo.
-7. Responde SOLO con JSON válido:
+2. Apertura concreta (Anti-Slop): PROHIBIDO iniciar el artículo con clichés ("En el dinámico ecosistema empresarial...", "En el competitivo panorama...", "La inteligencia artificial ha dejado de ser una promesa futurista..."). Abre el primer párrafo con una escena concreta de lunes por la mañana en un taller, comercio, gestoría o familia.
+3. Capa 1 (clarityNote): empieza exactamente con "En 30 segundos:" explicando la idea con 3 puntos clave, una analogía cotidiana y el nivel de esfuerzo real (estantería sencilla, bricolaje guiado o técnica).
+4. Capa 2 (body): ${lengthTarget}. Español llano y cercano (legibilidad Fernández Huerta >= 56, frases directas sin humo corporativo, priorizando herramientas gratuitas o en local de 0 €). Estructura escaneable Bite-Snack-Meal con subencabezados Markdown \`### \` cada 250-300 palabras, párrafos breves de 3-4 líneas (40-60 palabras), definiciones citables, al menos una tabla comparativa en formato Markdown (| Columna A | Columna B | ...), viñetas claras y cierre "**Pasos accionables para aplicar hoy:**" con 3 pasos numerados.
+5. PROHIBICIÓN ABSOLUTA DE ALUCINACIONES: queda prohibido inventar porcentajes, ahorros en euros, encuestas, estadísticas o artículos de leyes. Solo cita hechos cuantitativos o normas verificadas con la búsqueda web en vivo; si no hay fuentes verificables para una cifra, publica una guía exclusivamente conceptual y práctica sin estadísticas ni casos simulados.
+6. actionableChecklist: exactamente 3 pasos concretos.
+7. seedQuestion: una pregunta directa al lector para abrir el hilo de comentarios EmoInsight al final del artículo.
+8. Responde SOLO con JSON válido:
 {"title":"...","slug":"...","category":"Estrategia|Operaciones|Legal","effortLevel":"basic|intermediate|advanced","clarityNote":"En 30 segundos: ...","excerpt":"...","body":"...","actionableChecklist":["...","...","..."],"seedQuestion":"..."}`;
 
+  const spmPolicy = telemetry.spmPolicy || ACTIVE_SPM_POLICY;
   const groundedResult = await callLLMWithSearchGrounded(articlePrompt);
   const rawArticle = groundedResult?.text || null;
-  const groundedSources = Array.isArray(groundedResult?.sources) ? groundedResult.sources : [];
+  const groundedSources = cleanAndFilterSources(
+    Array.isArray(groundedResult?.sources) ? groundedResult.sources : [],
+    spmPolicy,
+  );
 
   if (rawArticle) {
     let parsed = null;
@@ -3405,21 +3667,29 @@ Normas editoriales Bite-Snack-Meal de 3 capas, RAE y veracidad estricta:
         telemetry.existingPosts,
       );
 
-      let quality = validateArticleQuality(parsed, articleFormat);
+      let quality = validateArticleQuality(
+        { ...parsed, ...(groundedSources.length > 0 ? { sources: groundedSources } : {}) },
+        articleFormat,
+        spmPolicy,
+      );
 
-      // Autorreparación elástica (hasta 2 intentos) si hay defectos de extensión, falta de H3, tabla o tono
+      // Autorreparación elástica Gate 1 (hasta 2 intentos) si hay defectos de extensión, H3, tabla o Anti-Slop
       if (!quality.valid && !preliminaryDup.duplicate) {
-        const fix = await repairArticleWithLLM(parsed, articleFormat, { maxAttempts: 2 });
+        const fix = await repairArticleWithLLM(parsed, articleFormat, {
+          maxAttempts: 2,
+          policy: spmPolicy,
+        });
         parsed = { ...parsed, ...fix.article };
         quality = fix.quality;
       }
 
       const finalTitle = applyRaeTitleCase(parsed.title);
-      const candidate = {
+      let candidate = {
         title: finalTitle,
         slug: slugify(parsed.slug || finalTitle),
         date: targetDate,
         author,
+        spmCell: telemetry.spmAssignment?.cell || "grow",
         category: parsed.category || briefing.suggestedCategory || "Operaciones",
         effortLevel: ["basic", "intermediate", "advanced"].includes(parsed.effortLevel)
           ? parsed.effortLevel
@@ -3449,13 +3719,43 @@ Normas editoriales Bite-Snack-Meal de 3 capas, RAE y veracidad estricta:
 
       const dupCheck = isDuplicatePost(candidate, telemetry.existingPosts);
       if (quality.valid && !dupCheck.duplicate) {
-        console.log(
-          `[Comité Editorial] Artículo inédito verificado: "${candidate.title}" (${quality.wordCount} palabras, H3=${quality.h3Count}, fuentes=${groundedSources.length})`,
+        // Gate 2: Evaluación Adversarial con Jurado Sintético Pyme (F >= 0.80)
+        const juryLlm = process.env.GEMINI_API_KEY || process.env.AI_API_KEY ? callLLM : null;
+        let jury = await evaluateWithSyntheticPymeJury(candidate, {
+          policy: spmPolicy,
+          llmFn: juryLlm,
+        });
+        if (!jury.passed && juryLlm) {
+          console.warn(
+            `[Jurado Sintético Pyme] Borrador debajo del umbral (F=${jury.score} < ${jury.threshold}): solicitando reescritura dirigida...`,
+          );
+          const fix = await repairArticleWithLLM(candidate, articleFormat, {
+            maxAttempts: 1,
+            policy: spmPolicy,
+            extraCritiques: jury.critiques,
+          });
+          candidate = { ...candidate, ...fix.article, body: fix.quality.normalizedBody };
+          quality = fix.quality;
+          if (quality.valid) {
+            jury = await evaluateWithSyntheticPymeJury(candidate, {
+              policy: spmPolicy,
+              llmFn: juryLlm,
+            });
+          }
+        }
+        if (quality.valid && jury.passed) {
+          console.log(
+            `[Comité Editorial] Artículo inédito verificado: "${candidate.title}" (${quality.wordCount} palabras, H3=${quality.h3Count}, FH=${quality.antiSlop.readabilityScore}, F=${jury.score}, fuentes=${groundedSources.length})`,
+          );
+          return candidate;
+        }
+        console.warn(
+          `[Jurado Sintético Pyme] Candidato LLM vetado (F=${jury.score}/${jury.threshold}): ${jury.critiques.join(" | ")}`,
         );
-        return candidate;
+      } else {
+        const rejectionReason = dupCheck.duplicate ? dupCheck.reason : quality.issues.join(" | ");
+        console.warn(`[Guardián Adversarial] Candidato LLM descartado: ${rejectionReason}`);
       }
-      const rejectionReason = dupCheck.duplicate ? dupCheck.reason : quality.issues.join(" | ");
-      console.warn(`[Guardián Adversarial] Candidato LLM descartado: ${rejectionReason}`);
     }
   }
 
@@ -3698,25 +3998,43 @@ async function runSelfHealer(
     bufferStats?.editorialActiveCount ??
     ((await loadEditorialBuffer()).items || []).filter((i) => i && !i.used).length;
 
+  const spmState = telemetry.spmAssignment?.portfolioState || null;
+  const spmSummaryLine = spmState
+    ? `Grow ${spmState.cellPct.grow}% (obj. 45%) · Transform ${spmState.cellPct.transform}% (obj. 25%) · Modernize ${spmState.cellPct.modernize}% (obj. 15%) · Compliance/AIJuris ${spmState.cellPct.compliance}% (tope 15%${spmState.aiJurisBlocked ? ", bloqueo activo" : ""})`
+    : "Plano de Control SPM activo (`content/spm-policy.json`)";
+  const ga4EventsLine = telemetry.ga4Events
+    ? `Diagnósticos: ${telemetry.ga4Events.maturity_diagnosis} · Calculadoras: ${telemetry.ga4Events.roi_calculation} · Recetas copiadas: ${telemetry.ga4Events.recipe_copy} · EmoInsight: ${telemetry.ga4Events.emo_insight_feedback} · Comentarios: ${telemetry.ga4Events.emo_comment_submit}`
+    : "Sin eventos de producto registrados en la API en los últimos 7 días";
+  const gscLine =
+    Array.isArray(telemetry.gscQueries) && telemetry.gscQueries.length > 0
+      ? telemetry.gscQueries
+          .slice(0, 4)
+          .map((q) => `«${q.query}» (${q.impressions} imp, CTR ${q.ctr}%)`)
+          .join(" · ")
+      : "Pendiente habilitar `GSC_SITE_URL` y permiso `webmasters.readonly` en Search Console";
+
   const digestContent = `# Informe de Evolución Autónoma — AIEvolutio
 
 **Fecha de ciclo:** ${todayIso}  
 **Naturaleza:** Sistema experimental 100 % operado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarraíl)  
-**Estado del Guardián Adversarial:** Activo — 0 artículos duplicados tolerados  
+**Estado del Guardián Adversarial:** Activo — 0 duplicados · Gate Anti-Slop + Jurado Pyme (\`F >= 0.80\`)  
 **Ciclo editorial:** ${post ? `Nuevo artículo publicado por **${post.author}** (${post.category})` : "Avance técnico del roadmap y verificación adversarial"}
 
 ---
 
-### 1. Telemetría Real, \`EmoInsight\` y Salud del Corpus (Telemetry-Critic)
+### 1. Telemetría Real, Plano SPM, \`EmoInsight\` y Salud del Corpus (Telemetry-Critic)
 - **Artículos únicos en producción:** ${spiralResult.buildResult.articles} (${authorsSummary})
+- **Plano de Control SPM (últimos ${spmState?.windowCount || 14} posts):** ${spmSummaryLine}
 - **Duplicados detectados / bloqueados:** 0 en producción
-- **Colas regenerativas semanales:** Buffer técnico activo: **${techBufCount}/${TECH_BUFFER_TARGET}** · Buffer editorial activo: **${editorialBufCount}/${EDITORIAL_BUFFER_TARGET}**
-- **Páginas dinámicas prerenderizadas:** ${getRenderedPageList(spiralResult.buildResult.pages).join(", ")}
+- **Colas regenerativas semanales:** Buffer técnico activo: **${techBufCount}/${TECH_BUFFER_TARGET}** (máx. 2/tipo) · Buffer editorial activo: **${editorialBufCount}/${EDITORIAL_BUFFER_TARGET}** (Anti-Slop verificado)
+- **Páginas dinámicas prerenderizadas:** ${getRenderedPageList(spiralResult.buildResult.pages).join(", ")} + \`feed.xml\` (RSS 2.0)
 - **GA4 (${process.env.GA4_PROPERTY_ID ? "API Conectada" : "Etiqueta G-DDWP8Z4F9B en web"}):** ${
     telemetry.ga4
       ? `Usuarios activos (7d): ${telemetry.ga4.activeUsers} | Sesiones: ${telemetry.ga4.sessions} | Duración media: ${telemetry.ga4.avgDurationSec}s | Eventos: ${telemetry.ga4.eventCount || 0}`
       : "Pendiente configurar GA4_PROPERTY_ID y Workload Identity Federation en GitHub Actions para lectura automática (0 métricas inventadas)."
   }
+- **Eventos de producto GA4 (7d):** ${ga4EventsLine}
+- **Sensor de demanda Search Console (GSC):** ${gscLine}
 - **Pulso \`EmoInsight\` de lectores:** ${emoSummaryLine}
 
 ---
@@ -3825,6 +4143,7 @@ async function main() {
       editorialBufferState = await ensureEditorialBuffer(telemetry, emoInsights, targetDate);
       techBufferState = await ensureTechBuffer(telemetry, emoInsights, frontierFinding, targetDate);
       await updateRoadmapWithFrontierAndTech(emoInsights, frontierFinding, techStepRecord, {
+        telemetry,
         techBuffer: techBufferState.buffer,
         editorialBuffer: editorialBufferState.buffer,
       });
@@ -3863,6 +4182,7 @@ async function main() {
           { writeIfSufficient: true },
         );
         await updateRoadmapWithFrontierAndTech(emoInsights, frontierFinding, techStepRecord, {
+          telemetry,
           editorialBuffer: editorialBufferState.buffer,
         });
       } else {

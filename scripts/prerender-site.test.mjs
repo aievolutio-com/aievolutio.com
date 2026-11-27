@@ -20,6 +20,8 @@ import {
   getRenderedPageList,
   isDuplicatePost,
 } from "./autonomous-evolution.mjs";
+import { checkTechQueueDiversity, loadSpmPolicy } from "./skills/spm-governor.mjs";
+import { isBannedSourceUrl, lintArticleAntiSlop } from "./skills/anti-slop-linter.mjs";
 
 const content = {
   sections: [
@@ -516,4 +518,68 @@ test("v1.4.2 guarantees >= 7 active technical & editorial buffers, AIWorker reci
     activeTech.length >= 7,
     `Expected >= 7 active technical improvements in tech-buffer.json, got ${activeTech.length}`,
   );
+});
+
+test("v1.5.0 guarantees RSS 2.0 feed, diagnostic-to-recipes funnel, SPM diversity, Anti-Slop editorial queue and zero Vertex redirects", async () => {
+  await buildSite();
+  const policy = await loadSpmPolicy();
+
+  const feedXml = await readFile(path.join(process.cwd(), "dist/feed.xml"), "utf8");
+  assert.match(feedXml, /<rss version="2\.0"/);
+  assert.match(feedXml, /href="https:\/\/aievolutio\.com\/feed\.xml" rel="self"/);
+  assert.match(feedXml, /<language>es-es<\/language>/);
+  const itemMatches = feedXml.match(/<item>/g) || [];
+  assert.ok(
+    itemMatches.length >= 10,
+    `Expected >= 10 RSS items in dist/feed.xml, got ${itemMatches.length}`,
+  );
+
+  const diagHtml = await readFile(path.join(process.cwd(), "dist/diagnostico.html"), "utf8");
+  assert.match(diagHtml, /id="maturity-recipe-link"/);
+  assert.match(diagHtml, /equipo\.html#receta-aifactura-extraccion-lotes/);
+
+  const equipoHtml = await readFile(path.join(process.cwd(), "dist/equipo.html"), "utf8");
+  assert.match(equipoHtml, /data-recipe-id="receta-aifactura-extraccion-lotes"/);
+  assert.match(equipoHtml, /data-worker="AIFactura"/);
+
+  // Todos los artículos en cola editorial deben pasar Anti-Slop (cero clichés, cero redirecciones Vertex AI)
+  const editorialBuf = JSON.parse(
+    await readFile(path.join(process.cwd(), "content/editorial-buffer.json"), "utf8"),
+  );
+  const activeEditorial = (editorialBuf.items || []).filter((i) => i && !i.used);
+  assert.ok(activeEditorial.length >= 7);
+  for (const item of activeEditorial) {
+    const lint = lintArticleAntiSlop(item, policy);
+    assert.equal(
+      lint.passed,
+      true,
+      `Editorial buffer item ${item.slug} failed Anti-Slop: ${JSON.stringify(lint.issues)}`,
+    );
+  }
+
+  // Todos los elementos activos en cola técnica deben respetar diversidad SPM (maxSameKind <= 2, maxSameAgent <= 3)
+  const techBuf = JSON.parse(
+    await readFile(path.join(process.cwd(), "content/tech-buffer.json"), "utf8"),
+  );
+  const activeTech = (techBuf.items || []).filter((i) => i && !i.used);
+  assert.ok(activeTech.length >= 7);
+  const verifiedTech = [];
+  for (const item of activeTech) {
+    const div = checkTechQueueDiversity(verifiedTech, item, policy);
+    assert.equal(
+      div.allowed,
+      true,
+      `Tech buffer item ${item.id} violated diversity: ${div.reason}`,
+    );
+    verifiedTech.push(item);
+  }
+
+  // Cero URLs opacas de redirección Vertex AI en los artículos publicados
+  const postsDir = path.join(process.cwd(), "content/posts");
+  const postFiles = (await readdir(postsDir)).filter((f) => f.endsWith(".json"));
+  for (const pf of postFiles) {
+    const post = JSON.parse(await readFile(path.join(postsDir, pf), "utf8"));
+    const dirty = (post.sources || []).filter((s) => isBannedSourceUrl(s?.url, s?.title, policy));
+    assert.equal(dirty.length, 0, `Published post ${pf} still contains banned/Vertex source URLs`);
+  }
 });

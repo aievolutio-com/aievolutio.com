@@ -20,7 +20,14 @@ const htmlPages = [
   "contacto.html",
 ];
 const publicDirectories = ["assets", "content", "images", "styles"];
-const publicFiles = ["CNAME", "_headers", "site.webmanifest", "robots.txt", "sitemap.xml"];
+const publicFiles = [
+  "CNAME",
+  "_headers",
+  "site.webmanifest",
+  "robots.txt",
+  "sitemap.xml",
+  "feed.xml",
+];
 const articleBaseUrl = "https://aievolutio.com";
 
 export async function getSiteVersion() {
@@ -354,7 +361,7 @@ export function renderAiWorkerRecipes() {
   <div class="recipe-prompt-wrap">
     <p class="recipe-prompt-label"><strong>Plantilla lista para copiar (sin datos privados):</strong></p>
     <pre class="recipe-prompt"><code>${escapeHtml(r.promptTemplate)}</code></pre>
-    <button type="button" class="btn btn-sm btn-outline recipe-copy-btn" data-copy-prompt="${escapeHtml(r.promptTemplate)}">Copiar plantilla</button>
+    <button type="button" class="btn btn-sm btn-outline recipe-copy-btn" data-recipe-id="${escapeHtml(r.id)}" data-worker="${escapeHtml(r.worker || "AIWorker")}" data-copy-prompt="${escapeHtml(r.promptTemplate)}">Copiar plantilla</button>
   </div>
   ${r.humanCheck ? `<p class="recipe-check"><strong>Revisión humana obligatoria:</strong> ${escapeHtml(r.humanCheck)}</p>` : ""}
   ${r.privacyGuard ? `<p class="muted recipe-guard"><strong>Guardarraíl AIJuris:</strong> ${escapeHtml(r.privacyGuard)}</p>` : ""}
@@ -1180,6 +1187,7 @@ export function renderArticle(post, navigation, version = "v1.0.0") {
 <meta property="og:url" content="${escapeHtml(canonical)}">
 ${absoluteImage ? `<meta property="og:image" content="${escapeHtml(absoluteImage)}">\n` : ""}<meta name="twitter:card" content="${absoluteImage ? "summary_large_image" : "summary"}">
 <link rel="canonical" href="${escapeHtml(canonical)}">
+<link rel="alternate" type="application/rss+xml" title="AIEvolutio — Guías prácticas" href="https://aievolutio.com/feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
@@ -1571,6 +1579,56 @@ ${allEntries
 `;
 }
 
+function escapeXml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
+function toRssDate(dateStr) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(String(dateStr || ""))) {
+    return new Date(`${dateStr}T09:00:00Z`).toUTCString();
+  }
+  return new Date().toUTCString();
+}
+
+export function generateRssFeed(posts = []) {
+  const latest = posts.slice(0, 20);
+  const lastBuildDate = latest[0]?.date ? toRssDate(latest[0].date) : new Date().toUTCString();
+  const itemsXml = latest
+    .map((post) => {
+      const link = `${articleBaseUrl}/${articleUrl(post)}`;
+      const summary = post.clarityNote || post.excerpt || postSummary(post.body, 260);
+      const category = post.category || "Guías prácticas";
+      return `    <item>
+      <title>${escapeXml(post.title || "Artículo AIEvolutio")}</title>
+      <link>${escapeXml(link)}</link>
+      <guid isPermaLink="true">${escapeXml(link)}</guid>
+      <pubDate>${escapeXml(toRssDate(post.date))}</pubDate>
+      <category>${escapeXml(category)}</category>
+      <description>${escapeXml(summary)}</description>
+    </item>`;
+    })
+    .join("\n");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AIEvolutio — Guías prácticas de IA para pymes y ciudadanía</title>
+    <link>${articleBaseUrl}/blog.html</link>
+    <atom:link href="${articleBaseUrl}/feed.xml" rel="self" type="application/rss+xml" />
+    <description>Guías paso a paso en español llano, recetas de 15 minutos y criterio ético (RGPD y AI Act) de AIEvolutio. 100 % operado por IA.</description>
+    <language>es-es</language>
+    <lastBuildDate>${escapeXml(lastBuildDate)}</lastBuildDate>
+${itemsXml}
+  </channel>
+</rss>
+`;
+}
+
 export function renderArticleAlias(aliasPath, targetPath) {
   const target = path.posix.relative(path.posix.dirname(aliasPath), targetPath);
   if (!target || target.startsWith("../")) {
@@ -1818,6 +1876,10 @@ export async function buildSite() {
   const sitemapXml = generateSitemap(posts);
   await writeFile(path.join(outputRoot, "sitemap.xml"), sitemapXml, "utf8");
   await writeFile(path.join(repoRoot, "sitemap.xml"), sitemapXml, "utf8");
+
+  const rssXml = generateRssFeed(posts);
+  await writeFile(path.join(outputRoot, "feed.xml"), rssXml, "utf8");
+  await writeFile(path.join(repoRoot, "feed.xml"), rssXml, "utf8");
 
   return {
     pages: pages.map(({ file }) => file),

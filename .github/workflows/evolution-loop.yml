@@ -60,7 +60,7 @@ jobs:
           workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
           token_format: access_token
-          access_token_scopes: https://www.googleapis.com/auth/analytics.readonly
+          access_token_scopes: ${{ vars.GSC_SITE_URL != '' && 'https://www.googleapis.com/auth/analytics.readonly,https://www.googleapis.com/auth/webmasters.readonly' || 'https://www.googleapis.com/auth/analytics.readonly' }}
           create_credentials_file: false
 
       - name: 3A. Fase 1 — Investigación de Frontera, EmoInsight y Avance Técnico del Roadmap (Commit 1)
@@ -70,6 +70,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
           GA4_ACCESS_TOKEN: ${{ steps.google-auth.outputs.access_token }}
+          GSC_SITE_URL: ${{ vars.GSC_SITE_URL }}
           INPUT_MODE: ${{ inputs.mode }}
           INPUT_AUTHOR: ${{ inputs.author }}
         run: |
@@ -153,6 +154,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
           GA4_ACCESS_TOKEN: ${{ steps.google-auth.outputs.access_token }}
+          GSC_SITE_URL: ${{ vars.GSC_SITE_URL }}
           INPUT_MODE: ${{ inputs.mode }}
           INPUT_AUTHOR: ${{ inputs.author }}
         run: |
@@ -261,12 +263,13 @@ jobs:
             exit 1
           fi
 
-      - name: 5. Observabilidad Diaria y Gestión de Incidencias ci-blocked
+      - name: 5. Observabilidad Semanal Consolidada y Gestión de Incidencias ci-blocked
         if: always() && (github.event_name != 'workflow_dispatch' || inputs.mode != 'audit-only')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TODAY=$(date -u +'%Y-%m-%d')
+          WEEK_ID=$(date -u +'%G-W%V')
 
           if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             DIGEST_FILE="docs/daily-digest.md"
@@ -274,12 +277,17 @@ jobs:
               DIGEST_FILE="/tmp/daily-digest-latest.md"
             fi
             if [ -f "$DIGEST_FILE" ]; then
-              ISSUE_TITLE="📊 Informe Evolutivo AIEvolutio — $TODAY"
-              EXISTING_ISSUE=$(gh issue list --search "$ISSUE_TITLE in:title" --state open --json number --jq '.[0].number' || echo "")
+              gh label create "weekly-digest" --color "1E6091" --description "Informe semanal consolidado de evolución autónoma" --force || true
+              ISSUE_TITLE="📊 Informe Semanal AIEvolutio — $WEEK_ID"
+              EXISTING_ISSUE=$(gh issue list --label "weekly-digest" --search "$ISSUE_TITLE in:title" --state open --json number --jq '.[0].number' || echo "")
               if [ -n "$EXISTING_ISSUE" ]; then
                 gh issue comment "$EXISTING_ISSUE" --body-file "$DIGEST_FILE" || true
               else
-                gh issue create --title "$ISSUE_TITLE" --body-file "$DIGEST_FILE" || true
+                OLD_DIGESTS=$(gh issue list --label "weekly-digest" --state open --json number --jq '.[].number' || echo "")
+                for OLD_ISS in $OLD_DIGESTS; do
+                  gh issue close "$OLD_ISS" --comment "Ciclo semanal archivado automáticamente al abrir el informe de $WEEK_ID." || true
+                done
+                gh issue create --title "$ISSUE_TITLE" --label "weekly-digest" --body-file "$DIGEST_FILE" || true
               fi
             fi
           fi

@@ -982,6 +982,32 @@
       const stateEl = document.getElementById("maturity-level-label");
       const descEl = document.getElementById("maturity-prescription");
       const ctaEl = document.getElementById("maturity-cta-link");
+      const recipeLinkEl = document.getElementById("maturity-recipe-link");
+
+      const recipeByPriority = {
+        facturas: {
+          href: "equipo.html#receta-aifactura-extraccion-lotes",
+          label: "Abrir receta de 15 min: AIFactura (0 €)",
+        },
+        respuestas: {
+          href: "equipo.html#receta-airespuestas-aviso-fuera-horario",
+          label: "Abrir receta de 15 min: AIRespuestas (0 €)",
+        },
+        presupuestos: {
+          href: "equipo.html#receta-aioferta-voz-a-presupuesto",
+          label: "Abrir receta de 15 min: AIOferta (0 €)",
+        },
+        criterio: {
+          href: "equipo.html#receta-aijuris-auditoria-clausulas-proveedor",
+          label: "Abrir receta de 15 min: auditar proveedores (0 €)",
+        },
+      };
+
+      if (recipeLinkEl) {
+        const match = recipeByPriority[choices.priority] || recipeByPriority.facturas;
+        recipeLinkEl.href = match.href;
+        recipeLinkEl.textContent = match.label;
+      }
 
       if (scoreEl) scoreEl.textContent = `${avg} %`;
 
@@ -1292,6 +1318,13 @@
           const original = btn.textContent;
           btn.textContent = "Plantilla copiada";
           if (statusEl) statusEl.textContent = "Plantilla copiada al portapapeles.";
+          if (typeof window.gtag === "function") {
+            window.gtag("event", "recipe_copy", {
+              recipe_id: btn.getAttribute("data-recipe-id") || "unknown",
+              worker: btn.getAttribute("data-worker") || "AIWorker",
+              event_category: "aiworkers",
+            });
+          }
           setTimeout(() => {
             btn.textContent = original || "Copiar plantilla";
           }, 2200);

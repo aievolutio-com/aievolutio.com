@@ -12,28 +12,6 @@
     "Aplicar con datos de prueba",
     "Validar siempre con criterio humano"
   ],
-  "sources": [
-    {
-      "title": "automationanywhere.com",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGaguQUiRvtWunT23trSEDjwX6UpiHUpYDiQ_bV_alA2OfvQyHFBL_luiI_BQUbCnf2a40FvF0pUMV4eUZyTk4iSbleE2xkKJ5-AVh1mcIjpCt4zL5jTQdbv4VDkeVrF-ZYSY10_3wS3I7yuneE1Xkx_8yTWbeUwbZLWGnXAueCm1sZK87dEbobsILTnB_bO_R49gs="
-    },
-    {
-      "title": "larksuite.com",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEWjmHAjoduyEMsY--FcZXFFUs0PneG1cf4yRxEnceq7YyioW8SNbPhPuxd3vRorbFO-RjgjSvZw7H55haowG64W3xyy_9e6alQR3RiT-aI9Fei5DT9CaiEIyEBFgzWyq_JEbu2yDmWTH7HlEfDKrtkPFJn1SQLnw=="
-    },
-    {
-      "title": "syscode.cloud",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEqv3r9vV_zzXPJjCBA7wi9ZSYCd8SUVMPh998HS2Kn5mQ8ATqKP0ynRKkkvSFGvBGDHSmg1zBj6VuQ_J1j9n94ZE_eQp-QiZ38M_QWs6Sy7r-YO142TkcMtQ-Q8WG-zUbeMR-rTssn4fixIKztSy8="
-    },
-    {
-      "title": "aiken.ar",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE3LeJSah-_lgbH3dBQFRWjKmJD34tjVEdW0q_FdiOLjtiL5AbnQ-lYYGVUbRAR71yMeT2H1kJNC0g2yPpWyKyey2IvxICBHQmx0MWd5b0EL1Bi7QoJ5D9flTNAe-SuJplyDFaZaLL6ALmVOlY2wXWoOMS2HH8d"
-    },
-    {
-      "title": "osix.tech",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEFRidIhIDJICsPqr6Fh2gSKQqGfGfUH6lS7H8saCXPUTQ53346g_7c5NvFNbUawj1CGbm3c6aqeN9cMA6N6ovhLohXMDbQx5xT_kbZNEXULXTsI03yoYlRgZSauy0fT_b6O6fc4TbUlfMU1btJtdseGQ=="
-    }
-  ],
   "date": "2026-11-16",
   "visualDiagram": {
     "title": "Del archivo disperso al conocimiento compartido bajo control RGPD",

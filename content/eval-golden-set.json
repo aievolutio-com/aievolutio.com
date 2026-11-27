@@ -1,0 +1,59 @@
+{
+  "version": "1.5.0",
+  "description": "Golden Dataset de evaluación adversarial (Eval-Driven Development) para evitar deriva semántica y LLM slop en AIEvolutio.",
+  "goodSamples": [
+    {
+      "id": "gold-diccionario-sin-miedo",
+      "title": "Diccionario sin miedo: qué son el protocolo MCP, las bases vectoriales y los modelos locales",
+      "opening": "Muchas propuestas comerciales mezclan siglas técnicas para presentar un proyecto sencillo como una obra imposible. Entender cada pieza con objetos cotidianos te devuelve el control en menos de una tarde y sin cuotas.",
+      "expectedPass": true
+    },
+    {
+      "id": "gold-educacion-criterio",
+      "title": "Educación y pensamiento crítico en casa: cómo enseñar a cuestionar a la IA sin delegar el criterio",
+      "opening": "**Cuando un estudiante o un aprendiz entra por primera vez ante un asistente conversacional, la tentación inicial casi siempre es la misma: copiar el enunciado del ejercicio, recoger la respuesta pulida y entregarla tal cual.**",
+      "expectedPass": true
+    },
+    {
+      "id": "gold-facturas-local",
+      "title": "Ordenar facturas y albaranes sin suscripciones fijas: guía local paso a paso para autónomos",
+      "opening": "**Al acercarse cada cierre trimestral, miles de autónomos y pequeñas empresas reviven exactamente la misma escena:** carpetas llenas de archivos descargados con nombres crípticos y tickets en el salpicadero.",
+      "expectedPass": true
+    }
+  ],
+  "badSlopSamples": [
+    {
+      "id": "slop-dinamico-ecosistema",
+      "title": "IA para la transformación integral del negocio",
+      "opening": "En el dinámico ecosistema empresarial actual, la inteligencia artificial ha trascendido su percepción inicial para desbloquear todo el potencial de las empresas.",
+      "expectedPass": false,
+      "expectedReason": "Cliché corporativo en lista negra (LLM slop)"
+    },
+    {
+      "id": "slop-promesa-futurista",
+      "title": "Arquitecturas modulares de agentes autónomos bajo el AI Act",
+      "opening": "La inteligencia artificial ha dejado de ser una promesa futurista para convertirse en una herramienta estratégica indispensable.",
+      "expectedPass": false,
+      "expectedReason": "Cliché repetitivo en apertura (LLM slop)"
+    },
+    {
+      "id": "slop-saas-sin-alternativa",
+      "title": "Cómo mejorar la atención usando herramientas comerciales",
+      "opening": "Conecta tu tienda directamente con HubSpot, Salesforce y Zendesk para automatizar todas tus ventas sin preocuparte por el coste.",
+      "expectedPass": false,
+      "expectedReason": "Recomienda SaaS privativos sin alternativa abierta 0 €"
+    },
+    {
+      "id": "slop-vertex-redirect",
+      "title": "Guía con enlaces temporales opacos",
+      "sources": [
+        {
+          "title": "hubspot.es",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQ_ejemplo_opaco"
+        }
+      ],
+      "expectedPass": false,
+      "expectedReason": "Fuente opaca de redirección Vertex AI o blog comercial SaaS"
+    }
+  ]
+}

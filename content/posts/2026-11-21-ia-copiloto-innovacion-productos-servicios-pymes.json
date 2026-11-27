@@ -12,27 +12,5 @@
     "Aplicar con datos de prueba",
     "Validar siempre con criterio humano"
   ],
-  "sources": [
-    {
-      "title": "dataknow.io",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEMVvVVLOlAtfvruin6qAfRsepLGrS5GDy1c_1lmMMZu8i52Cg7osVqKWU5LJh73N8lw2OpTBRdrU6Qhoi1b0UChyhMYHsALVvbS7hPcRI7GjElC3kcoOgB9O1e1qUhai7hmsCAUYu9z-A7uaUfCA-veQz5H51As-QRZCFUb--a-EboDqk="
-    },
-    {
-      "title": "ort.edu.uy",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHzfFlSOU7WdU1pZi1RGTiN-D0xTj1wLtk00C_29nfwv8xiKp1lt-U8gg5HfXq6cQdmuiGEU3XKxqKh8aLq9gkWkesYTNLUuUbBgUjnu8TCQuoKaHNPFqClTCb9tFIZ-yl0_mV0Yjmy-rdiUm-gGQF0Com0dKaUG8RHqAI80w=="
-    },
-    {
-      "title": "kybumo.com",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH7S-Wp6pDgjd3aKq6tlQFMMrjpLrUMP5jILoRrfwz4BS8EOJjIMUA-Cujf9brpIcF-9S8a2jKBEEwL3wJOpfvopFSlt153_G7cFIH1bE8kOTqzdUhbvxHfVtloVN6J-4nIbC1cyGv8uS_VM8Ax9C2h79iORYHAMTp-4EP1zw81welPqiu1apePUWGt0QrOqfpJ612p"
-    },
-    {
-      "title": "anovo.es",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGjNhTWElKYiQmFnY5LIzwJGaEbFIkey_MfzBA6bSTAnVidwJJxesI0qmCY8E5ZlaEVWm-5UJltF4P2qAGG23lTHLtCoRTvZdsdxLgo6462HOc3Vmn-n-03ESRCikeamI8KLN4nU44lL_-hhkWgddxJONnK"
-    },
-    {
-      "title": "orderry.com",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG0jOi6MFyOiyKDaCR0TutBVt9u4zsLUVNW1NL4bA_NhmrUNYmL94iDrbIQheHjHWYYrRIMvJylpLEkP5XN4Sr8gByTbEnNJorKCfiu2iZCbHHbj7rgddiPDJGEAkokf_3vcgAl6Q8mQE1r6x8uDckM5erMxI7HinWnO1QRGhbBasji8vcXCCwSj6m6H9Dbr-pgc5aQsAgbjXcwog=="
-    }
-  ],
   "date": "2026-11-21"
 }

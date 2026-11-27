@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [1.5.0](https://github.com/aievolutio-com/aievolutio.com/compare/v1.4.2...v1.5.0) (2026-11-27)
+
+### Features
+
+- **Plano de Control SPM y diversidad obligatoria (`content/spm-policy.json`, `scripts/skills/spm-governor.mjs`):** Gobierno declarativo de cartera con cuotas duras por célula (`Grow 45 %`, `Transform 25 %`, `Modernize 15 %`, `Compliance/AIJuris <= 15 %` con bloqueo automático ante saturación), rotación de 8 ámbitos cotidianos de pymes y ciudadanía, y cuotas de diversidad en `content/tech-buffer.json` (`maxSameKind: 2`, `maxSameAgent: 3`, RAE sentence case).
+- **Doble filtro adversarial Anti-Slop + Jurado Sintético Pyme (`scripts/skills/anti-slop-linter.mjs`, `scripts/skills/synthetic-pyme-jury.mjs`, `content/eval-golden-set.json`):** Bloqueo determinista de clichés corporativos de IA, legibilidad española Fernández Huerta (`>= 56`), exigencia de alternativa abierta `0 €` frente a software comercial privativo, resolución/descarte de enlaces opacos de redirección `vertexaisearch.cloud.google.com` o blogs SaaS, y función de aptitud `F >= 0.80` evaluada por tres perfiles escépticos de pyme con autorreparación dirigida.
+- **Sensores exógenos privacy-first (`scripts/skills/demand-sensors.mjs`):** Lectura real de eventos de producto GA4 (`maturity_diagnosis`, `roi_calculation`, `recipe_copy`, `emo_insight_feedback`, `emo_comment_submit`) y soporte opcional de Google Search Console (`GSC_SITE_URL` + `webmasters.readonly`) sobre la misma federación OIDC de Google Cloud sin claves estáticas.
+- **Embudo directo diagnóstico → recetas de 15 minutos y canal RSS 2.0 (`feed.xml`):** Conexión dinámica de `/diagnostico.html` y `scripts/app.js` con la receta exacta en `equipo.html#recetas-aiworkers` + evento GA4 `recipe_copy`, generación de `feed.xml` (RSS 2.0 con `atom:link` y autodescubrimiento en `<head>`), y consolidación de la observabilidad de `.github/workflows/evolution-loop.yml` en una única incidencia semanal (`weekly-digest`).
+- **Saneamiento integral del archivo y las colas regenerativas (`7/7`):** Eliminación de 35 URLs opacas de redirección Vertex AI en 7 artículos históricos sin alterar URLs canónicas, saneamiento Anti-Slop (`F >= 0.89`) y reequilibrio de los 7 artículos en `content/editorial-buffer.json`, y reconstrucción diversa (`7/7`, 4 tipos y 3 agentes equilibrados) de `content/tech-buffer.json`.
+
 ## [1.4.2](https://github.com/aievolutio-com/aievolutio.com/compare/v1.4.1...v1.4.2) (2026-11-20)
 
 ### Features
