@@ -2041,7 +2041,7 @@ export async function ensureEditorialBuffer(telemetry, emoInsights, targetDate, 
   const juryLlmFn =
     options.juryFn !== undefined
       ? options.juryFn
-      : process.env.GEMINI_API_KEY || process.env.AI_API_KEY
+      : !options.generatorFn && (process.env.GEMINI_API_KEY || process.env.AI_API_KEY)
         ? repairFn
         : null;
 

@@ -85,7 +85,7 @@ jobs:
           {
             node scripts/autonomous-evolution.mjs --phase=tech &&
             npm run build:site &&
-            npm test &&
+            GEMINI_API_KEY="" AI_API_KEY="" npm test &&
             npm run format &&
             node scripts/self-heal-check.mjs &&
             npm run lint:js &&
@@ -168,7 +168,7 @@ jobs:
           {
             node scripts/autonomous-evolution.mjs $ARGS &&
             npm run build:site &&
-            npm test &&
+            GEMINI_API_KEY="" AI_API_KEY="" npm test &&
             npm run format &&
             node scripts/self-heal-check.mjs &&
             npm run lint:js &&

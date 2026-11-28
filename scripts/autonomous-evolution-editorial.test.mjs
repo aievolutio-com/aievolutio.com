@@ -257,6 +257,7 @@ test("replenishes editorial buffer up to 7 verified non-duplicate candidates and
         bufferPath,
         disableCuratedFallback: true,
         generatorFn: makeGenerator(),
+        juryFn: null,
       },
     );
 
@@ -293,6 +294,7 @@ test("replenishes editorial buffer up to 7 verified non-duplicate candidates and
         bufferPath,
         disableCuratedFallback: true,
         generatorFn: makeGenerator(),
+        juryFn: null,
       },
     );
     assert.equal(afterConsume.activeCount, 7);
