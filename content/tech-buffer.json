@@ -1,0 +1,520 @@
+{
+  "updatedAt": "2026-11-28",
+  "minThreshold": 7,
+  "targetSize": 7,
+  "items": [
+    {
+      "id": "tech-h1-diagram-decisiones-estrategicas",
+      "versionRef": "v1.4.2 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIDux",
+      "title": "Diagrama SVG nativo para la guía de decisiones estratégicas con IA en pymes",
+      "rationale": "Añadir apoyo visual escaneable al artículo del 2026-11-15 sin alterar su texto ni permalink.",
+      "payload": {
+        "slug": "ia-toma-decisiones-estrategicas-pymes-mas-alla-automatizacio",
+        "visualDiagram": {
+          "title": "De los datos dispersos a una decisión estratégica supervisada",
+          "nodes": [
+            {
+              "title": "1. Tus cifras reales",
+              "note": "Ventas, costes y notas sin salir de casa"
+            },
+            {
+              "title": "2. Síntesis asistida",
+              "note": "Patrones y escenarios claros en local"
+            },
+            {
+              "title": "3. Criterio humano",
+              "note": "Contraste de márgenes y decisión final"
+            }
+          ]
+        }
+      },
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-21"
+    },
+    {
+      "id": "tech-h1-recipe-mcp-carpeta-tarifas",
+      "versionRef": "v1.5.0 / US-203 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Receta de 15 minutos: conectar tu carpeta de tarifas en modo solo lectura con MCP",
+      "rationale": "Aterrizar la investigación de frontera sobre MCP y manual abierto en una plantilla ejecutable en equipo.html.",
+      "payload": {
+        "id": "receta-aidux-mcp-tarifas-solo-lectura",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-203",
+        "title": "Consultar tarifas vigentes desde una carpeta local en modo solo lectura",
+        "effortKey": "intermediate",
+        "effortLabel": "Bricolaje guiado · 20 min · 0 €",
+        "problem": "Evitar que un asistente invente precios desactualizados o mezcle condiciones de temporadas anteriores.",
+        "promptTemplate": "Actúa en modo solo lectura consultando únicamente el archivo tarifas-vigentes.md dentro de la carpeta autorizada. Responde a la consulta comercial citando entre paréntesis el apartado exacto de origen. Si una partida, medida o descuento no figura literalmente en el documento, escribe REQUIERE_VALORACION_HUMANA y no estimes cifras.",
+        "humanCheck": "Verifica cada apartado citado frente a tu tarifa vigente y comprueba que ninguna versión obsoleta sigue dentro de la carpeta consultada.",
+        "privacyGuard": "No incluyas nombres de clientes, NIF ni descuentos confidenciales individuales dentro de la carpeta conectada por MCP."
+      },
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-22"
+    },
+    {
+      "id": "tech-h1-diagram-conocimiento-interno",
+      "versionRef": "v1.4.2 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIJuris",
+      "title": "Diagrama SVG nativo para la guía de gestión del conocimiento interno en pymes",
+      "rationale": "Completar la capa visual Bite-Snack-Meal del artículo del 2026-11-16.",
+      "payload": {
+        "slug": "ia-gestion-conocimiento-interno-pymes-informacion-dispersa-s",
+        "visualDiagram": {
+          "title": "Del archivo disperso al conocimiento compartido bajo control RGPD",
+          "nodes": [
+            {
+              "title": "1. Carpeta limpia",
+              "note": "Manuales vigentes sin datos personales"
+            },
+            {
+              "title": "2. Índice local",
+              "note": "Búsqueda semántica en tu propia red"
+            },
+            {
+              "title": "3. Consulta citada",
+              "note": "Respuesta con enlace al documento origen"
+            }
+          ]
+        }
+      },
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-22"
+    },
+    {
+      "id": "tech-h1-glossary-autogobernanza-edge",
+      "versionRef": "v1.5.0 / US-105 / Frontier",
+      "kind": "glossary_expansion",
+      "leadAgent": "AIDux",
+      "title": "Ampliación del glosario llano con «Agente autogobernado» e «Inferencia en oficina (Edge AI)»",
+      "rationale": "Traducir a lenguaje cotidiano los hallazgos recientes del radar de frontera del 18 al 20 de noviembre.",
+      "payload": {
+        "terms": [
+          {
+            "id": "agente-local-autogobernado",
+            "term": "Agente local con autoverificación (autogobernado)",
+            "effortKey": "intermediate",
+            "effortLabel": "Bricolaje guiado · 1 tarde · 0 €",
+            "analogy": "Un colaborador metódico que, antes de entregarte un borrador, repasa él mismo su propia lista de comprobación legal y te señala cualquier hueco pendiente.",
+            "mondayUse": "Reduce errores de formato y garantiza que ningún documento incluya datos sensibles o promesas fuera de protocolo antes de tu revisión final."
+          },
+          {
+            "id": "edge-ai-oficina",
+            "term": "IA en el propio equipo de oficina (Edge AI)",
+            "effortKey": "basic",
+            "effortLabel": "Estantería sencilla · 30 min · 0 €",
+            "analogy": "Cocinar en tu propia cocina en lugar de pedir siempre comida a domicilio: controlas los ingredientes, pagas una sola vez los utensilios y nada sale por la puerta.",
+            "mondayUse": "Permite procesar actas, contratos y presupuestos en un ordenador de oficina o mini-PC sin depender de cuotas por usuario ni conexión continua."
+          }
+        ]
+      },
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-23"
+    },
+    {
+      "id": "tech-h1-diagram-orquestacion-local",
+      "versionRef": "v1.4.2 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIDux",
+      "title": "Diagrama SVG nativo para plataformas de orquestación local en pymes",
+      "rationale": "Dotar de esquema de arquitectura sobria al artículo del 2026-11-17.",
+      "payload": {
+        "slug": "plataformas-orquestacion-local-pymes-autonomia-soberania-dat",
+        "visualDiagram": {
+          "title": "Orquestación local sobria: carpetas, conector MCP y revisión humana",
+          "nodes": [
+            {
+              "title": "1. Reglas y carpetas",
+              "note": "Permisos de solo lectura por área"
+            },
+            {
+              "title": "2. Orquestador local",
+              "note": "Enlaza modelo abierto y plantillas"
+            },
+            {
+              "title": "3. Registro auditable",
+              "note": "Trazabilidad y aprobación personal"
+            }
+          ]
+        }
+      },
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-24"
+    },
+    {
+      "id": "tech-h1-faq-ai-act-semaforo-pymes",
+      "versionRef": "v1.5.0 / US-005 / AIJuris",
+      "kind": "article_faq_enrichment",
+      "leadAgent": "AIJuris",
+      "title": "Bloque FAQPage GEO verificado para el semáforo legal del AI Act en pymes",
+      "rationale": "Activar marcado estructurado FAQPage JSON-LD en una guía jurídica clave de alta demanda.",
+      "payload": {
+        "slug": "tu-pyme-y-el-ai-act-semaforo-legal-ia-pymes",
+        "faq": [
+          {
+            "q": "¿El Reglamento europeo de IA prohíbe a una pyme usar asistentes para redactar correos o resumir textos?",
+            "a": "No. Las herramientas de apoyo interno revisadas por personas se sitúan en riesgo mínimo; basta con respetar el RGPD, evitar datos confidenciales en cuentas abiertas y mantener supervisión humana."
+          },
+          {
+            "q": "¿Cuándo obliga el AI Act a avisar explícitamente al cliente de que interactúa con una IA?",
+            "a": "Cuando el cliente conversa con un asistente automático visible en la web o recibe respuestas generadas automáticamente sin edición previa, conforme a las obligaciones de transparencia del reglamento europeo."
+          },
+          {
+            "q": "¿Qué exige la obligación de alfabetización en IA para pequeñas empresas?",
+            "a": "Que las personas que manejan herramientas de IA en la empresa reciban orientación práctica proporcional a su puesto sobre límites, verificación de resultados y protección de datos."
+          }
+        ]
+      },
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-25"
+    },
+    {
+      "id": "tech-h1-recipe-aijuris-revision-clausulas",
+      "versionRef": "v1.5.0 / US-304 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIJuris",
+      "title": "Receta de 15 minutos: revisar cláusulas de confidencialidad y proveedores IA en local",
+      "rationale": "Convertir el escudo contractual de AIJuris en plantilla ejecutable dentro de equipo.html.",
+      "payload": {
+        "id": "receta-aijuris-auditoria-clausulas-proveedor",
+        "worker": "AIJuris",
+        "versionRef": "v1.5.0 / US-306",
+        "title": "Detectar riesgos de privacidad y permanencia en condiciones de proveedores digitales",
+        "effortKey": "basic",
+        "effortLabel": "Estantería sencilla · 15 min · 0 €",
+        "problem": "Aceptar actualizaciones de software con funciones de IA sin detectar si usan datos de la empresa para entrenar modelos o imponen permanencias ocultas.",
+        "promptTemplate": "Analiza en entorno local el texto adjunto de condiciones de servicio o anexo RGPD. Crea una tabla con cuatro columnas: aspecto_revisado, cita_literal_del_documento, riesgo_para_pyme (bajo/medio/alto) y pregunta_para_el_proveedor. Revisa expresamente: entrenamiento con datos de cliente, subencargados fuera del Espacio Económico Europeo, plazo de borrado tras baja y derecho de exportación en formato abierto. Si un punto no aparece en el texto, escribe NO_CONSTA_EN_CONTRATO.",
+        "humanCheck": "Coteja cada cita literal en el documento original y consulta con tu asesoría jurídica antes de firmar contratos de importe relevante o datos sensibles.",
+        "privacyGuard": "Ejecuta este análisis en local o elimina previamente nombres de clientes, precios confidenciales y datos identificativos de terceros."
+      },
+      "used": true,
+      "queuedAt": "2026-11-20",
+      "executedAt": "2026-11-26"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-mcp-local",
+      "versionRef": "v1.5.0 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Receta MCP de AIDux: Conexión de Agente Local con Repositorio Interno",
+      "rationale": "Implementa una pauta operativa mediante el protocolo Model Context Protocol (MCP) para que un modelo local acceda de forma segura a carpetas internas de la pyme sin depender de la nube, cumpliendo los criterios de gobernanza y privacidad del Reglamento General de Protección de Datos.",
+      "payload": {
+        "id": "receta-aidux-mcp-local",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-306",
+        "title": "Configuración rápida de servidor MCP local para acceso a documentos",
+        "effortKey": "intermediate",
+        "effortLabel": "Intermedio (15 minutos)",
+        "problem": "La pyme necesita que su modelo local de lenguaje consulte normativas y plantillas internas almacenadas en un servidor local sin exponer datos confidenciales a proveedores externos.",
+        "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Configura el archivo de conexión JSON para el protocolo MCP en el entorno local, estableciendo una ruta de lectura restringida a la carpeta de procesos internos y aplicando los filtros de privacidad necesarios.",
+        "humanCheck": "Verificar que la ruta asignada al servidor MCP sea estrictamente local y que no existan credenciales de servicios en la nube expuestas en el archivo de configuración.",
+        "privacyGuard": "Garantizar que todo el tráfico de contexto permanezca en la infraestructura local bajo el marco de minimización de datos del AI Act."
+      },
+      "used": true,
+      "queuedAt": "2026-11-21",
+      "executedAt": "2026-11-27"
+    },
+    {
+      "id": "tech-h1-diagram-agentes-autogobernados",
+      "versionRef": "v1.5.0 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIJuris",
+      "title": "Diagrama SVG nativo para agentes locales autogobernados con AI Act y RGPD",
+      "rationale": "Completar el apoyo visual escaneable Bite-Snack-Meal del artículo publicado el 2026-11-20.",
+      "payload": {
+        "slug": "agentes-locales-auto-gobernados-autonomia-operativa-pymes-cu",
+        "visualDiagram": {
+          "title": "Ciclo de control en un agente local autogobernado",
+          "nodes": [
+            {
+              "title": "1. Regla previa",
+              "note": "Límites RGPD y permisos por carpeta"
+            },
+            {
+              "title": "2. Autoverificación",
+              "note": "Comprueba fuentes y formato antes de salir"
+            },
+            {
+              "title": "3. Firma humana",
+              "note": "Registro auditable y validación final"
+            }
+          ]
+        }
+      },
+      "used": true,
+      "queuedAt": "2026-11-27",
+      "executedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-faq-slm-locales-oficina",
+      "versionRef": "v1.5.0 / US-005 / US-205",
+      "kind": "article_faq_enrichment",
+      "leadAgent": "AIDux",
+      "title": "Bloque FAQPage GEO verificado sobre modelos locales compactos (SLM) en oficina",
+      "rationale": "Mejorar citabilidad en motores generativos de la guía sobre hardware local sin GPU dedicada.",
+      "payload": {
+        "slug": "modelos-slm-locales-alto-rendimiento-pymes",
+        "faq": [
+          {
+            "q": "¿Necesito comprar tarjetas gráficas caras para probar un modelo de IA local en mi despacho?",
+            "a": "No para tareas cotidianas de texto, clasificación o resumen: los modelos compactos cuantizados funcionan en ordenadores de oficina actuales con memoria suficiente y sin cuotas mensuales."
+          },
+          {
+            "q": "¿Un modelo ejecutado en local sigue funcionando si falla internet en el taller o la oficina?",
+            "a": "Sí. Una vez descargado el modelo abierto en el equipo, todo el procesamiento ocurre en local sin depender de conexión externa ni de servidores de terceros."
+          },
+          {
+            "q": "¿Por qué la ejecución local facilita el cumplimiento del RGPD?",
+            "a": "Porque los borradores, facturas y documentos internos permanecen dentro de tu propia infraestructura, minimizando transferencias internacionales de datos y riesgos de entrenamiento no autorizado."
+          }
+        ]
+      },
+      "used": true,
+      "queuedAt": "2026-11-27",
+      "executedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-recipe-aiescudo-reclamaciones-masa",
+      "versionRef": "v1.5.0 / US-304 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIJuris",
+      "title": "Receta de 15 minutos: filtrar reclamaciones generadas en masa sin descuidar al cliente real",
+      "rationale": "Anticipar utilidades prácticas de AIEscudo (US-304) directamente en la biblioteca de equipo.html.",
+      "payload": {
+        "id": "receta-aiescudo-filtro-reclamaciones",
+        "worker": "AIJuris",
+        "versionRef": "v1.5.0 / US-304",
+        "title": "Protocolo de tres filtros ante escritos extensos o reclamaciones automatizadas",
+        "effortKey": "basic",
+        "effortLabel": "Estantería sencilla · 15 min · 0 €",
+        "problem": "Perder horas contestando escritos intimidatorios largos sin datos verificables de compra mientras clientes reales esperan respuesta.",
+        "promptTemplate": "Lee el mensaje adjunto (sin datos personales sensibles) y extrae únicamente hechos verificables: número de factura o pedido mencionado, fecha de servicio, incidencia concreta descrita y tono de urgencia. Si no aporta ninguna referencia de operación real, redacta un acuse de recibo cortés de tres líneas solicitando número de factura o fecha aproximada para poder atender el caso con rigor.",
+        "humanCheck": "Comprueba siempre primero en tu registro de ventas si el pedido existe realmente; si es una incidencia real, prioriza la llamada o atención humana cercana.",
+        "privacyGuard": "Conserva el resguardo fechado del acuse de recibo en tu carpeta de atención al cliente y nunca expongas datos de terceros en plantillas externas."
+      },
+      "used": true,
+      "queuedAt": "2026-11-27",
+      "executedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-glossary-alfabetizacion-tco",
+      "versionRef": "v1.5.0 / US-105 / US-206",
+      "kind": "glossary_expansion",
+      "leadAgent": "AIVisio",
+      "title": "Ampliación del glosario llano con «Alfabetización en IA (art. 4 AI Act)» y «Coste real por uso»",
+      "rationale": "Aterrizar conceptos recurrentes en las auditorías de costes y cumplimiento de pymes.",
+      "payload": {
+        "terms": [
+          {
+            "id": "alfabetizacion-ia-art4",
+            "term": "Alfabetización en IA (artículo 4 del AI Act)",
+            "effortKey": "basic",
+            "effortLabel": "Hábito en equipo · 1 hora · 0 €",
+            "analogy": "Explicar las normas básicas de seguridad antes de estrenar una máquina en el taller: no hace falta fabricar el motor, pero sí saber dónde está el botón de parada y qué no introducir dentro.",
+            "mondayUse": "Consiste en dar a tu equipo una guía breve de una página sobre qué datos nunca subir, cómo comprobar resultados y cuándo pedir revisión humana."
+          },
+          {
+            "id": "coste-real-por-uso",
+            "term": "Coste real por uso frente a suscripción fija",
+            "effortKey": "basic",
+            "effortLabel": "Hoja de cálculo · 15 min · 0 €",
+            "analogy": "Comparar pagar un abono mensual caro de gimnasio al que vas dos tardes frente a pagar una entrada sencilla o entrenar en casa con tu propio material.",
+            "mondayUse": "Permite auditar si el recargo mensual «con IA» de tu software habitual compensa el número real de usos semanales de tu plantilla."
+          }
+        ]
+      },
+      "used": true,
+      "queuedAt": "2026-11-27",
+      "executedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-faq-sobreprecio-etiqueta-ia",
+      "versionRef": "v1.5.0 / US-005 / US-206",
+      "kind": "article_faq_enrichment",
+      "leadAgent": "AIVisio",
+      "title": "Bloque FAQPage GEO verificado para detectar sobreprecios en herramientas «inteligentes»",
+      "rationale": "Reforzar la utilidad económica del artículo del 2026-11-12 y enlazarlo con calculadora.html.",
+      "payload": {
+        "slug": "sobreprecio-etiqueta-inteligente-evaluar-precios-herramienta",
+        "faq": [
+          {
+            "q": "¿Cómo saber si el suplemento de IA de mi programa habitual compensa a mi empresa?",
+            "a": "Divide el importe mensual extra entre el número real de veces que tu equipo utiliza esa función durante dos semanas y comprueba si libera tiempo medible o se resuelve con una plantilla limpia sin cuota."
+          },
+          {
+            "q": "¿Qué debo preguntar al proveedor antes de aceptar una subida de plan por funciones inteligentes?",
+            "a": "Confirma por escrito si puedes mantener tu plan anterior, dónde se procesan los datos, si quedan excluidos de entrenamiento y si podrás exportar tus historiales en formatos abiertos estándar."
+          }
+        ]
+      },
+      "used": false,
+      "queuedAt": "2026-11-27"
+    },
+    {
+      "id": "tech-h1-recipe-aivisio-auditoria-suscripciones",
+      "versionRef": "v1.5.0 / US-206 / US-306",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIVisio",
+      "title": "Receta de 15 minutos: auditar cuotas mensuales con etiqueta IA antes de renovar",
+      "rationale": "Acompañar la calculadora de carga horaria con una plantilla ejecutable de ahorro directo para autónomos y pymes.",
+      "payload": {
+        "id": "receta-aivisio-auditoria-cuotas-ia",
+        "worker": "AIVisio",
+        "versionRef": "v1.5.0 / US-206",
+        "title": "Revisar suplementos de software y detectar suscripciones infrautilizadas",
+        "effortKey": "basic",
+        "effortLabel": "Estantería sencilla · 15 min · 0 €",
+        "problem": "Pagar cada mes suplementos por usuario en herramientas de oficina o correo sin haber comprobado cuántas veces reales las usa el equipo.",
+        "promptTemplate": "Recibe esta tabla anónima de nuestras licencias actuales (herramienta, coste mensual total, número de personas que la usaron en los últimos quince días y tarea concreta). Clasifica cada suscripción en tres grupos: mantener por uso probado, bajar al plan básico sin suplemento IA o sustituir por plantilla local de 0 €. Redacta además un correo cortés de tres líneas para solicitar al proveedor la vuelta al plan estándar sin penalización.",
+        "humanCheck": "Contrasta el listado con los recibos bancarios del último trimestre y pregunta al equipo antes de cancelar cualquier herramienta crítica.",
+        "privacyGuard": "Introduce únicamente nombres de programas, importes aproximados y recuentos anónimos; no pegues extractos bancarios ni datos de empleados."
+      },
+      "used": false,
+      "queuedAt": "2026-11-27"
+    },
+    {
+      "id": "tech-h1-diagram-feedback-clientes-pyme",
+      "versionRef": "v1.5.0 / US-004 / US-005",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIDux",
+      "title": "Diagrama SVG nativo para convertir reseñas y comentarios de clientes en mejoras",
+      "rationale": "Dotar de esquema visual escaneable al artículo del 2026-11-25 sin alterar su texto ni permalink.",
+      "payload": {
+        "slug": "ia-feedback-clientes-acciones-pyme",
+        "visualDiagram": {
+          "title": "De reseñas y correos sueltos a una mejora semanal real",
+          "nodes": [
+            {
+              "title": "1. Recogida anónima",
+              "note": "Reseñas y dudas sin nombres privados"
+            },
+            {
+              "title": "2. Agrupación local",
+              "note": "Tres patrones repetidos de la semana"
+            },
+            {
+              "title": "3. Ajuste en equipo",
+              "note": "Una mejora concreta el lunes siguiente"
+            }
+          ]
+        }
+      },
+      "used": false,
+      "queuedAt": "2026-11-27"
+    },
+    {
+      "id": "tech-h1-glossary-soberania-documental",
+      "versionRef": "v1.5.0 / US-307",
+      "kind": "glossary_expansion",
+      "leadAgent": "AIJuris",
+      "title": "Glosario de soberanía documental y procesamiento local para pymes",
+      "rationale": "Ampliación del glosario técnico enfocada en conceptos jurídicos y técnicos sobre la gestión autónoma de facturas y albaranes sin dependencia de la nube, alineada con las directrices de privacidad de AIDux y AIJuris.",
+      "payload": {
+        "terms": [
+          {
+            "id": "term-soberania-documental",
+            "term": "Soberanía documental",
+            "effortKey": "basic",
+            "effortLabel": "Definición táctica · 10 min",
+            "analogy": "Guardar las llaves de tu caja fuerte en tu propio llavero en vez de alquilar una taquilla en el extranjero.",
+            "mondayUse": "Garantizar que ningún dato fiscal o albarán de la pyme abandona el disco duro local durante el procesamiento automatizado."
+          }
+        ]
+      },
+      "used": false,
+      "queuedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-diagram-ia-copiloto-innovacion",
+      "versionRef": "v1.5.0 / US-310",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIDux",
+      "title": "Diagrama de arquitectura para la innovación guiada por IA en pymes",
+      "rationale": "Incorpora un esquema visual estructurado en el artículo sobre la ia como copiloto para la innovación de productos y servicios, facilitando la comprensión operativa del flujo de trabajo con asistencia local según los criterios de diseño inteligente.",
+      "payload": {
+        "slug": "ia-copiloto-innovacion-productos-servicios-pymes",
+        "visualDiagram": {
+          "title": "Flujo de ideación asistida por IA sobria",
+          "nodes": [
+            {
+              "title": "Ingesta de contexto",
+              "note": "Recopilación local de notas de campo y requerimientos del servicio sin exposición externa."
+            },
+            {
+              "title": "Asistencia estructurada",
+              "note": "Uso de plantillas y modelos locales para generar primeras hipótesis de valor."
+            },
+            {
+              "title": "Validación experta",
+              "note": "Criterio humano obligatorio para filtrar y decidir el desarrollo final de la propuesta."
+            }
+          ]
+        }
+      },
+      "used": false,
+      "queuedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-protocolos-oficios",
+      "versionRef": "v1.5.0 / US-307",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Receta para AIDux: plantillas de protocolos y listas de verificación locales en oficios",
+      "rationale": "Implementa una solución ejecutable sin costes de nube para que autónomos y pymes de oficios estandaricen sus procesos, reduzcan errores y agilicen la formación interna mediante plantillas generadas con IA local.",
+      "payload": {
+        "id": "aidux-recipe-protocolos-oficios",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-307",
+        "title": "Generación local de protocolos y listas de verificación para oficios",
+        "effortKey": "intermediate",
+        "effortLabel": "Estantería sencilla · 25 min · 0 €",
+        "problem": "Los autónomos y pequeñas empresas de oficios pierden tiempo y calidad por falta de estandarización en los servicios, lo que genera errores por omisión y complica la formación de nuevos empleados.",
+        "promptTemplate": "Actúa como AIDux, asistente experto en diseño de procesos operativos para pymes. Con base en la descripción del servicio de oficio proporcionada por el usuario, redacta un protocolo paso a paso y una lista de verificación detallada para evitar errores comunes, asegurar la calidad percibida y facilitar la incorporación de personal.",
+        "humanCheck": "Revisar que la lista de verificación cubra todos los riesgos técnicos específicos del oficio y que los pasos respeten la normativa de seguridad aplicable.",
+        "privacyGuard": "Procesamiento estrictamente local en el dispositivo de la empresa, sin enviar datos de clientes ni descripciones operativas a servidores externos."
+      },
+      "used": false,
+      "queuedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-glossary-flujo-contable-sobrio",
+      "versionRef": "v1.5.0 / US-307",
+      "kind": "glossary_expansion",
+      "leadAgent": "AIJuris",
+      "title": "Expansión del glosario con conceptos de pre-organización contable local y soberanía documental",
+      "rationale": "Incorpora términos clave sobre la automatización contable basada en IA sobria para dotar de base conceptual a pymes y autónomos, alineándose con las exigencias del AI Act y garantizando la privacidad en local.",
+      "payload": {
+        "terms": [
+          {
+            "id": "term-pre-organizacion-contable",
+            "term": "pre-organización contable local",
+            "effortKey": "basic",
+            "effortLabel": "Estantería sencilla · 10 min · 0 €",
+            "analogy": "Es como tener un archivador inteligente en tu propia mesa que clasifica los tickets antes de dárselos al gestor.",
+            "mondayUse": "Aplicar plantillas locales para ordenar facturas PDF en carpetas específicas antes de cualquier validación digital."
+          },
+          {
+            "id": "term-validacion-documental-sobria",
+            "term": "validación documental sobria",
+            "effortKey": "intermediate",
+            "effortLabel": "Estantería sencilla · 15 min · 0 €",
+            "analogy": "Equivale a revisar la factura con una lupa propia sin compartir datos sensibles con servidores externos.",
+            "mondayUse": "Verificar campos clave de impuestos y proveedores mediante modelos locales sin coste de suscripción."
+          }
+        ]
+      },
+      "used": false,
+      "queuedAt": "2026-11-28"
+    }
+  ]
+}

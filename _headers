@@ -1,0 +1,7 @@
+/*
+	X-Frame-Options: DENY
+	X-Content-Type-Options: nosniff
+	Referrer-Policy: no-referrer
+	Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+	Permissions-Policy: geolocation=(), microphone=()
+	Content-Security-Policy: default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https://aievolutio.com https://www.google-analytics.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'

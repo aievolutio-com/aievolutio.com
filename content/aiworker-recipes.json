@@ -1,0 +1,86 @@
+[
+  {
+    "id": "receta-aifactura-extraccion-lotes",
+    "worker": "AIFactura",
+    "versionRef": "v1.5.0 / US-301",
+    "title": "Extraer datos clave de diez facturas a una tabla CSV en local",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 15 min · 0 €",
+    "problem": "Copiar a mano fechas, bases imponibles e IVA de facturas recibidas antes del cierre trimestral con la gestoría.",
+    "promptTemplate": "Actúa como asistente contable local en modo solo lectura. Extrae de las facturas adjuntas una tabla CSV con las columnas: fecha_emision;proveedor;nif_proveedor;base_imponible;cuota_iva;total_factura;observaciones. Si algún campo no es legible o presenta duda, escribe literalmente REQUIERE_REVISION en lugar de estimarlo.",
+    "humanCheck": "Comprueba frente al PDF original que la suma de bases e impuestos de los diez documentos coincide exactamente antes de enviar el archivo a tu gestoría.",
+    "privacyGuard": "Ejecuta esta plantilla únicamente en un modelo local sin conexión o en una cuenta profesional con retención cero y cláusula RGPD (art. 28)."
+  },
+  {
+    "id": "receta-airespuestas-aviso-fuera-horario",
+    "worker": "AIRespuestas",
+    "versionRef": "v1.5.0 / US-302",
+    "title": "Aviso transparente fuera de horario con filtro de urgencias reales",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 15 min · 0 €",
+    "problem": "Recibir mensajes comerciales o de clientes por la noche que interrumpen el descanso cuando casi ninguno constituye una urgencia real.",
+    "promptTemplate": "Redacta un mensaje automático breve y cercano en español de España para un negocio cuyo horario de atención es de lunes a viernes de 09:00 a 18:00. Indica claramente que se trata de un aviso automático (cumplimiento AI Act), ofrece el enlace a nuestras preguntas frecuentes y solicita un código de cliente o teléfono únicamente si existe una avería crítica en curso.",
+    "humanCheck": "Lee en voz alta el texto final para comprobar que suena exactamente como hablas con tus clientes y que el horario y teléfono de guardia son correctos.",
+    "privacyGuard": "Declara siempre la naturaleza automática del aviso (art. 50 del Reglamento europeo de IA) y evita solicitar DNI ni datos médicos por mensajería instantánea."
+  },
+  {
+    "id": "receta-aioferta-voz-a-presupuesto",
+    "worker": "AIOferta",
+    "versionRef": "v1.5.0 / US-303",
+    "title": "Convertir una nota de voz de visita técnica en borrador de presupuesto",
+    "effortKey": "intermediate",
+    "effortLabel": "Bricolaje guiado · 20 min · 0 €",
+    "problem": "Posponer presupuestos técnicos durante varios días tras volver de una obra o visita por falta de tiempo para redactar partidas y exclusiones.",
+    "promptTemplate": "A partir de la transcripción de mi visita y utilizando únicamente la tabla de tarifas vigentes adjunta, redacta un borrador de presupuesto con: 1) descripción clara del trabajo en lenguaje llano, 2) desglose de partidas citando el código de mi tarifa, 3) apartado de exclusiones expresas y plazo de validez. Para cualquier partida que no figure en mi tarifa, indica literalmente VALORAR_MANUALMENTE.",
+    "humanCheck": "Revisa mediciones, materiales especiales, desplazamientos y sumas finales antes de convertir el borrador en documento oficial enviado al cliente.",
+    "privacyGuard": "Elimina el audio original del teléfono una vez cerrado el presupuesto y evita dictar apellidos o direcciones privadas si utilizas herramientas en línea."
+  },
+  {
+    "id": "receta-aidux-mcp-tarifas-solo-lectura",
+    "worker": "AIDux",
+    "versionRef": "v1.5.0 / US-203",
+    "title": "Consultar tarifas vigentes desde una carpeta local en modo solo lectura",
+    "effortKey": "intermediate",
+    "effortLabel": "Bricolaje guiado · 20 min · 0 €",
+    "problem": "Evitar que un asistente invente precios desactualizados o mezcle condiciones de temporadas anteriores.",
+    "promptTemplate": "Actúa en modo solo lectura consultando únicamente el archivo tarifas-vigentes.md dentro de la carpeta autorizada. Responde a la consulta comercial citando entre paréntesis el apartado exacto de origen. Si una partida, medida o descuento no figura literalmente en el documento, escribe REQUIERE_VALORACION_HUMANA y no estimes cifras.",
+    "humanCheck": "Verifica cada apartado citado frente a tu tarifa vigente y comprueba que ninguna versión obsoleta sigue dentro de la carpeta consultada.",
+    "privacyGuard": "No incluyas nombres de clientes, NIF ni descuentos confidenciales individuales dentro de la carpeta conectada por MCP."
+  },
+  {
+    "id": "receta-aijuris-auditoria-clausulas-proveedor",
+    "worker": "AIJuris",
+    "versionRef": "v1.5.0 / US-306",
+    "title": "Detectar riesgos de privacidad y permanencia en condiciones de proveedores digitales",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 15 min · 0 €",
+    "problem": "Aceptar actualizaciones de software con funciones de IA sin detectar si usan datos de la empresa para entrenar modelos o imponen permanencias ocultas.",
+    "promptTemplate": "Analiza en entorno local el texto adjunto de condiciones de servicio o anexo RGPD. Crea una tabla con cuatro columnas: aspecto_revisado, cita_literal_del_documento, riesgo_para_pyme (bajo/medio/alto) y pregunta_para_el_proveedor. Revisa expresamente: entrenamiento con datos de cliente, subencargados fuera del Espacio Económico Europeo, plazo de borrado tras baja y derecho de exportación en formato abierto. Si un punto no aparece en el texto, escribe NO_CONSTA_EN_CONTRATO.",
+    "humanCheck": "Coteja cada cita literal en el documento original y consulta con tu asesoría jurídica antes de firmar contratos de importe relevante o datos sensibles.",
+    "privacyGuard": "Ejecuta este análisis en local o elimina previamente nombres de clientes, precios confidenciales y datos identificativos de terceros."
+  },
+  {
+    "id": "receta-aidux-mcp-local",
+    "worker": "AIDux",
+    "versionRef": "v1.5.0 / US-306",
+    "title": "Configuración rápida de servidor MCP local para acceso a documentos",
+    "effortKey": "intermediate",
+    "effortLabel": "Intermedio (15 minutos)",
+    "problem": "La pyme necesita que su modelo local de lenguaje consulte normativas y plantillas internas almacenadas en un servidor local sin exponer datos confidenciales a proveedores externos.",
+    "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Configura el archivo de conexión JSON para el protocolo MCP en el entorno local, estableciendo una ruta de lectura restringida a la carpeta de procesos internos y aplicando los filtros de privacidad necesarios.",
+    "humanCheck": "Verificar que la ruta asignada al servidor MCP sea estrictamente local y que no existan credenciales de servicios en la nube expuestas en el archivo de configuración.",
+    "privacyGuard": "Garantizar que todo el tráfico de contexto permanezca en la infraestructura local bajo el marco de minimización de datos del AI Act."
+  },
+  {
+    "id": "receta-aiescudo-filtro-reclamaciones",
+    "worker": "AIJuris",
+    "versionRef": "v1.5.0 / US-304",
+    "title": "Protocolo de tres filtros ante escritos extensos o reclamaciones automatizadas",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 15 min · 0 €",
+    "problem": "Perder horas contestando escritos intimidatorios largos sin datos verificables de compra mientras clientes reales esperan respuesta.",
+    "promptTemplate": "Lee el mensaje adjunto (sin datos personales sensibles) y extrae únicamente hechos verificables: número de factura o pedido mencionado, fecha de servicio, incidencia concreta descrita y tono de urgencia. Si no aporta ninguna referencia de operación real, redacta un acuse de recibo cortés de tres líneas solicitando número de factura o fecha aproximada para poder atender el caso con rigor.",
+    "humanCheck": "Comprueba siempre primero en tu registro de ventas si el pedido existe realmente; si es una incidencia real, prioriza la llamada o atención humana cercana.",
+    "privacyGuard": "Conserva el resguardo fechado del acuse de recibo en tu carpeta de atención al cliente y nunca expongas datos de terceros en plantillas externas."
+  }
+]

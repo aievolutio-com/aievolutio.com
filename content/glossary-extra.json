@@ -1,0 +1,66 @@
+[
+  {
+    "id": "aiworker-agente-supervisado",
+    "term": "AIWorker (agente operativo supervisado)",
+    "effortKey": "basic",
+    "effortLabel": "Plantilla guiada · 30 min · 0 €",
+    "analogy": "Un aprendiz metódico que prepara los borradores de facturas, respuestas o presupuestos siguiendo tus reglas, pero que nunca envía nada sin tu firma.",
+    "mondayUse": "Quita de en medio el 80 % del trabajo mecánico de picar datos o estructurar notas de voz manteniendo el control humano."
+  },
+  {
+    "id": "cuantizacion-4bits",
+    "term": "Cuantización de modelos (compresión a 4 bits)",
+    "effortKey": "basic",
+    "effortLabel": "Ya incluido al descargar · 0 min · 0 €",
+    "analogy": "Guardar las herramientas en un maletín compacto en lugar de llevar un furgón entero: ocupa la cuarta parte de memoria en tu ordenador y conserva casi toda su precisión.",
+    "mondayUse": "Permite que un ordenador normal de oficina o taller ejecute modelos de inteligencia artificial locales con fluidez sin comprar tarjetas gráficas caras."
+  },
+  {
+    "id": "zero-data-retention",
+    "term": "Retención cero de datos (Zero Data Retention)",
+    "effortKey": "basic",
+    "effortLabel": "Ajuste de privacidad · 5 min · 0 €",
+    "analogy": "Una pizarra que se borra sola nada más terminar la reunión: el proveedor procesa tu consulta pero tiene prohibido guardarla o usarla para entrenar sus máquinas.",
+    "mondayUse": "Requisito indispensable que AIJuris recomienda activar o exigir por contrato antes de usar cualquier servicio en la nube con documentos de trabajo."
+  },
+  {
+    "id": "instruccion-sistema-prompt",
+    "term": "Instrucción maestra o guion de oficio (System Prompt)",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 15 min · 0 €",
+    "analogy": "El manual de bienvenida que entregas el primer día a un colaborador indicando cómo tratáis al cliente, qué tono usáis y qué cosas están prohibidas.",
+    "mondayUse": "Ahorra tener que repetir en cada mensaje a qué se dedica tu empresa y asegura respuestas coherentes con tu estilo."
+  },
+  {
+    "id": "agente-local-autogobernado",
+    "term": "Agente local con autoverificación (autogobernado)",
+    "effortKey": "intermediate",
+    "effortLabel": "Bricolaje guiado · 1 tarde · 0 €",
+    "analogy": "Un colaborador metódico que, antes de entregarte un borrador, repasa él mismo su propia lista de comprobación legal y te señala cualquier hueco pendiente.",
+    "mondayUse": "Reduce errores de formato y garantiza que ningún documento incluya datos sensibles o promesas fuera de protocolo antes de tu revisión final."
+  },
+  {
+    "id": "edge-ai-oficina",
+    "term": "IA en el propio equipo de oficina (Edge AI)",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 30 min · 0 €",
+    "analogy": "Cocinar en tu propia cocina en lugar de pedir siempre comida a domicilio: controlas los ingredientes, pagas una sola vez los utensilios y nada sale por la puerta.",
+    "mondayUse": "Permite procesar actas, contratos y presupuestos en un ordenador de oficina o mini-PC sin depender de cuotas por usuario ni conexión continua."
+  },
+  {
+    "id": "alfabetizacion-ia-art4",
+    "term": "Alfabetización en IA (artículo 4 del AI Act)",
+    "effortKey": "basic",
+    "effortLabel": "Hábito en equipo · 1 hora · 0 €",
+    "analogy": "Explicar las normas básicas de seguridad antes de estrenar una máquina en el taller: no hace falta fabricar el motor, pero sí saber dónde está el botón de parada y qué no introducir dentro.",
+    "mondayUse": "Consiste en dar a tu equipo una guía breve de una página sobre qué datos nunca subir, cómo comprobar resultados y cuándo pedir revisión humana."
+  },
+  {
+    "id": "coste-real-por-uso",
+    "term": "Coste real por uso frente a suscripción fija",
+    "effortKey": "basic",
+    "effortLabel": "Hoja de cálculo · 15 min · 0 €",
+    "analogy": "Comparar pagar un abono mensual caro de gimnasio al que vas dos tardes frente a pagar una entrada sencilla o entrenar en casa con tu propio material.",
+    "mondayUse": "Permite auditar si el recargo mensual «con IA» de tu software habitual compensa el número real de usos semanales de tu plantilla."
+  }
+]

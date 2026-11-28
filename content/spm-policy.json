@@ -1,0 +1,238 @@
+{
+  "version": "1.5.0",
+  "updatedAt": "2026-11-27",
+  "reviewCadenceDays": 7,
+  "rollingWindowPosts": 14,
+  "fitnessThreshold": 0.8,
+  "fitnessWeights": {
+    "mondayActionability": 0.35,
+    "plainLanguage": 0.25,
+    "sovereigntyZeroEuro": 0.25,
+    "demandAlignment": 0.15
+  },
+  "cells": {
+    "grow": {
+      "label": "Grow · Guías de oficio y utilidad cotidiana",
+      "targetPct": 45,
+      "maxPct": 55,
+      "leadAuthors": ["AIVisio", "AIDux"]
+    },
+    "transform": {
+      "label": "Transform · Artefactos y recetas AIWorkers 0 €",
+      "targetPct": 25,
+      "maxPct": 35,
+      "leadAuthors": ["AIDux", "AIVisio"]
+    },
+    "modernize": {
+      "label": "Modernize · Sobriedad local, ahorro y orden digital",
+      "targetPct": 15,
+      "maxPct": 25,
+      "leadAuthors": ["AIDux"]
+    },
+    "compliance": {
+      "label": "Compliance · AI Act, RGPD y protección ciudadana",
+      "targetPct": 15,
+      "maxPct": 15,
+      "leadAuthors": ["AIJuris"]
+    }
+  },
+  "authorQuotas": {
+    "AIVisio": { "minPct": 35, "maxPct": 50 },
+    "AIDux": { "minPct": 35, "maxPct": 50 },
+    "AIJuris": { "minPct": 10, "maxPct": 15 }
+  },
+  "techBufferDiversity": {
+    "minActive": 7,
+    "targetActive": 7,
+    "maxSameKind": 2,
+    "maxSameAgent": 3,
+    "requiredKinds": [
+      "aiworker_recipe",
+      "glossary_expansion",
+      "article_diagram_enrichment",
+      "article_faq_enrichment"
+    ]
+  },
+  "editorialDomains": [
+    {
+      "id": "oficios-taller-obra",
+      "cell": "grow",
+      "preferredAuthor": "AIDux",
+      "label": "Oficios, talleres, instaladores y reformas",
+      "keywords": [
+        "taller",
+        "obra",
+        "presupuesto",
+        "voz",
+        "visita",
+        "instalador",
+        "tarifa",
+        "reparacion"
+      ],
+      "focusPrompt": "Resuelve una fricción concreta de taller, reformas, fontanería, climatización o servicio técnico usando plantillas o herramientas gratuitas en menos de una tarde."
+    },
+    {
+      "id": "comercio-hosteleria-local",
+      "cell": "grow",
+      "preferredAuthor": "AIVisio",
+      "label": "Comercio de barrio, hostelería y atención cercana",
+      "keywords": [
+        "comercio",
+        "tienda",
+        "cliente",
+        "resena",
+        "turno",
+        "inventario",
+        "barrio",
+        "horario"
+      ],
+      "focusPrompt": "Aborda un dolor real de un pequeño comercio, clínica o negocio local (reseñas, horarios, proveedores, reposición, clientes fieles) en lenguaje de calle."
+    },
+    {
+      "id": "despacho-administracion-pyme",
+      "cell": "transform",
+      "preferredAuthor": "AIDux",
+      "label": "Facturas, albaranes, gestoría y orden documental",
+      "keywords": [
+        "factura",
+        "albaran",
+        "ticket",
+        "trimestre",
+        "gestoria",
+        "hoja",
+        "csv",
+        "verifactu"
+      ],
+      "focusPrompt": "Diseña un flujo sobrio de 0 € para reducir el papeleo administrativo (facturas, albaranes, conciliación, carpetas) con revisión humana antes de gestoría."
+    },
+    {
+      "id": "ahorro-sobreprecio-software",
+      "cell": "modernize",
+      "preferredAuthor": "AIVisio",
+      "label": "Ahorro real y defensa frente a sobreprecios de software",
+      "keywords": [
+        "sobreprecio",
+        "cuota",
+        "suscripcion",
+        "precio",
+        "coste",
+        "alternativa",
+        "ahorro"
+      ],
+      "focusPrompt": "Compara con honestidad cuándo una cuota comercial con etiqueta inteligente merece la pena y cuándo una alternativa libre o plantilla sencilla resuelve lo mismo gratis."
+    },
+    {
+      "id": "educacion-criterio-familiar",
+      "cell": "grow",
+      "preferredAuthor": "AIVisio",
+      "label": "Educación, jóvenes y pensamiento crítico en casa",
+      "keywords": [
+        "educacion",
+        "hogar",
+        "hijos",
+        "estudiar",
+        "aprendiz",
+        "pensamiento",
+        "critico",
+        "familia"
+      ],
+      "focusPrompt": "Orienta a padres, madres, docentes y maestros de oficio para usar la IA como gimnasio de criterio propio y no como delegación pasiva."
+    },
+    {
+      "id": "mayores-burocracia-clara",
+      "cell": "grow",
+      "preferredAuthor": "AIVisio",
+      "label": "Mayores, dignidad y trámites con administraciones",
+      "keywords": [
+        "mayores",
+        "tramite",
+        "administracion",
+        "carta",
+        "burocracia",
+        "ayuda",
+        "subvencion",
+        "ciudadania"
+      ],
+      "focusPrompt": "Explica cómo traducir trámites, cartas oficiales o solicitudes públicas a lenguaje comprensible sin comprometer privacidad ni sustituir el trato humano."
+    },
+    {
+      "id": "defensa-ruido-honestidad",
+      "cell": "compliance",
+      "preferredAuthor": "AIJuris",
+      "label": "Protección frente a spam, engaños y ruido algorítmico",
+      "keywords": [
+        "reclamacion",
+        "spam",
+        "engano",
+        "estafa",
+        "clausula",
+        "contrato",
+        "privacidad",
+        "rgpd"
+      ],
+      "focusPrompt": "Ofrece un escudo práctico y sereno frente a reclamaciones masivas, cláusulas abusivas, suplantaciones o riesgos reales de privacidad para una pequeña empresa."
+    },
+    {
+      "id": "artesania-local-hardware-modesto",
+      "cell": "modernize",
+      "preferredAuthor": "AIDux",
+      "label": "Modelos locales y ordenadores de oficina sin cuotas",
+      "keywords": ["slm", "local", "ordenador", "hardware", "cuantizacion", "offline", "carpeta"],
+      "focusPrompt": "Explica con analogías cotidianas cómo aprovechar el ordenador actual de la oficina con herramientas abiertas gratuitas sin tecnicismos vacíos."
+    }
+  ],
+  "antiSlop": {
+    "minFernandezHuerta": 56,
+    "bannedPhrases": [
+      "en el dinamico ecosistema empresarial",
+      "en el dinamico panorama empresarial",
+      "ha dejado de ser una promesa futurista",
+      "en un panorama digital cada vez mas complejo",
+      "en el competitivo panorama",
+      "en el competitivo mercado actual",
+      "la era digital presenta a las pequenas y medianas empresas",
+      "en un mundo cada vez mas digitalizado",
+      "en la era digital actual",
+      "transformacion sin precedentes",
+      "en el vertiginoso mundo actual",
+      "revolucionar por completo tu negocio",
+      "sin lugar a dudas la inteligencia artificial",
+      "desbloquear todo el potencial de",
+      "pueden cometer errores",
+      "no sustituyen el criterio"
+    ],
+    "bannedSourceDomains": [
+      "vertexaisearch.cloud.google.com",
+      "hubspot.es",
+      "hubspot.com",
+      "salesforce.com",
+      "snowflake.com",
+      "netapp.com",
+      "amazon.com",
+      "automationanywhere.com",
+      "zendesk.com"
+    ],
+    "proprietaryToolsRequiringOpenAlternative": [
+      "hubspot",
+      "salesforce",
+      "zendesk",
+      "midjourney",
+      "dall-e",
+      "chatgpt plus",
+      "copilot pro"
+    ],
+    "openAlternativeMarkers": [
+      "0 €",
+      "gratuit",
+      "software libre",
+      "codigo abierto",
+      "en local",
+      "tu propio ordenador",
+      "sin cuota",
+      "sin suscripcion",
+      "plantilla",
+      "csv",
+      "ollama"
+    ]
+  }
+}
