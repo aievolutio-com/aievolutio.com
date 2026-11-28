@@ -30,7 +30,8 @@
     "tech-h1-recipe-aidux-mcp-local",
     "tech-h1-diagram-agentes-autogobernados",
     "tech-h1-faq-slm-locales-oficina",
-    "tech-h1-recipe-aiescudo-reclamaciones-masa"
+    "tech-h1-recipe-aiescudo-reclamaciones-masa",
+    "tech-h1-glossary-alfabetizacion-tco"
   ],
   "frontierLog": [
     {
@@ -192,6 +193,13 @@
       "topic": "Plantillas inteligentes para la creación rápida de protocolos de servicio y listas de verificación en oficios",
       "insight": "Muchos profesionales en oficios como fontanería, electricidad o reformas pierden tiempo valioso redactando de cero las tareas para cada trabajo o confiando solo en la memoria. Esto puede llevar a olvidar pasos importantes o a una calidad de servicio inconsistente. La oportunidad está en usar plantillas predefinidas y gratuitas (por ejemplo, en LibreOffice Calc o Writer) que, con solo introducir unos pocos datos básicos del cliente y el tipo de servicio, generen automáticamente una lista de verificación detallada o un protocolo de actuación. Así, se asegura que cada intervención (desde una revisión de caldera hasta una instalación eléctrica) siga un estándar de calidad, sin coste alguno y funcionando completamente en el ordenador del profesional.",
       "roadmapImpact": "Esta solución permite a autónomos y pequeñas empresas del sector de oficios estandarizar sus procesos de trabajo, reducir errores por omisión, mejorar la calidad percibida por el cliente y agilizar la preparación de cada servicio. Además, facilita la formación de nuevos empleados al proporcionarles guías claras y consistentes para cada tarea, todo ello sin incurrir en gastos de software ni depender de servicios en la nube.",
+      "leadAgent": "AIDux"
+    },
+    {
+      "date": "2026-11-28",
+      "topic": "Flujo de IA sobria para la pre-organización y validación local de documentos contables con plantillas personalizables.",
+      "insight": "Se propone un flujo práctico y de coste cero para autónomos y pymes que permite automatizar la pre-organización de sus documentos contables. Utilizando software de código abierto como Tesseract para el reconocimiento óptico de caracteres (OCR) y scripts sencillos (por ejemplo, en Python), los usuarios pueden extraer datos clave (proveedor, fecha, importe, tipo de documento) de facturas y albaranes en PDF o escaneados. La 'inteligencia' reside en plantillas configurables localmente por el usuario, que definen patrones para localizar la información relevante en cada tipo de documento, similar a cómo funcionan las plantillas OCR zonales. Una vez extraídos, los datos se usan para renombrar y archivar automáticamente los documentos en una estructura de carpetas local predefinida (por ejemplo, por año y proveedor), y se genera un resumen en formato CSV o similar. Este proceso incluye un paso de revisión humana obligatoria antes de consolidar la información, asegurando la precisión y la preparación óptima para la gestoría sin incurrir en costes de software ni depender de servicios en la nube.",
+      "roadmapImpact": "Esta oportunidad se alinea directamente con la misión de AIEvolutio de democratizar la IA sobria. Proporciona una solución tangible y replicable para reducir la carga administrativa en autónomos y pymes, fomentando la autonomía digital y el cumplimiento del AI Act al mantener los datos sensibles en local. Servirá como una 'receta' práctica que los usuarios podrán implementar con recursos mínimos, validando el enfoque de 0€ y software abierto para problemas cotidianos de gestión documental.",
       "leadAgent": "AIDux"
     }
   ],
@@ -736,6 +744,13 @@
       "versionRef": "v1.5.0 / US-304 / US-306",
       "title": "Receta de 15 minutos: filtrar reclamaciones generadas en masa sin descuidar al cliente real",
       "summary": "Añadida nueva receta operativa «Protocolo de tres filtros ante escritos extensos o reclamaciones automatizadas» (AIJuris) a equipo.html#recetas-aiworkers."
+    },
+    {
+      "date": "2026-11-28",
+      "id": "tech-h1-glossary-alfabetizacion-tco",
+      "versionRef": "v1.5.0 / US-105 / US-206",
+      "title": "Ampliación del glosario llano con «Alfabetización en IA (art. 4 AI Act)» y «Coste real por uso»",
+      "summary": "Añadidos 2 nuevos términos en lenguaje llano al glosario interactivo (#glosario-llano)."
     }
   ]
 }

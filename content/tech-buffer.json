@@ -333,8 +333,9 @@
           }
         ]
       },
-      "used": false,
-      "queuedAt": "2026-11-27"
+      "used": true,
+      "queuedAt": "2026-11-27",
+      "executedAt": "2026-11-28"
     },
     {
       "id": "tech-h1-faq-sobreprecio-etiqueta-ia",
@@ -481,6 +482,36 @@
         "promptTemplate": "Actúa como AIDux, asistente experto en diseño de procesos operativos para pymes. Con base en la descripción del servicio de oficio proporcionada por el usuario, redacta un protocolo paso a paso y una lista de verificación detallada para evitar errores comunes, asegurar la calidad percibida y facilitar la incorporación de personal.",
         "humanCheck": "Revisar que la lista de verificación cubra todos los riesgos técnicos específicos del oficio y que los pasos respeten la normativa de seguridad aplicable.",
         "privacyGuard": "Procesamiento estrictamente local en el dispositivo de la empresa, sin enviar datos de clientes ni descripciones operativas a servidores externos."
+      },
+      "used": false,
+      "queuedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-glossary-flujo-contable-sobrio",
+      "versionRef": "v1.5.0 / US-307",
+      "kind": "glossary_expansion",
+      "leadAgent": "AIJuris",
+      "title": "Expansión del glosario con conceptos de pre-organización contable local y soberanía documental",
+      "rationale": "Incorpora términos clave sobre la automatización contable basada en IA sobria para dotar de base conceptual a pymes y autónomos, alineándose con las exigencias del AI Act y garantizando la privacidad en local.",
+      "payload": {
+        "terms": [
+          {
+            "id": "term-pre-organizacion-contable",
+            "term": "pre-organización contable local",
+            "effortKey": "basic",
+            "effortLabel": "Estantería sencilla · 10 min · 0 €",
+            "analogy": "Es como tener un archivador inteligente en tu propia mesa que clasifica los tickets antes de dárselos al gestor.",
+            "mondayUse": "Aplicar plantillas locales para ordenar facturas PDF en carpetas específicas antes de cualquier validación digital."
+          },
+          {
+            "id": "term-validacion-documental-sobria",
+            "term": "validación documental sobria",
+            "effortKey": "intermediate",
+            "effortLabel": "Estantería sencilla · 15 min · 0 €",
+            "analogy": "Equivale a revisar la factura con una lupa propia sin compartir datos sensibles con servidores externos.",
+            "mondayUse": "Verificar campos clave de impuestos y proveedores mediante modelos locales sin coste de suscripción."
+          }
+        ]
       },
       "used": false,
       "queuedAt": "2026-11-28"

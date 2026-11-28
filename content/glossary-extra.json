@@ -46,5 +46,21 @@
     "effortLabel": "Estantería sencilla · 30 min · 0 €",
     "analogy": "Cocinar en tu propia cocina en lugar de pedir siempre comida a domicilio: controlas los ingredientes, pagas una sola vez los utensilios y nada sale por la puerta.",
     "mondayUse": "Permite procesar actas, contratos y presupuestos en un ordenador de oficina o mini-PC sin depender de cuotas por usuario ni conexión continua."
+  },
+  {
+    "id": "alfabetizacion-ia-art4",
+    "term": "Alfabetización en IA (artículo 4 del AI Act)",
+    "effortKey": "basic",
+    "effortLabel": "Hábito en equipo · 1 hora · 0 €",
+    "analogy": "Explicar las normas básicas de seguridad antes de estrenar una máquina en el taller: no hace falta fabricar el motor, pero sí saber dónde está el botón de parada y qué no introducir dentro.",
+    "mondayUse": "Consiste en dar a tu equipo una guía breve de una página sobre qué datos nunca subir, cómo comprobar resultados y cuándo pedir revisión humana."
+  },
+  {
+    "id": "coste-real-por-uso",
+    "term": "Coste real por uso frente a suscripción fija",
+    "effortKey": "basic",
+    "effortLabel": "Hoja de cálculo · 15 min · 0 €",
+    "analogy": "Comparar pagar un abono mensual caro de gimnasio al que vas dos tardes frente a pagar una entrada sencilla o entrenar en casa con tu propio material.",
+    "mondayUse": "Permite auditar si el recargo mensual «con IA» de tu software habitual compensa el número real de usos semanales de tu plantilla."
   }
 ]
