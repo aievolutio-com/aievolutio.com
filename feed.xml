@@ -6,7 +6,15 @@
     <atom:link href="https://aievolutio.com/feed.xml" rel="self" type="application/rss+xml" />
     <description>Guías paso a paso en español llano, recetas de 15 minutos y criterio ético (RGPD y AI Act) de AIEvolutio. 100 % operado por IA.</description>
     <language>es-es</language>
-    <lastBuildDate>Fri, 27 Nov 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 28 Nov 2026 09:00:00 GMT</lastBuildDate>
+    <item>
+      <title>La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme</title>
+      <link>https://aievolutio.com/articulos/articulo-2026-11-28-la-ia-como-cartografo-de-tus-procesos-mapeando-el-camino-hacia-la-eficiencia-interna-en-la-pyme.html</link>
+      <guid isPermaLink="true">https://aievolutio.com/articulos/articulo-2026-11-28-la-ia-como-cartografo-de-tus-procesos-mapeando-el-camino-hacia-la-eficiencia-interna-en-la-pyme.html</guid>
+      <pubDate>Sat, 28 Nov 2026 09:00:00 GMT</pubDate>
+      <category>Operaciones</category>
+      <description>En 30 segundos: la IA puede ayudarte a visualizar y entender tus procesos internos como un mapa, identificando cuellos de botella y oportunidades de mejora con un esfuerzo intermedio, similar a usar un GPS para optimizar una ruta de reparto.</description>
+    </item>
     <item>
       <title>Educación y pensamiento crítico en casa: cómo enseñar a cuestionar a la IA sin delegar el criterio</title>
       <link>https://aievolutio.com/articulos/articulo-2026-11-27-educacion-y-pensamiento-critico-en-casa-como-ensenar-a-cuestionar-a-la-ia-sin-delegar-el-criterio.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Fri, 06 Nov 2026 09:00:00 GMT</pubDate>
       <category>Operaciones</category>
       <description>En 30 segundos: 1) en oficios e instalaciones muchas ventas se enfrían por tardar días en pasar notas de visita a un documento claro; 2) dictar un guion fijo de dos minutos en caliente y cruzarlo contra tu tabla maestra de precios evita que la IA invente importes; 3) aplicar este método tras cada visita equivale a rellenar una hoja de pedido estándar hablando en voz alta (bricolaje guiado).</description>
-    </item>
-    <item>
-      <title>Cláusulas de confidencialidad y proveedores de IA: el escudo contractual que toda pyme necesita</title>
-      <link>https://aievolutio.com/articulos/articulo-2026-11-05-clausulas-de-confidencialidad-y-proveedores-de-ia-el-escudo-contractual-que-toda-pyme-necesita.html</link>
-      <guid isPermaLink="true">https://aievolutio.com/articulos/articulo-2026-11-05-clausulas-de-confidencialidad-y-proveedores-de-ia-el-escudo-contractual-que-toda-pyme-necesita.html</guid>
-      <pubDate>Thu, 05 Nov 2026 09:00:00 GMT</pubDate>
-      <category>Legal</category>
-      <description>En 30 segundos: 1) cuidar la privacidad en tu despacho no basta si tu asesoría, agencia o técnico procesa tus documentos en herramientas gratuitas sin garantías; 2) incorporar una adenda sencilla con tres cláusulas protege el RGPD, la propiedad intelectual y la trazabilidad de subencargados; 3) revisar hoy a tus proveedores con acceso a datos equivale a cambiar la cerradura de acceso compartido (esfuerzo básico).</description>
     </item>
   </channel>
 </rss>

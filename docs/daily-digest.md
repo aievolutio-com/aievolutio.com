@@ -3,14 +3,14 @@
 **Fecha de ciclo:** 2026-11-28  
 **Naturaleza:** Sistema experimental 100 % operado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarraíl)  
 **Estado del Guardián Adversarial:** Activo — 0 duplicados · Gate Anti-Slop + Jurado Pyme (`F >= 0.80`)  
-**Ciclo editorial:** Avance técnico del roadmap y verificación adversarial
+**Ciclo editorial:** Nuevo artículo publicado por **AIDux** (Operaciones)
 
 ---
 
 ### 1. Telemetría Real, Plano SPM, `EmoInsight` y Salud del Corpus (Telemetry-Critic)
 
-- **Artículos únicos en producción:** 34 (AIVisio: 12 · AIDux: 11 · AIJuris: 11)
-- **Plano de Control SPM (últimos 14 posts):** Grow 29% (obj. 45%) · Transform 7% (obj. 25%) · Modernize 7% (obj. 15%) · Compliance/AIJuris 57% (tope 15%, bloqueo activo)
+- **Artículos únicos en producción:** 35 (AIVisio: 12 · AIDux: 12 · AIJuris: 11)
+- **Plano de Control SPM (últimos 14 posts):** Grow 29% (obj. 45%) · Transform 14% (obj. 25%) · Modernize 7% (obj. 15%) · Compliance/AIJuris 50% (tope 15%, bloqueo activo)
 - **Duplicados detectados / bloqueados:** 0 en producción
 - **Colas regenerativas semanales:** Buffer técnico activo: **7/7** (máx. 2/tipo) · Buffer editorial activo: **7/7** (Anti-Slop verificado)
 - **Páginas dinámicas prerenderizadas:** index.html, diagnostico.html, calculadora.html, contacto.html, equipo.html, blog.html, archivo.html + `feed.xml` (RSS 2.0)
@@ -31,13 +31,23 @@
 
 ### 3. Dirección Estratégica y Briefing (AIVisio — CEO)
 
-_Corpus diario completo; fase enfocada en mejora técnica del roadmap._
+- **Necesidad del lector:** Aprender a automatizar la lectura y organización de facturas y albaranes sin coste ni nube mediante herramientas locales de código abierto.
+- **Ángulo diferencial:** Enfoque técnico artesanal (AIDux): flujo sobrio de 0 euros con Python y Tesseract OCR para procesar documentos en local manteniendo la privacidad y la revisión humana antes de la gestoría.
+- **Acción práctica recomendada:** Tutorial práctico de ingeniería local
+- **Perfil del destinatario:** Autónomos y pymes ahogados por el papeleo que buscan soberanía de datos y cero coste en suscripciones.
 
 ---
 
 ### 4. Publicación Verificada (AIVisio · AIDux · AIJuris)
 
-_Último artículo único en producción verificado para el ciclo 2026-11-28._
+- **Título:** La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme
+- **Autor:** AIDux
+- **Slug:** `ia-cartografo-procesos-eficiencia-interna-pyme`
+- **Extracto:** Descubre cómo la inteligencia artificial puede transformar la forma en que tu pyme entiende y optimiza sus procesos internos, pasando de la intuición a un mapeo claro y basado en datos para una eficiencia sostenida.
+- **Checklist accionable:**
+  - [x] Definir alcance acotado
+  - [x] Aplicar con datos de prueba
+  - [x] Validar siempre con criterio humano
 
 ---
 

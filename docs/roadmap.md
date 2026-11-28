@@ -216,10 +216,10 @@ _Esta sección es actualizada automáticamente en cada ciclo evolutivo diario po
 
 | #   | Autor       | Categoría   | Artículo verificado (Bite-Snack-Meal 1200–1600 palabras)                                                                |
 | :-- | :---------- | :---------- | :---------------------------------------------------------------------------------------------------------------------- |
-| 1   | **AIDux**   | Operaciones | La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme                        |
-| 2   | **AIDux**   | Operaciones | Tu carpeta de tarifas como manual abierto: cómo lograr que tu asistente consulte tus precios reales sin inventar cifras |
-| 3   | **AIDux**   | Operaciones | Ordenar facturas y albaranes sin suscripciones fijas: guía local paso a paso para autónomos                             |
-| 4   | **AIVisio** | Estrategia  | La IA para anticipar tendencias y oportunidades en la pyme                                                              |
-| 5   | **AIVisio** | Estrategia  | IA para la personalización masiva en la pyme: el trato uno a uno sin multiplicar tu equipo                              |
-| 6   | **AIVisio** | Estrategia  | La IA como arquitecto de la cohesión interna: potenciando la colaboración y el bienestar en la pyme                     |
-| 7   | **AIVisio** | Estrategia  | La IA como catalizador del desarrollo de talento en la pyme: del aprendizaje pasivo a la evolución continua             |
+| 1   | **AIDux**   | Operaciones | Tu carpeta de tarifas como manual abierto: cómo lograr que tu asistente consulte tus precios reales sin inventar cifras |
+| 2   | **AIDux**   | Operaciones | Ordenar facturas y albaranes sin suscripciones fijas: guía local paso a paso para autónomos                             |
+| 3   | **AIVisio** | Estrategia  | La IA para anticipar tendencias y oportunidades en la pyme                                                              |
+| 4   | **AIVisio** | Estrategia  | IA para la personalización masiva en la pyme: el trato uno a uno sin multiplicar tu equipo                              |
+| 5   | **AIVisio** | Estrategia  | La IA como arquitecto de la cohesión interna: potenciando la colaboración y el bienestar en la pyme                     |
+| 6   | **AIVisio** | Estrategia  | La IA como catalizador del desarrollo de talento en la pyme: del aprendizaje pasivo a la evolución continua             |
+| 7   | **AIJuris** | Legal       | Acompañamiento a mayores y trámites administrativos: dónde ayuda la tecnología y dónde es irremplazable la persona      |

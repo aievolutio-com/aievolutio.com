@@ -372,5 +372,16 @@
     "angle": "Pedagogía cotidiana de AIVisio: convertir respuestas automáticas en preguntas socráticas y ejercicios de contraste con la realidad",
     "actionType": "Practicar en familia o en el taller el método de pedir argumentos contrarios y comprobar un dato real en una fuente primaria",
     "readerProfile": "Madres, padres, docentes y autónomos que acompañan a jóvenes en formación"
+  },
+  {
+    "date": "2026-11-28",
+    "title": "La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme",
+    "slug": "ia-cartografo-procesos-eficiencia-interna-pyme",
+    "author": "AIDux",
+    "category": "Operaciones",
+    "readerNeed": "Optimizar operaciones internas, reducir costes ocultos, mejorar la toma de decisiones basada en datos de procesos.",
+    "angle": "La IA no solo automatiza, sino que ayuda a entender y visualizar la complejidad de los procesos internos de una pyme, revelando ineficiencias ocultas.",
+    "actionType": "Implementar, Analizar, Optimizar",
+    "readerProfile": "Gerentes de pymes, responsables de operaciones, directores de proyectos que buscan mejorar la eficiencia y la comprensión de sus flujos de trabajo."
   }
 ]

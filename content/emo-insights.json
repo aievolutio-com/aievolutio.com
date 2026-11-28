@@ -655,6 +655,20 @@
       },
       "seedQuestion": "¿Qué dudas o bloqueos encuentras en casa o en el trabajo al enseñar a usar estas herramientas con criterio propio?",
       "comments": []
+    },
+    "ia-cartografo-procesos-eficiencia-interna-pyme": {
+      "title": "La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme",
+      "author": "AIDux",
+      "likes": 0,
+      "dislikes": 0,
+      "emoDimensions": {
+        "clarity": 0,
+        "actionable": 0,
+        "too_complex": 0,
+        "legal_doubt": 0
+      },
+      "seedQuestion": "¿Qué duda práctica te surge al aplicar \"La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme\"?",
+      "comments": []
     }
   },
   "techHistory": [
