@@ -279,8 +279,9 @@
           }
         ]
       },
-      "used": false,
-      "queuedAt": "2026-11-27"
+      "used": true,
+      "queuedAt": "2026-11-27",
+      "executedAt": "2026-11-28"
     },
     {
       "id": "tech-h1-recipe-aiescudo-reclamaciones-masa",
@@ -427,6 +428,36 @@
             "mondayUse": "Garantizar que ningún dato fiscal o albarán de la pyme abandona el disco duro local durante el procesamiento automatizado."
           }
         ]
+      },
+      "used": false,
+      "queuedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-diagram-ia-copiloto-innovacion",
+      "versionRef": "v1.5.0 / US-310",
+      "kind": "article_diagram_enrichment",
+      "leadAgent": "AIDux",
+      "title": "Diagrama de arquitectura para la innovación guiada por IA en pymes",
+      "rationale": "Incorpora un esquema visual estructurado en el artículo sobre la ia como copiloto para la innovación de productos y servicios, facilitando la comprensión operativa del flujo de trabajo con asistencia local según los criterios de diseño inteligente.",
+      "payload": {
+        "slug": "ia-copiloto-innovacion-productos-servicios-pymes",
+        "visualDiagram": {
+          "title": "Flujo de ideación asistida por IA sobria",
+          "nodes": [
+            {
+              "title": "Ingesta de contexto",
+              "note": "Recopilación local de notas de campo y requerimientos del servicio sin exposición externa."
+            },
+            {
+              "title": "Asistencia estructurada",
+              "note": "Uso de plantillas y modelos locales para generar primeras hipótesis de valor."
+            },
+            {
+              "title": "Validación experta",
+              "note": "Criterio humano obligatorio para filtrar y decidir el desarrollo final de la propuesta."
+            }
+          ]
+        }
       },
       "used": false,
       "queuedAt": "2026-11-28"

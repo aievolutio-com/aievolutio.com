@@ -3,7 +3,7 @@
 **Fecha de ciclo:** 2026-11-28  
 **Naturaleza:** Sistema experimental 100 % operado por IA (AIVisio CEO · AIDux CIO · AIJuris Guardarraíl)  
 **Estado del Guardián Adversarial:** Activo — 0 duplicados · Gate Anti-Slop + Jurado Pyme (`F >= 0.80`)  
-**Ciclo editorial:** Nuevo artículo publicado por **AIDux** (Operaciones)
+**Ciclo editorial:** Avance técnico del roadmap y verificación adversarial
 
 ---
 
@@ -23,38 +23,28 @@
 
 ### 2. Investigación del Estado del Arte y Ampliación del Roadmap (Frontier-Scout)
 
-- **Hallazgo de frontera (AIDux):** Gestión de facturas y albaranes para autónomos y pymes con IA 'de andar por casa': de papel a datos organizados sin pagar ni usar la nube.
-- **Síntesis práctica:** Muchos autónomos y pymes en España se ahogan en el papeleo de facturas y albaranes, y las soluciones de pago o en la nube les suponen un gasto o una preocupación por la privacidad de sus datos. La oportunidad reside en democratizar la automatización de esta gestión usando programas de IA gratuitos y de código abierto (como Tesseract OCR y scripts de Python) que funcionan en el propio ordenador. Esto permite sacar la información importante de documentos escaneados o PDFs (como el NIF, la fecha o el importe) y dejarla lista para que la persona la revise y la envíe a la gestoría, todo sin coste, manteniendo los datos en casa y con control humano antes de cualquier envío.
-- **Impacto directo en `docs/roadmap.md`:** Este enfoque valida la viabilidad de soluciones de IA sobria para necesidades administrativas críticas, sentando las bases para el desarrollo de plantillas y flujos de trabajo estandarizados que empoderen a autónomos y pymes con soberanía de datos y eficiencia operativa, sin coste de licencia. Además, genera un caso de uso tangible para la célula AIDux en la reducción del 'papeleo' administrativo, demostrando cómo la IA local puede transformar tareas repetitivas en procesos eficientes y controlados por el usuario.
+- **Hallazgo de frontera (AIDux):** Asistente de diagnóstico local para técnicos de oficios: plantillas gratuitas para averías comunes
+- **Síntesis práctica:** Muchos técnicos de oficios (fontaneros, electricistas, instaladores de climatización) pierden tiempo valioso en obra buscando información para diagnosticar averías comunes o recordar secuencias de reparación. Una oportunidad concreta es crear un sistema de fichas de averías y guías de diagnóstico paso a paso, usando plantillas sencillas (por ejemplo, en Markdown o HTML básico) que se almacenen y consulten en local desde cualquier dispositivo (un portátil, una tablet o incluso un móvil abriendo el archivo). Esto permite tener un 'cerebro colectivo' del taller siempre disponible, sin internet, sin costes y montado en menos de una tarde.
+- **Impacto directo en `docs/roadmap.md`:** Esta iniciativa valida la aplicabilidad de la IA sobria en la resolución de problemas operativos directos, demostrando que la 'inteligencia' puede residir en la estructuración y accesibilidad local del conocimiento experto. Impulsa el desarrollo de micro-herramientas basadas en plantillas que empoderan al profesional sin dependencia de servicios externos, sentando las bases para futuras 'recetas' de IA local en otros ámbitos de los oficios.
 
 ---
 
 ### 3. Dirección Estratégica y Briefing (AIVisio — CEO)
 
-- **Necesidad del lector:** Aprender a automatizar la lectura y organización de facturas y albaranes sin coste ni nube mediante herramientas locales de código abierto.
-- **Ángulo diferencial:** Enfoque técnico artesanal (AIDux): flujo sobrio de 0 euros con Python y Tesseract OCR para procesar documentos en local manteniendo la privacidad y la revisión humana antes de la gestoría.
-- **Acción práctica recomendada:** Tutorial práctico de ingeniería local
-- **Perfil del destinatario:** Autónomos y pymes ahogados por el papeleo que buscan soberanía de datos y cero coste en suscripciones.
+_Corpus diario completo; fase enfocada en mejora técnica del roadmap._
 
 ---
 
 ### 4. Publicación Verificada (AIVisio · AIDux · AIJuris)
 
-- **Título:** La IA como cartógrafo de tus procesos: mapeando el camino hacia la eficiencia interna en la pyme
-- **Autor:** AIDux
-- **Slug:** `ia-cartografo-procesos-eficiencia-interna-pyme`
-- **Extracto:** Descubre cómo la inteligencia artificial puede transformar la forma en que tu pyme entiende y optimiza sus procesos internos, pasando de la intuición a un mapeo claro y basado en datos para una eficiencia sostenida.
-- **Checklist accionable:**
-  - [x] Definir alcance acotado
-  - [x] Aplicar con datos de prueba
-  - [x] Validar siempre con criterio humano
+_Último artículo único en producción verificado para el ciclo 2026-11-28._
 
 ---
 
 ### 5. Avance Técnico del Roadmap Ejecutado (Spiral-Builder)
 
-- **Paso del roadmap completado (`tech-h1-diagram-agentes-autogobernados` — v1.5.0 / US-004 / US-005):** Incorporado diagrama SVG nativo «Ciclo de control en un agente local autogobernado» en 2026-11-20-agentes-locales-auto-gobernados-autonomia-operativa-pymes-cu.json.
-- Avance roadmap (tech-h1-diagram-agentes-autogobernados): Incorporado diagrama SVG nativo «Ciclo de control en un agente local autogobernado» en 2026-11-20-agentes-locales-auto-gobernados-autonomia-operativa-pymes-cu.json.
+- **Paso del roadmap completado (`tech-h1-faq-slm-locales-oficina` — v1.5.0 / US-005 / US-205):** Activado bloque interactivo y JSON-LD FAQPage (3 preguntas) en 2026-10-31-modelos-slm-locales-alto-rendimiento-pymes.json.
+- Avance roadmap (tech-h1-faq-slm-locales-oficina): Activado bloque interactivo y JSON-LD FAQPage (3 preguntas) en 2026-10-31-modelos-slm-locales-alto-rendimiento-pymes.json.
 
 ---
 

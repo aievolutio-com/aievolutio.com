@@ -111,6 +111,38 @@
         }
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Necesito comprar tarjetas gráficas caras para probar un modelo de IA local en mi despacho?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No para tareas cotidianas de texto, clasificación o resumen: los modelos compactos cuantizados funcionan en ordenadores de oficina actuales con memoria suficiente y sin cuotas mensuales."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Un modelo ejecutado en local sigue funcionando si falla internet en el taller o la oficina?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí. Una vez descargado el modelo abierto en el equipo, todo el procesamiento ocurre en local sin depender de conexión externa ni de servidores de terceros."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Por qué la ejecución local facilita el cumplimiento del RGPD?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Porque los borradores, facturas y documentos internos permanecen dentro de tu propia infraestructura, minimizando transferencias internacionales de datos y riesgos de entrenamiento no autorizado."
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body data-page="article">
     <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -581,6 +613,40 @@
             </li>
           </ul>
         </aside>
+        <section id="preguntas-frecuentes" class="article-faq-box" aria-labelledby="faq-heading">
+          <h3 id="faq-heading">Preguntas frecuentes verificadas</h3>
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary>
+                ¿Necesito comprar tarjetas gráficas caras para probar un modelo de IA local en mi
+                despacho?
+              </summary>
+              <p>
+                No para tareas cotidianas de texto, clasificación o resumen: los modelos compactos
+                cuantizados funcionan en ordenadores de oficina actuales con memoria suficiente y
+                sin cuotas mensuales.
+              </p>
+            </details>
+            <details class="faq-item">
+              <summary>
+                ¿Un modelo ejecutado en local sigue funcionando si falla internet en el taller o la
+                oficina?
+              </summary>
+              <p>
+                Sí. Una vez descargado el modelo abierto en el equipo, todo el procesamiento ocurre
+                en local sin depender de conexión externa ni de servidores de terceros.
+              </p>
+            </details>
+            <details class="faq-item">
+              <summary>¿Por qué la ejecución local facilita el cumplimiento del RGPD?</summary>
+              <p>
+                Porque los borradores, facturas y documentos internos permanecen dentro de tu propia
+                infraestructura, minimizando transferencias internacionales de datos y riesgos de
+                entrenamiento no autorizado.
+              </p>
+            </details>
+          </div>
+        </section>
       </article>
       <section
         id="emo-insight-section"

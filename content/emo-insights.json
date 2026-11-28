@@ -28,7 +28,8 @@
     "tech-h1-faq-ai-act-semaforo-pymes",
     "tech-h1-recipe-aijuris-revision-clausulas",
     "tech-h1-recipe-aidux-mcp-local",
-    "tech-h1-diagram-agentes-autogobernados"
+    "tech-h1-diagram-agentes-autogobernados",
+    "tech-h1-faq-slm-locales-oficina"
   ],
   "frontierLog": [
     {
@@ -176,6 +177,13 @@
       "topic": "Gestión de facturas y albaranes para autónomos y pymes con IA 'de andar por casa': de papel a datos organizados sin pagar ni usar la nube.",
       "insight": "Muchos autónomos y pymes en España se ahogan en el papeleo de facturas y albaranes, y las soluciones de pago o en la nube les suponen un gasto o una preocupación por la privacidad de sus datos. La oportunidad reside en democratizar la automatización de esta gestión usando programas de IA gratuitos y de código abierto (como Tesseract OCR y scripts de Python) que funcionan en el propio ordenador. Esto permite sacar la información importante de documentos escaneados o PDFs (como el NIF, la fecha o el importe) y dejarla lista para que la persona la revise y la envíe a la gestoría, todo sin coste, manteniendo los datos en casa y con control humano antes de cualquier envío.",
       "roadmapImpact": "Este enfoque valida la viabilidad de soluciones de IA sobria para necesidades administrativas críticas, sentando las bases para el desarrollo de plantillas y flujos de trabajo estandarizados que empoderen a autónomos y pymes con soberanía de datos y eficiencia operativa, sin coste de licencia. Además, genera un caso de uso tangible para la célula AIDux en la reducción del 'papeleo' administrativo, demostrando cómo la IA local puede transformar tareas repetitivas en procesos eficientes y controlados por el usuario.",
+      "leadAgent": "AIDux"
+    },
+    {
+      "date": "2026-11-28",
+      "topic": "Asistente de diagnóstico local para técnicos de oficios: plantillas gratuitas para averías comunes",
+      "insight": "Muchos técnicos de oficios (fontaneros, electricistas, instaladores de climatización) pierden tiempo valioso en obra buscando información para diagnosticar averías comunes o recordar secuencias de reparación. Una oportunidad concreta es crear un sistema de fichas de averías y guías de diagnóstico paso a paso, usando plantillas sencillas (por ejemplo, en Markdown o HTML básico) que se almacenen y consulten en local desde cualquier dispositivo (un portátil, una tablet o incluso un móvil abriendo el archivo). Esto permite tener un 'cerebro colectivo' del taller siempre disponible, sin internet, sin costes y montado en menos de una tarde.",
+      "roadmapImpact": "Esta iniciativa valida la aplicabilidad de la IA sobria en la resolución de problemas operativos directos, demostrando que la 'inteligencia' puede residir en la estructuración y accesibilidad local del conocimiento experto. Impulsa el desarrollo de micro-herramientas basadas en plantillas que empoderan al profesional sin dependencia de servicios externos, sentando las bases para futuras 'recetas' de IA local en otros ámbitos de los oficios.",
       "leadAgent": "AIDux"
     }
   ],
@@ -776,6 +784,13 @@
       "versionRef": "v1.5.0 / US-004 / US-005",
       "title": "Diagrama SVG nativo para agentes locales autogobernados con AI Act y RGPD",
       "summary": "Incorporado diagrama SVG nativo «Ciclo de control en un agente local autogobernado» en 2026-11-20-agentes-locales-auto-gobernados-autonomia-operativa-pymes-cu.json."
+    },
+    {
+      "date": "2026-11-28",
+      "id": "tech-h1-faq-slm-locales-oficina",
+      "versionRef": "v1.5.0 / US-005 / US-205",
+      "title": "Bloque FAQPage GEO verificado sobre modelos locales compactos (SLM) en oficina",
+      "summary": "Activado bloque interactivo y JSON-LD FAQPage (3 preguntas) en 2026-10-31-modelos-slm-locales-alto-rendimiento-pymes.json."
     }
   ]
 }

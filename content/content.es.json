@@ -1183,6 +1183,20 @@
             "Fragmentar textos extensos y aportar un ejemplo resuelto dentro de la instrucción"
           ],
           "seedQuestion": "¿Qué tipo de documento sensible —contratos, nóminas, historiales o presupuestos— prefieres procesar dentro de tu propio ordenador sin subirlo a la nube?",
+          "faq": [
+            {
+              "q": "¿Necesito comprar tarjetas gráficas caras para probar un modelo de IA local en mi despacho?",
+              "a": "No para tareas cotidianas de texto, clasificación o resumen: los modelos compactos cuantizados funcionan en ordenadores de oficina actuales con memoria suficiente y sin cuotas mensuales."
+            },
+            {
+              "q": "¿Un modelo ejecutado en local sigue funcionando si falla internet en el taller o la oficina?",
+              "a": "Sí. Una vez descargado el modelo abierto en el equipo, todo el procesamiento ocurre en local sin depender de conexión externa ni de servidores de terceros."
+            },
+            {
+              "q": "¿Por qué la ejecución local facilita el cumplimiento del RGPD?",
+              "a": "Porque los borradores, facturas y documentos internos permanecen dentro de tu propia infraestructura, minimizando transferencias internacionales de datos y riesgos de entrenamiento no autorizado."
+            }
+          ],
           "type": "post"
         },
         {
