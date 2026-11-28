@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-27",
+  "updatedAt": "2026-11-28",
   "minThreshold": 7,
   "targetSize": 7,
   "items": [
@@ -251,8 +251,9 @@
           ]
         }
       },
-      "used": false,
-      "queuedAt": "2026-11-27"
+      "used": true,
+      "queuedAt": "2026-11-27",
+      "executedAt": "2026-11-28"
     },
     {
       "id": "tech-h1-faq-slm-locales-oficina",
@@ -407,6 +408,28 @@
       },
       "used": false,
       "queuedAt": "2026-11-27"
+    },
+    {
+      "id": "tech-h1-glossary-soberania-documental",
+      "versionRef": "v1.5.0 / US-307",
+      "kind": "glossary_expansion",
+      "leadAgent": "AIJuris",
+      "title": "Glosario de soberanía documental y procesamiento local para pymes",
+      "rationale": "Ampliación del glosario técnico enfocada en conceptos jurídicos y técnicos sobre la gestión autónoma de facturas y albaranes sin dependencia de la nube, alineada con las directrices de privacidad de AIDux y AIJuris.",
+      "payload": {
+        "terms": [
+          {
+            "id": "term-soberania-documental",
+            "term": "Soberanía documental",
+            "effortKey": "basic",
+            "effortLabel": "Definición táctica · 10 min",
+            "analogy": "Guardar las llaves de tu caja fuerte en tu propio llavero en vez de alquilar una taquilla en el extranjero.",
+            "mondayUse": "Garantizar que ningún dato fiscal o albarán de la pyme abandona el disco duro local durante el procesamiento automatizado."
+          }
+        ]
+      },
+      "used": false,
+      "queuedAt": "2026-11-28"
     }
   ]
 }

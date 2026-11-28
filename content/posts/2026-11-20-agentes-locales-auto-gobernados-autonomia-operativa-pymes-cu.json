@@ -12,5 +12,22 @@
     "Implementar un marco de agentes locales resilientes con auditoría legal automatizada integrada en la propia infraestructura de la empresa.",
     "Medir impacto en la primera semana",
     "Validar con supervisión humana"
-  ]
+  ],
+  "visualDiagram": {
+    "title": "Ciclo de control en un agente local autogobernado",
+    "nodes": [
+      {
+        "title": "1. Regla previa",
+        "note": "Límites RGPD y permisos por carpeta"
+      },
+      {
+        "title": "2. Autoverificación",
+        "note": "Comprueba fuentes y formato antes de salir"
+      },
+      {
+        "title": "3. Firma humana",
+        "note": "Registro auditable y validación final"
+      }
+    ]
+  }
 }

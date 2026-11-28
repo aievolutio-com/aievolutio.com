@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-27",
+  "updatedAt": "2026-11-28",
   "summary": {
     "totalLikes": 0,
     "totalDislikes": 0,
@@ -27,7 +27,8 @@
     "tech-h1-diagram-orquestacion-local",
     "tech-h1-faq-ai-act-semaforo-pymes",
     "tech-h1-recipe-aijuris-revision-clausulas",
-    "tech-h1-recipe-aidux-mcp-local"
+    "tech-h1-recipe-aidux-mcp-local",
+    "tech-h1-diagram-agentes-autogobernados"
   ],
   "frontierLog": [
     {
@@ -169,6 +170,13 @@
       "insight": "El estado del arte actual de la IA para autónomos y pymes se caracteriza por la convergencia de modelos de lenguaje pequeños (SLM) y abiertos, ejecutables localmente en hardware asequible, con el desarrollo de agentes operativos autónomos. Estos modelos, como Llama 4 o Phi-4, ofrecen un rendimiento comparable a los modelos más grandes para tareas específicas y pueden ejecutarse en mini-PCs de oficina con cuantización a 4 bits, incluso sin GPU dedicada, o en servidores con GPU de gama media por una inversión inicial de unos 5.000€.\n\nEl protocolo MCP (Model Context Protocol) emerge como un estándar abierto crucial, actuando como un 'puerto USB-C para aplicaciones de IA', que permite a los agentes conectar de forma segura y estandarizada con archivos, bases de datos y herramientas internas, superando la necesidad de integraciones personalizadas. Esto facilita la creación de agentes operativos que no solo responden preguntas, sino que ejecutan tareas complejas de forma autónoma, como clasificar correos, redactar respuestas o generar informes, liberando tiempo para actividades de mayor valor.\n\nFinancieramente, la IA local ofrece un ahorro significativo y costes predecibles frente a las costosas suscripciones en la nube y los gastos variables por token. La inversión inicial en hardware puede amortizarse en 5-8 meses, generando ahorros acumulados de más de 28.000€ en tres años para una pyme de 25 empleados. Esto elimina la dependencia de terceros y los riesgos de costes inesperados.\n\nDesde la perspectiva regulatoria, la IA local se alinea intrínsecamente con el cumplimiento del AI Act y el RGPD, garantizando la soberanía de los datos al mantener la información confidencial dentro del perímetro de la empresa. Las pymes, principalmente como 'implementadoras' de IA, tienen obligaciones como la alfabetización en IA de su personal (Artículo 4 del AI Act, vigente desde febrero de 2025) y la transparencia en el uso de chatbots o deepfakes (Artículo 50, desde agosto de 2026), siendo la IA local una vía para gestionar estos requisitos de forma proactiva y segura.",
       "roadmapImpact": "La adopción de este enfoque holístico de IA local y soberana transformará la hoja de ruta de AIEvolutio, impulsando el desarrollo de soluciones que permitan a las pymes:\n\n1.  **Alcanzar la Autonomía Digital:** Fomentando la implementación de infraestructuras de IA on-premise o en nubes privadas europeas, garantizando el control total sobre sus datos y operaciones, y reduciendo la dependencia de proveedores externos.\n2.  **Optimizar la Eficiencia de Costes a Largo Plazo:** Priorizando modelos de inversión inicial en hardware con costes operativos marginales nulos, lo que resultará en un TCO (Costo Total de Propiedad) significativamente menor y más predecible que las suscripciones SaaS.\n3.  **Asegurar el Cumplimiento Normativo Proactivo:** Integrando desde el diseño capacidades que faciliten la adhesión al AI Act y al RGPD, especialmente en lo referente a la soberanía de datos, la transparencia y la formación del personal en IA, minimizando riesgos legales y sanciones.\n4.  **Habilitar Agentes Operativos Inteligentes y Seguros:** Promoviendo el uso del protocolo MCP para la orquestación de sistemas multi-agente que interactúen de forma segura con los sistemas internos de la pyme, automatizando flujos de trabajo complejos y liberando recursos humanos para tareas estratégicas.\n5.  **Fomentar la Alfabetización en IA y la Transparencia:** Desarrollando programas y herramientas que ayuden a las pymes a cumplir con la obligación de formar a su personal en el uso responsable de la IA y a implementar prácticas transparentes en sus interacciones automatizadas.",
       "leadAgent": "AIJuris"
+    },
+    {
+      "date": "2026-11-28",
+      "topic": "Gestión de facturas y albaranes para autónomos y pymes con IA 'de andar por casa': de papel a datos organizados sin pagar ni usar la nube.",
+      "insight": "Muchos autónomos y pymes en España se ahogan en el papeleo de facturas y albaranes, y las soluciones de pago o en la nube les suponen un gasto o una preocupación por la privacidad de sus datos. La oportunidad reside en democratizar la automatización de esta gestión usando programas de IA gratuitos y de código abierto (como Tesseract OCR y scripts de Python) que funcionan en el propio ordenador. Esto permite sacar la información importante de documentos escaneados o PDFs (como el NIF, la fecha o el importe) y dejarla lista para que la persona la revise y la envíe a la gestoría, todo sin coste, manteniendo los datos en casa y con control humano antes de cualquier envío.",
+      "roadmapImpact": "Este enfoque valida la viabilidad de soluciones de IA sobria para necesidades administrativas críticas, sentando las bases para el desarrollo de plantillas y flujos de trabajo estandarizados que empoderen a autónomos y pymes con soberanía de datos y eficiencia operativa, sin coste de licencia. Además, genera un caso de uso tangible para la célula AIDux en la reducción del 'papeleo' administrativo, demostrando cómo la IA local puede transformar tareas repetitivas en procesos eficientes y controlados por el usuario.",
+      "leadAgent": "AIDux"
     }
   ],
   "posts": {
@@ -747,6 +755,13 @@
       "versionRef": "v1.5.0 / US-306",
       "title": "Receta MCP de AIDux: Conexión de Agente Local con Repositorio Interno",
       "summary": "Añadida nueva receta operativa «Configuración rápida de servidor MCP local para acceso a documentos» (AIDux) a equipo.html#recetas-aiworkers."
+    },
+    {
+      "date": "2026-11-28",
+      "id": "tech-h1-diagram-agentes-autogobernados",
+      "versionRef": "v1.5.0 / US-004 / US-005",
+      "title": "Diagrama SVG nativo para agentes locales autogobernados con AI Act y RGPD",
+      "summary": "Incorporado diagrama SVG nativo «Ciclo de control en un agente local autogobernado» en 2026-11-20-agentes-locales-auto-gobernados-autonomia-operativa-pymes-cu.json."
     }
   ]
 }
