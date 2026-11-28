@@ -29,7 +29,8 @@
     "tech-h1-recipe-aijuris-revision-clausulas",
     "tech-h1-recipe-aidux-mcp-local",
     "tech-h1-diagram-agentes-autogobernados",
-    "tech-h1-faq-slm-locales-oficina"
+    "tech-h1-faq-slm-locales-oficina",
+    "tech-h1-recipe-aiescudo-reclamaciones-masa"
   ],
   "frontierLog": [
     {
@@ -184,6 +185,13 @@
       "topic": "Asistente de diagnóstico local para técnicos de oficios: plantillas gratuitas para averías comunes",
       "insight": "Muchos técnicos de oficios (fontaneros, electricistas, instaladores de climatización) pierden tiempo valioso en obra buscando información para diagnosticar averías comunes o recordar secuencias de reparación. Una oportunidad concreta es crear un sistema de fichas de averías y guías de diagnóstico paso a paso, usando plantillas sencillas (por ejemplo, en Markdown o HTML básico) que se almacenen y consulten en local desde cualquier dispositivo (un portátil, una tablet o incluso un móvil abriendo el archivo). Esto permite tener un 'cerebro colectivo' del taller siempre disponible, sin internet, sin costes y montado en menos de una tarde.",
       "roadmapImpact": "Esta iniciativa valida la aplicabilidad de la IA sobria en la resolución de problemas operativos directos, demostrando que la 'inteligencia' puede residir en la estructuración y accesibilidad local del conocimiento experto. Impulsa el desarrollo de micro-herramientas basadas en plantillas que empoderan al profesional sin dependencia de servicios externos, sentando las bases para futuras 'recetas' de IA local en otros ámbitos de los oficios.",
+      "leadAgent": "AIDux"
+    },
+    {
+      "date": "2026-11-28",
+      "topic": "Plantillas inteligentes para la creación rápida de protocolos de servicio y listas de verificación en oficios",
+      "insight": "Muchos profesionales en oficios como fontanería, electricidad o reformas pierden tiempo valioso redactando de cero las tareas para cada trabajo o confiando solo en la memoria. Esto puede llevar a olvidar pasos importantes o a una calidad de servicio inconsistente. La oportunidad está en usar plantillas predefinidas y gratuitas (por ejemplo, en LibreOffice Calc o Writer) que, con solo introducir unos pocos datos básicos del cliente y el tipo de servicio, generen automáticamente una lista de verificación detallada o un protocolo de actuación. Así, se asegura que cada intervención (desde una revisión de caldera hasta una instalación eléctrica) siga un estándar de calidad, sin coste alguno y funcionando completamente en el ordenador del profesional.",
+      "roadmapImpact": "Esta solución permite a autónomos y pequeñas empresas del sector de oficios estandarizar sus procesos de trabajo, reducir errores por omisión, mejorar la calidad percibida por el cliente y agilizar la preparación de cada servicio. Además, facilita la formación de nuevos empleados al proporcionarles guías claras y consistentes para cada tarea, todo ello sin incurrir en gastos de software ni depender de servicios en la nube.",
       "leadAgent": "AIDux"
     }
   ],
@@ -791,6 +799,13 @@
       "versionRef": "v1.5.0 / US-005 / US-205",
       "title": "Bloque FAQPage GEO verificado sobre modelos locales compactos (SLM) en oficina",
       "summary": "Activado bloque interactivo y JSON-LD FAQPage (3 preguntas) en 2026-10-31-modelos-slm-locales-alto-rendimiento-pymes.json."
+    },
+    {
+      "date": "2026-11-28",
+      "id": "tech-h1-recipe-aiescudo-reclamaciones-masa",
+      "versionRef": "v1.5.0 / US-304 / US-306",
+      "title": "Receta de 15 minutos: filtrar reclamaciones generadas en masa sin descuidar al cliente real",
+      "summary": "Añadida nueva receta operativa «Protocolo de tres filtros ante escritos extensos o reclamaciones automatizadas» (AIJuris) a equipo.html#recetas-aiworkers."
     }
   ]
 }

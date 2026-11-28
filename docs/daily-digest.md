@@ -23,9 +23,9 @@
 
 ### 2. Investigación del Estado del Arte y Ampliación del Roadmap (Frontier-Scout)
 
-- **Hallazgo de frontera (AIDux):** Asistente de diagnóstico local para técnicos de oficios: plantillas gratuitas para averías comunes
-- **Síntesis práctica:** Muchos técnicos de oficios (fontaneros, electricistas, instaladores de climatización) pierden tiempo valioso en obra buscando información para diagnosticar averías comunes o recordar secuencias de reparación. Una oportunidad concreta es crear un sistema de fichas de averías y guías de diagnóstico paso a paso, usando plantillas sencillas (por ejemplo, en Markdown o HTML básico) que se almacenen y consulten en local desde cualquier dispositivo (un portátil, una tablet o incluso un móvil abriendo el archivo). Esto permite tener un 'cerebro colectivo' del taller siempre disponible, sin internet, sin costes y montado en menos de una tarde.
-- **Impacto directo en `docs/roadmap.md`:** Esta iniciativa valida la aplicabilidad de la IA sobria en la resolución de problemas operativos directos, demostrando que la 'inteligencia' puede residir en la estructuración y accesibilidad local del conocimiento experto. Impulsa el desarrollo de micro-herramientas basadas en plantillas que empoderan al profesional sin dependencia de servicios externos, sentando las bases para futuras 'recetas' de IA local en otros ámbitos de los oficios.
+- **Hallazgo de frontera (AIDux):** Plantillas inteligentes para la creación rápida de protocolos de servicio y listas de verificación en oficios
+- **Síntesis práctica:** Muchos profesionales en oficios como fontanería, electricidad o reformas pierden tiempo valioso redactando de cero las tareas para cada trabajo o confiando solo en la memoria. Esto puede llevar a olvidar pasos importantes o a una calidad de servicio inconsistente. La oportunidad está en usar plantillas predefinidas y gratuitas (por ejemplo, en LibreOffice Calc o Writer) que, con solo introducir unos pocos datos básicos del cliente y el tipo de servicio, generen automáticamente una lista de verificación detallada o un protocolo de actuación. Así, se asegura que cada intervención (desde una revisión de caldera hasta una instalación eléctrica) siga un estándar de calidad, sin coste alguno y funcionando completamente en el ordenador del profesional.
+- **Impacto directo en `docs/roadmap.md`:** Esta solución permite a autónomos y pequeñas empresas del sector de oficios estandarizar sus procesos de trabajo, reducir errores por omisión, mejorar la calidad percibida por el cliente y agilizar la preparación de cada servicio. Además, facilita la formación de nuevos empleados al proporcionarles guías claras y consistentes para cada tarea, todo ello sin incurrir en gastos de software ni depender de servicios en la nube.
 
 ---
 
@@ -43,8 +43,8 @@ _Último artículo único en producción verificado para el ciclo 2026-11-28._
 
 ### 5. Avance Técnico del Roadmap Ejecutado (Spiral-Builder)
 
-- **Paso del roadmap completado (`tech-h1-faq-slm-locales-oficina` — v1.5.0 / US-005 / US-205):** Activado bloque interactivo y JSON-LD FAQPage (3 preguntas) en 2026-10-31-modelos-slm-locales-alto-rendimiento-pymes.json.
-- Avance roadmap (tech-h1-faq-slm-locales-oficina): Activado bloque interactivo y JSON-LD FAQPage (3 preguntas) en 2026-10-31-modelos-slm-locales-alto-rendimiento-pymes.json.
+- **Paso del roadmap completado (`tech-h1-recipe-aiescudo-reclamaciones-masa` — v1.5.0 / US-304 / US-306):** Añadida nueva receta operativa «Protocolo de tres filtros ante escritos extensos o reclamaciones automatizadas» (AIJuris) a equipo.html#recetas-aiworkers.
+- Avance roadmap (tech-h1-recipe-aiescudo-reclamaciones-masa): Añadida nueva receta operativa «Protocolo de tres filtros ante escritos extensos o reclamaciones automatizadas» (AIJuris) a equipo.html#recetas-aiworkers.
 
 ---
 

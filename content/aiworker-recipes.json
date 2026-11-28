@@ -70,5 +70,17 @@
     "promptTemplate": "Actúa como AIDux, CIO de AIEvolutio. Configura el archivo de conexión JSON para el protocolo MCP en el entorno local, estableciendo una ruta de lectura restringida a la carpeta de procesos internos y aplicando los filtros de privacidad necesarios.",
     "humanCheck": "Verificar que la ruta asignada al servidor MCP sea estrictamente local y que no existan credenciales de servicios en la nube expuestas en el archivo de configuración.",
     "privacyGuard": "Garantizar que todo el tráfico de contexto permanezca en la infraestructura local bajo el marco de minimización de datos del AI Act."
+  },
+  {
+    "id": "receta-aiescudo-filtro-reclamaciones",
+    "worker": "AIJuris",
+    "versionRef": "v1.5.0 / US-304",
+    "title": "Protocolo de tres filtros ante escritos extensos o reclamaciones automatizadas",
+    "effortKey": "basic",
+    "effortLabel": "Estantería sencilla · 15 min · 0 €",
+    "problem": "Perder horas contestando escritos intimidatorios largos sin datos verificables de compra mientras clientes reales esperan respuesta.",
+    "promptTemplate": "Lee el mensaje adjunto (sin datos personales sensibles) y extrae únicamente hechos verificables: número de factura o pedido mencionado, fecha de servicio, incidencia concreta descrita y tono de urgencia. Si no aporta ninguna referencia de operación real, redacta un acuse de recibo cortés de tres líneas solicitando número de factura o fecha aproximada para poder atender el caso con rigor.",
+    "humanCheck": "Comprueba siempre primero en tu registro de ventas si el pedido existe realmente; si es una incidencia real, prioriza la llamada o atención humana cercana.",
+    "privacyGuard": "Conserva el resguardo fechado del acuse de recibo en tu carpeta de atención al cliente y nunca expongas datos de terceros en plantillas externas."
   }
 ]

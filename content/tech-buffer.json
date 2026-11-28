@@ -302,8 +302,9 @@
         "humanCheck": "Comprueba siempre primero en tu registro de ventas si el pedido existe realmente; si es una incidencia real, prioriza la llamada o atención humana cercana.",
         "privacyGuard": "Conserva el resguardo fechado del acuse de recibo en tu carpeta de atención al cliente y nunca expongas datos de terceros en plantillas externas."
       },
-      "used": false,
-      "queuedAt": "2026-11-27"
+      "used": true,
+      "queuedAt": "2026-11-27",
+      "executedAt": "2026-11-28"
     },
     {
       "id": "tech-h1-glossary-alfabetizacion-tco",
@@ -458,6 +459,28 @@
             }
           ]
         }
+      },
+      "used": false,
+      "queuedAt": "2026-11-28"
+    },
+    {
+      "id": "tech-h1-recipe-aidux-protocolos-oficios",
+      "versionRef": "v1.5.0 / US-307",
+      "kind": "aiworker_recipe",
+      "leadAgent": "AIDux",
+      "title": "Receta para AIDux: plantillas de protocolos y listas de verificación locales en oficios",
+      "rationale": "Implementa una solución ejecutable sin costes de nube para que autónomos y pymes de oficios estandaricen sus procesos, reduzcan errores y agilicen la formación interna mediante plantillas generadas con IA local.",
+      "payload": {
+        "id": "aidux-recipe-protocolos-oficios",
+        "worker": "AIDux",
+        "versionRef": "v1.5.0 / US-307",
+        "title": "Generación local de protocolos y listas de verificación para oficios",
+        "effortKey": "intermediate",
+        "effortLabel": "Estantería sencilla · 25 min · 0 €",
+        "problem": "Los autónomos y pequeñas empresas de oficios pierden tiempo y calidad por falta de estandarización en los servicios, lo que genera errores por omisión y complica la formación de nuevos empleados.",
+        "promptTemplate": "Actúa como AIDux, asistente experto en diseño de procesos operativos para pymes. Con base en la descripción del servicio de oficio proporcionada por el usuario, redacta un protocolo paso a paso y una lista de verificación detallada para evitar errores comunes, asegurar la calidad percibida y facilitar la incorporación de personal.",
+        "humanCheck": "Revisar que la lista de verificación cubra todos los riesgos técnicos específicos del oficio y que los pasos respeten la normativa de seguridad aplicable.",
+        "privacyGuard": "Procesamiento estrictamente local en el dispositivo de la empresa, sin enviar datos de clientes ni descripciones operativas a servidores externos."
       },
       "used": false,
       "queuedAt": "2026-11-28"
