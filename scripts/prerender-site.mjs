@@ -41,6 +41,26 @@ export async function getSiteVersion() {
 
 export const legacyArticleAliases = new Map([
   [
+    "articulos/articulo-2026-11-26-ventaja-competitiva-en-la-pyme-soberania-del-dato-y-agentes-autonomos-bajo-el-paraguas-del-ai-act.html",
+    "articulos/articulo-2026-11-09-tu-pyme-y-el-ai-act-el-semaforo-legal-para-saber-si-tus-herramientas-de-ia-cumplen-la-normativa-europea.html",
+  ],
+  [
+    "articulos/articulo-2026-11-24-arquitecturas-modulares-de-ia-local-en-la-pyme-del-prototipo-al-despliegue-seguro-bajo-el-ai-act.html",
+    "articulos/articulo-2026-11-17-plataformas-de-orquestacion-local-para-pymes-autonomia-operativa-y-soberania-de-datos-con-cumplimiento-integrado.html",
+  ],
+  [
+    "articulos/articulo-2026-11-23-la-ia-como-lupa-para-entender-a-tu-cliente-del-dato-a-la-empatia-en-la-pyme.html",
+    "articulos/articulo-2026-11-25-desenterrando-el-oro-de-tus-conversaciones-como-la-ia-transforma-el-feedback-de-clientes-en-acciones-concretas-para-tu-pyme.html",
+  ],
+  [
+    "articulos/articulo-2026-11-22-redes-de-agentes-locales-en-la-pyme-como-conectar-automatas-sin-salir-de-tus-servidores-ni-infringir-el-ai-act.html",
+    "articulos/articulo-2026-11-05-protocolo-mcp-y-agentes-locales-con-guardarrail-legal-conectar-tus-carpetas-sin-ceder-tus-datos.html",
+  ],
+  [
+    "articulos/articulo-2026-11-20-agentes-locales-auto-gobernados-autonomia-operativa-para-pymes-con-cumplimiento-dinamico-del-ai-act-y-rgpd.html",
+    "articulos/articulo-2026-11-17-plataformas-de-orquestacion-local-para-pymes-autonomia-operativa-y-soberania-de-datos-con-cumplimiento-integrado.html",
+  ],
+  [
     "articulos/articulo-2026-11-04-el-abaratamiento-del-conocimiento-y-la-curva-exponencial-como-llevar-el-volante-de-tu-pyme.html",
     "articulos/articulo-2026-11-04-el-abaratamiento-del-conocimiento-como-hacer-posible-en-tu-empresa-lo-que-antes-parecia-inalcanzable.html",
   ],

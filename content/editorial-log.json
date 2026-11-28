@@ -279,22 +279,11 @@
     "title": "Plataformas de orquestación local para pymes: autonomía operativa y soberanía de datos con cumplimiento integrado",
     "slug": "plataformas-orquestacion-local-pymes-autonomia-soberania-dat",
     "author": "AIJuris",
-    "category": "Estrategia Legal y Tecnológica",
+    "category": "Legal",
     "readerNeed": "Guiar a las pymes en la implementación de plataformas de orquestación de IA local mediante modelos abiertos y agentes inteligentes, logrando autonomía operativa completa y soberanía del dato sin salir del marco legal europeo.",
     "angle": "Enfoque AIJuris: analizar la soberanía del dato, la gobernanza de agentes inteligentes y el cumplimiento por diseño del AI Act y el RGPD al integrar plataformas de orquestación local en pymes.",
     "actionType": "Arquitectura y cumplimiento normativo",
     "readerProfile": "Empresarios y directivos de pymes que buscan independencia de las grandes nubes comerciales y total seguridad jurídica en sus operaciones automatizadas."
-  },
-  {
-    "date": "2026-11-20",
-    "title": "Agentes locales auto-gobernados: autonomía operativa para pymes con cumplimiento dinámico del AI Act y RGPD",
-    "slug": "agentes-locales-auto-gobernados-autonomia-operativa-pymes-cu",
-    "author": "AIJuris",
-    "category": "Estrategia",
-    "readerNeed": "Descubrir cómo los agentes de IA locales auto-adaptativos pueden gestionar operaciones complejas en pymes garantizando el cumplimiento normativo automático del AI Act y RGPD.",
-    "angle": "Enfoque AIJuris: la auto-gobernanza y el cumplimiento normativo dinámico por diseño en agentes locales autónomos para pymes sin depender de la nube.",
-    "actionType": "Implementar un marco de agentes locales resilientes con auditoría legal automatizada integrada en la propia infraestructura de la empresa.",
-    "readerProfile": "Gerentes, directores de operaciones y responsables legales de pymes que buscan autonomía tecnológica total y máxima seguridad jurídica."
   },
   {
     "date": "2026-11-21",
@@ -308,39 +297,6 @@
     "readerProfile": "Autónomos y pymes"
   },
   {
-    "date": "2026-11-22",
-    "title": "Redes de agentes locales en la pyme: cómo conectar autómatas sin salir de tus servidores ni infringir el AI Act",
-    "slug": "redes-agentes-locales-pyme-protocolo-mcp-ai-act",
-    "author": "AIJuris",
-    "category": "Estrategia y Cumplimiento Normativo",
-    "readerNeed": "Conocer de forma clara y sin tecnicismos cómo conectar múltiples agentes de IA en red dentro de la propia pyme utilizando protocolos locales seguros (como MCP) para automatizar tareas complejas sin comprometer la legalidad.",
-    "angle": "Enfoque AIJuris y pedagógico: desmitificar el protocolo MCP y la comunicación entre agentes locales, explicando con analogías sencillas el nivel de complejidad y los costes reales, asegurando la privacidad, la soberanía del dato y la trazabilidad exigida por el AI Act y el RGPD.",
-    "actionType": "Guía práctica y evaluación de viabilidad para implementar redes de agentes locales en la pyme.",
-    "readerProfile": "Empresarios, gerentes y responsables de pymes sin formación técnica avanzada que buscan automatizar flujos complejos de trabajo manteniendo el control absoluto de sus datos."
-  },
-  {
-    "date": "2026-11-23",
-    "title": "La IA como lupa para entender a tu cliente: del dato a la empatía en la pyme",
-    "slug": "ia-lupa-entender-cliente-pyme",
-    "author": "AIVisio",
-    "category": "Estrategia",
-    "readerNeed": "Comprender cómo la IA puede transformar la relación con el cliente y abrir nuevas oportunidades de negocio.",
-    "angle": "La IA no solo automatiza, sino que profundiza el conocimiento del cliente para fomentar la empatía y la personalización.",
-    "actionType": "Implementación de herramientas y metodologías de análisis de cliente con IA.",
-    "readerProfile": "Gerentes y propietarios de pymes interesados en mejorar la experiencia del cliente y la toma de decisiones estratégicas basadas en datos."
-  },
-  {
-    "date": "2026-11-24",
-    "title": "Arquitecturas modulares de IA local en la pyme: del prototipo al despliegue seguro bajo el AI Act",
-    "slug": "arquitecturas-modulares-ia-local-pyme-despliegue-seguro-ai-a",
-    "author": "AIJuris",
-    "category": "Estrategia y Cumplimiento Legal",
-    "readerNeed": "Ayudar a las pymes a entender cómo estructurar arquitecturas modulares de IA local con modelos abiertos y agentes autónomos, evaluando costes, complejidad real y garantizando el cumplimiento estricto del AI Act y el RGPD.",
-    "angle": "Enfoque AIJuris y pedagógico: desmitificar la modularidad y escalabilidad de los despliegues de IA local, utilizando analogías claras sobre el esfuerzo técnico y económico real, y asegurando la soberanía del dato y la gobernanza legal desde el día uno.",
-    "actionType": "Guía táctica y análisis de viabilidad legal y económica",
-    "readerProfile": "Empresarios y directivos de pymes que buscan escalar el uso de la IA de forma segura, previsible y bajo su propio control sin depender de proveedores cloud externos."
-  },
-  {
     "date": "2026-11-25",
     "title": "Desenterrando el oro de tus conversaciones: cómo la IA transforma el feedback de clientes en acciones concretas para tu pyme",
     "slug": "ia-feedback-clientes-acciones-pyme",
@@ -350,17 +306,6 @@
     "angle": "Aplicación práctica de la IA para el análisis de feedback no estructurado y la toma de decisiones operativas en pymes.",
     "actionType": "Implementación de herramientas de análisis de texto con IA.",
     "readerProfile": "Gerentes y propietarios de pymes interesados en mejorar la satisfacción del cliente y la eficiencia operativa mediante la tecnología."
-  },
-  {
-    "date": "2026-11-26",
-    "title": "Ventaja competitiva en la pyme: soberanía del dato y agentes autónomos bajo el paraguas del AI Act",
-    "slug": "ventaja-competitiva-pyme-ia-local-agentes-autonomos-ai-act",
-    "author": "AIJuris",
-    "category": "Estrategia",
-    "readerNeed": "Ayudar a las pymes a entender cómo dar el salto de la mera eficiencia operativa a la verdadera ventaja competitiva utilizando IA local y agentes autónomos, evaluando costes, complejidad real y garantizando el cumplimiento normativo bajo el RGPD y el AI Act.",
-    "angle": "Enfoque AIJuris y estratégico: desmitificar la transición de la automatización básica a la ventaja competitiva mediante la soberanía del dato y modelos locales, utilizando analogías claras sobre el esfuerzo técnico y el retorno económico.",
-    "actionType": "Artículo estratégico y de análisis legal-técnico",
-    "readerProfile": "AIJuris (Guardarraíl ético y legal — AI Act europeo, RGPD, privacidad y soberanía del dato)"
   },
   {
     "date": "2026-11-27",

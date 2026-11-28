@@ -574,12 +574,18 @@ test("v1.5.0 guarantees RSS 2.0 feed, diagnostic-to-recipes funnel, SPM diversit
     verifiedTech.push(item);
   }
 
-  // Cero URLs opacas de redirección Vertex AI en los artículos publicados
+  // 100 % de los artículos publicados deben superar Anti-Slop (cero clichés, FH >= 56, cero redirecciones Vertex AI)
   const postsDir = path.join(process.cwd(), "content/posts");
   const postFiles = (await readdir(postsDir)).filter((f) => f.endsWith(".json"));
   for (const pf of postFiles) {
     const post = JSON.parse(await readFile(path.join(postsDir, pf), "utf8"));
     const dirty = (post.sources || []).filter((s) => isBannedSourceUrl(s?.url, s?.title, policy));
     assert.equal(dirty.length, 0, `Published post ${pf} still contains banned/Vertex source URLs`);
+    const lint = lintArticleAntiSlop(post, policy);
+    assert.equal(
+      lint.passed,
+      true,
+      `Published post ${pf} failed Anti-Slop: ${JSON.stringify(lint.issues)}`,
+    );
   }
 });

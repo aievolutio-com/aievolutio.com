@@ -196,7 +196,7 @@ _Esta sección es actualizada automáticamente en cada ciclo evolutivo diario po
 
 ### 5.3. Colas regenerativas activas y gobierno SPM para revisión semanal (objetivo >= 7 técnico y >= 7 editorial)
 
-- **Equilibrio SPM (últimos 14 artículos):** Grow **29%** (obj. 45%) · Transform **14%** (obj. 25%) · Modernize **7%** (obj. 15%) · Compliance/AIJuris **50%** (tope 15% · bloqueo activo).
+- **Equilibrio SPM (últimos 14 artículos):** Grow **36%** (obj. 45%) · Transform **14%** (obj. 25%) · Modernize **14%** (obj. 15%) · Compliance/AIJuris **36%** (tope 15% · bloqueo activo).
 - **Cola técnica activa (`content/tech-buffer.json`):** **7/7** mejoras ejecutables listas (máx. 2 del mismo tipo, reposición inmediata).
 - **Cola editorial activa (`content/editorial-buffer.json`):** **7/7** artículos verificados listos (Anti-Slop + Jurado Pyme `F >= 0.80`, reposición inmediata).
 
